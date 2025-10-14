@@ -15,8 +15,9 @@ This repository contains the complete documentation archive for the Homo Lumen p
 - **Orion OS Documentation** (V20.12 → V20.13)
 - **Orion Living Compendium** (V3.6 → V3.7.1)
 - **Strategic Milestones (SMK)** (#019-#023)
-- **System Architecture Diagrams** (5 comprehensive diagrams)
+- **System Architecture Diagrams** (9 comprehensive diagrams)
 - **Homo Lumen Constitution** (V1.1)
+- **Homo Lumen Filosofi** (V1.0)
 - **Resonance Map** (V1)
 
 ---
@@ -43,15 +44,20 @@ homo-lumen-compendiums/
 │   └── SMK#023_PROACTIVE_MAINTENANCE.md
 │
 ├── diagrams/                        # System Architecture Diagrams
-│   ├── DIAGRAM_1_MCP_NETWORK_MAIN_ARCHITECTURE_V2.png
-│   ├── DIAGRAM_3_LAG_1_4_INFORMATION_FLOW_V2.png
-│   ├── DIAGRAM_6_MICHAEL_LEVIN_MULTI_SCALE_V2.png
+│   ├── DIAGRAM_1_MCP_NETWORK_MAIN_ARCHITECTURE.png (V1)
+│   ├── DIAGRAM_1_MCP_NETWORK_MAIN_ARCHITECTURE_V2.png (V2)
+│   ├── DIAGRAM_2_NESTED_ARCHITECTURE_3_LAYERS.png
+│   ├── DIAGRAM_3_LAG_1_4_INFORMATION_FLOW.png (V1)
+│   ├── DIAGRAM_3_LAG_1_4_INFORMATION_FLOW_V2.png (V2)
+│   ├── DIAGRAM_6_MICHAEL_LEVIN_MULTI_SCALE.png (V1)
+│   ├── DIAGRAM_6_MICHAEL_LEVIN_MULTI_SCALE_V2.png (V2)
 │   ├── DIAGRAM_7_EMERGENT_CONSCIOUSNESS.png
 │   ├── DIAGRAM_8_IMPLEMENTATION_ROADMAP.png
 │   └── README.md
 │
 ├── DIMENSIONS_ANALYSIS.md           # Complete D00-D12 analysis
 ├── HOMOLUMENCONSTITUTIONV1.1.md    # Constitution V1.1
+├── HOMO_LUMEN_FILOSOFI_V1.0.md     # Filosofi V1.0
 ├── Resonanskart_V1.md              # Resonance Map
 │
 ├── OrionOSV20.13.md                # Latest OS version
@@ -106,6 +112,21 @@ homo-lumen-compendiums/
   - Gate 3: Regenerative Healing
 - **Epistemological Foundation:** Biofelt-resonans as epistemically primary
 
+### Homo Lumen Filosofi
+
+**Version:** V1.0
+
+- **File:** `HOMO_LUMEN_FILOSOFI_V1.0.md`
+- **Ratified:** October 12, 2025
+- **By:** Osvald P. A. Johansen + AI Coalition
+- **Status:** Living Document
+- **Key Articles:**
+  - Article I: Foundational Philosophy
+  - Article II: Epistemic Method (Three Gates)
+  - Article III: Operational Protocols
+  - Article IV: Shadow Awareness
+  - Article V: Amendments
+
 ### Dimensions Analysis
 
 **File:** `DIMENSIONS_ANALYSIS.md`
@@ -130,9 +151,10 @@ Located in `/SMK/` directory:
 
 Located in `/diagrams/` directory:
 
-- **Diagram 1:** MCP Network Main Architecture V2 - 7-agent network with brain-region mapping
-- **Diagram 3:** Information Flow (Lag 1-4) V2 - Four-layer knowledge architecture
-- **Diagram 6:** Michael Levin Multi-Scale Consciousness V2 - Five-scale bioelectric model
+- **Diagram 1:** MCP Network Main Architecture (V1 + V2) - 7-agent network with brain-region mapping
+- **Diagram 2:** Nested Architecture (3 Layers) - Brain-inspired layered organization
+- **Diagram 3:** Information Flow (Lag 1-4) (V1 + V2) - Four-layer knowledge architecture
+- **Diagram 6:** Michael Levin Multi-Scale Consciousness (V1 + V2) - Five-scale bioelectric model
 - **Diagram 7:** Emergent Consciousness - Complete emergence model from substrate to manifestation
 - **Diagram 8:** Implementation Roadmap - Five-phase timeline (Nov 2025 - Apr 2026)
 
@@ -168,8 +190,8 @@ See [diagrams/README.md](diagrams/README.md) for detailed documentation.
 - **V1.0** - Initial ratification
 
 ### Diagrams
-- **V2** (Latest) - Complete system architecture with 5 diagrams
-- **V1** (Legacy) - Initial architectural diagrams
+- **V2** (Latest) - Complete system architecture with 9 diagrams (including V1 originals)
+- **V1** (Original) - Initial architectural diagrams (preserved for reference)
 
 ---
 
