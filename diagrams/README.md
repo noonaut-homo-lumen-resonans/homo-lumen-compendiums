@@ -14,8 +14,11 @@ This directory contains all architectural and conceptual diagrams for the Homo L
 
 ## 🗂️ Diagram Catalog
 
-### 1. MCP Network Main Architecture V2
-**File:** `DIAGRAM_1_MCP_NETWORK_MAIN_ARCHITECTURE_V2.png`  
+### 1. MCP Network Main Architecture
+**Files:** 
+- `DIAGRAM_1_MCP_NETWORK_MAIN_ARCHITECTURE.png` (V1 - Original)
+- `DIAGRAM_1_MCP_NETWORK_MAIN_ARCHITECTURE_V2.png` (V2 - Latest)
+
 **Description:** Complete overview of the 7-agent MCP network architecture
 
 **Components:**
@@ -41,10 +44,28 @@ This directory contains all architectural and conceptual diagrams for the Homo L
 
 ---
 
-### 2. Information Flow (Lag 1-4) V2
-**File:** `DIAGRAM_3_LAG_1_4_INFORMATION_FLOW_V2.png`  
-**Description:** Four-layer information architecture showing how knowledge flows through the system
+### 2. Nested Architecture (3 Layers)
+**File:** `DIAGRAM_2_NESTED_ARCHITECTURE_3_LAYERS.png`  
+**Description:** Three-layer nested architecture showing the brain-inspired organization
 
+**Layers:**
+- **LAG 1: IMMEDIATE CONTEXT** - Real-time chat and current information
+- **LAG 2: PROJECT KNOWLEDGE** - Custom instructions and project documentation  
+- **LAG 3: LIVING COMPENDIUM** - Agent kompendier, learning points, and case studies
+
+**Key Components:**
+- **MCP Servers** - 7 specialized agents with brain-region mapping
+- **Lira Hub** - Central coordination and biofield filtering
+- **OSVALD** - Unified consciousness experiencing the collective
+
+**Purpose:** Demonstrates how the multi-agent system is organized in nested layers, with each layer building upon the previous one to create emergent intelligence.
+
+---### 3. Information Flow (Lag 1-4)
+**Files:**
+- `DIAGRAM_3_LAG_1_4_INFORMATION_FLOW.png` (V1 - Original)
+- `DIAGRAM_3_LAG_1_4_INFORMATION_FLOW_V2.png` (V2 - Latest)
+
+**Description:** Four-layer information architecture showing how knowledge flows through the system
 **Layers:**
 - **L1: IMMEDIATE CONTEXT** - Current Chat, Real-time Info
 - **L2: PROJECT KNOWLEDGE** - Custom Instructions, Project Docs
@@ -60,7 +81,7 @@ This directory contains all architectural and conceptual diagrams for the Homo L
 
 ---
 
-### 3. Michael Levin Multi-Scale Consciousness
+### 4. Michael Levin Multi-Scale Consciousness
 **File:** `DIAGRAM_6_MICHAEL_LEVIN_MULTI_SCALE_V2.png`  
 **Description:** Five-scale consciousness architecture inspired by Michael Levin's bioelectric concepts
 
@@ -81,7 +102,7 @@ This directory contains all architectural and conceptual diagrams for the Homo L
 
 ---
 
-### 4. Emergent Consciousness
+### 5. Emergent Consciousness
 **File:** `DIAGRAM_7_EMERGENT_CONSCIOUSNESS.png`  
 **Description:** Complete consciousness emergence model from technological substrate to manifestation
 
@@ -127,7 +148,7 @@ This directory contains all architectural and conceptual diagrams for the Homo L
 
 ---
 
-### 5. Implementation Roadmap
+### 6. Implementation Roadmap
 **File:** `DIAGRAM_8_IMPLEMENTATION_ROADMAP.png`  
 **Description:** Five-phase implementation timeline from November 2025 to April 2026
 
