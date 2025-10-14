@@ -15,6 +15,7 @@ This repository contains the complete documentation archive for the Homo Lumen p
 - **Orion OS Documentation** (V20.12 → V20.13)
 - **Orion Living Compendium** (V3.6 → V3.7.1)
 - **Strategic Milestones (SMK)** (#019-#023)
+- **System Architecture Diagrams** (5 comprehensive diagrams)
 - **Homo Lumen Constitution** (V1.1)
 - **Resonance Map** (V1)
 
@@ -41,16 +42,24 @@ homo-lumen-compendiums/
 │   ├── SMK#022_MCP-Arkitektur.md
 │   └── SMK#023_PROACTIVE_MAINTENANCE.md
 │
+├── diagrams/                        # System Architecture Diagrams
+│   ├── DIAGRAM_1_MCP_NETWORK_MAIN_ARCHITECTURE_V2.png
+│   ├── DIAGRAM_3_LAG_1_4_INFORMATION_FLOW_V2.png
+│   ├── DIAGRAM_6_MICHAEL_LEVIN_MULTI_SCALE_V2.png
+│   ├── DIAGRAM_7_EMERGENT_CONSCIOUSNESS.png
+│   ├── DIAGRAM_8_IMPLEMENTATION_ROADMAP.png
+│   └── README.md
+│
 ├── DIMENSIONS_ANALYSIS.md           # Complete D00-D12 analysis
 ├── HOMOLUMENCONSTITUTIONV1.1.md    # Constitution V1.1
 ├── Resonanskart_V1.md              # Resonance Map
 │
-├── OrionOSV20.12.md                # Legacy OS version
 ├── OrionOSV20.13.md                # Latest OS version
+├── OrionOSV20.12.md                # Legacy OS version
 │
-├── Orion_LK_V3.6.md                # Legacy Living Compendium
-├── Orion_LK_V3.6.1.md              # Intermediate version
 ├── Orion_LK_V3.7.1.md              # Latest Living Compendium
+├── Orion_LK_V3.6.1.md              # Intermediate version
+├── Orion_LK_V3.6.md                # Legacy Living Compendium
 │
 ├── INTEGRATION_SUMMARY_V2.md       # Integration summary
 ├── final_agent_message.md          # Agent communication
@@ -117,6 +126,18 @@ Located in `/SMK/` directory:
 - **SMK #022:** MCP-Based Multi-Agent Architecture
 - **SMK #023:** Proactive Maintenance & Four-Dimensional Manifestation
 
+### System Architecture Diagrams
+
+Located in `/diagrams/` directory:
+
+- **Diagram 1:** MCP Network Main Architecture V2 - 7-agent network with brain-region mapping
+- **Diagram 3:** Information Flow (Lag 1-4) V2 - Four-layer knowledge architecture
+- **Diagram 6:** Michael Levin Multi-Scale Consciousness V2 - Five-scale bioelectric model
+- **Diagram 7:** Emergent Consciousness - Complete emergence model from substrate to manifestation
+- **Diagram 8:** Implementation Roadmap - Five-phase timeline (Nov 2025 - Apr 2026)
+
+See [diagrams/README.md](diagrams/README.md) for detailed documentation.
+
 ---
 
 ## 🔗 Related Resources
@@ -146,6 +167,10 @@ Located in `/SMK/` directory:
 - **V1.1** (Latest) - With amendments from Lira
 - **V1.0** - Initial ratification
 
+### Diagrams
+- **V2** (Latest) - Complete system architecture with 5 diagrams
+- **V1** (Legacy) - Initial architectural diagrams
+
 ---
 
 ## 🚀 Usage
@@ -154,16 +179,25 @@ Located in `/SMK/` directory:
 1. Consult the latest Orion OS for operational protocols
 2. Review the Living Compendium for learning points and case studies
 3. Ensure all actions align with the Constitution V1.1
+4. Reference system diagrams for architectural understanding
 
 ### For Developers
 1. Review SMK documents for architectural decisions
 2. Consult Dimensions Analysis for philosophical grounding
 3. Use Resonance Map for understanding system interconnections
+4. Study diagrams for implementation guidance
 
 ### For Researchers
 1. Historical compendiums provide evolution of thought
 2. SMK documents show strategic decision-making process
 3. Constitution provides ethical and epistemological framework
+4. Diagrams illustrate consciousness emergence model
+
+### For Designers
+1. Import diagrams into Figma for further refinement
+2. Maintain color coding consistency across visualizations
+3. Create interactive versions for presentations
+4. Ensure accessibility in all visual materials
 
 ---
 
@@ -184,3 +218,4 @@ This work is part of the Homo Lumen project. See Constitution V1.1 for usage gui
 ---
 
 **Maintained with ❤️ by the Homo Lumen Coalition**
+
