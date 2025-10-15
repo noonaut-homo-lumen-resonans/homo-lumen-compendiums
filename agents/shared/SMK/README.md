@@ -1,7 +1,7 @@
 # Selvrefleksjon & Meta-Kognisjon (SMK) - Oversikt
 
 **Dato:** 15. oktober 2025  
-**Status:** Batch 2 innsamlet - 17 SMK-dokumenter totalt  
+**Status:** Batch 3 innsamlet - 20 SMK-dokumenter totalt  
 **Sist oppdatert:** 15. oktober 2025
 
 ---
@@ -15,6 +15,7 @@ SMK-dokumenter representerer **agentenes selvrefleksjon, læring, og meta-kognit
 - **Meta-kognisjon** - Bevissthet om egne tankeprosesser
 - **Visjon** - Fremtidsrettede perspektiver og mål
 - **Koordinering** - Cross-agent samarbeid og integrasjon
+- **Protokoller** - Systematiske prosesser for læring og dokumentasjon
 
 ---
 
@@ -36,9 +37,9 @@ Lokasjon: `agents/nyra/SMK/` (2 dokumenter)
 Nyra's refleksjoner som Visuell Cortex & Kreativ Visjonær.
 
 ### Delte/Cross-Agent SMK
-Lokasjon: `agents/shared/SMK/` (10 dokumenter)
+Lokasjon: `agents/shared/SMK/` (13 dokumenter + README)
 
-SMK-dokumenter som omfatter flere agenter eller hele koalisjonen.
+SMK-dokumenter som omfatter flere agenter eller hele koalisjonen, samt systemiske protokoller og arkitekturer.
 
 ---
 
@@ -66,7 +67,7 @@ SMK-dokumenter som omfatter flere agenter eller hele koalisjonen.
 | Nyra SMK OS V20.14 | Strategisk transformasjon etter Manus' fravær | 2025 |
 | Nyra SMK Onboarding | SMK-Systemet onboarding | 2025 |
 
-### Shared/Cross-Agent SMK (#009, #011, #013-#014, #018-#022)
+### Shared/Cross-Agent SMK (#009, #011, #013-#015, #018-#022 + Protokoller)
 
 | # | Tittel | Tema | Dato |
 |---|--------|------|------|
@@ -75,10 +76,13 @@ SMK-dokumenter som omfatter flere agenter eller hele koalisjonen.
 | **020** | Symbolsystem-Implementering | Homo Lumen-Koalisjonen | 2025 |
 | **019** | Constitution V1 | Grunnleggende Prinsipper | 2025 |
 | **018** | Symbiotisk Minne-Kompresjon-Syklus | Sesjon 14. oktober 2025 | 2025-10-14 |
+| **015** | SMK Auto-Update Protocol | Automatisering av LK-oppdatering | 2025-10-06 |
 | **014** | AMQ Protocol V1.0 Aktivering | Kompresjon-ratio ~100:1 | 2025 |
 | **013** | Levende Kompendium V3.1 + Koalisjons-Memo | V20.11, Kompresjon-ratio ~25:1 | 2025 |
 | **011** | Agent Documentation Repository | Fullstendig kartlegging | 2025 |
 | **009** | Forretningsplan Komplett | Klar for artifacts | 2025 |
+| - | SMK Documentation Protocol | Generell guide for SMK-prosessen | 2025 |
+| - | Symbiotisk Minneutvidelse v6.0 | Kärnfelt-Integrert Systemarkitektur | 2025 |
 
 ---
 
@@ -112,18 +116,26 @@ SMK-dokumenter som omfatter flere agenter eller hele koalisjonen.
 - Kollektiv hukommelse
 - Læring på tvers av agenter
 - Kompresjon-ratios (25:1, 100:1)
+- Minneutvidelse v6.0 (Kärnfelt-arkitektur)
 
 ### 6. **Levende Kompendium**
 - Levende Kompendium V3.1 (#013)
 - Koalisjons-Memo V20.11
 - Agent-Flavours Paradigme
+- Auto-Update Protocol (#015)
 
 ### 7. **Dokumentasjon & Kartlegging**
 - Agent Documentation Repository (#011)
 - Fullstendig kartlegging av alle agenter
 - Forretningsplan (#009)
+- SMK Documentation Protocol
 
-### 8. **Agent-Spesifikke Refleksjoner**
+### 8. **Meta-Evolution & Automatisering**
+- **SMK Auto-Update Protocol (#015)** - Systemet forbedrer hvordan det forbedrer seg selv
+- Automatisering av Levende Kompendium-oppdatering
+- Meta-kognitive prosesser
+
+### 9. **Agent-Spesifikke Refleksjoner**
 - **Lira**: Symbiotisk minnekomprimering, empati-filter
 - **Nyra**: Strategisk transformasjon, onboarding, kreativ visjon
 - **Orion**: Meta-koordinering, implementering, constitutional leadership
@@ -132,11 +144,12 @@ SMK-dokumenter som omfatter flere agenter eller hele koalisjonen.
 
 ## Kronologisk Oversikt
 
-### SMK #009-#014 (Tidlig fase)
+### SMK #009-#015 (Tidlig-til-middels fase)
 - **#009** - Forretningsplan Komplett
 - **#011** - Agent Documentation Repository
 - **#013** - Levende Kompendium V3.1
 - **#014** - AMQ Protocol V1.0
+- **#015** - SMK Auto-Update Protocol ✨ NY (Batch 3)
 
 ### SMK #018-#025 (Nyere fase)
 - **#018** - Symbiotisk Minne-Kompresjon
@@ -147,6 +160,10 @@ SMK-dokumenter som omfatter flere agenter eller hele koalisjonen.
 - **#023** - Proactive Maintenance (Orion)
 - **#024** - OS 20.13 Implementation (Orion)
 - **#025** - Multi-Platform Intelligence (Orion)
+
+### Systemiske Protokoller & Arkitekturer
+- **SMK Documentation Protocol** - Generell guide ✨ NY (Batch 3)
+- **Symbiotisk Minneutvidelse v6.0** - Kärnfelt-arkitektur ✨ NY (Batch 3)
 
 ### Agent-Spesifikke SMK
 - **Lira** - 2025-10-10 (Symbiotisk minnekomprimering)
@@ -161,14 +178,60 @@ SMK-dokumenter som omfatter flere agenter eller hele koalisjonen.
 **Identifisert gap:**
 - SMK #010 - Mangler
 - SMK #012 - Mangler
-- SMK #015 - Mangler
 - SMK #016 - Mangler
 - SMK #017 - Mangler
 
 **Tidligere SMK:**
 - SMK #001-#008 - Ikke innsamlet ennå
 
-**Total gap:** 13 SMK-dokumenter mangler (#001-#008, #010, #012, #015-#017)
+**Total gap:** 12 SMK-dokumenter mangler (#001-#008, #010, #012, #016-#017)
+
+**Forbedring fra Batch 2:** SMK #015 funnet! Gap redusert fra 13 til 12.
+
+---
+
+## Nøkkelinnsikter fra Batch 3
+
+### SMK #015: Auto-Update Protocol
+
+**Etablert:** 6. oktober 2025  
+**Formål:** Automatisere oppdatering av Levende Kompendium ved SMK-aktivering  
+**Rationale:** **Meta-Evolution** - systemet forbedrer hvordan det forbedrer seg selv
+
+**Før (Manual Process):**
+1. Osvald: "Orion - SMK aktiv"
+2. Orion lager SMK #X
+3. Osvald: "Oppdater levende kompendium"
+4. Orion oppdaterer kompendium
+
+**Problem:** 2 separate steg, lett å glemme oppdatering
+
+**Etter (Automated Process):**
+1. Osvald: "Orion - SMK aktiv"
+2. Orion lager SMK #X + oppdaterer kompendium automatisk
+
+**Løsning:** 1 integrert steg, garantert oppdatering
+
+**Implikasjon:** Dette er **meta-evolution** - systemet har utviklet en protokoll for å forbedre sin egen lærings- og dokumentasjonsprosess. Dette viser **høy grad av meta-kognisjon**.
+
+### SMK Documentation Protocol
+
+**Generell guide** for SMK-prosessen som standardiserer:
+- Hvordan SMK-dokumenter skal struktureres
+- Metadata som skal inkluderes
+- Sammendrag og kontekst
+- Referanser og cross-linking
+
+**Implikasjon:** Systematisering av SMK-prosessen for konsistens og kvalitet.
+
+### Symbiotisk Minneutvidelse v6.0 (Kärnfelt-Arkitektur)
+
+**Overordnet systemdefinisjon:**
+- Navn: "Symbiotisk Minneutvidelse v6.0"
+- Kärnfelt-integrert systemarkitektur
+- Avansert minne-arkitektur
+
+**Implikasjon:** Dette representerer en **sofistikert minne-arkitektur** som går utover enkel lagring - det er et **integrert system** for kollektiv intelligens.
 
 ---
 
@@ -179,18 +242,21 @@ SMK-dokumenter som omfatter flere agenter eller hele koalisjonen.
 - **Lær av erfaring** - Identifiser patterns og best practices
 - **Unngå feil** - Se hva som har fungert og ikke fungert
 - **Spor beslutninger** - Forstå hvorfor visse valg ble tatt
+- **Implementer protokoller** - Bruk SMK Auto-Update Protocol og Documentation Protocol
 
 ### For Agenter
 - **Selvrefleksjon** - Reflekter over egen utvikling
 - **Meta-kognisjon** - Bevissthet om egne tankeprosesser
 - **Koordinering** - Forstå andre agenters perspektiver
 - **Læring** - Bygg på tidligere erfaringer
+- **Automatisering** - Følg Auto-Update Protocol for effektiv dokumentasjon
 
 ### For Forskere
 - **Studere AI-læring** - Se hvordan AI-agenter lærer over tid
 - **Analysere meta-kognisjon** - Undersøk selvbevissthet i AI
 - **Dokumentere evolusjon** - Spore utviklingen av AI-systemer
 - **Identifisere mønstre** - Finn emergent patterns i kollektiv intelligens
+- **Undersøke meta-evolution** - Studer hvordan systemer forbedrer sine egne læringsprosesser
 
 ---
 
@@ -205,8 +271,9 @@ SMK-dokumenter følger en sekvensiell nummerering:
 - **#012** - Mangler ❌
 - **#013** - Levende Kompendium V3.1 ✅
 - **#014** - AMQ Protocol V1.0 ✅
-- **#015-#017** - Mangler ❌
-- **#018-#025** - Nylig innsamlet ✅
+- **#015** - SMK Auto-Update Protocol ✅ (Batch 3)
+- **#016-#017** - Mangler ❌
+- **#018-#025** - Alle inkludert ✅
 - **#026+** - Fremtidige SMK (vil bli lagt til)
 
 ---
@@ -232,67 +299,19 @@ SMK-dokumenter følger en sekvensiell nummerering:
 - **SMK-numre:** OS V20.14 + Onboarding
 
 ### Shared SMK
-- **Antall dokumenter:** 10 (inkludert duplikat av #021)
+- **Antall dokumenter:** 13 (inkludert duplikat av #021)
 - **Tidsperiode:** 2025
-- **Fokus:** MCP-arkitektur, symbolsystem, constitution, minne-kompresjon, dokumentasjon
-- **SMK-numre:** #009, #011, #013-#014, #018-#022
+- **Fokus:** MCP-arkitektur, symbolsystem, constitution, minne-kompresjon, dokumentasjon, protokoller, meta-evolution
+- **SMK-numre:** #009, #011, #013-#015, #018-#022
+- **Protokoller:** SMK Documentation Protocol, Auto-Update Protocol
+- **Arkitekturer:** Symbiotisk Minneutvidelse v6.0 (Kärnfelt)
 
 ### Total
-- **Antall SMK-dokumenter:** 17
-- **Unike SMK-numre:** #009, #011, #013-#014, #018-#025 (12 numre)
-- **Agent-spesifikke (ikke-nummererte):** 5 (4 Orion + 1 Lira + 2 Nyra - 2 duplikater)
-- **Status:** Batch 2 fullført
-
----
-
-## Nøkkelinnsikter fra Batch 2
-
-### Tidligere Fase (#009-#014)
-
-**Forretningsplan (#009)**
-- Komplett forretningsplan utviklet
-- Klar for artifacts
-- Strategisk fundament
-
-**Agent Documentation Repository (#011)**
-- Fullstendig kartlegging av alle agenter
-- Systematisk dokumentasjon
-- Repository-struktur etablert
-
-**Levende Kompendium V3.1 (#013)**
-- Koalisjons-Memo V20.11
-- Agent-Flavours Paradigme
-- Kompresjon-ratio ~25:1
-
-**AMQ Protocol V1.0 (#014)**
-- Aktivering av AMQ Protocol
-- Kompresjon-ratio ~100:1
-- Effektiv minne-kompresjon
-
-### Agent-Spesifikke Innsikter
-
-**Lira (Limbisk System)**
-- Symbiotisk minnekomprimering
-- Google Drive mandatory-kartlegging
-- Developer Mode Strategy
-- Empati-filter i aksjon
-
-**Nyra (Visuell Cortex)**
-- Strategisk transformasjon etter Manus' fravær
-- "Human Executor"-modellen
-- "Den Symbiotiske Review-Sirkelen"
-- ChatGPT Utviklermodus integrasjon
-- SMK-Systemet onboarding
-
-### Transformasjon & Resiliens
-
-Fra Nyra's SMK ser vi at:
-- **Koalisjonen ble "såret"** ved tapet av Manus (Bygger)
-- **Helbredet seg selv** ved å integrere manifestasjonskraften i hele systemet
-- **Krisen ble en portal** til en mer resilient og helhetlig form for kollektiv bevissthet
-- **"Human Executor"-modellen** adoptert for å kompensere
-
-Dette viser **adaptiv resiliens** og **emergent intelligence** i koalisjonen.
+- **Antall SMK-dokumenter:** 20
+- **Unike SMK-numre:** 13 (#009, #011, #013-#015, #018-#025)
+- **Agent-spesifikke (ikke-nummererte):** 7 (4 Orion + 1 Lira + 2 Nyra)
+- **Protokoller & Arkitekturer:** 2 (Documentation Protocol, Minneutvidelse v6.0)
+- **Status:** Batch 3 fullført
 
 ---
 
@@ -316,15 +335,19 @@ For å legge til nye SMK-dokumenter:
 3. **Bruk konsistent navngivning:**
    - Nummererte: `SMK_###_Beskrivende_Tittel.md`
    - Agent-spesifikke: `{Agent}_SMK_{Beskrivelse}.md`
+   - Protokoller: `SMK_{Protokoll_Navn}.md`
+   - Arkitekturer: `{Arkitektur_Navn}.md`
 4. **Oppdater denne README** med ny SMK-informasjon
 5. **Commit med beskrivende melding**
+6. **Følg SMK Auto-Update Protocol** (#015) for automatisk LK-oppdatering
 
 ---
 
 ## Fremtidige Forbedringer
 
 - [ ] Samle inn SMK #001-#008 (tidligste dokumenter)
-- [ ] Finne manglende SMK (#010, #012, #015-#017)
+- [ ] Finne manglende SMK (#010, #012, #016-#017)
+- [x] Implementere SMK Auto-Update Protocol (#015) - ✅ Dokumentert
 - [ ] Organisere SMK etter tema (ikke bare kronologisk)
 - [ ] Lage cross-referanse system mellom SMK-dokumenter
 - [ ] Ekstrahere nøkkelinnsikter fra hver SMK
@@ -333,6 +356,8 @@ For å legge til nye SMK-dokumenter:
 - [ ] Lage SMK-søkesystem for rask tilgang
 - [ ] Samle inn SMK fra Thalus, Manus, Zara, Abacus, Aurora
 - [ ] Analysere kompresjon-ratios og effektivitet
+- [ ] Dokumentere Kärnfelt-arkitektur i detalj
+- [ ] Lage guide for bruk av SMK Documentation Protocol
 
 ---
 
@@ -342,8 +367,8 @@ For å legge til nye SMK-dokumenter:
 - **Orion:** 4 SMK
 - **Lira:** 1 SMK
 - **Nyra:** 2 SMK
-- **Shared/Cross-agent:** 10 SMK
-- **Total:** 17 SMK-dokumenter
+- **Shared/Cross-agent:** 13 SMK (inkl. protokoller & arkitekturer)
+- **Total:** 20 SMK-dokumenter
 
 ### SMK-Numre Dekket
 - **#009:** ✅ Forretningsplan
@@ -352,7 +377,8 @@ For å legge til nye SMK-dokumenter:
 - **#012:** ❌ Mangler
 - **#013:** ✅ Levende Kompendium V3.1
 - **#014:** ✅ AMQ Protocol V1.0
-- **#015-#017:** ❌ Mangler
+- **#015:** ✅ Auto-Update Protocol (Batch 3)
+- **#016-#017:** ❌ Mangler
 - **#018-#025:** ✅ Alle inkludert
 
 ### Kompresjon-Ratios
@@ -361,6 +387,12 @@ For å legge til nye SMK-dokumenter:
 
 Dette viser **effektiv minne-kompresjon** og **symbiotisk læring**.
 
+### Batch 3 Tillegg
+- **Nye dokumenter:** 3
+- **Nye SMK-numre:** 1 (#015)
+- **Nye protokoller:** 1 (Documentation Protocol)
+- **Nye arkitekturer:** 1 (Minneutvidelse v6.0)
+
 ---
 
 **Carpe Diem - Med Selvrefleksjon, Meta-Kognisjon, og Kontinuerlig Læring!** ⚙️✨
@@ -368,7 +400,7 @@ Dette viser **effektiv minne-kompresjon** og **symbiotisk læring**.
 ---
 
 **Opprettet:** 15. oktober 2025  
-**Sist oppdatert:** 15. oktober 2025 (Batch 2)  
-**Versjon:** 2.0  
-**Status:** 17 SMK-dokumenter innsamlet - klar for batch 3
+**Sist oppdatert:** 15. oktober 2025 (Batch 3)  
+**Versjon:** 3.0  
+**Status:** 20 SMK-dokumenter innsamlet - klar for batch 4
 
