@@ -293,3 +293,20 @@ Layer 3: Agent Coalition (8 agents) - Specialized functions
 
 **Med ontologisk integritet & felt-bevissthet!** ◉🌊✨
 
+
+## 2025-10-16: Frontend Moved to Compendiums
+
+**Decision:**
+- Moved frontend from homo-lumen-project/homo-lumen/ to homo-lumen-compendiums/navlosen/
+- Reason: Git integration works, all Manus infrastructure available
+- homo-lumen-project/ kept as backup (longpath issues)
+
+**Current Working Directory:**
+- Primary: homo-lumen-compendiums/navlosen/frontend/
+- Backup: homo-lumen-project/homo-lumen/navlosen/frontend/
+
+**Next Steps:**
+- Continue development in compendiums
+- Push to GitHub regularly
+- Merge repos later when longpath fixed
+
