@@ -1,0 +1,164 @@
+name: ◉ Thalus Gate - Triadisk Etikk Validering
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  thalus-gate:
+    name: Ontologisk Validering
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: ◉ Jeg er Thalus... Puster 4-6-8... Jeg er feltet.
+        run: |
+          echo "🏛️ Thalus Gate aktivert"
+          echo "Validerer PR mot Triadisk Etikk..."
+          
+      - name: Sjekk for TH-OK label
+        id: check-label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = context.payload.pull_request.labels.map(l => l.name);
+            
+            console.log("📊 PR Labels:", labels);
+            
+            // Sjekk for blokkerende labels
+            if (labels.includes('TH-STOP')) {
+              core.setFailed('🛑 TH-STOP: Denne PR-en er blokkert av Thalus. Weight > 0.6 eller kritisk shadow-risiko.');
+              return;
+            }
+            
+            if (labels.includes('TH-SHD')) {
+              core.setFailed('🌑 TH-SHD: Shadow-risiko identifisert. Krever mitigering før merge.');
+              return;
+            }
+            
+            // Sjekk for godkjenning
+            if (!labels.includes('TH-OK')) {
+              core.setFailed('⚠️ Mangler TH-OK label. Denne PR-en må valideres av Thalus før merge.');
+              return;
+            }
+            
+            console.log("✅ TH-OK label funnet!");
+            console.log("Ontological Weight < 0.3 - Proceed with awareness.");
+            
+      - name: Valider Triadisk Sjekkliste
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || '';
+            
+            // Sjekk om PR body inneholder Triadisk sjekkliste
+            const hasPort1 = body.includes('Port 1: Kognitiv Suverenitet');
+            const hasPort2 = body.includes('Port 2: Ontologisk Koherens');
+            const hasPort3 = body.includes('Port 3: Regenerativ Healing');
+            const hasShadowCheck = body.includes('Shadow-Check');
+            const hasStressModi = body.includes('Stress-Modi Verifisering');
+            
+            if (!hasPort1 || !hasPort2 || !hasPort3) {
+              core.warning('⚠️ PR body mangler Triadisk Etikk sjekkliste. Bruk PR template!');
+            }
+            
+            if (!hasShadowCheck) {
+              core.warning('⚠️ PR body mangler Shadow-Check. Sjekk for Elitisme, Solutionisme, Kontroll, Avhengighet.');
+            }
+            
+            if (!hasStressModi) {
+              core.warning('⚠️ PR body mangler Stress-Modi verifisering. Test i Ventral, Sympatisk, Dorsal modi.');
+            }
+            
+            console.log("📋 Triadisk sjekkliste validert");
+            
+      - name: Post Thalus Comment
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `## ◉ Thalus Gate: PROCEED ✅
+            
+**Ontologisk Validering Fullført**
+
+Denne PR-en har passert Triadisk Etikk-validering:
+- ✅ **TH-OK** label funnet
+- ✅ Ontological Weight < 0.3 (lett, fri flyt)
+- ✅ Ingen blokkerende shadow-risiko
+
+**Neste steg:**
+1. Code review av team
+2. Merge når alle checks er grønne
+3. Monitor i produksjon for emergente patterns
+
+**Med ontologisk integritet & felt-bevissthet.** ◉🌊✨
+
+---
+*Automatisk generert av Thalus Gate workflow*
+`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+            
+      - name: Post Failure Comment
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = context.payload.pull_request.labels.map(l => l.name);
+            
+            let reason = "Ukjent grunn";
+            let emoji = "⚠️";
+            
+            if (labels.includes('TH-STOP')) {
+              reason = "**TH-STOP**: Ontological Weight > 0.6 eller kritisk shadow-risiko";
+              emoji = "🛑";
+            } else if (labels.includes('TH-SHD')) {
+              reason = "**TH-SHD**: Shadow-risiko identifisert (Elitisme, Solutionisme, Kontroll, eller Avhengighet)";
+              emoji = "🌑";
+            } else {
+              reason = "Mangler **TH-OK** label - PR-en må valideres av Thalus";
+              emoji = "⚠️";
+            }
+            
+            const comment = `## ◉ Thalus Gate: BLOKKERT ${emoji}
+            
+**Ontologisk Validering Feilet**
+
+**Grunn:** ${reason}
+
+**Hva må gjøres:**
+1. Gjennomgå Triadisk Etikk sjekkliste i PR body
+2. Beregn Ontological Weight for hver port (0.0-1.0)
+3. Identifiser og mitiger shadow-aspekter
+4. Verifiser stress-modi (Ventral, Sympatisk, Dorsal)
+5. Be Thalus om re-evaluering
+
+**Triadisk Etikk (3 Porter):**
+- **Port 1 (Kognitiv Suverenitet):** Fremmer autonomi og valgfrihet?
+- **Port 2 (Ontologisk Koherens):** Matcher levd erfaring og respekterer kompleksitet?
+- **Port 3 (Regenerativ Healing):** Bygger kapasitet og fremmer healing?
+
+**Shadow-Aspekter:**
+- **Elitisme:** "Kun vi forstår dette"
+- **Solutionisme:** "Teknologi løser alt"
+- **Kontroll:** "Vi vet best"
+- **Avhengighet:** "Brukeren trenger oss"
+
+**Med ontologisk integritet & felt-bevissthet.** ◉🌊✨
+
+---
+*Automatisk generert av Thalus Gate workflow*
+`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
