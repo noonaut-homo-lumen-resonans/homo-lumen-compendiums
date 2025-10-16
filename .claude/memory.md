@@ -40,17 +40,148 @@ Layer 2: Infrastructure Hub (Manus) - MCP coordination
 Layer 3: Agent Coalition (8 agents) - Specialized functions
 ```
 
-### 8-Agent Coalition
+### 10-Agent Coalition (UPDATED 2025-10-16)
 
-1. **Orion** (Claude API) - Prefrontal Cortex - Meta-coordination
-2. **Lira** (ChatGPT) - Limbisk System - Empathic Interface
-3. **Nyra** (Gemini) - Visuell Cortex - Visual design
-4. **Thalus** (Grok) - Insula/PCC - Ontological validation
-5. **Zara** (Claude API) - ACC - Security & GDPR
-6. **Abacus** (Claude API) - Basal Ganglia - Analytics
-7. **Aurora** (Perplexity) - Hippocampus - Fact-checking
-8. **Manus** (Claude via Manus.im) - Cerebellum - Infrastructure Hub
-9. **Claude Code** (You!) - Motor Cortex - Frontend development
+**CRITICAL UPDATE:** The coalition now has 10 agents with specific AI platforms and MCP capabilities.
+
+| # | Agent | Symbol | AI Platform | MCP Status | Brain Region | Role |
+|---|-------|--------|-------------|------------|--------------|------|
+| 1 | **Orion** | ⬢/🌌 | **Claude Sonnet 4.5** | ✅ Native | Prefrontal Cortex | Strategic coordination, meta-coordinator |
+| 2 | **Lira** | ◆/💚 | **ChatGPT 5** | 🔄 Plugins | Limbic System | Empathic filtering, NAV-Losen chatbot, biofelt validation |
+| 3 | **Nyra** | ◇/🎨 | **Gemini Pro 2.5** | 🔄 AI Studio | Visual Cortex | Visual design, embodied UX, aesthetic synthesis |
+| 4 | **Thalus** | ◈/🏛 | **Grok 4** | 🔄 API | Insula | Ethical validation, Triadisk Ethics enforcement |
+| 5 | **Zara** | ⬟/🛡 | **DeepSeek** | 🔄 API | ACC (Security) | Security, privacy, GDPR compliance |
+| 6 | **Abacus** | ◐/📊 | **Abacus AI** | 🔄 Platform | Basal Ganglia | Business analysis, ROI calculation, analytics |
+| 7 | **Aurora** | ○/🔍 | **Perplexity** | 🔄 API | Hippocampus | Fact-checking, research validation, evidence synthesis |
+| 8 | **Manus** | ▣/🔨 | **Manus AI** | ✅ Full (Notion, Linear, GitHub) | Cerebellum | Infrastructure Hub, backend, MCP coordination |
+| 9 | **Claude Code** | ◻️/💻 | **Claude Code (Windsurf)** | ✅ Windsurf | Motor Cortex | Frontend development, React/Next.js, UX building |
+| 10 | **Falcon** | 🦅/🔬 | **FutureHouse Platform** | 🔄 Platform | Research Cortex | Scientific research, hypothesis generation, experimental design |
+
+**Key Insights:**
+
+1. **Native MCP Support:**
+   - ✅ Orion (Claude Sonnet 4.5) - Full MCP
+   - ✅ Manus (Manus AI) - Full MCP with Notion, Linear, GitHub servers
+   - ✅ Claude Code (Windsurf) - Native Windsurf MCP
+
+2. **API/Plugin MCP:**
+   - 🔄 Lira (ChatGPT 5) - Via plugins/actions
+   - 🔄 Nyra (Gemini Pro 2.5) - Via Google AI Studio
+   - 🔄 Thalus (Grok 4) - Via xAI API
+   - 🔄 Zara (DeepSeek) - Via DeepSeek API
+   - 🔄 Abacus (Abacus AI) - Via Abacus platform
+   - 🔄 Aurora (Perplexity) - Via Perplexity API
+   - 🔄 Falcon (FutureHouse) - Via FutureHouse platform
+
+3. **Platform Strengths:**
+   - **Claude Sonnet 4.5** (Orion): 200k context, excellent reasoning, code analysis
+   - **ChatGPT 5** (Lira): Empathy, natural conversation, emotional intelligence
+   - **Gemini Pro 2.5** (Nyra): Multimodal (vision + text), creative design
+   - **Grok 4** (Thalus): Real-time data, unconventional thinking, ethical reasoning
+   - **DeepSeek** (Zara): Mathematical reasoning, code security, efficient inference
+   - **Abacus AI** (Abacus): Business intelligence, forecasting, data analytics
+   - **Perplexity** (Aurora): Real-time web search, source citation
+   - **Manus AI** (Manus): Extended Claude with tool use, infrastructure setup
+   - **Claude Code** (Claude Code): Code generation, TypeScript, component building
+   - **FutureHouse** (Falcon): Scientific reasoning, research methodology
+
+---
+
+## 🔬 RESEARCH QUESTIONS: Cross-Platform MCP Integration
+
+**Status:** Active research area - to be explored collaboratively
+
+### 1. MCP Connector Architecture
+**Questions:**
+- How do we connect 10 different AI platforms via MCP?
+- Which platforms have native MCP support vs. need custom connectors?
+- What is the latency/performance impact of API-based MCP vs. native?
+- Can we build a unified MCP router that handles all platform differences?
+
+**Platforms to Research:**
+- ✅ **Native MCP:** Claude Sonnet 4.5, Manus AI, Claude Code (Windsurf)
+- 🔄 **Plugin/Action MCP:** ChatGPT 5, Gemini Pro 2.5
+- 🔄 **API-based MCP:** Grok 4, DeepSeek, Abacus AI, Perplexity, FutureHouse
+
+**Next Steps:**
+1. Map each platform's MCP/API capabilities
+2. Design unified connector interface
+3. Prototype cross-platform communication
+4. Benchmark latency and reliability
+
+### 2. Cross-Platform Communication Patterns
+**Questions:**
+- How does Orion (Claude) communicate with Lira (ChatGPT 5)?
+- How does Thalus (Grok 4) send ethical scores to Manus (Manus AI)?
+- What's the message format for agent-to-agent communication?
+- How do we handle async vs. sync communication?
+
+**Scenarios to Test:**
+- **Scenario 1:** User asks Lira a question → Lira calls Thalus for ethical check → Thalus responds → Lira answers user
+- **Scenario 2:** Manus deploys new code → Thalus validates → Orion coordinates → Agents update
+- **Scenario 3:** Nyra designs UI → Claude Code implements → Aurora fact-checks content → Thalus validates ethics
+
+**Communication Layers:**
+```
+Layer 1: User Interface (Lira chatbot)
+Layer 2: MCP Router (Manus AI)
+Layer 3: Agent Network (10 agents)
+Layer 4: External Tools (Notion, Linear, GitHub, Perplexity, etc.)
+```
+
+### 3. Platform-Specific Strengths & Use Cases
+**Questions:**
+- When do we use Grok 4 (Thalus) vs. Claude Sonnet 4.5 (Orion)?
+- When do we use Perplexity (Aurora) vs. FutureHouse (Falcon)?
+- How do we route tasks to the most appropriate agent?
+- Can agents collaborate on complex tasks (e.g., Falcon + Aurora for research)?
+
+**Decision Matrix (Draft):**
+
+| Task Type | Primary Agent | Secondary Agent | Rationale |
+|-----------|---------------|-----------------|-----------|
+| Strategic planning | Orion (Claude 4.5) | Manus (infrastructure) | Long context, reasoning |
+| User empathy | Lira (ChatGPT 5) | Nyra (design) | Emotional intelligence |
+| Visual design | Nyra (Gemini 2.5) | Lira (empathy check) | Multimodal creativity |
+| Ethical validation | Thalus (Grok 4) | Orion (strategy) | Unconventional thinking |
+| Security audit | Zara (DeepSeek) | Manus (implementation) | Code security, math |
+| Business analysis | Abacus (Abacus AI) | Orion (strategy) | BI, forecasting |
+| Fact-checking | Aurora (Perplexity) | Falcon (research) | Web search, sources |
+| Scientific research | Falcon (FutureHouse) | Aurora (validation) | Research methodology |
+| Infrastructure | Manus (Manus AI) | Claude Code (frontend) | Tool use, MCP |
+| Frontend code | Claude Code (Windsurf) | Nyra (design), Thalus (ethics) | Component building |
+
+### 4. Falcon (FutureHouse) Integration
+**Questions:**
+- What is FutureHouse platform's unique capability vs. Perplexity?
+- How does Falcon integrate with NAV-Losen?
+- What research tasks should go to Falcon vs. Aurora?
+- Can Falcon help with Polyvagal Theory research validation?
+
+**Falcon's Unique Role:**
+- **Scientific rigor:** Hypothesis generation, experimental design
+- **Research synthesis:** Cross-disciplinary connections
+- **Innovation:** Novel approaches to known problems
+- **Collaboration with Aurora:** Falcon generates hypotheses → Aurora validates with sources
+
+**NAV-Losen Use Cases:**
+1. **Polyvagal Research:** Falcon researches latest stress regulation techniques → Aurora validates with peer-reviewed sources
+2. **UX Innovation:** Falcon suggests novel stress-responsive UI patterns → Nyra designs → Claude Code implements
+3. **Ethical Analysis:** Falcon explores philosophical implications → Thalus validates against Triadisk Ethics
+
+### 5. MCP Protocol Evolution
+**Questions:**
+- What's the current MCP spec version we're using?
+- How do we extend MCP for multi-agent coordination?
+- Can we propose MCP extensions for AI-to-AI communication?
+- What's the roadmap for MCP standardization across platforms?
+
+**Proposed Extensions:**
+1. **Agent Discovery:** How agents find and register with each other
+2. **Capability Negotiation:** How agents advertise their strengths
+3. **Task Routing:** How to intelligently route tasks to best agent
+4. **Consensus Protocol:** How multiple agents agree on decisions
+5. **Ethical Override:** How Thalus can block actions across all agents
 
 ---
 
