@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
-import CrisisBanner from "@/components/safety/CrisisBanner";
 import { ArrowLeft, ArrowRight, MessageCircle } from "lucide-react";
 import { LiraQuestion, LiraAnswer, StressState } from "@/types";
 
@@ -175,57 +174,29 @@ export default function Stage3Chat({
   const canProceed = isLastQuestion && (currentAnswer || !currentQuestion.required);
 
   return (
-    <div className="w-full fade-in">
-      {/* Progress indicator - Path nearing harbor */}
+    <div className="w-full">
+      {/* Progress indicator */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
-          <div className="w-1/4 h-2 bg-gradient-to-r from-green-400 to-teal-500 rounded-full"></div>
-          <div className="w-1/4 h-2 bg-gradient-to-r from-green-400 to-teal-500 rounded-full"></div>
-          <div className="w-1/4 h-2 bg-gradient-to-r from-green-400 to-teal-500 rounded-full fill-path"></div>
+          <div className="w-1/4 h-2 bg-green-500 rounded-full"></div>
+          <div className="w-1/4 h-2 bg-green-500 rounded-full"></div>
+          <div className="w-1/4 h-2 bg-green-500 rounded-full"></div>
           <div className="w-1/4 h-2 bg-gray-200 rounded-full"></div>
         </div>
         <p className="text-sm text-gray-600 text-left">Steg 3 av 4: Chat med Lira</p>
       </div>
 
-      {/* Crisis Banner - Persistent if stress 9-10 */}
-      {stressLevel >= 9 && (
-        <div className="mb-6">
-          <CrisisBanner visible={true} variant="compact" />
-        </div>
-      )}
-
-      {/* AI Disclaimer */}
-      <div className="mb-4">
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
-          <p className="text-sm text-yellow-800">
-            <strong>AI-generert innhold:</strong> Lira bruker kunstig intelligens.
-            Svarene kan inneholde feil. Verifiser alltid viktig informasjon med NAV
-            eller andre offisielle kilder.
-          </p>
-        </div>
-      </div>
-
-      {/* Intro - NVC: Empatisk tilstedeværelse */}
+      {/* Intro */}
       <div className="mb-8 text-left">
-        <div className="bg-purple-50 border-l-4 border-purple-400 p-4 mb-4 rounded">
-          <p className="text-sm text-purple-800">
-            💜 Takk for at du deler med meg. Dine svar hjelper meg å forstå hva du trenger akkurat nå.
-          </p>
-        </div>
         <div className="flex items-center gap-3 mb-3">
-          <div className="wave-motion">
-            <MessageCircle className="h-8 w-8 text-blue-600" />
-          </div>
+          <MessageCircle className="h-8 w-8 text-blue-600" />
           <h1 className="text-3xl font-bold text-[var(--color-text-primary)]">
             La oss snakke litt
           </h1>
         </div>
-        <p className="text-lg text-[var(--color-text-secondary)] mb-3">
+        <p className="text-lg text-[var(--color-text-secondary)]">
           Jeg stiller noen få spørsmål for å forstå deg bedre.
           {stressState === "dorsal" && " Vi holder det enkelt."}
-        </p>
-        <p className="text-sm text-gray-600 italic">
-          💡 Tips: Svar så ærlig du kan. Det finnes ingen «riktige» svar - bare din opplevelse.
         </p>
       </div>
 
@@ -258,7 +229,7 @@ export default function Stage3Chat({
                 <button
                   key={option}
                   onClick={() => setCurrentAnswer(option)}
-                  className={`w-full p-4 text-left border-2 rounded-lg transition-all calm-hover ${
+                  className={`w-full p-4 text-left border-2 rounded-lg transition-all ${
                     currentAnswer === option
                       ? "border-blue-500 bg-blue-50 font-medium"
                       : "border-gray-300 hover:border-gray-400"
@@ -290,27 +261,16 @@ export default function Stage3Chat({
         </div>
       </div>
 
-      {/* Navigation - Triadisk Port 1: Bruker-suverenitet */}
+      {/* Navigation */}
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="secondary"
-            size="large"
-            onClick={onBack}
-            leftIcon={<ArrowLeft className="h-5 w-5" />}
-          >
-            Tilbake
-          </Button>
-          {/* Hopp over hele chatten */}
-          <Button
-            variant="text"
-            size="medium"
-            onClick={onNext}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            Hopp over chatten →
-          </Button>
-        </div>
+        <Button
+          variant="secondary"
+          size="large"
+          onClick={onBack}
+          leftIcon={<ArrowLeft className="h-5 w-5" />}
+        >
+          Tilbake
+        </Button>
         {canProceed && (
           <Button
             variant="primary"

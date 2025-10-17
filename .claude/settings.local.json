@@ -22,7 +22,9 @@
       "Bash(timeout /t 3)",
       "Bash(git log:*)",
       "Bash(git push:*)",
-      "Bash(gh repo list:*)"
+      "Bash(gh repo list:*)",
+      "Read(//c/Users/onigo/NAV LOSEN/homo-lumen-ama/**)",
+      "Bash(git show:*)"
     ],
     "deny": [],
     "ask": []
