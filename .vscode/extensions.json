@@ -1,0 +1,32 @@
+{
+  "recommendations": [
+    // Essensielle for NAV-Losen utvikling
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+
+    // TypeScript & React
+    "dsznajder.es7-react-js-snippets",
+    "ms-vscode.vscode-typescript-next",
+
+    // Git & GitHub
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+
+    // Markdown (for dokumentasjon)
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-preview-github-styles",
+
+    // Nyttige verktøy
+    "christian-kohler.path-intellisense",
+    "vincaslt.highlight-matching-tag",
+    "wayou.vscode-todo-highlight",
+
+    // Tilgjengelighet (WCAG 2.1 AA)
+    "deque-systems.vscode-axe-linter"
+  ],
+
+  "unwantedRecommendations": [
+    // Ingen konflikter med vårt oppsett
+  ]
+}

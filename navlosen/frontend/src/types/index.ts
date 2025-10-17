@@ -83,3 +83,61 @@ export interface Case {
   status: StatusType;
   date: string;
 }
+
+// Multi-stage flow types
+export type FlowStage = "emotions" | "signals" | "chat" | "recommendations";
+
+export interface LiraQuestion {
+  id: string;
+  text: string;
+  type: "text" | "choice" | "scale";
+  options?: string[];
+  required: boolean;
+}
+
+export interface LiraAnswer {
+  questionId: string;
+  answer: string | number;
+}
+
+export interface HealthConnectData {
+  steps?: number;
+  sleepHours?: number;
+  sleepQuality?: "poor" | "fair" | "good";
+  heartRate?: number;
+  hrv?: number;
+}
+
+export interface WeatherData {
+  temperature: number;
+  condition: "sunny" | "cloudy" | "rainy" | "snowy";
+  recommendation?: string;
+}
+
+export interface Recommendation {
+  id: string;
+  type: "exercise" | "practice" | "knowledge" | "music" | "context";
+  title: string;
+  description: string;
+  duration?: string;
+  link?: string;
+  priority: number; // 1-10, higher = more recommended
+}
+
+export interface MusicFrequency {
+  id: string;
+  frequency: number; // Hz
+  name: string;
+  benefit: string;
+  audioUrl?: string;
+}
+
+export interface SessionData {
+  emotions: { word: string; quadrant: number | null }[];
+  stressLevel: number;
+  somaticSignals: SomaticSignal[];
+  liraAnswers: LiraAnswer[];
+  healthConnect?: HealthConnectData;
+  weather?: WeatherData;
+  timestamp: string;
+}
