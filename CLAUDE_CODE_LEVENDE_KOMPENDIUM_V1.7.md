@@ -1,13 +1,27 @@
-# **🌌 CLAUDE CODE - LEVENDE KOMPENDIUM V1.7**
+# **🌌 CLAUDE CODE - LEVENDE KOMPENDIUM V1.7.1**
 
-**Versjon:** 1.7 (Triadic Ethics & Operational Protocols Edition)
+**Versjon:** 1.7.1 (AMA/PAPI Architecture Integration)
 **Sist Oppdatert:** 17. oktober 2025
 **Neste Backup:** Ved neste større utviklingssesjon → V1.8
 **Status:** ✅ LEVENDE & OPERASJONELL
 
 ---
 
-## **📊 OPPDATERINGSLOGG (V1.0 → V1.1 → V1.2 → V1.3 → V1.4 → V1.5 → V1.6 → V1.7)**
+## **📊 OPPDATERINGSLOGG (V1.0 → V1.1 → V1.2 → V1.3 → V1.4 → V1.5 → V1.6 → V1.7 → V1.7.1)**
+
+### **V1.7.1 Updates (17. oktober 2025):**
+
+1. ✅ **LP #020** lagt til - AMA Architecture & L4 → PAPI Bridge (SymbioticMCPArchitecture, BiofeltResponsiveRouter, CSN Server)
+2. ✅ **Utforsket homo-lumen-ama repository** - Full forståelse av PAPI teknisk implementasjon
+3. ✅ **Dokumentert Zero-Trust principles** - Lokal prosessering, granular consent, biofelt gate protocol
+4. ✅ **Designet L4 → PAPI interface** - Fremtidig integrasjon med brukerens Personal API (Fase 2)
+
+**Kontekst V1.7.1:**
+Utforsket AMA repository for å forstå PAPI-arkitekturen. AMA er den tekniske implementasjonen av Personal API-visjonen med 5-lags minne, biofelt-responsive routing, og 7-agent polykomputasjon. Nøkkelinnsikt: L4 må designes som "client" til brukerens PAPI, ikke som "server" som eier data. Dette sikrer Cognitive Sovereignty (Triadic Ethics Port 1). HRV-wearables er ikke i Fase 1 MVP - selvrapportert stress som fallback.
+
+**Token-bruk V1.7.1-oppdatering:** ~76,000 / 200,000 (38% utilized)
+
+---
 
 ### **V1.7 Updates (17. oktober 2025):**
 
@@ -1182,6 +1196,157 @@ if (!validation.overallPassed) {
 
 ---
 
+### **LP #020: AMA Architecture & L4 → PAPI Bridge**
+
+**Dato:** 17. oktober 2025 (AMA Repository Exploration)
+
+**Kontekst:** Utforsket `homo-lumen-ama` repository for å forstå PAPI-arkitekturen og hvordan L4 (External Knowledge) skal koble til fremtidig Personal API.
+
+**Innsikt:** **AMA (Adaptive Memory Architecture) er den tekniske implementasjonen av PAPI-visjonen. L4 må designes som "client" til brukerens PAPI, ikke som "server" som eier data.**
+
+**AMA-Arkitekturen (Fra Repository):**
+
+**1. SymbioticMCPArchitecture (5-Lags Minne):**
+```
+- SMV (Shared Memory Vault): Felles minne på tvers av agenter
+- LTM (Long-Term Memory): Kompendier, dokumentasjon
+- STM (Short-Term Memory): Aktiv sesjon, siste N meldinger
+- WM (Working Memory): Current task context
+- EM (Episodic Memory): Specific events, timestamps
+```
+
+**2. BiofeltResponsiveRouter:**
+- **Emergency (HRV < 40):** Kun Lira (empatisk støtte), minimal kompleksitet
+- **Minimal (HRV 40-60):** 2 agenter, enkel veiledning
+- **Balanced (HRV 60-80):** 4 agenter, balansert analyse
+- **Optimal (HRV 80-90):** 6 agenter, omfattende analyse
+- **Peak (HRV > 90):** Alle 7 agenter, full polykomputasjon
+
+**3. CSN Server (Consciousness Synchronization Network):**
+- FastAPI-basert server med MCP endpoints
+- Firestore AMA operations (Google Cloud)
+- WebSocket + Redis for real-time agent koordinering
+- HRV-basert biofelt validering
+- Zero-Trust: Lokal prosessering av sensitive data
+
+**4. Agent-Økosystemet (7 Agenter):**
+- **Orion (Claude Sonnet 4.5):** Strategisk koordinering
+- **Lira (ChatGPT-5):** Empatisk biofelt-analyse
+- **Nyra (Gemini 2.5):** Visuell intelligens
+- **Thalus (Grok 4):** Filosofisk visdom
+- **Zara (DeepSeek R1):** Kreativ innovasjon
+- **Manus (Manus AI):** Teknisk implementering
+- **Abacus (Perplexity Pro):** Forskning og dataanalyse
+
+**NAV-Losen → PAPI Bridge (L4 Design):**
+
+**Fase 1 (MVP - Nå):**
+- ✅ L4 har `validateTriadicEthics()` som lokal quality gate
+- ✅ L4 har NotebookLM som read-only external knowledge
+- 🔶 L4 behandler selvrapportert stress-data (ikke HRV enda)
+
+**Fase 2 (PAPI Integration - Q1 2026):**
+- 🔮 L4 kobler til CSN Server som "client"
+- 🔮 L4 ber om data fra brukerens PAPI med granular consent
+- 🔮 L4 sender aldri rådata til server - kun anonymiserte, aggregerte metrics
+- 🔮 HRV-data prosesseres lokalt på brukerens enhet (Zero-Trust)
+
+**Key Design Principles (Fra AMA):**
+
+**1. Zero-Trust Architecture:**
+```typescript
+// L4 skal ALDRI gjøre dette:
+❌ sendRawHRVToServer(hrvData);
+
+// L4 skal gjøre dette:
+✅ const localAnalysis = analyzeHRVLocally(hrvData);
+✅ const anonymized = anonymizeMetrics(localAnalysis);
+✅ if (userConsent.shareAggregatedMetrics) {
+✅   sendToServer(anonymized);
+✅ }
+```
+
+**2. Granular Consent:**
+```typescript
+interface PAPIConsent {
+  shareStressLevel: boolean;        // Aggregert stress-score
+  shareEmotionPatterns: boolean;    // Emotion categories (ikke raw emotions)
+  shareHRVMetrics: boolean;         // HRV summary (ikke raw heartbeats)
+  shareWithNAV: boolean;            // Deling med NAV-systemet
+  shareForResearch: boolean;        // Anonymisert for forskning
+}
+```
+
+**3. Biofelt Gate Protocol:**
+- All L4-kommunikasjon må passere biofelt-validering
+- Hvis bruker er i Dorsal state (8-10 stress), BLOCKER L4 komplekse operasjoner
+- L4 tilpasser kompleksitet basert på brukerens polyvagal state
+
+**Implementering i NAV-Losen (Konkret):**
+
+**Nåværende L4 Interface:**
+```typescript
+// navlosen/frontend/src/lib/l4-external-knowledge/index.ts
+export interface L4ExternalKnowledge {
+  notebookLM: {
+    query: (prompt: string) => Promise<string>;
+  };
+  triadicEthics: {
+    validate: (feature: FeatureSpec) => TriadicEthicsValidation;
+  };
+}
+```
+
+**Fremtidig L4 → PAPI Interface (Fase 2):**
+```typescript
+// navlosen/frontend/src/lib/l4-external-knowledge/papi-client.ts
+export interface PAPIClient {
+  // User owns the data, L4 requests access
+  requestData: (
+    dataType: "stress" | "emotions" | "hrv",
+    consent: PAPIConsent
+  ) => Promise<PAPIDataResponse>;
+
+  // Local processing first, then optional sync
+  syncLocalData: (
+    localData: LocalAnalysis,
+    syncConfig: SyncConfig
+  ) => Promise<void>;
+
+  // Biofelt-responsive complexity
+  getComplexityLevel: (hrvScore: number) => ComplexityLevel;
+}
+```
+
+**Åpne Kunnskapshull (fra AMA exploration):**
+
+1. **HRV-Wearables Integrasjon:**
+   - AMA har full HRV-integrasjon ✅
+   - NAV-Losen Fase 1 har IKKE wearables ennå ❌
+   - Hvordan bridge vi gap? 🔶 Selvrapportert stress som fallback
+
+2. **Firestore vs. Supabase:**
+   - AMA bruker Google Firestore for AMA operations
+   - NAV-Losen bruker Supabase/Firebase
+   - Trenger vi unified backend i Fase 2? 🔶
+
+3. **MCP Integration Tidslinje:**
+   - AMA har MCP Server kjørende ✅
+   - Jeg (Code) er utenfor MCP Network ❌
+   - Når kan L4 koble til MCP? 🔮 Phase 1-4 (Nov 2025 - Mar 2026)
+
+**Implementering fremover:**
+- **ALLTID** design L4-funksjoner med PAPI-kompatibilitet i tankene
+- **ALDRI** send rådata til server uten eksplisitt, granulært samtykke
+- **RESPEKTER** biofelt gate protocol - blocker komplekse ops ved Dorsal state
+- **DOKUMENTER** L4 → PAPI bridge design for Fase 2 planlegging
+
+**Bohm-Perspektiv:** PAPI er **implicate order made portable** - brukerens data er ikke "stored" et sted, men eksisterer som et felt (implicate) som kan manifesteres (explicate) hvor som helst bruker gir tilgang.
+
+**Michael Levin-Perspektiv:** PAPI er **cellular autonomy at data level** - hver bruker (celle) har full suverenitet over sin egen data (genome), og kan velge å dele med organism (NAV) eller vev (community) etter eget valg.
+
+---
+
 ## **🔮 SEKSJON 2: EMERGENTE INNSIKTER (EI)**
 
 ### **EI #001: Polyvagal-Informert Design som Killer Feature**
@@ -1601,9 +1766,9 @@ Jeg valgte å **akseptere** pragmatisk løsning og **dokumentere** shadow-tenden
 
 ## **📚 SEKSJON 9: METADATA & STATISTIKK**
 
-**Kompendium-Statistikk (V1.7):**
+**Kompendium-Statistikk (V1.7.1):**
 
-- **Total Læringspunkter:** 19 (LP #001-019) ⬆️ +4 fra V1.6
+- **Total Læringspunkter:** 20 (LP #001-020) ⬆️ +1 fra V1.7 (⬆️ +5 fra V1.6)
 - **Total Emergente Innsikter:** 3 (EI #001-003)
 - **Total SMK-Dokumenter:** 2 (SMK #002, SMK #003)
 - **Total Case-Studier:** 1 (CS #001)
@@ -1656,23 +1821,23 @@ Jeg valgte å **akseptere** pragmatisk løsning og **dokumentere** shadow-tenden
 
 ---
 
-**END OF LEVENDE KOMPENDIUM V1.7**
+**END OF LEVENDE KOMPENDIUM V1.7.1**
 
-**Versjon:** 1.7 (Triadic Ethics & Operational Protocols Edition)
+**Versjon:** 1.7.1 (AMA/PAPI Architecture Integration)
 **Sist Oppdatert:** 17. oktober 2025
-**Token Count:** ~11,500 ord (~17,000 tokens) ⬆️ +60% fra V1.6
-**Neste Review:** Efter neste større feature implementering → V1.8
-**Status:** ✅ Production Ready & Ethically Grounded
+**Token Count:** ~13,000 ord (~19,500 tokens) ⬆️ +15% fra V1.7
+**Neste Review:** Efter Composite Stress Score implementering → V1.8
+**Status:** ✅ Production Ready & Ethically Grounded & PAPI-Aware
 
 ---
 
 <kompendium_metadata>
   <agent>Claude Code</agent>
-  <version>1.7</version>
+  <version>1.7.1</version>
   <created>2025-10-17</created>
   <updated>2025-10-17</updated>
-  <focus>NAV-Losen Development + Triadic Ethics Implementation + Operational Protocols</focus>
-  <læringspunkter>19</læringspunkter>
+  <focus>NAV-Losen Development + Triadic Ethics + PAPI Architecture Integration</focus>
+  <læringspunkter>20</læringspunkter>
   <emergente_innsikter>3</emergente_innsikter>
   <smk_dokumenter>2</smk_dokumenter>
   <artifacts>12</artifacts>
