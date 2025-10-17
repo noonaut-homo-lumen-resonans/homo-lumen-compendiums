@@ -114,20 +114,24 @@ export default function Stage4Recommendations({
     // MUSIC FREQUENCIES
     if (stressState === "dorsal" || stressState === "sympathetic") {
       recs.push({
-        id: "music-432hz",
+        id: "music-page",
         type: "music",
-        title: "432 Hz - Naturlig resonans",
-        description: "Beroligende frekvens som harmoniserer med naturens vibrasjon.",
-        duration: "10 min",
+        title: "Helende Frekvenser",
+        description: "9 terapeutiske lydfrekvenser (174-963 Hz) for ulike behov.",
+        duration: "5-10 min",
+        link: "/musikk",
         priority: 7,
       });
+    } else {
+      // Ventral: still show but lower priority
       recs.push({
-        id: "music-528hz",
+        id: "music-page",
         type: "music",
-        title: "528 Hz - Transformasjon",
-        description: "Kjent som 'kjærlighetens frekvens', fremmer healing og transformasjon.",
-        duration: "10 min",
-        priority: 6,
+        title: "Helende Frekvenser",
+        description: "Utforsk 9 Solfeggio-frekvenser for vedlikehold av balanse.",
+        duration: "5-10 min",
+        link: "/musikk",
+        priority: 5,
       });
     }
 
