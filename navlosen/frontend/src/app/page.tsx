@@ -225,11 +225,32 @@ export default function Home() {
     timestamp: new Date().toISOString(),
   };
 
-  // Get background color based on stress level (subtle, not overwhelming)
+  // Get background color based on stress level + stage
+  // Nyra's Lighthouse Metaphor: Storm → Calming → Harbor
   const getBackgroundColor = (): string => {
-    if (stressLevel <= 3) return "bg-green-50/50";
-    if (stressLevel <= 7) return "bg-orange-50/50";
-    return "bg-blue-50/50";
+    // Stage 1 (Emotions): Dark, stormy - identifying the storm
+    if (currentStage === "emotions") {
+      if (stressLevel >= 8) return "bg-gradient-to-b from-slate-700 to-slate-600"; // Dark storm
+      if (stressLevel >= 5) return "bg-gradient-to-b from-slate-500 to-slate-400"; // Storm brewing
+      return "bg-gradient-to-b from-blue-200 to-cyan-100"; // Calm start
+    }
+
+    // Stage 2 (Signals): Waves are calming - seeing the lighthouse
+    if (currentStage === "signals") {
+      if (stressLevel >= 8) return "bg-gradient-to-b from-blue-800 to-cyan-700"; // Storm calming
+      if (stressLevel >= 5) return "bg-gradient-to-b from-blue-600 to-cyan-500"; // Approaching harbor
+      return "bg-gradient-to-b from-cyan-200 to-teal-100"; // Near harbor
+    }
+
+    // Stage 3 (Chat): Lighthouse beam visible - guidance active
+    if (currentStage === "chat") {
+      if (stressLevel >= 8) return "bg-gradient-to-b from-cyan-600 to-blue-500"; // Lighthouse guiding
+      if (stressLevel >= 5) return "bg-gradient-to-b from-cyan-400 to-teal-400"; // Light getting stronger
+      return "bg-gradient-to-b from-teal-200 to-green-100"; // Almost safe
+    }
+
+    // Stage 4 (Recommendations): Safe harbor - peace and clarity
+    return "bg-gradient-to-b from-green-100 via-teal-50 to-cyan-50"; // Safe harbor
   };
 
   return (
