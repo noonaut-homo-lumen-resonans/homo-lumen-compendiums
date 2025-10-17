@@ -1,4 +1,4 @@
-# **AGENT #9 (CLAUDE CODE) - STATIC COMPENDIUM**
+# **CODE (AGENT #9) (CLAUDE CODE) - STATIC COMPENDIUM**
 
 **Versjon:** 1.0
 **Opprettet:** 17. oktober 2025
