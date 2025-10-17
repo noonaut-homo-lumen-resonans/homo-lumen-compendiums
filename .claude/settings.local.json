@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(node --version:*)",
+      "Bash(mkdir:*)",
+      "Bash(copy .env.example .env.local)",
+      "Bash(git config:*)",
+      "Bash(rd /s /q .next)",
+      "Bash(taskkill:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
