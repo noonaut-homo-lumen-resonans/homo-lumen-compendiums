@@ -10,6 +10,10 @@
  */
 
 import { LinearClient } from '@linear/sdk';
+import dotenv from 'dotenv';
+
+// Load .env file from project root
+dotenv.config();
 
 const LINEAR_API_KEY = process.env.LINEAR_API_KEY;
 
