@@ -48,11 +48,12 @@ export default function Layout({ children, className }: LayoutProps) {
           className={cn(
             "flex-1 overflow-y-auto",
             "p-4 md:p-6 lg:p-8",
-            "max-w-7xl mx-auto w-full",
             className
           )}
         >
-          {children}
+          <div className="max-w-7xl mx-auto w-full">
+            {children}
+          </div>
         </main>
       </div>
 
