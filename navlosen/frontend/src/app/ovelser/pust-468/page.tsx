@@ -113,15 +113,15 @@ export default function Pust468Page() {
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-green-50 -m-4 md:-m-6 lg:-m-8 p-4 md:p-6 lg:p-8">
         {/* Back button */}
         <Link
-          href="/mestring"
+          href="/"
           className="inline-flex items-center gap-2 text-[var(--color-primary)] hover:underline mb-6"
         >
           <ArrowLeft className="h-4 w-4" />
-          Tilbake til Mestring
+          Tilbake
         </Link>
 
         {/* Header */}
-        <div className="max-w-2xl mx-auto text-center mb-8">
+        <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">
             4-6-8 Pustemetode
           </h1>
@@ -131,7 +131,7 @@ export default function Pust468Page() {
         </div>
 
         {/* Main exercise area */}
-        <div className="max-w-2xl mx-auto">
+        <div className="mx-auto" style={{ maxWidth: "700px" }}>
           {/* Breathing circle */}
           <div className="relative mb-8 flex items-center justify-center h-96">
             <div

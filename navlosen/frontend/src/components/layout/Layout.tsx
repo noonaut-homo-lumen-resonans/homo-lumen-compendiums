@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import DisclaimerFooter from "./DisclaimerFooter";
 import { MessageSquare } from "lucide-react";
 
 interface LayoutProps {
@@ -52,26 +53,11 @@ export default function Layout({ children, className }: LayoutProps) {
           )}
         >
           {children}
-
-          {/* Footer disclaimer */}
-          <footer className="mt-8 p-4 bg-white rounded-lg shadow-[var(--shadow-sm)] text-center text-sm text-[var(--color-text-secondary)]">
-            <p>
-              <strong>Viktig:</strong> NAV-Losen er et verktøy for å hjelpe deg
-              med NAV-systemet. AI-generert innhold kan inneholde feil. Ved
-              tvil, kontakt en menneskelig veileder eller besøk{" "}
-              <a
-                href="https://www.nav.no"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[var(--color-primary)] underline hover:text-[#0056A3]"
-              >
-                nav.no
-              </a>
-              .
-            </p>
-          </footer>
         </main>
       </div>
+
+      {/* Disclaimer Footer */}
+      <DisclaimerFooter />
 
       {/* Floating chatbot button */}
       <Link
