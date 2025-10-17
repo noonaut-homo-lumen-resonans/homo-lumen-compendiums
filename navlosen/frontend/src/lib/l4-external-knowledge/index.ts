@@ -9,9 +9,11 @@
  * - NotebookLM validation (MANDATORY CHECK before big decisions)
  * - Research papers
  * - External APIs
+ * - Triadic Ethics validation (Quality Gate)
  *
  * Based on Multi-Scale Architecture (LP #014)
  * L4 Mandatory Protocol (LP #012)
+ * Triadic Ethics ("Our Ethical Compass")
  */
 
 export interface ExternalSource {
@@ -123,4 +125,124 @@ export function logL4Request(request: L4ValidationRequest): void {
   }
 
   // TODO: In production, log to analytics/audit trail
+}
+
+// ============================================================================
+// TRIADIC ETHICS VALIDATION
+// Based on "Our Ethical Compass" document
+// Mandatory Quality Gate for ALL features
+// ============================================================================
+
+export interface TriadicEthicsCheck {
+  principle: "cognitive_sovereignty" | "ontological_coherence" | "regenerative_healing";
+  question: string;
+  passed: boolean;
+  reasoning: string;
+}
+
+export interface TriadicEthicsValidation {
+  featureName: string;
+  checks: TriadicEthicsCheck[];
+  overallPassed: boolean;
+  recommendation: string;
+  timestamp: Date;
+}
+
+/**
+ * Validate feature against Triadic Ethics (3 Quality Gates)
+ *
+ * From "Our Ethical Compass":
+ * 1. Cognitive Sovereignty: "You are in control"
+ * 2. Ontological Coherence: "We treat you with dignity"
+ * 3. Regenerative Healing: "Our goal is to help you grow"
+ */
+export function validateTriadicEthics(feature: {
+  name: string;
+  hasManualOverride: boolean; // Can user override AI decisions?
+  hasCallAdvisorButton: boolean; // Can user escape to human help?
+  usesShamefreeMicrocopy: boolean; // "I see this is a lot" vs "You're too stressed"
+  buildUserCapacity: boolean; // Does it teach skills, not just give answers?
+  designForGraduation: boolean; // Does it aim for user independence?
+}): TriadicEthicsValidation {
+  const checks: TriadicEthicsCheck[] = [];
+
+  // Check 1: Cognitive Sovereignty
+  const cognitiveSovereigntyPassed =
+    feature.hasManualOverride && feature.hasCallAdvisorButton;
+
+  checks.push({
+    principle: "cognitive_sovereignty",
+    question: "Does this strengthen the user's autonomy, choice, and control?",
+    passed: cognitiveSovereigntyPassed,
+    reasoning: cognitiveSovereigntyPassed
+      ? "✅ User has manual overrides and can always call a human advisor."
+      : "❌ FAILED: User lacks control. Must add manual override or 'Ring Veileder' button.",
+  });
+
+  // Check 2: Ontological Coherence
+  const ontologicalCoherencePassed = feature.usesShamefreeMicrocopy;
+
+  checks.push({
+    principle: "ontological_coherence",
+    question: "Does this affirm human dignity and avoid shame?",
+    passed: ontologicalCoherencePassed,
+    reasoning: ontologicalCoherencePassed
+      ? "✅ Uses shame-free language that treats user with dignity."
+      : "❌ FAILED: Language is judgmental. Use 'I see this is a lot' not 'You are too stressed'.",
+  });
+
+  // Check 3: Regenerative Healing
+  const regenerativeHealingPassed =
+    feature.buildUserCapacity && feature.designForGraduation;
+
+  checks.push({
+    principle: "regenerative_healing",
+    question: "Does this build the user's capacity and support their growth?",
+    passed: regenerativeHealingPassed,
+    reasoning: regenerativeHealingPassed
+      ? "✅ Teaches skills and designs for user 'graduation' (independence)."
+      : "❌ FAILED: Creates dependency. Must teach skills and design for graduation.",
+  });
+
+  // Overall validation
+  const overallPassed = checks.every((check) => check.passed);
+
+  return {
+    featureName: feature.name,
+    checks,
+    overallPassed,
+    recommendation: overallPassed
+      ? "✅ APPROVED: Feature passes all 3 Triadic Ethics gates. Safe to implement."
+      : "❌ BLOCKED: Feature fails Triadic Ethics. Must address failures before implementation.",
+    timestamp: new Date(),
+  };
+}
+
+/**
+ * Log Triadic Ethics validation (for audit trail)
+ */
+export function logTriadicEthicsValidation(
+  validation: TriadicEthicsValidation
+): void {
+  if (process.env.NODE_ENV === "development") {
+    console.log("[L4 Triadic Ethics] Validation Result:", {
+      feature: validation.featureName,
+      passed: validation.overallPassed,
+      cognitive_sovereignty: validation.checks[0].passed,
+      ontological_coherence: validation.checks[1].passed,
+      regenerative_healing: validation.checks[2].passed,
+      timestamp: validation.timestamp.toISOString(),
+    });
+
+    if (!validation.overallPassed) {
+      console.warn("[L4 Triadic Ethics] ⚠️ FEATURE BLOCKED:", {
+        feature: validation.featureName,
+        failures: validation.checks
+          .filter((c) => !c.passed)
+          .map((c) => c.reasoning),
+      });
+    }
+  }
+
+  // TODO: In production, log to ethics audit trail
 }
