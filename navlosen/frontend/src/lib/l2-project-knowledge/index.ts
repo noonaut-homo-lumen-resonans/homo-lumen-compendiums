@@ -36,6 +36,14 @@ export interface PolyvagalState {
   stressRange: [number, number]; // [min, max]
   backgroundColor: string;
   uiPrinciples: string[];
+
+  // Exact UI specifications from "Our Ethical Compass"
+  touchTargetSize: number; // pixels
+  maxChoices: number | "unlimited";
+  taskDuration: number | null; // seconds (null = blocked)
+  prominentButtons: string[]; // e.g., ["Ring Veileder"]
+  cognitiveTasks: "blocked" | "simplified" | "full";
+  microcopy: "shame-free" | "supportive" | "collaborative";
 }
 
 export interface ComponentReference {
@@ -63,37 +71,61 @@ export const NAV_LOSEN_KNOWLEDGE: ProjectKnowledge = {
       name: "Dorsal (Shutdown)",
       description: "Overvelmet, shutdown - trenger trygg havn",
       stressRange: [8, 10],
-      backgroundColor: "blue-50",
+      backgroundColor: "green-50", // Calming forest green (from "Our Ethical Compass")
       uiPrinciples: [
-        "Minimalt valg",
-        "Store klikk-områder",
-        "Rolig tempo",
-        "Gentle transitions",
+        "Minimalt valg (1-2 max)",
+        "Extra-large touch targets",
+        "Minimal text",
+        "Prominent 'Ring Veileder' button",
       ],
+
+      // Exact specs from "Our Ethical Compass" document
+      touchTargetSize: 72, // pixels - extra-large for easy tapping
+      maxChoices: 2, // Only 1-2 simple options
+      taskDuration: null, // Cognitive tasks are BLOCKED
+      prominentButtons: ["Ring Veileder"], // "Call Advisor" is highly visible
+      cognitiveTasks: "blocked", // Avoid cognitive demands
+      microcopy: "shame-free", // "I see that this is a lot" (not "You're too stressed")
     },
     sympathetic: {
       name: "Sympatisk (Fight/Flight)",
       description: "Stresset, aktiv - trenger mikro-fokus",
       stressRange: [4, 7],
-      backgroundColor: "orange-50",
+      backgroundColor: "orange-50", // Action-oriented orange/blue (from "Our Ethical Compass")
       uiPrinciples: [
-        "Ett steg av gangen",
+        "Ett mikro-steg av gangen (90 sekunder)",
         "Tydelig feedback",
-        "Actionable steps",
-        "Progress indicators",
+        "Større buttons (56px)",
+        "Max 3 valg",
       ],
+
+      // Exact specs from "Our Ethical Compass" document
+      touchTargetSize: 56, // pixels - larger for stressed state
+      maxChoices: 3, // Maximum 3 choices
+      taskDuration: 90, // Each micro-task ≤ 90 seconds
+      prominentButtons: [], // No specific prominent buttons
+      cognitiveTasks: "simplified", // Break into micro-steps
+      microcopy: "supportive", // "Let's take the first, smallest step"
     },
     ventral: {
       name: "Ventral (Safe & Social)",
       description: "Rolig, oversikt - kan håndtere kompleksitet",
       stressRange: [1, 3],
-      backgroundColor: "green-50",
+      backgroundColor: "white", // Light, open near-white (from "Our Ethical Compass")
       uiPrinciples: [
         "Full funksjonalitet",
-        "Flere valg",
+        "Flere valg og detaljer",
         "Exploratory UI",
         "Advanced features",
       ],
+
+      // Exact specs from "Our Ethical Compass" document
+      touchTargetSize: 44, // pixels - normal touch target
+      maxChoices: "unlimited", // Show all details and options
+      taskDuration: null, // No restriction on task duration
+      prominentButtons: [], // No specific prominent buttons
+      cognitiveTasks: "full", // Full functionality available
+      microcopy: "collaborative", // Like a helpful partner
     },
   },
 
@@ -200,7 +232,8 @@ export const NAV_LOSEN_KNOWLEDGE: ProjectKnowledge = {
     {
       name: "Polyvagal-Adaptive Background",
       description: "Change background color based on stress level",
-      example: "bg-green-50 (ventral), bg-orange-50 (sympathetic), bg-blue-50 (dorsal)",
+      example:
+        "bg-white (ventral), bg-orange-50 (sympathetic), bg-green-50 (dorsal)",
       references: ["EI #001"],
     },
     {
@@ -208,6 +241,30 @@ export const NAV_LOSEN_KNOWLEDGE: ProjectKnowledge = {
       description: "Ask: Would Lira approve this response?",
       example: "Is it empathy-first? Validation before instruction?",
       references: ["LP #010"],
+    },
+    {
+      name: "Triadic Ethics Validation (Mandatory Quality Gate)",
+      description:
+        "ALL features must pass 3 ethical checks before implementation",
+      example:
+        "1. Cognitive Sovereignty: Does this give user control? 2. Ontological Coherence: Does this treat user with dignity? 3. Regenerative Healing: Does this build user's capacity?",
+      references: ["Our Ethical Compass", "10 Viktigste Beslutninger #5"],
+    },
+    {
+      name: "To-Fase Protokoll (Intelligence → Synthesis)",
+      description:
+        "Always gather ALL context BEFORE making decisions. 30-50% better efficiency, 60-80% better error detection.",
+      example:
+        "Fase 1: Glob/Grep/Read to gather context. Fase 2: Edit/Write based on Fase 1.",
+      references: ["10 Viktigste Beslutninger #1"],
+    },
+    {
+      name: "Epistemisk Integritet (Document/Estimate/Project)",
+      description:
+        "Mark all information with evidensgrad to preserve credibility",
+      example:
+        "✅ Dokumentert (implemented), 🔶 Estimert (informed guess), 🔮 Projisert (future vision)",
+      references: ["10 Viktigste Beslutninger #5"],
     },
   ],
 };
