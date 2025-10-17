@@ -7,7 +7,12 @@ import StressSlider from "@/components/mestring/StressSlider";
 import SomaticSignals from "@/components/mestring/SomaticSignals";
 import StrategyCard from "@/components/mestring/StrategyCard";
 import { SomaticSignal, Strategy, StressState } from "@/types";
-import { Heart } from "lucide-react";
+import { Heart, Activity, Brain } from "lucide-react";
+import {
+  calculateCompositeStressScore,
+  getPolyvagalUIConfig,
+  type CompositeStressInput,
+} from "@/lib/compositeStressScore";
 
 /**
  * Mestring Page (Crown Jewel!)
@@ -16,9 +21,10 @@ import { Heart } from "lucide-react";
  * Based on Polyvagal Theory by Stephen Porges
  *
  * Features:
- * - Emotion check-in (circumplex model)
+ * - Emotion check-in (100 words in 4 quadrants)
  * - Stress level tracking (1-10 polyvagal scale)
  * - Somatic awareness (body signals)
+ * - Composite Stress Score (weighted combination of all inputs)
  * - Personalized regulation strategies
  *
  * Triadisk Score: 0.2 (PROCEED)
@@ -80,14 +86,20 @@ export default function MestringPage() {
     }
   }, [somaticSignals]);
 
-  // Determine current stress state
-  const getStressState = (): StressState => {
-    if (stressLevel <= 3) return "ventral";
-    if (stressLevel <= 7) return "sympathetic";
-    return "dorsal";
+  // Calculate Composite Stress Score
+  const compositeInput: CompositeStressInput = {
+    stressSlider: stressLevel,
+    selectedEmotions: selectedEmotions.map((e) => ({
+      word: e.word,
+      quadrant: e.quadrant || 1,
+    })),
+    somaticSignals,
+    liraAnswers: [], // TODO: Add Lira adaptive questions later
   };
 
-  const currentState = getStressState();
+  const compositeResult = calculateCompositeStressScore(compositeInput);
+  const currentState = compositeResult.polyvagalState;
+  const uiConfig = getPolyvagalUIConfig(currentState);
 
   // Strategies (4 core strategies from Design System)
   const allStrategies: Strategy[] = [
@@ -220,14 +232,132 @@ export default function MestringPage() {
             />
           </div>
 
-          {/* 4. Recommended Strategies */}
+          {/* 4. Composite Stress Score Display */}
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Brain className="h-6 w-6 text-purple-500" />
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
+                Samlet Stress-Analyse
+              </h3>
+            </div>
+
+            <div className="space-y-4">
+              {/* Composite Score */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">
+                  Kompositt Score (1-10):
+                </span>
+                <span
+                  className="text-2xl font-bold"
+                  style={{
+                    color:
+                      currentState === "ventral"
+                        ? "#4CAF50"
+                        : currentState === "sympathetic"
+                        ? "#FF9800"
+                        : "#2196F3",
+                  }}
+                >
+                  {compositeResult.compositeScore.toFixed(1)}
+                </span>
+              </div>
+
+              {/* Polyvagal State */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">
+                  Din tilstand:
+                </span>
+                <span
+                  className="px-3 py-1 rounded-full text-sm font-semibold"
+                  style={{
+                    backgroundColor:
+                      currentState === "ventral"
+                        ? "#4CAF5020"
+                        : currentState === "sympathetic"
+                        ? "#FF980020"
+                        : "#2196F320",
+                    color:
+                      currentState === "ventral"
+                        ? "#4CAF50"
+                        : currentState === "sympathetic"
+                        ? "#FF9800"
+                        : "#2196F3",
+                  }}
+                >
+                  {uiConfig.stateLabel}
+                </span>
+              </div>
+
+              {/* Confidence */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">
+                  Analysetillit:
+                </span>
+                <div className="flex items-center gap-2">
+                  <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-purple-500 rounded-full transition-all"
+                      style={{ width: `${compositeResult.confidence * 100}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-600">
+                    {Math.round(compositeResult.confidence * 100)}%
+                  </span>
+                </div>
+              </div>
+
+              {/* Breakdown */}
+              <details className="mt-4">
+                <summary className="text-sm font-medium text-gray-700 cursor-pointer hover:text-purple-600">
+                  Vis detaljert analyse
+                </summary>
+                <div className="mt-3 space-y-2 text-xs text-gray-600">
+                  <div className="flex justify-between">
+                    <span>Stress Slider (40%):</span>
+                    <span className="font-medium">
+                      {compositeResult.breakdown.sliderContribution.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Følelser (30%):</span>
+                    <span className="font-medium">
+                      {compositeResult.breakdown.emotionContribution.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Kropps-signaler (20%):</span>
+                    <span className="font-medium">
+                      {compositeResult.breakdown.somaticContribution.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Lira Spørsmål (10%):</span>
+                    <span className="font-medium">
+                      {compositeResult.breakdown.liraContribution.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </details>
+            </div>
+
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-xs text-blue-800">
+                <strong>💡 Om Kompositt Score:</strong> Dette tallet kombinerer
+                alle dine input (følelser, kropps-signaler, stress-slider) for å
+                gi et mer nøyaktig bilde av din tilstand. Jo flere data du
+                oppgir, desto høyere blir analysetilliten.
+              </p>
+            </div>
+          </div>
+
+          {/* 5. Recommended Strategies */}
           <div className="text-left">
             <h2 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-4 text-left">
               Anbefalte strategier for deg
             </h2>
             <p className="text-sm text-[var(--color-text-secondary)] mb-6 text-left">
-              Basert på ditt stressnivå ({stressLevel}/10) foreslår vi disse
-              teknikkene:
+              Basert på din tilstand ({uiConfig.stateLabel} - {compositeResult.compositeScore.toFixed(1)}/10)
+              foreslår vi disse teknikkene:
             </p>
 
             <div className="grid md:grid-cols-2 gap-4">
