@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
+import ConsentModal from "@/components/safety/ConsentModal";
 import Stage1Emotions from "@/components/flow/Stage1Emotions";
 import Stage2Signals from "@/components/flow/Stage2Signals";
 import Stage3Chat from "@/components/flow/Stage3Chat";
 import Stage4Recommendations from "@/components/flow/Stage4Recommendations";
+import RAINModule from "@/components/mestring/RAINModule";
 import {
   FlowStage,
   SomaticSignal,
@@ -14,6 +16,11 @@ import {
   HealthConnectData,
   WeatherData
 } from "@/types";
+import {
+  multiScaleLogger,
+  logCelleEvent,
+  logVevEvent,
+} from "@/lib/multi-scale-metadata";
 
 /**
  * NAV-Losen Home Page - Multi-Stage Adaptive Flow
@@ -36,8 +43,12 @@ import {
  * - Healing: Personalized capacity building
  */
 export default function Home() {
+  // Consent management
+  const [hasConsented, setHasConsented] = useState<boolean>(false);
+
   // Stage management
   const [currentStage, setCurrentStage] = useState<FlowStage>("emotions");
+  const [showRAIN, setShowRAIN] = useState<boolean>(false);
 
   // Default somatic signals
   const defaultSomaticSignals: SomaticSignal[] = [
@@ -68,6 +79,21 @@ export default function Home() {
     condition: "sunny",
     recommendation: "Fint vær for en tur!",
   });
+
+  // Check consent on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedConsent = localStorage.getItem("navlosen_consent");
+      if (savedConsent) {
+        try {
+          const consent = JSON.parse(savedConsent);
+          setHasConsented(consent.consented === true);
+        } catch (e) {
+          console.error("Failed to parse consent from localStorage", e);
+        }
+      }
+    }
+  }, []);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -135,8 +161,41 @@ export default function Home() {
     }
   }, [liraAnswers]);
 
-  // Stage navigation
+  // Stage navigation with multi-scale logging
   const goToStage = (stage: FlowStage) => {
+    // Log multi-scale event (Skala 1: Celle - Claude Code learns from user progression)
+    if (multiScaleLogger && stage === "signals") {
+      const celleEvent = logCelleEvent(
+        "Claude Code",
+        `User completed emotion selection: ${selectedEmotions.length} emotions selected`,
+        "Users engage with emotion wheel → better emotional granularity",
+        "Progressed to Stage 2 (Signals)",
+        "Emotional granularity builds self-awareness",
+        "Flow orchestration and UX implementation"
+      );
+
+      multiScaleLogger.logBottomUpEmergence(
+        `User selected ${selectedEmotions.length} emotions`,
+        celleEvent
+      );
+    }
+
+    if (multiScaleLogger && stage === "chat") {
+      const celleEvent = logCelleEvent(
+        "Claude Code",
+        `User stress level: ${stressLevel}/10, somatic signals: ${somaticSignals.filter(s => s.checked).length}`,
+        "Stress + somatic patterns correlate → polyvagal state detection",
+        "Progressed to Stage 3 (Chat) via RAIN module",
+        "Self-regulation practice enhances emotional capacity",
+        "RAIN module integration and polyvagal routing"
+      );
+
+      multiScaleLogger.logBottomUpEmergence(
+        `User stress ${stressLevel}/10`,
+        celleEvent
+      );
+    }
+
     setCurrentStage(stage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -175,6 +234,11 @@ export default function Home() {
 
   return (
     <Layout>
+      {/* Consent Modal - Shown before any content */}
+      {!hasConsented && (
+        <ConsentModal onConsent={() => setHasConsented(true)} />
+      )}
+
       <div className={`min-h-screen transition-all duration-700 ${getBackgroundColor()} -m-4 md:-m-6 lg:-m-8 p-4 md:p-6 lg:p-8`}>
         {/* Render current stage */}
         {currentStage === "emotions" && (
@@ -185,14 +249,30 @@ export default function Home() {
           />
         )}
 
-        {currentStage === "signals" && (
+        {currentStage === "signals" && !showRAIN && (
           <Stage2Signals
             stressLevel={stressLevel}
             onStressChange={setStressLevel}
             somaticSignals={somaticSignals}
             onSignalsChange={setSomaticSignals}
+            selectedEmotions={selectedEmotions.map(e => e.word)}
             onBack={() => goToStage("emotions")}
-            onNext={() => goToStage("chat")}
+            onNext={() => setShowRAIN(true)}
+          />
+        )}
+
+        {/* RAIN Mini-Module - Optional between Stage 2 and 3 */}
+        {currentStage === "signals" && showRAIN && (
+          <RAINModule
+            onComplete={() => {
+              setShowRAIN(false);
+              goToStage("chat");
+            }}
+            onSkip={() => {
+              setShowRAIN(false);
+              goToStage("chat");
+            }}
+            showSkipButton={true}
           />
         )}
 

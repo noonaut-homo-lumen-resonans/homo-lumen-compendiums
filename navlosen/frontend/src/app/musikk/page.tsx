@@ -95,21 +95,21 @@ export default function MusikkPage() {
         </div>
 
         {/* Header */}
-        <div className="mb-8 text-left">
+        <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <Music className="h-10 w-10 text-purple-600" />
             <h1 className="text-4xl font-bold text-[var(--color-text-primary)]">
               Helende Frekvenser
             </h1>
           </div>
-          <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl">
+          <p className="text-lg text-[var(--color-text-secondary)]">
             Opplev kraften i terapeutiske lydfrekvenser. Hver tone har unike helende egenskaper
             basert på Solfeggio-skalaen og naturlig tuning.
           </p>
         </div>
 
         {/* Info card */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8 max-w-3xl">
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-8 mx-auto" style={{ maxWidth: "900px" }}>
           <h2 className="text-xl font-bold text-purple-900 mb-3">
             Hvordan bruke healing frekvenser
           </h2>
@@ -155,7 +155,7 @@ export default function MusikkPage() {
         </div>
 
         {/* Science info */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-3xl">
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6 mx-auto" style={{ maxWidth: "900px" }}>
           <h3 className="text-lg font-bold text-blue-900 mb-3">
             🔬 Vitenskapelig grunnlag
           </h3>

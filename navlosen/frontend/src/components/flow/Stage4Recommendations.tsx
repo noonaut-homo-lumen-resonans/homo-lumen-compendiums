@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
 import {
   ArrowLeft,
@@ -10,10 +10,14 @@ import {
   Music,
   Sun,
   Activity,
-  RefreshCw
+  RefreshCw,
+  BookOpen,
+  FileText
 } from "lucide-react";
 import { Recommendation, SessionData, StressState } from "@/types";
 import Link from "next/link";
+import JourneySuccess from "@/components/mestring/JourneySuccess";
+import MasteryLog from "@/components/mestring/MasteryLog";
 
 interface Stage4RecommendationsProps {
   sessionData: SessionData;
@@ -40,6 +44,27 @@ export default function Stage4Recommendations({
   onBack,
   onRestart,
 }: Stage4RecommendationsProps) {
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showMasteryLog, setShowMasteryLog] = useState(false);
+  const [journalEntry, setJournalEntry] = useState<string>("");
+
+  // Load journal entry from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedJournal = localStorage.getItem("navlosen-journal-entry");
+      if (savedJournal) {
+        setJournalEntry(savedJournal);
+      }
+    }
+  }, []);
+
+  // Save journal entry to localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("navlosen-journal-entry", journalEntry);
+    }
+  }, [journalEntry]);
+
   const getStressState = (): StressState => {
     if (sessionData.stressLevel <= 3) return "ventral";
     if (sessionData.stressLevel <= 7) return "sympathetic";
@@ -142,7 +167,7 @@ export default function Stage4Recommendations({
       title: "Forstå Polyvagal Teori",
       description: "Lær hvordan nervesystemet ditt reagerer på stress.",
       duration: "12 min",
-      link: "https://www.youtube.com/watch?v=example",
+      link: "https://youtu.be/0zrlKLgnov4",
       priority: 5,
     });
 
@@ -207,26 +232,51 @@ export default function Stage4Recommendations({
     }
   };
 
+  // Show Mastery Log
+  if (showMasteryLog) {
+    return <MasteryLog onClose={() => setShowMasteryLog(false)} />;
+  }
+
+  // Show success celebration when user views recommendations
+  if (showSuccess) {
+    return (
+      <JourneySuccess
+        title="Godt jobbet!"
+        message="Du navigerte gjennom følelsene dine, lyttet til kroppen, og kom trygt til anbefalinger. Dette er din styrke i praksis."
+        onContinue={() => setShowSuccess(false)}
+        showAnimation={true}
+      />
+    );
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto">
-      {/* Progress indicator */}
+      {/* Progress indicator - Lighthouse beam style */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
-          <div className="w-1/4 h-2 bg-green-500 rounded-full"></div>
-          <div className="w-1/4 h-2 bg-green-500 rounded-full"></div>
-          <div className="w-1/4 h-2 bg-green-500 rounded-full"></div>
-          <div className="w-1/4 h-2 bg-green-500 rounded-full"></div>
+          <div className="w-1/4 h-2 bg-gradient-to-r from-green-400 to-teal-500 rounded-full"></div>
+          <div className="w-1/4 h-2 bg-gradient-to-r from-green-400 to-teal-500 rounded-full"></div>
+          <div className="w-1/4 h-2 bg-gradient-to-r from-green-400 to-teal-500 rounded-full"></div>
+          <div className="w-1/4 h-2 bg-gradient-to-r from-yellow-300 to-amber-400 rounded-full pulse-glow"></div>
         </div>
         <p className="text-sm text-gray-600">Steg 4 av 4: Dine anbefalinger</p>
       </div>
 
-      {/* Header */}
+      {/* Header - NVC: Behov vs Forslag */}
       <div className="mb-8 text-left">
+        <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4 rounded">
+          <p className="text-sm text-amber-800">
+            🌟 Dette er forslag, ikke krav. Du bestemmer selv hva som passer for deg akkurat nå.
+          </p>
+        </div>
         <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-3">
-          Anbefalinger for deg akkurat nå
+          Forslag til deg akkurat nå
         </h1>
-        <p className="text-lg text-[var(--color-text-secondary)]">
-          Basert på dine svar har vi laget en personlig plan. Start hvor som helst!
+        <p className="text-lg text-[var(--color-text-secondary)] mb-3">
+          Basert på det du delte, kan disse aktivitetene møte behovet ditt for ro, forståelse og mestring.
+        </p>
+        <p className="text-sm text-gray-600 italic">
+          💡 Trenger du noe annet? Det er helt greit. Du kjenner deg selv best.
         </p>
       </div>
 
@@ -268,7 +318,7 @@ export default function Stage4Recommendations({
         {recommendations.map((rec) => (
           <div
             key={rec.id}
-            className="bg-white rounded-lg shadow-sm border-2 border-gray-200 p-6 hover:border-blue-300 transition-all"
+            className="bg-white rounded-lg shadow-sm border-2 border-gray-200 p-6 hover:border-blue-300 transition-all calm-hover fade-in"
           >
             {/* Category badge */}
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4 border-2 ${getCategoryColor(rec.type)}`}>
@@ -306,6 +356,82 @@ export default function Stage4Recommendations({
             )}
           </div>
         ))}
+      </div>
+
+      {/* Journal & Reflection - Lira's guidance (HOM-53) */}
+      <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 mb-8 border-2 border-purple-300">
+        <div className="flex items-start gap-4 mb-4">
+          <FileText className="h-6 w-6 text-purple-600 flex-shrink-0 mt-1" />
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Refleksjon (valgfritt)
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Hva tenker eller føler du etter å ha gått gjennom denne økten?
+              Skriv fritt – dette er bare for deg.
+            </p>
+            <textarea
+              value={journalEntry}
+              onChange={(e) => setJournalEntry(e.target.value)}
+              placeholder="F.eks: 'Jeg la merke til at jeg ofte kjenner angst i brystet...', 'Det hjalp å sette ord på følelsene...'"
+              rows={4}
+              className="w-full px-4 py-3 border-2 border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+            />
+            {journalEntry.trim().length > 0 && (
+              <p className="text-xs text-purple-600 mt-2 italic">
+                💜 Refleksjonen din er lagret lokalt og forblir privat.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Mastery Log - Port 3: Graduation */}
+      <div className="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-6 mb-8 border-2 border-green-300">
+        <div className="flex items-start gap-4">
+          <BookOpen className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Bygger du mestring?
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Hvis du fant en strategi som fungerte i dag (pusteøvelse,
+              gåtur, musikk), kan du lagre den i din personlige mestringslogg.
+              Over tid bygger du din egen verktøykasse for selvregulering.
+            </p>
+            <Button
+              variant="primary"
+              size="medium"
+              onClick={() => setShowMasteryLog(true)}
+              leftIcon={<BookOpen className="h-5 w-5" />}
+            >
+              Åpne mestringslogg
+            </Button>
+            <p className="text-xs text-gray-500 mt-3 italic">
+              💡 Mål: Over tid trenger du NAV-Losen mindre, fordi du vet hva
+              som fungerer for deg. Det er målet vårt.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Celebration button - Show success visualization */}
+      <div className="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg p-6 mb-8 border-2 border-yellow-300">
+        <div className="text-center">
+          <p className="text-lg font-semibold text-gray-900 mb-3">
+            Du har fullført hele reisen! 🎉
+          </p>
+          <p className="text-sm text-gray-600 mb-4">
+            Se hvordan du navigerte fra storm til trygg havn.
+          </p>
+          <Button
+            variant="primary"
+            size="large"
+            onClick={() => setShowSuccess(true)}
+          >
+            Se din reise
+          </Button>
+        </div>
       </div>
 
       {/* Navigation */}

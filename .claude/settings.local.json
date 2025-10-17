@@ -8,7 +8,19 @@
       "Bash(git config:*)",
       "Bash(rd /s /q .next)",
       "Bash(taskkill:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(timeout /t 2)",
+      "Bash(timeout /t 5)",
+      "Bash(claude mcp add:*)",
+      "Bash(claude mcp list:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(cat:*)",
+      "Bash(timeout /t 3)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

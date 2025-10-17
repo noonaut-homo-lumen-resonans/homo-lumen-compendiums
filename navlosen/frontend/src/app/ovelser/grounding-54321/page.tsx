@@ -116,11 +116,11 @@ export default function Grounding54321Page() {
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-blue-50 -m-4 md:-m-6 lg:-m-8 p-4 md:p-6 lg:p-8">
         {/* Back button */}
         <Link
-          href="/mestring"
+          href="/"
           className="inline-flex items-center gap-2 text-[var(--color-primary)] hover:underline mb-6"
         >
           <ArrowLeft className="h-4 w-4" />
-          Tilbake til Mestring
+          Tilbake
         </Link>
 
         {/* Header */}
@@ -244,9 +244,9 @@ export default function Grounding54321Page() {
                 >
                   Gjør øvelsen på nytt
                 </Button>
-                <Link href="/mestring">
+                <Link href="/">
                   <Button variant="secondary" size="large" className="w-full">
-                    Tilbake til Mestring
+                    Tilbake
                   </Button>
                 </Link>
               </div>
