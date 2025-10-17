@@ -16,6 +16,7 @@ import {
   Bell,
   Scale,
   Settings,
+  Compass,
   X,
 } from "lucide-react";
 
@@ -59,6 +60,7 @@ export default function Sidebar({ isOpen, onClose, className }: SidebarProps) {
       path: "/forklar-brev",
     },
     { id: "mestring", label: "Mestring", icon: "heart", path: "/mestring" },
+    { id: "min-reise", label: "Min Reise", icon: "compass", path: "/min-reise" },
     { id: "jobb", label: "Jobb", icon: "briefcase", path: "/jobb" },
     { id: "chatbot", label: "Chatbot", icon: "chat", path: "/chatbot" },
     {
@@ -98,6 +100,8 @@ export default function Sidebar({ isOpen, onClose, className }: SidebarProps) {
         return <Lightbulb className={iconClass} />;
       case "heart":
         return <Heart className={iconClass} />;
+      case "compass":
+        return <Compass className={iconClass} />;
       case "briefcase":
         return <Briefcase className={iconClass} />;
       case "chat":
@@ -131,14 +135,12 @@ export default function Sidebar({ isOpen, onClose, className }: SidebarProps) {
         className={cn(
           "fixed lg:static inset-y-0 left-0 z-50",
           "w-60 bg-[var(--color-bg-secondary)]",
-          "border-r border-[var(--color-bg-tertiary)]",
-          "transform transition-transform duration-300 ease-in-out",
-          "lg:transform-none",
+          "lg:border-r border-[var(--color-bg-tertiary)]",
+          "transform transition-transform duration-300 ease-in-out lg:transform-none",
           "flex flex-col",
-          {
-            "translate-x-0": isOpen,
-            "-translate-x-full": !isOpen,
-          },
+          // On mobile: toggle visibility based on isOpen
+          // On desktop (lg): always visible (translate-x-0)
+          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
           className
         )}
       >
