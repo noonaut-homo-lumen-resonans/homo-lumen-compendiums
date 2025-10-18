@@ -71,9 +71,9 @@ export function detectDorsalShutdown(context: KairosContext): KairosIntervention
   // Trigger 1: Dorsal state (stress 8-10)
   const isDorsal = polyvagalState === "dorsal";
 
-  // Trigger 2: 3+ high-intensity somatic signals
-  const highIntensitySomatic = somaticSignals.filter(s => s.intensity >= 7).length;
-  const hasManySomaticSignals = highIntensitySomatic >= 3;
+  // Trigger 2: 3+ checked somatic signals
+  const checkedSomaticSignals = somaticSignals.filter(s => s.checked).length;
+  const hasManySomaticSignals = checkedSomaticSignals >= 3;
 
   // Trigger 3: Safety question answered negatively
   const safetyAnswer = liraAnswers.find(a => a.questionId === "safety")?.answer;
