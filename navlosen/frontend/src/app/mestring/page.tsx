@@ -6,6 +6,7 @@ import Stage1Emotions from "@/components/mestring/Stage1Emotions";
 import Stage2Signals from "@/components/mestring/Stage2Signals";
 import Stage3LiraChat from "@/components/mestring/Stage3LiraChat";
 import Stage4Results from "@/components/mestring/Stage4Results";
+import KairosInterventionModal from "@/components/mestring/KairosInterventionModal";
 import { SomaticSignal } from "@/types";
 import { Heart } from "lucide-react";
 import {
@@ -13,6 +14,13 @@ import {
   type CompositeStressInput,
   type LiraAnswer,
 } from "@/lib/compositeStressScore";
+import {
+  detectKairosPatterns,
+  loadHistoricalContext,
+  updateHistoricalContext,
+  type KairosIntervention,
+  type KairosContext,
+} from "@/lib/kairosInterventions";
 
 type FlowStage = "emotions" | "signals" | "chat" | "results";
 
@@ -57,6 +65,10 @@ export default function MestringPage() {
   const [stressLevel, setStressLevel] = useState<number>(5);
   const [somaticSignals, setSomaticSignals] = useState<SomaticSignal[]>(defaultSomaticSignals);
   const [liraAnswers, setLiraAnswers] = useState<LiraAnswer[]>([]);
+
+  // Kairos intervention state
+  const [activeIntervention, setActiveIntervention] = useState<KairosIntervention | null>(null);
+  const [dismissedInterventions, setDismissedInterventions] = useState<Set<string>>(new Set());
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -139,6 +151,34 @@ export default function MestringPage() {
   const compositeResult = calculateCompositeStressScore(compositeInput);
   const currentState = compositeResult.polyvagalState;
 
+  // Detect Kairos interventions when data changes
+  useEffect(() => {
+    // Only detect on Stage 2 or later (need stress data)
+    if (currentStage === "emotions") return;
+
+    const historicalContext = loadHistoricalContext();
+
+    const kairosContext: KairosContext = {
+      stressLevel,
+      selectedEmotions,
+      somaticSignals,
+      liraAnswers,
+      polyvagalState: currentState,
+      ...historicalContext,
+    };
+
+    const interventions = detectKairosPatterns(kairosContext);
+
+    // Show highest-confidence intervention that hasn't been dismissed
+    const interventionToShow = interventions.find(
+      (intervention) => !dismissedInterventions.has(intervention.pattern)
+    );
+
+    if (interventionToShow) {
+      setActiveIntervention(interventionToShow);
+    }
+  }, [currentStage, stressLevel, selectedEmotions, somaticSignals, liraAnswers, currentState, dismissedInterventions]);
+
   // Background color based on stress state
   const getBackgroundColor = (): string => {
     switch (currentState) {
@@ -163,12 +203,51 @@ export default function MestringPage() {
   };
 
   const handleRestart = () => {
+    // Update historical context before restarting
+    updateHistoricalContext(currentState, stressLevel);
+
     setCurrentStage("emotions");
     setSelectedEmotions([]);
     setStressLevel(5);
     setSomaticSignals(defaultSomaticSignals);
     setLiraAnswers([]);
+    setActiveIntervention(null);
+    setDismissedInterventions(new Set());
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Kairos intervention handlers
+  const handleInterventionAccept = () => {
+    if (!activeIntervention) return;
+
+    // Handle different action types
+    switch (activeIntervention.suggestion.actionType) {
+      case "breathing":
+        // Navigate to breathing exercise (future implementation)
+        // For now, just dismiss and continue
+        setActiveIntervention(null);
+        break;
+      case "grounding":
+        // Navigate to grounding exercise (future implementation)
+        setActiveIntervention(null);
+        break;
+      case "celebration":
+        // Show celebration message (future implementation)
+        setActiveIntervention(null);
+        break;
+      case "continue":
+        // Just continue
+        setActiveIntervention(null);
+        break;
+    }
+  };
+
+  const handleInterventionDismiss = () => {
+    if (!activeIntervention) return;
+
+    // Mark this intervention as dismissed for this session
+    setDismissedInterventions((prev) => new Set(prev).add(activeIntervention.pattern));
+    setActiveIntervention(null);
   };
 
   return (
@@ -248,6 +327,13 @@ export default function MestringPage() {
             />
           )}
         </div>
+
+        {/* Kairos Intervention Modal - Port 1 Compliant (always dismissible) */}
+        <KairosInterventionModal
+          intervention={activeIntervention}
+          onAccept={handleInterventionAccept}
+          onDismiss={handleInterventionDismiss}
+        />
       </div>
     </Layout>
   );
