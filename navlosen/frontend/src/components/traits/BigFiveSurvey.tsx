@@ -209,7 +209,7 @@ export default function BigFiveSurvey({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full p-6 md:p-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-bold text-[var(--color-text-primary)]">
@@ -235,12 +235,12 @@ export default function BigFiveSurvey({
 
         {/* Question */}
         <div className="mb-8">
-          <p className="text-xl font-semibold text-[var(--color-text-primary)] mb-6">
+          <p className="text-xl md:text-2xl font-semibold text-[var(--color-text-primary)] mb-6 leading-relaxed">
             {currentItem.text}
           </p>
 
           {/* 5-point Likert scale */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             {[
               { value: 1, label: "Helt uenig" },
               { value: 2, label: "Uenig" },
@@ -251,18 +251,18 @@ export default function BigFiveSurvey({
               <button
                 key={option.value}
                 onClick={() => handleResponse(option.value)}
-                className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+                className={`w-full p-4 md:p-5 rounded-lg border-2 transition-all text-left ${
                   responses[currentItem.id] === option.value
                     ? "border-purple-500 bg-purple-50"
                     : "border-gray-200 hover:border-purple-300 hover:bg-gray-50"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-[var(--color-text-primary)]">
+                  <span className="font-medium text-base md:text-lg text-[var(--color-text-primary)]">
                     {option.label}
                   </span>
                   {responses[currentItem.id] === option.value && (
-                    <CheckCircle className="w-5 h-5 text-purple-500" />
+                    <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-purple-500" />
                   )}
                 </div>
               </button>
