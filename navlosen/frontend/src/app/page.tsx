@@ -2,317 +2,386 @@
 
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
-import ConsentModal from "@/components/safety/ConsentModal";
-import Stage1Emotions from "@/components/flow/Stage1Emotions";
-import Stage2Signals from "@/components/flow/Stage2Signals";
-import Stage3Chat from "@/components/flow/Stage3Chat";
-import Stage4Recommendations from "@/components/flow/Stage4Recommendations";
-import RAINModule from "@/components/mestring/RAINModule";
+import Link from "next/link";
 import {
-  FlowStage,
-  SomaticSignal,
-  LiraAnswer,
-  SessionData,
-  HealthConnectData,
-  WeatherData
-} from "@/types";
+  Heart,
+  Compass,
+  Activity,
+  TrendingUp,
+  ArrowRight,
+  CheckCircle2,
+  Clock,
+  Brain,
+  Sparkles,
+} from "lucide-react";
 import {
-  multiScaleLogger,
-  logCelleEvent,
-  logVevEvent,
-} from "@/lib/multi-scale-metadata";
+  calculateCompositeStressScore,
+  getPolyvagalUIConfig,
+  type CompositeStressInput,
+  type LiraAnswer,
+} from "@/lib/compositeStressScore";
+import { SomaticSignal } from "@/types";
 
 /**
- * NAV-Losen Home Page - Multi-Stage Adaptive Flow
+ * NAV-Losen Dashboard (Homepage)
  *
- * 4-stage wizard that guides users through:
- * 1. Emotion Check-in (Quadrant selection)
- * 2. Trykk & Signaler (Stress + Somatic awareness)
- * 3. Lira Chat (2-5 adaptive questions)
- * 4. Personalized Recommendations (Exercises, Music, Knowledge, Context)
+ * Overview page showing:
+ * - Current biofield state (from Mestring data)
+ * - Summary of recent activity
+ * - Recommended next steps
+ * - Quick access to main features
  *
- * Integrates:
- * - Polyvagal Theory (stress-responsive UI)
- * - Emotional Granularity (100 emotion words)
- * - HealthConnect data (mock for now)
- * - Weather context (mock for now)
+ * Inspired by AMA's biofield-responsive dashboard patterns
  *
- * Triadisk Score: 0.18 (PROCEED)
- * - Suverenitet: User-controlled progression
- * - Koherens: Grounded in neuroscience
- * - Healing: Personalized capacity building
+ * Triadisk Score: 0.15 (PROCEED)
+ * - Suverenitet: User sees their own data, owns their journey
+ * - Koherens: Grounded in polyvagal state awareness
+ * - Healing: Gentle guidance toward capacity building
  */
-export default function Home() {
-  // Consent management
-  const [hasConsented, setHasConsented] = useState<boolean>(false);
+export default function Dashboard() {
+  const [currentState, setCurrentState] = useState<"ventral" | "sympathetic" | "dorsal">("ventral");
+  const [compositeScore, setCompositeScore] = useState<number>(5);
+  const [confidence, setConfidence] = useState<number>(0);
+  const [hasData, setHasData] = useState<boolean>(false);
 
-  // Stage management
-  const [currentStage, setCurrentStage] = useState<FlowStage>("emotions");
-  const [showRAIN, setShowRAIN] = useState<boolean>(false);
-
-  // Default somatic signals
-  const defaultSomaticSignals: SomaticSignal[] = [
-    { id: "rask-puls", label: "Rask puls eller hjertebank", checked: false },
-    { id: "anspent-kjeve", label: "Anspent kjeve eller skuldre", checked: false },
-    { id: "grunn-pust", label: "Grunn eller rask pust", checked: false },
-    { id: "mage-uro", label: "Uro i magen eller kvalme", checked: false },
-    { id: "trett", label: "Tretthet eller tung kropp", checked: false },
-    { id: "nummen", label: "Nummen eller koblet fra", checked: false },
-  ];
-
-  // Session state
-  const [selectedEmotions, setSelectedEmotions] = useState<{ word: string; quadrant: number | null }[]>([]);
-  const [stressLevel, setStressLevel] = useState<number>(5);
-  const [somaticSignals, setSomaticSignals] = useState<SomaticSignal[]>(defaultSomaticSignals);
-  const [liraAnswers, setLiraAnswers] = useState<LiraAnswer[]>([]);
-
-  // Mock HealthConnect & Weather data
-  const [healthConnect] = useState<HealthConnectData>({
-    steps: 4532,
-    sleepHours: 6.5,
-    sleepQuality: "fair",
-    heartRate: 72,
-  });
-
-  const [weather] = useState<WeatherData>({
-    temperature: 12,
-    condition: "sunny",
-    recommendation: "Fint vær for en tur!",
-  });
-
-  // Check consent on mount
+  // Load data from localStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedConsent = localStorage.getItem("navlosen_consent");
-      if (savedConsent) {
-        try {
-          const consent = JSON.parse(savedConsent);
-          setHasConsented(consent.consented === true);
-        } catch (e) {
-          console.error("Failed to parse consent from localStorage", e);
+      try {
+        const savedEmotions = localStorage.getItem("navlosen-emotions");
+        const savedStressLevel = localStorage.getItem("navlosen-stress-level");
+        const savedSignals = localStorage.getItem("navlosen-somatic-signals");
+        const savedAnswers = localStorage.getItem("navlosen-lira-answers");
+
+        if (savedEmotions || savedStressLevel || savedSignals || savedAnswers) {
+          setHasData(true);
+
+          // Build composite input
+          const compositeInput: CompositeStressInput = {
+            stressSlider: savedStressLevel ? Number(savedStressLevel) : 5,
+            selectedEmotions: savedEmotions
+              ? JSON.parse(savedEmotions).map((e: { word: string; quadrant: number | null }) => ({
+                  word: e.word,
+                  quadrant: e.quadrant || 1,
+                }))
+              : [],
+            somaticSignals: savedSignals
+              ? JSON.parse(savedSignals)
+              : ([] as SomaticSignal[]),
+            liraAnswers: savedAnswers ? JSON.parse(savedAnswers) : ([] as LiraAnswer[]),
+          };
+
+          const result = calculateCompositeStressScore(compositeInput);
+          setCurrentState(result.polyvagalState);
+          setCompositeScore(result.compositeScore);
+          setConfidence(result.confidence);
         }
+      } catch (e) {
+        console.error("Failed to load dashboard data", e);
       }
     }
   }, []);
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedStage = localStorage.getItem("navlosen-current-stage");
-      const savedEmotions = localStorage.getItem("navlosen-emotions");
-      const savedStressLevel = localStorage.getItem("navlosen-stress-level");
-      const savedSignals = localStorage.getItem("navlosen-somatic-signals");
-      const savedAnswers = localStorage.getItem("navlosen-lira-answers");
+  const uiConfig = getPolyvagalUIConfig(currentState);
 
-      if (savedStage) setCurrentStage(savedStage as FlowStage);
-      if (savedEmotions) {
-        try {
-          setSelectedEmotions(JSON.parse(savedEmotions));
-        } catch (e) {
-          console.error("Failed to parse emotions from localStorage", e);
-        }
-      }
-      if (savedStressLevel) setStressLevel(Number(savedStressLevel));
-      if (savedSignals) {
-        try {
-          setSomaticSignals(JSON.parse(savedSignals));
-        } catch (e) {
-          console.error("Failed to parse signals from localStorage", e);
-        }
-      }
-      if (savedAnswers) {
-        try {
-          setLiraAnswers(JSON.parse(savedAnswers));
-        } catch (e) {
-          console.error("Failed to parse answers from localStorage", e);
-        }
-      }
-    }
-  }, []);
-
-  // Save to localStorage when state changes
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-current-stage", currentStage);
-    }
-  }, [currentStage]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-emotions", JSON.stringify(selectedEmotions));
-    }
-  }, [selectedEmotions]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-stress-level", String(stressLevel));
-    }
-  }, [stressLevel]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-somatic-signals", JSON.stringify(somaticSignals));
-    }
-  }, [somaticSignals]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-lira-answers", JSON.stringify(liraAnswers));
-    }
-  }, [liraAnswers]);
-
-  // Stage navigation with multi-scale logging
-  const goToStage = (stage: FlowStage) => {
-    // Log multi-scale event (Skala 1: Celle - Claude Code learns from user progression)
-    if (multiScaleLogger && stage === "signals") {
-      const celleEvent = logCelleEvent(
-        "Claude Code",
-        `User completed emotion selection: ${selectedEmotions.length} emotions selected`,
-        "Users engage with emotion wheel → better emotional granularity",
-        "Progressed to Stage 2 (Signals)",
-        "Emotional granularity builds self-awareness",
-        "Flow orchestration and UX implementation"
-      );
-
-      multiScaleLogger.logBottomUpEmergence(
-        `User selected ${selectedEmotions.length} emotions`,
-        celleEvent
-      );
+  // Get biofield message (inspired by AMA Lira's empathetic responses)
+  const getBiofieldMessage = () => {
+    if (confidence === 0) {
+      return {
+        title: "Velkommen til NAV-Losen",
+        message: "Start din reise med å sjekke inn hvordan du har det akkurat nå.",
+        icon: <Sparkles className="h-8 w-8 text-purple-500" />,
+      };
     }
 
-    if (multiScaleLogger && stage === "chat") {
-      const celleEvent = logCelleEvent(
-        "Claude Code",
-        `User stress level: ${stressLevel}/10, somatic signals: ${somaticSignals.filter(s => s.checked).length}`,
-        "Stress + somatic patterns correlate → polyvagal state detection",
-        "Progressed to Stage 3 (Chat) via RAIN module",
-        "Self-regulation practice enhances emotional capacity",
-        "RAIN module integration and polyvagal routing"
-      );
-
-      multiScaleLogger.logBottomUpEmergence(
-        `User stress ${stressLevel}/10`,
-        celleEvent
-      );
+    if (currentState === "ventral") {
+      return {
+        title: "Du er i balanse",
+        message:
+          "Ditt biofelt resonerer med klarhet og styrke. Dette er en god tid for refleksjon og planlegging.",
+        icon: <CheckCircle2 className="h-8 w-8 text-green-500" />,
+      };
     }
 
-    setCurrentStage(stage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (currentState === "sympathetic") {
+      return {
+        title: "Du er i aktivering",
+        message:
+          "Ditt biofelt viser økt energi. Husk å ta pauser og bruk pusteøvelser for regulering.",
+        icon: <Activity className="h-8 w-8 text-orange-500" />,
+      };
+    }
+
+    // Dorsal
+    return {
+      title: "Du trenger støtte",
+      message:
+        "Ditt biofelt søker trygghet og ro. Fokuser på grounding-øvelser og vurder å snakke med en veileder.",
+      icon: <Heart className="h-8 w-8 text-blue-500" />,
+    };
   };
 
-  const handleRestart = () => {
-    setCurrentStage("emotions");
-    setSelectedEmotions([]);
-    setStressLevel(5);
-    setSomaticSignals(defaultSomaticSignals);
-    setLiraAnswers([]);
-    localStorage.removeItem("navlosen-current-stage");
-    localStorage.removeItem("navlosen-emotions");
-    localStorage.removeItem("navlosen-stress-level");
-    localStorage.removeItem("navlosen-somatic-signals");
-    localStorage.removeItem("navlosen-lira-answers");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const biofieldMessage = getBiofieldMessage();
+
+  // Get recommended actions (biofield-responsive)
+  const getRecommendedActions = () => {
+    if (!hasData) {
+      return [
+        {
+          id: "mestring",
+          title: "Start med Mestring",
+          description: "Sjekk inn hvordan du har det akkurat nå",
+          link: "/mestring",
+          icon: <Heart className="h-6 w-6" />,
+          priority: "high" as const,
+        },
+      ];
+    }
+
+    if (currentState === "dorsal") {
+      return [
+        {
+          id: "jording",
+          title: "Jording: 5-4-3-2-1",
+          description: "Kom tilbake til nåtiden med sansebasert grounding",
+          link: "/ovelser/grounding-54321",
+          icon: <Heart className="h-6 w-6" />,
+          priority: "high" as const,
+        },
+        {
+          id: "pust",
+          title: "Pust: 4-6-8",
+          description: "Aktiver parasympatiske nervesystemet",
+          link: "/ovelser/pust-468",
+          icon: <Activity className="h-6 w-6" />,
+          priority: "high" as const,
+        },
+      ];
+    }
+
+    if (currentState === "sympathetic") {
+      return [
+        {
+          id: "update-mestring",
+          title: "Oppdater Mestring",
+          description: "Sjekk inn på nytt for å se hvordan du har det nå",
+          link: "/mestring",
+          icon: <Heart className="h-6 w-6" />,
+          priority: "medium" as const,
+        },
+        {
+          id: "pust",
+          title: "Pust: 4-6-8",
+          description: "Rolig ned aktivering med lang utpust",
+          link: "/ovelser/pust-468",
+          icon: <Activity className="h-6 w-6" />,
+          priority: "high" as const,
+        },
+        {
+          id: "min-reise",
+          title: "Se din fremgang",
+          description: "Spor hvordan tilstanden din utvikler seg over tid",
+          link: "/min-reise",
+          icon: <Compass className="h-6 w-6" />,
+          priority: "low" as const,
+        },
+      ];
+    }
+
+    // Ventral
+    return [
+      {
+        id: "min-reise",
+        title: "Utforsk Min Reise",
+        description: "Se mønstre og fremgang over tid",
+        link: "/min-reise",
+        icon: <Compass className="h-6 w-6" />,
+        priority: "high" as const,
+      },
+      {
+        id: "veiledninger",
+        title: "Utforsk Veiledninger",
+        description: "Lær mer om dine rettigheter og muligheter",
+        link: "/veiledninger",
+        icon: <Brain className="h-6 w-6" />,
+        priority: "medium" as const,
+      },
+    ];
   };
 
-  // Build session data for recommendations
-  const sessionData: SessionData = {
-    emotions: selectedEmotions,
-    stressLevel,
-    somaticSignals,
-    liraAnswers,
-    healthConnect,
-    weather,
-    timestamp: new Date().toISOString(),
-  };
+  const recommendedActions = getRecommendedActions();
 
-  // Get background color based on stress level + stage
-  // Nyra's Lighthouse Metaphor: Storm → Calming → Harbor
-  const getBackgroundColor = (): string => {
-    // Stage 1 (Emotions): Dark, stormy - identifying the storm
-    if (currentStage === "emotions") {
-      if (stressLevel >= 8) return "bg-gradient-to-b from-slate-700 to-slate-600"; // Dark storm
-      if (stressLevel >= 5) return "bg-gradient-to-b from-slate-500 to-slate-400"; // Storm brewing
-      return "bg-gradient-to-b from-blue-200 to-cyan-100"; // Calm start
+  const getPriorityColor = (priority: "high" | "medium" | "low") => {
+    switch (priority) {
+      case "high":
+        return "border-green-500 bg-green-50";
+      case "medium":
+        return "border-orange-500 bg-orange-50";
+      case "low":
+        return "border-blue-500 bg-blue-50";
     }
-
-    // Stage 2 (Signals): Waves are calming - seeing the lighthouse
-    if (currentStage === "signals") {
-      if (stressLevel >= 8) return "bg-gradient-to-b from-blue-800 to-cyan-700"; // Storm calming
-      if (stressLevel >= 5) return "bg-gradient-to-b from-blue-600 to-cyan-500"; // Approaching harbor
-      return "bg-gradient-to-b from-cyan-200 to-teal-100"; // Near harbor
-    }
-
-    // Stage 3 (Chat): Lighthouse beam visible - guidance active
-    if (currentStage === "chat") {
-      if (stressLevel >= 8) return "bg-gradient-to-b from-cyan-600 to-blue-500"; // Lighthouse guiding
-      if (stressLevel >= 5) return "bg-gradient-to-b from-cyan-400 to-teal-400"; // Light getting stronger
-      return "bg-gradient-to-b from-teal-200 to-green-100"; // Almost safe
-    }
-
-    // Stage 4 (Recommendations): Safe harbor - peace and clarity
-    return "bg-gradient-to-b from-green-100 via-teal-50 to-cyan-50"; // Safe harbor
   };
 
   return (
     <Layout>
-      {/* Consent Modal - Shown before any content */}
-      {!hasConsented && (
-        <ConsentModal onConsent={() => setHasConsented(true)} />
-      )}
+      <div
+        className={`min-h-screen transition-all duration-700 ${uiConfig.backgroundColor} -m-4 md:-m-6 lg:-m-8 p-4 md:p-6 lg:p-8`}
+      >
+        {/* Page Header */}
+        <div className="max-w-6xl mx-auto mb-8">
+          <h1 className="text-4xl font-bold text-[var(--color-text-primary)] mb-2">
+            Dashboard
+          </h1>
+          <p className="text-lg text-[var(--color-text-secondary)]">
+            Din personlige oversikt
+          </p>
+        </div>
 
-      <div className={`min-h-screen transition-all duration-700 ${getBackgroundColor()} -m-4 md:-m-6 lg:-m-8 p-4 md:p-6 lg:p-8`}>
-        {/* Render current stage */}
-        {currentStage === "emotions" && (
-          <Stage1Emotions
-            selectedEmotions={selectedEmotions}
-            onChange={setSelectedEmotions}
-            onNext={() => goToStage("signals")}
-          />
-        )}
+        {/* Main Dashboard Content */}
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Biofield Status Card */}
+          <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">{biofieldMessage.icon}</div>
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+                  {biofieldMessage.title}
+                </h2>
+                <p className="text-base text-[var(--color-text-secondary)] mb-4">
+                  {biofieldMessage.message}
+                </p>
 
-        {currentStage === "signals" && !showRAIN && (
-          <Stage2Signals
-            stressLevel={stressLevel}
-            onStressChange={setStressLevel}
-            somaticSignals={somaticSignals}
-            onSignalsChange={setSomaticSignals}
-            selectedEmotions={selectedEmotions.map(e => e.word)}
-            onBack={() => goToStage("emotions")}
-            onNext={() => setShowRAIN(true)}
-          />
-        )}
+                {hasData && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-gray-200">
+                    <div>
+                      <p className="text-sm text-gray-600">Kompositt Score</p>
+                      <p className="text-2xl font-bold text-[var(--color-primary)]">
+                        {compositeScore.toFixed(1)}/10
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Tilstand</p>
+                      <p className="text-lg font-semibold">{uiConfig.stateLabel}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Analysetillit</p>
+                      <p className="text-lg font-semibold">
+                        {Math.round(confidence * 100)}%
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Sist oppdatert</p>
+                      <p className="text-lg font-semibold flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        I dag
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
-        {/* RAIN Mini-Module - Optional between Stage 2 and 3 */}
-        {currentStage === "signals" && showRAIN && (
-          <RAINModule
-            onComplete={() => {
-              setShowRAIN(false);
-              goToStage("chat");
-            }}
-            onSkip={() => {
-              setShowRAIN(false);
-              goToStage("chat");
-            }}
-            showSkipButton={true}
-          />
-        )}
+          {/* Recommended Actions */}
+          <div>
+            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
+              <TrendingUp className="h-6 w-6 text-[var(--color-primary)]" />
+              Anbefalte neste steg
+            </h2>
 
-        {currentStage === "chat" && (
-          <Stage3Chat
-            stressLevel={stressLevel}
-            onAnswersChange={setLiraAnswers}
-            onBack={() => goToStage("signals")}
-            onNext={() => goToStage("recommendations")}
-          />
-        )}
+            <div className="grid md:grid-cols-2 gap-4">
+              {recommendedActions.map((action) => (
+                <Link
+                  key={action.id}
+                  href={action.link}
+                  className={`block p-6 rounded-lg border-2 transition-all hover:shadow-lg ${getPriorityColor(
+                    action.priority
+                  )}`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 text-[var(--color-primary)]">
+                      {action.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">
+                        {action.title}
+                      </h3>
+                      <p className="text-sm text-[var(--color-text-secondary)] mb-3">
+                        {action.description}
+                      </p>
+                      <div className="flex items-center gap-2 text-[var(--color-primary)] font-medium text-sm">
+                        <span>Gå til</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
 
-        {currentStage === "recommendations" && (
-          <Stage4Recommendations
-            sessionData={sessionData}
-            onBack={() => goToStage("chat")}
-            onRestart={handleRestart}
-          />
-        )}
+          {/* Quick Links */}
+          <div>
+            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">
+              Hurtiglenker
+            </h2>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Link
+                href="/mestring"
+                className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-all text-center"
+              >
+                <Heart className="h-8 w-8 mx-auto mb-2 text-red-500" />
+                <p className="font-semibold text-sm">Mestring</p>
+              </Link>
+
+              <Link
+                href="/min-reise"
+                className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-all text-center"
+              >
+                <Compass className="h-8 w-8 mx-auto mb-2 text-purple-500" />
+                <p className="font-semibold text-sm">Min Reise</p>
+              </Link>
+
+              <Link
+                href="/veiledninger"
+                className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-all text-center"
+              >
+                <Brain className="h-8 w-8 mx-auto mb-2 text-blue-500" />
+                <p className="font-semibold text-sm">Veiledninger</p>
+              </Link>
+
+              <Link
+                href="/chatbot"
+                className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-all text-center"
+              >
+                <Sparkles className="h-8 w-8 mx-auto mb-2 text-green-500" />
+                <p className="font-semibold text-sm">Chat med Lira</p>
+              </Link>
+            </div>
+          </div>
+
+          {/* Info Card */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h3 className="font-bold text-lg mb-2 text-blue-900">
+              Om NAV-Losen
+            </h3>
+            <p className="text-sm text-blue-800 mb-4">
+              NAV-Losen hjelper deg med å navigere NAV-systemet med mindre stress.
+              Vi bruker Polyvagal Teori for å tilpasse opplevelsen til din tilstand,
+              og gir deg verktøy for selvregulering og mestring.
+            </p>
+            <p className="text-xs text-blue-700">
+              <strong>Viktig:</strong> Dette er et støtteverktøy, ikke medisinsk
+              behandling. Ved alvorlig angst eller depresjon, kontakt fastlegen eller
+              ring Mental Helse på{" "}
+              <a href="tel:116123" className="underline font-semibold">
+                116 123
+              </a>
+              .
+            </p>
+          </div>
+        </div>
       </div>
     </Layout>
   );
