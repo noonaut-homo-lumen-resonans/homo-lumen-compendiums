@@ -1,0 +1,95 @@
+graph TB
+    Input["📥 FEATURE/DESIGN INPUT"]
+
+    subgraph PORT1["<b>PORT 1: KOGNITIV SUVERENITET</b>"]
+        P1["🔓 Bruker kontrollerer sin digitale opplevelse"]
+        P1_Ex1["✅ Skip Buttons på alle stages"]
+        P1_Ex2["💾 LocalStorage (Privacy-first)"]
+        P1_Ex3["🔐 Data Ownership (PAPI)"]
+        P1_Ex4["📝 Mastery Log (User saves own strategies)"]
+    end
+
+    subgraph PORT2["<b>PORT 2: ONTOLOGISK KOHERENS</b>"]
+        P2["🧠 Teknologi respekterer menneskelig verdighet"]
+        P2_Ex1["💚 NVC Language (Validering, empati)"]
+        P2_Ex2["📋 Behov vs Forslag (ikke krav)"]
+        P2_Ex3["📖 8th Grade Language (tilgjengelig)"]
+        P2_Ex4["🔱 Thalus Gate Validation"]
+    end
+
+    subgraph PORT3["<b>PORT 3: REGENERATIV HEALING</b>"]
+        P3["🌱 Systemer bygger brukerens kapasitet"]
+        P3_Ex1["🌧️ RAIN Practice (Self-regulation)"]
+        P3_Ex2["📝 Mastery Log (Uavhengighet)"]
+        P3_Ex3["🎓 Graduation Messaging"]
+        P3_Ex4["⛵ Fyrtårn i Havn (Celebration)"]
+    end
+
+    subgraph VALIDATION["<b>VALIDATION PROCESS</b>"]
+        Check1["✅ PORT 1 CHECK<br/>User control?<br/>Skip/override options?"]
+        Check2["✅ PORT 2 CHECK<br/>Respectful language?<br/>Transparent logic?"]
+        Check3["✅ PORT 3 CHECK<br/>Builds capacity?<br/>Graduation path?"]
+        Score["📊 TRIADIC SCORE<br/>Average of 3 ports<br/>(0.0 - 1.0)"]
+        Decision{"Score ≥ 0.85?"}
+        Approve["✅ APPROVED<br/>Deploy to Production"]
+        Revise["🔄 REVISE<br/>Improve Lowest Port"]
+    end
+
+    subgraph AGENTS["<b>AGENT GUARDIANS</b>"]
+        Thalus["🔱 THALUS<br/>Primary Guardian<br/>All 3 Ports"]
+        Zara["🛡️ ZARA<br/>Port 1 Champion<br/>Cognitive Sovereignty"]
+        Orion["🌟 ORION<br/>Port 2 Strategist<br/>Ontological Coherence"]
+        Lira["💚 LIRA<br/>Port 3 Champion<br/>Regenerative Healing"]
+    end
+
+    %% Input to Validation
+    Input --> Check1
+    Check1 --> Check2
+    Check2 --> Check3
+    Check3 --> Score
+    Score --> Decision
+    Decision -->|"Yes"| Approve
+    Decision -->|"No"| Revise
+    Revise --> Input
+
+    %% Ports to Examples
+    P1 --> P1_Ex1
+    P1 --> P1_Ex2
+    P1 --> P1_Ex3
+    P1 --> P1_Ex4
+
+    P2 --> P2_Ex1
+    P2 --> P2_Ex2
+    P2 --> P2_Ex3
+    P2 --> P2_Ex4
+
+    P3 --> P3_Ex1
+    P3 --> P3_Ex2
+    P3 --> P3_Ex3
+    P3 --> P3_Ex4
+
+    %% Agents to Checks
+    Thalus -.->|"Validates All"| Score
+    Zara -.->|"Protects"| Check1
+    Orion -.->|"Designs"| Check2
+    Lira -.->|"Champions"| Check3
+
+    %% Styling
+    classDef port1Style fill:#98FB98,stroke:#32CD32,stroke-width:4px,color:#000,font-size:16px
+    classDef port2Style fill:#87CEEB,stroke:#4682B4,stroke-width:4px,color:#000,font-size:16px
+    classDef port3Style fill:#DDA0DD,stroke:#9370DB,stroke-width:4px,color:#000,font-size:16px
+    classDef validStyle fill:#FFE4B5,stroke:#FF8C00,stroke-width:3px,color:#000,font-size:16px
+    classDef agentStyle fill:#FFD700,stroke:#FF6347,stroke-width:3px,color:#000,font-size:16px
+    classDef approveStyle fill:#90EE90,stroke:#228B22,stroke-width:4px,color:#000,font-size:18px
+    classDef reviseStyle fill:#FFB6C1,stroke:#DC143C,stroke-width:4px,color:#000,font-size:18px
+    classDef inputStyle fill:#F0E68C,stroke:#DAA520,stroke-width:3px,color:#000,font-size:16px
+
+    class P1,P1_Ex1,P1_Ex2,P1_Ex3,P1_Ex4 port1Style
+    class P2,P2_Ex1,P2_Ex2,P2_Ex3,P2_Ex4 port2Style
+    class P3,P3_Ex1,P3_Ex2,P3_Ex3,P3_Ex4 port3Style
+    class Check1,Check2,Check3,Score,Decision validStyle
+    class Thalus,Zara,Orion,Lira agentStyle
+    class Approve approveStyle
+    class Revise reviseStyle
+    class Input inputStyle
+
