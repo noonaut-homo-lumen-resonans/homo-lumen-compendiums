@@ -12,6 +12,9 @@ import {
   Camera,
   Upload,
   X as XIcon,
+  Mic,
+  MicOff,
+  Heart,
 } from "lucide-react";
 import {
   sendToLira,
@@ -47,6 +50,13 @@ export default function ChatbotInterface() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showCamera, setShowCamera] = useState<boolean>(false);
 
+  // Voice state
+  const [isListening, setIsListening] = useState<boolean>(false);
+  const [speechRecognition, setSpeechRecognition] = useState<any>(null);
+
+  // Emotion sidebar state
+  const [showEmotionSidebar, setShowEmotionSidebar] = useState<boolean>(false);
+
   // Biofield context (from Mestring if available)
   const [biofieldContext, setBiofieldContext] = useState<
     BiofieldContext | undefined
@@ -63,6 +73,33 @@ export default function ChatbotInterface() {
   useEffect(() => {
     const context = loadBiofieldContext();
     setBiofieldContext(context);
+
+    // Initialize Speech Recognition (if supported)
+    if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
+      const SpeechRecognition =
+        (window as any).webkitSpeechRecognition ||
+        (window as any).SpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "nb-NO"; // Norwegian
+
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(transcript);
+        setIsListening(false);
+      };
+
+      recognition.onerror = () => {
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      setSpeechRecognition(recognition);
+    }
   }, []);
 
   // Load conversation history from localStorage
@@ -259,6 +296,73 @@ export default function ChatbotInterface() {
     }
   };
 
+  // Toggle voice recognition
+  const toggleVoiceInput = () => {
+    if (!speechRecognition) {
+      alert("Talegjenkjenning støttes ikke i denne nettleseren. Prøv Chrome eller Edge.");
+      return;
+    }
+
+    if (isListening) {
+      speechRecognition.stop();
+      setIsListening(false);
+    } else {
+      speechRecognition.start();
+      setIsListening(true);
+    }
+  };
+
+  // Handle emotion selection from sidebar
+  const handleEmotionSelect = (emotion: string) => {
+    // Save emotion to localStorage for Mestring integration
+    const existingEmotions = localStorage.getItem("navlosen-emotions");
+    const emotions = existingEmotions ? JSON.parse(existingEmotions) : [];
+
+    // Add new emotion if not already present
+    const emotionExists = emotions.some((e: any) => e.word === emotion);
+    if (!emotionExists) {
+      emotions.push({ word: emotion, quadrant: getEmotionQuadrant(emotion) });
+      localStorage.setItem("navlosen-emotions", JSON.stringify(emotions));
+    }
+
+    // Navigate to Mestring page (Stage 2 - Signals)
+    localStorage.setItem("navlosen-mestring-stage", "signals");
+    window.location.href = "/mestring";
+  };
+
+  // Helper: Get quadrant for emotion word
+  const getEmotionQuadrant = (word: string): number => {
+    const quadrantWords = {
+      1: ["Gledelig", "Entusiastisk", "Inspirert", "Optimistisk", "Spent",
+          "Energisk", "Leken", "Stolt", "Ekstatisk", "Begeistret",
+          "Ivrig", "Opprømt", "Fornøyd", "Lykkelig", "Begeistring",
+          "Levende", "Vital", "Motivert", "Selvsikker", "Modig",
+          "Fascinert", "Engasjert", "Aktiv", "Kreativ", "Triumferende"],
+      2: ["Rolig", "Takknemlig", "Trygg", "Tilfreds", "Fokusert",
+          "Fredelig", "Håpefull", "Avslappet", "Behagelig", "Tålmodig",
+          "Harmonisk", "Balansert", "Ydmyk", "Omsorgsfull", "Kjærlig",
+          "Aksepterende", "Fornuftig", "Reflektert", "Konsentrert", "Stabil",
+          "Mild", "Tillitsfull", "Verdsatt", "Anerkjent", "Medfølende"],
+      3: ["Trist", "Nedfor", "Utmattet", "Sårbar", "Ensom",
+          "Fortvilet", "Nummen", "Håpløs", "Deprimert", "Skuffet",
+          "Mislykket", "Resignert", "Tomhet", "Sorgfull", "Tapende",
+          "Ute av kontroll", "Hjelpeløs", "Tungsinn", "Uverdig", "Skamfull",
+          "Skyldig", "Trett", "Passiv", "Apatisk", "Likegyldig"],
+      4: ["Frustrert", "Sint", "Irritert", "Engstelig", "Nervøs",
+          "Urolig", "Overveldet", "Stresset", "Redd", "Panisk",
+          "Anspent", "Presset", "Skremt", "Provosert", "Rasende",
+          "Aggressiv", "Defensiv", "Bitter", "Fiendtlig", "Mistenksom",
+          "Bekymret", "Urolig", "Forvirret", "Kaotisk", "Ustabil"],
+    };
+
+    for (const [quadrant, words] of Object.entries(quadrantWords)) {
+      if (words.includes(word)) {
+        return parseInt(quadrant, 10);
+      }
+    }
+    return 1; // Default to quadrant 1
+  };
+
   // Handle sending message (with optional image)
   const handleSend = async (predefinedMessage?: string) => {
     const messageToSend = predefinedMessage || input.trim();
@@ -353,36 +457,47 @@ export default function ChatbotInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-16rem)] bg-white rounded-lg shadow-lg">
-      {/* Header */}
-      <header className="p-4 border-b flex items-center justify-between bg-purple-50">
-        <div className="flex items-center gap-3">
-          <MessageCircle className="w-6 h-6 text-purple-500" />
-          <div>
-            <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
-              Lira - NAV-Losen Chatbot
-            </h2>
-            {biofieldContext && (
-              <p className="text-xs text-[var(--color-text-secondary)]">
-                Stressnivå: {biofieldContext.stressLevel}/10 (
-                {biofieldContext.polyvagalState === "ventral"
-                  ? "Rolig"
-                  : biofieldContext.polyvagalState === "sympathetic"
-                  ? "Aktivert"
-                  : "Overveldet"}
-                )
-              </p>
-            )}
+    <div className="flex gap-4">
+      {/* Main Chat Area */}
+      <div className="flex-1 flex flex-col h-[calc(100vh-16rem)] bg-white rounded-lg shadow-lg">
+        {/* Header */}
+        <header className="p-4 border-b flex items-center justify-between bg-purple-50">
+          <div className="flex items-center gap-3">
+            <MessageCircle className="w-6 h-6 text-purple-500" />
+            <div>
+              <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+                Lira - NAV-Losen Chatbot
+              </h2>
+              {biofieldContext && (
+                <p className="text-xs text-[var(--color-text-secondary)]">
+                  Stressnivå: {biofieldContext.stressLevel}/10 (
+                  {biofieldContext.polyvagalState === "ventral"
+                    ? "Rolig"
+                    : biofieldContext.polyvagalState === "sympathetic"
+                    ? "Aktivert"
+                    : "Overveldet"}
+                  )
+                </p>
+              )}
+            </div>
           </div>
-        </div>
-        <button
-          onClick={handleReset}
-          className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Start ny samtale"
-        >
-          <RotateCcw className="w-5 h-5" />
-        </button>
-      </header>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowEmotionSidebar(!showEmotionSidebar)}
+              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Følelser"
+            >
+              <Heart className={`w-5 h-5 ${showEmotionSidebar ? "text-red-500" : ""}`} />
+            </button>
+            <button
+              onClick={handleReset}
+              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Start ny samtale"
+            >
+              <RotateCcw className="w-5 h-5" />
+            </button>
+          </div>
+        </header>
 
       {/* Messages */}
       <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-50">
@@ -578,6 +693,22 @@ export default function ChatbotInterface() {
             />
           </label>
 
+          {/* Voice input button */}
+          <button
+            onClick={toggleVoiceInput}
+            disabled={isLoading}
+            className={`p-3 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              isListening ? "bg-red-100 border-red-500" : ""
+            }`}
+            title={isListening ? "Stopp lytting" : "Snakk"}
+          >
+            {isListening ? (
+              <MicOff className="w-5 h-5 text-red-600 animate-pulse" />
+            ) : (
+              <Mic className="w-5 h-5 text-gray-600" />
+            )}
+          </button>
+
           <input
             ref={inputRef}
             type="text"
@@ -622,6 +753,100 @@ export default function ChatbotInterface() {
           </div>
         </div>
       </div>
+
+      {/* Emotion Sidebar (på høyre side) */}
+      {showEmotionSidebar && (
+        <div className="w-80 h-[calc(100vh-16rem)] bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
+              <Heart className="w-5 h-5 text-red-500" />
+              Følelser
+            </h3>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+              Klikk på en følelse → Gå direkte til Mestring
+            </p>
+          </div>
+
+          {/* Quadrant 1: Positive + High Energy (Green) */}
+          <div className="mb-4">
+            <h4 className="text-sm font-semibold text-green-700 mb-2">
+              ✨ Positiv + Energisk
+            </h4>
+            <div className="flex flex-wrap gap-1">
+              {["Gledelig", "Entusiastisk", "Inspirert", "Optimistisk", "Spent", "Energisk"].map((emotion) => (
+                <button
+                  key={emotion}
+                  onClick={() => handleEmotionSelect(emotion)}
+                  className="px-2 py-1 text-xs bg-green-50 hover:bg-green-100 text-green-800 rounded-full border border-green-200 transition-colors"
+                >
+                  {emotion}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Quadrant 2: Positive + Low Energy (Blue) */}
+          <div className="mb-4">
+            <h4 className="text-sm font-semibold text-blue-700 mb-2">
+              🌊 Positiv + Rolig
+            </h4>
+            <div className="flex flex-wrap gap-1">
+              {["Rolig", "Takknemlig", "Trygg", "Tilfreds", "Fokusert", "Fredelig"].map((emotion) => (
+                <button
+                  key={emotion}
+                  onClick={() => handleEmotionSelect(emotion)}
+                  className="px-2 py-1 text-xs bg-blue-50 hover:bg-blue-100 text-blue-800 rounded-full border border-blue-200 transition-colors"
+                >
+                  {emotion}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Quadrant 3: Negative + Low Energy (Gray) */}
+          <div className="mb-4">
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">
+              💧 Negativ + Utmattet
+            </h4>
+            <div className="flex flex-wrap gap-1">
+              {["Trist", "Nedfor", "Utmattet", "Sårbar", "Ensom", "Nummen"].map((emotion) => (
+                <button
+                  key={emotion}
+                  onClick={() => handleEmotionSelect(emotion)}
+                  className="px-2 py-1 text-xs bg-gray-50 hover:bg-gray-100 text-gray-800 rounded-full border border-gray-300 transition-colors"
+                >
+                  {emotion}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Quadrant 4: Negative + High Energy (Orange) */}
+          <div className="mb-4">
+            <h4 className="text-sm font-semibold text-orange-700 mb-2">
+              🔥 Negativ + Aktivert
+            </h4>
+            <div className="flex flex-wrap gap-1">
+              {["Frustrert", "Sint", "Irritert", "Engstelig", "Nervøs", "Overveldet", "Stresset", "Redd"].map((emotion) => (
+                <button
+                  key={emotion}
+                  onClick={() => handleEmotionSelect(emotion)}
+                  className="px-2 py-1 text-xs bg-orange-50 hover:bg-orange-100 text-orange-800 rounded-full border border-orange-200 transition-colors"
+                >
+                  {emotion}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Info box */}
+          <div className="mt-6 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+            <p className="text-xs text-purple-800">
+              <strong>💡 Tips:</strong> Klikk på en følelse for å starte Mestring-flowet. Du blir tatt direkte til Steg 2 (Trykk & Signaler) med valgt følelse allerede registrert.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
