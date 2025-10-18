@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-06-25T17:53:56.167922",
+  "core_files": {
+    "src/core/comprehensive_mcp_architecture.py": {
+      "exists": true,
+      "size": 48366
+    },
+    "src/core/agent_coordination_hub.py": {
+      "exists": true,
+      "size": 18321
+    },
+    "src/core/polycomputational_engine.py": {
+      "exists": true,
+      "size": 24449
+    },
+    "src/core/lira_biofelt_tools.py": {
+      "exists": true,
+      "size": 26396
+    },
+    "src/core/ama_fire_layers.py": {
+      "exists": true,
+      "size": 16233
+    },
+    "src/core/biofelt_responsive.py": {
+      "exists": true,
+      "size": 14525
+    },
+    "src/core/mcp_connector.py": {
+      "exists": true,
+      "size": 34557
+    }
+  },
+  "test_files": {
+    "simple_ama_test.py": {
+      "exists": true,
+      "size": 4522
+    },
+    "test_ama_implementation.py": {
+      "exists": true,
+      "size": 5691
+    }
+  },
+  "total_files": 9,
+  "existing_files": 9,
+  "ready": true
+}
