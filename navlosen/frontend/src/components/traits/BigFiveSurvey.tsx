@@ -83,8 +83,8 @@ export default function BigFiveSurvey({
   // Polyvagal-safe blocking
   if (polyvagalState === "dorsal") {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 md:p-4">
+        <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 md:p-8">
           <div className="flex items-center gap-3 mb-4">
             <AlertCircle className="w-8 h-8 text-blue-500" />
             <h3 className="text-lg font-bold text-[var(--color-text-primary)]">
@@ -162,8 +162,8 @@ export default function BigFiveSurvey({
   // Offer quick mode in sympathetic state
   if (polyvagalState === "sympathetic" && !useQuickMode && currentIndex === 0) {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 md:p-4">
+        <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 md:p-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-[var(--color-text-primary)]">
               Lås opp mer presise forslag?
@@ -208,8 +208,8 @@ export default function BigFiveSurvey({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full p-6 md:p-8">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 md:p-4">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-auto p-4 md:p-6 lg:p-8 overflow-y-auto max-h-[95vh]">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-bold text-[var(--color-text-primary)]">
@@ -240,7 +240,7 @@ export default function BigFiveSurvey({
           </p>
 
           {/* 5-point Likert scale */}
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
             {[
               { value: 1, label: "Helt uenig" },
               { value: 2, label: "Uenig" },
@@ -251,18 +251,18 @@ export default function BigFiveSurvey({
               <button
                 key={option.value}
                 onClick={() => handleResponse(option.value)}
-                className={`w-full p-4 md:p-5 rounded-lg border-2 transition-all text-left ${
+                className={`w-full p-4 lg:p-6 rounded-lg border-2 transition-all ${
                   responses[currentItem.id] === option.value
                     ? "border-purple-500 bg-purple-50"
                     : "border-gray-200 hover:border-purple-300 hover:bg-gray-50"
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-medium text-base md:text-lg text-[var(--color-text-primary)]">
+                <div className="flex lg:flex-col items-center justify-between lg:justify-center gap-2">
+                  <span className="font-medium text-base lg:text-center text-[var(--color-text-primary)]">
                     {option.label}
                   </span>
                   {responses[currentItem.id] === option.value && (
-                    <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-purple-500" />
+                    <CheckCircle className="w-5 h-5 lg:w-6 lg:h-6 text-purple-500" />
                   )}
                 </div>
               </button>
