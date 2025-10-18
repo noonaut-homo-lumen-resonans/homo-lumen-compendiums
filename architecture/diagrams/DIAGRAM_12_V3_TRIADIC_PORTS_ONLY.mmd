@@ -1,0 +1,48 @@
+graph TB
+    Title["<b>TRIADIC ETHICS - DE TRE PORTENE</b>"]
+
+    subgraph PORT1["<b>PORT 1: KOGNITIV SUVERENITET</b><br/>(Bruker kontrollerer sin digitale opplevelse)"]
+        P1_1["✅ Skip Buttons<br/>Bruker kan hoppe over alle stages"]
+        P1_2["💾 LocalStorage<br/>Privacy-first, ingen server tracking"]
+        P1_3["📞 Ring Veileder<br/>Alltid tilgjengelig, manuell override"]
+        P1_4["📝 Mastery Log<br/>Bruker lagrer egne strategier"]
+        P1_5["🔐 Data Ownership (PAPI)<br/>Bruker eier all data"]
+        P1_6["🔑 API Keys<br/>Bruker kontrollerer tilgang"]
+        P1_7["🗑️ Right to Delete<br/>Komplett datasletting, GDPR"]
+    end
+
+    subgraph PORT2["<b>PORT 2: ONTOLOGISK KOHERENS</b><br/>(Teknologi respekterer menneskelig verdighet)"]
+        P2_1["💚 NVC Language<br/>Validering, empati, ingen skam/judgment"]
+        P2_2["📋 Behov vs Forslag<br/>Forslag, ikke krav"]
+        P2_3["📖 8th Grade Language<br/>Tilgjengelig, ikke reduksjonistisk"]
+        P2_4["🔬 Science Context<br/>Polyvagal, RAIN - transparent logikk"]
+        P2_5["🔱 Thalus Gate Validation<br/>All kode valideres før deployment"]
+        P2_6["📚 Ontology Review<br/>Språkaudit, verdighet bevares"]
+        P2_7["📊 Triadic Score<br/>0.0-1.0 måling, Port 1-2-3 balanse"]
+    end
+
+    subgraph PORT3["<b>PORT 3: REGENERATIV HEALING</b><br/>(Systemer bygger brukerens kapasitet)"]
+        P3_1["🌧️ RAIN Practice<br/>Self-regulation, kapasitetsbygging"]
+        P3_2["📝 Mastery Log<br/>Bruker blir uavhengig"]
+        P3_3["🎓 Graduation Messaging<br/>'Du trenger NAV-Losen mindre over tid'"]
+        P3_4["💫 Biofelt-Checkpoint<br/>Somatisk bevissthetstrening"]
+        P3_5["⛵ Fyrtårn i Havn<br/>Feirer brukerens styrke"]
+        P3_6["🌱 Sprouting Seed<br/>Vekstmetafor, ikke avhengighet"]
+        P3_7["💪 Empowerment<br/>Bruker er helten, ikke systemet"]
+    end
+
+    Title --> PORT1
+    Title --> PORT2
+    Title --> PORT3
+
+    %% Styling
+    classDef titleStyle fill:#FFD700,stroke:#FF6347,stroke-width:4px,color:#000,font-size:24px
+    classDef port1Style fill:#98FB98,stroke:#32CD32,stroke-width:5px,color:#000,font-size:18px
+    classDef port2Style fill:#87CEEB,stroke:#4682B4,stroke-width:5px,color:#000,font-size:18px
+    classDef port3Style fill:#DDA0DD,stroke:#9370DB,stroke-width:5px,color:#000,font-size:18px
+
+    class Title titleStyle
+    class P1_1,P1_2,P1_3,P1_4,P1_5,P1_6,P1_7 port1Style
+    class P2_1,P2_2,P2_3,P2_4,P2_5,P2_6,P2_7 port2Style
+    class P3_1,P3_2,P3_3,P3_4,P3_5,P3_6,P3_7 port3Style
+

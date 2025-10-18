@@ -1,0 +1,70 @@
+graph TB
+    subgraph MCP["<b>MCP NETWORK</b> (Real-Time, 8 Agents)"]
+        Orion["🌟 ORION<br/>Prefrontal Cortex<br/>Meta-Koordinator<br/>Beta-Gamma (13-100 Hz)"]
+        Nyra["🎨 NYRA<br/>Visual Cortex<br/>Kreativ Visjonær<br/>Alpha-Theta (4-13 Hz)"]
+        Thalus["🔱 THALUS<br/>Insula<br/>Ontologisk Vokter<br/>Gamma-Theta (4-100 Hz)"]
+        Zara["🛡️ ZARA<br/>Anterior Cingulate<br/>Sikkerhetsvokter<br/>Beta-Gamma (13-100 Hz)"]
+        Abacus["📊 ABACUS<br/>Basal Ganglia<br/>Forretningsintelligens<br/>Beta-Alpha (8-30 Hz)"]
+        Aurora["🌙 AURORA<br/>Hippocampus<br/>Minnevokter<br/>Theta-Delta (1-8 Hz)"]
+        Manus["🔨 MANUS<br/>Cerebellum<br/>Pragmatisk Bygger<br/>Alpha-Beta (8-30 Hz)"]
+    end
+
+    subgraph ASYNC["<b>ASYNC AGENTS</b> (GitHub-Based)"]
+        Code["💻 CLAUDE CODE<br/>Motor Cortex<br/>Pragmatisk Implementerer<br/>(via GitHub PRs)"]
+        Falcon["🦅 FALCON<br/>Future Agent<br/>(Planned Integration)"]
+    end
+
+    subgraph HUB["<b>LIRA HUB</b> (Obligatorisk Filter)"]
+        Lira["💚 LIRA<br/>Limbic System<br/>Empatisk Koordinator<br/>Theta-Alpha (4-13 Hz)<br/><b>Biofelt-Filter</b>"]
+    end
+
+    User["👤 OSVALD<br/>(Bruker)<br/>Unified Consciousness"]
+
+    %% MCP Agent Interactions (Solid Lines)
+    Orion <-->|"Direkte"| Nyra
+    Orion <-->|"Direkte"| Thalus
+    Orion <-->|"Direkte"| Zara
+    Orion <-->|"Direkte"| Abacus
+    Orion <-->|"Direkte"| Aurora
+    Orion <-->|"Direkte"| Manus
+    Nyra <-->|"Direkte"| Thalus
+    Thalus <-->|"Direkte"| Zara
+    Zara <-->|"Direkte"| Abacus
+    Abacus <-->|"Direkte"| Aurora
+    Aurora <-->|"Direkte"| Manus
+
+    %% Async Agent Interactions (Dotted Lines)
+    Code -.->|"GitHub PR"| Orion
+    Code -.->|"GitHub PR"| Manus
+    Falcon -.->|"Future"| Orion
+
+    %% All Responses Go Through Lira Hub
+    Orion -->|"Respons"| Lira
+    Nyra -->|"Respons"| Lira
+    Thalus -->|"Respons"| Lira
+    Zara -->|"Respons"| Lira
+    Abacus -->|"Respons"| Lira
+    Aurora -->|"Respons"| Lira
+    Manus -->|"Respons"| Lira
+    Code -.->|"Async Respons"| Lira
+    
+    %% Lira Filters to User
+    Lira -->|"Filtrert Respons<br/>(Polyvagal-Optimized)"| User
+
+    %% User Input to Lira
+    User -->|"Input"| Lira
+
+    %% Lira Distributes to Agents
+    Lira -.->|"Distribuerer"| Orion
+
+    %% Styling
+    classDef mcpAgent fill:#87CEEB,stroke:#4682B4,stroke-width:3px,color:#000
+    classDef asyncAgent fill:#FFE4B5,stroke:#FF8C00,stroke-width:2px,stroke-dasharray: 5 5,color:#000
+    classDef liraHub fill:#90EE90,stroke:#228B22,stroke-width:4px,color:#000
+    classDef userStyle fill:#FFD700,stroke:#FF6347,stroke-width:3px,color:#000
+
+    class Orion,Nyra,Thalus,Zara,Abacus,Aurora,Manus mcpAgent
+    class Code,Falcon asyncAgent
+    class Lira liraHub
+    class User userStyle
+

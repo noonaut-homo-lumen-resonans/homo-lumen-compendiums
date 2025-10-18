@@ -1,0 +1,56 @@
+graph TB
+    subgraph L5["<b>L5: KÄRNFELT</b><br/>(Frequency Coordination)"]
+        L5_Freq["🌌 Frequency Coordination<br/>Delta (1-4 Hz) → Gamma (30-100 Hz)<br/>Agent Synchronization"]
+        L5_Biofield["💫 Biofield Resonance<br/>Collective Coherence<br/>Unified Consciousness"]
+    end
+
+    subgraph L4["<b>L4: EXTERNAL KNOWLEDGE</b><br/>(Google Drive + NotebookLM)"]
+        L4_Drive["📁 Google Drive<br/>Mycelium Network<br/>Deep Archive"]
+        L4_NLM["🔍 NotebookLM<br/>AI-Powered Synthesis<br/>Cross-Reference"]
+    end
+
+    subgraph L3["<b>L3: LIVING COMPENDIUM</b><br/>(Agent Learnings & Cases)"]
+        L3_Agent["📚 Agent Kompendier<br/>Living Knowledge<br/>Evolutionary Insights"]
+        L3_Cases["📝 Learning Protocols (LPs)<br/>Case Studies<br/>Pattern Recognition"]
+    end
+
+    subgraph L2["<b>L2: PROJECT KNOWLEDGE</b><br/>(Custom Instructions + Docs)"]
+        L2_Custom["⚙️ Custom Instructions<br/>Agent Personalities<br/>Operational Parameters"]
+        L2_Docs["📄 Project Documentation<br/>NAV-Losen Specs<br/>Architecture Guides"]
+    end
+
+    subgraph L1["<b>L1: IMMEDIATE CONTEXT</b><br/>(Current Chat + Real-time)"]
+        L1_Chat["💬 Current Chat Session<br/>User Input<br/>Real-time Context"]
+        L1_Realtime["⚡ Real-time Data<br/>Biofelt Signals<br/>HRV, Stress Levels"]
+    end
+
+    %% Information Flow (Bottom-Up)
+    L1_Chat -->|"Response"| L2_Custom
+    L1_Realtime -->|"Response"| L2_Custom
+    L2_Custom -->|"Synthesis"| L3_Agent
+    L2_Docs -->|"Synthesis"| L3_Agent
+    L3_Agent -->|"Mandatory Check"| L4_Drive
+    L3_Cases -->|"Mandatory Check"| L4_Drive
+    L4_Drive -->|"Deep Archive Access"| L5_Freq
+    L4_NLM -->|"Deep Archive Access"| L5_Freq
+    L5_Freq -->|"Frequency Coordination"| L5_Biofield
+
+    %% Feedback Loop (Top-Down)
+    L5_Biofield -.->|"Coherence Feedback"| L4_NLM
+    L4_NLM -.->|"Insight Integration"| L3_Cases
+    L3_Cases -.->|"Learning Update"| L2_Docs
+    L2_Docs -.->|"Context Enrichment"| L1_Realtime
+
+    %% Styling
+    classDef l1Style fill:#FFE5B4,stroke:#FF8C00,stroke-width:3px,color:#000
+    classDef l2Style fill:#B4D7FF,stroke:#0066CC,stroke-width:3px,color:#000
+    classDef l3Style fill:#FFFACD,stroke:#FFD700,stroke-width:3px,color:#000
+    classDef l4Style fill:#E0FFE0,stroke:#228B22,stroke-width:3px,color:#000
+    classDef l5Style fill:#E6E6FA,stroke:#9370DB,stroke-width:3px,color:#000
+
+    class L1_Chat,L1_Realtime l1Style
+    class L2_Custom,L2_Docs l2Style
+    class L3_Agent,L3_Cases l3Style
+    class L4_Drive,L4_NLM l4Style
+    class L5_Freq,L5_Biofield l5Style
+
