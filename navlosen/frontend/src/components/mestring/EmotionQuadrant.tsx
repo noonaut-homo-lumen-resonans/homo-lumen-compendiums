@@ -12,8 +12,19 @@ interface EmotionQuadrantProps {
 /**
  * EmotionQuadrant Component
  *
- * Interactive 4-quadrant emotion mapper with 100 emotion words
- * Based on Circumplex Model (Russell, 1980) and emotional granularity research
+ * Interactive 4-quadrant emotion mapper with 100 emotion words.
+ * Based on Circumplex Model (Russell, 1980) and emotional granularity research.
+ *
+ * IMPORTANT: Circumplex vs Big Five (OCEAN)
+ * - Circumplex (this component): Maps EMOTIONAL STATES (how you feel RIGHT NOW)
+ *   Two dimensions: Valence (positive/negative) × Arousal (high/low energy)
+ * - Big Five/OCEAN (separate): Maps PERSONALITY TRAITS (how you usually are)
+ *   Five dimensions: Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism
+ *
+ * Relationship:
+ * - STATE LEADS, TRAIT WHISPERS: Emotional state (quadrants) drives all recommendations
+ * - Big Five provides weak priors (≤10% weight) for recommendation re-ranking only
+ * - Quadrant patterns over time can weakly infer Big Five (passive inference)
  *
  * Quadrants:
  * 1 (Top Right): Positive Valence + High Energy (Green)
