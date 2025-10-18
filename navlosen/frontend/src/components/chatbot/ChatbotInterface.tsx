@@ -9,6 +9,9 @@ import {
   RotateCcw,
   AlertCircle,
   ExternalLink,
+  Camera,
+  Upload,
+  X as XIcon,
 } from "lucide-react";
 import {
   sendToLira,
@@ -25,6 +28,8 @@ import {
  * Features:
  * - Message history with user/Lira differentiation
  * - Polyvagal-adaptive quick actions (context-aware)
+ * - Image upload (file picker) and camera capture
+ * - Image preview in messages
  * - Auto-scroll to latest message
  * - Loading indicator during API calls
  * - Error handling with fallback messages
@@ -38,6 +43,10 @@ export default function ChatbotInterface() {
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Image state
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [showCamera, setShowCamera] = useState<boolean>(false);
+
   // Biofield context (from Mestring if available)
   const [biofieldContext, setBiofieldContext] = useState<
     BiofieldContext | undefined
@@ -46,6 +55,9 @@ export default function ChatbotInterface() {
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Load biofield context on mount
   useEffect(() => {
@@ -159,16 +171,105 @@ export default function ChatbotInterface() {
 
   const quickActions = getQuickActions();
 
-  // Handle sending message
+  // Handle file upload
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      alert("Vennligst last opp et bilde (JPG, PNG, etc.)");
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Bildet er for stort. Maksimal størrelse er 10MB.");
+      return;
+    }
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result as string;
+      setSelectedImage(base64);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Start camera
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" }, // Prefer back camera on mobile
+      });
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setShowCamera(true);
+      }
+    } catch (error) {
+      console.error("Failed to start camera:", error);
+      alert(
+        "Kunne ikke starte kameraet. Sjekk at du har gitt tillatelse til kamera."
+      );
+    }
+  };
+
+  // Capture photo from camera
+  const capturePhoto = () => {
+    if (!videoRef.current || !canvasRef.current) return;
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    if (!context) return;
+
+    // Set canvas dimensions to match video
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // Draw current video frame to canvas
+    context.drawImage(video, 0, 0);
+
+    // Convert to base64
+    const base64 = canvas.toDataURL("image/jpeg", 0.8);
+    setSelectedImage(base64);
+
+    // Stop camera
+    stopCamera();
+  };
+
+  // Stop camera
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+    setShowCamera(false);
+  };
+
+  // Remove selected image
+  const removeImage = () => {
+    setSelectedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  // Handle sending message (with optional image)
   const handleSend = async (predefinedMessage?: string) => {
     const messageToSend = predefinedMessage || input.trim();
-    if (!messageToSend) return;
+    if (!messageToSend && !selectedImage) return;
 
     // Add user message
     const userMessage: LiraMessage = {
       role: "user",
-      content: messageToSend,
+      content: messageToSend || "📷 [Bilde lastet opp]",
       timestamp: Date.now(),
+      imageUrl: selectedImage || undefined,
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -178,9 +279,10 @@ export default function ChatbotInterface() {
     try {
       // Send to Lira via CSN Server
       const response = await sendToLira(
-        messageToSend,
+        messageToSend || "Kan du hjelpe meg å forstå dette bildet?",
         messages,
-        biofieldContext
+        biofieldContext,
+        selectedImage || undefined
       );
 
       // Add Lira's response
@@ -198,6 +300,12 @@ export default function ChatbotInterface() {
           "navlosen-last-mestring-timestamp",
           Date.now().toString()
         );
+      }
+
+      // Clear image after sending
+      setSelectedImage(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
       }
     } catch (error) {
       console.error("Failed to send message to Lira:", error);
@@ -309,6 +417,15 @@ export default function ChatbotInterface() {
                     : "bg-white text-[var(--color-text-primary)] border border-gray-200"
                 }`}
               >
+                {/* Image preview (if attached) */}
+                {msg.imageUrl && (
+                  <img
+                    src={msg.imageUrl}
+                    alt="Uploaded image"
+                    className="max-w-full rounded-lg mb-2 max-h-64 object-contain"
+                  />
+                )}
+
                 <p className="whitespace-pre-wrap text-sm leading-relaxed">
                   {msg.content}
                 </p>
@@ -356,6 +473,47 @@ export default function ChatbotInterface() {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Camera Modal */}
+      {showCamera && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full p-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Ta bilde</h3>
+              <button
+                onClick={stopCamera}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <XIcon className="w-5 h-5" />
+              </button>
+            </div>
+
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              className="w-full rounded-lg mb-4"
+            />
+
+            <div className="flex gap-2">
+              <Button
+                onClick={capturePhoto}
+                variant="primary"
+                size="large"
+                leftIcon={<Camera className="w-5 h-5" />}
+              >
+                Ta bilde
+              </Button>
+              <Button onClick={stopCamera} variant="secondary" size="large">
+                Avbryt
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Hidden canvas for camera capture */}
+      <canvas ref={canvasRef} className="hidden" />
+
       {/* Input area */}
       <div className="p-4 border-t bg-white">
         {/* Quick actions */}
@@ -372,8 +530,54 @@ export default function ChatbotInterface() {
           ))}
         </div>
 
+        {/* Image preview (if selected) */}
+        {selectedImage && (
+          <div className="mb-3 relative inline-block">
+            <img
+              src={selectedImage}
+              alt="Selected image"
+              className="max-h-32 rounded-lg border-2 border-purple-500"
+            />
+            <button
+              onClick={removeImage}
+              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+              title="Fjern bilde"
+            >
+              <XIcon className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         {/* Input field */}
         <div className="flex items-center gap-2">
+          {/* Camera button */}
+          <button
+            onClick={startCamera}
+            disabled={isLoading}
+            className="p-3 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Ta bilde"
+          >
+            <Camera className="w-5 h-5 text-gray-600" />
+          </button>
+
+          {/* File upload button */}
+          <label
+            className={`p-3 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            title="Last opp bilde"
+          >
+            <Upload className="w-5 h-5 text-gray-600" />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+              disabled={isLoading}
+              className="hidden"
+            />
+          </label>
+
           <input
             ref={inputRef}
             type="text"
@@ -386,7 +590,7 @@ export default function ChatbotInterface() {
           />
           <Button
             onClick={() => handleSend()}
-            disabled={isLoading || !input.trim()}
+            disabled={isLoading || (!input.trim() && !selectedImage)}
             variant="primary"
             size="large"
             leftIcon={<Send className="w-5 h-5" />}

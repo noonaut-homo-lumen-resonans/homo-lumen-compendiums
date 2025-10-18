@@ -23,6 +23,8 @@ export interface LiraMessage {
   role: "user" | "assistant";
   content: string;
   timestamp: number;
+  imageUrl?: string; // Base64 or URL for uploaded/captured image
+  imageDescription?: string; // OCR/analysis result from Lira
 }
 
 export interface LiraResponse {
@@ -40,12 +42,13 @@ const CSN_SERVER_BASE_URL =
   process.env.NEXT_PUBLIC_CSN_SERVER_URL || "http://localhost:8000";
 
 /**
- * Send message to Lira with optional biofield context
+ * Send message to Lira with optional biofield context and image
  */
 export async function sendToLira(
   userMessage: string,
   conversationHistory: LiraMessage[],
-  biofieldContext?: BiofieldContext
+  biofieldContext?: BiofieldContext,
+  imageBase64?: string
 ): Promise<LiraResponse> {
   try {
     // Construct biofield data from context (or use defaults)
@@ -65,7 +68,7 @@ export async function sendToLira(
       stress_level: normalizeStressLevel(biofieldContext?.stressLevel),
       energy_level: normalizeEnergyLevel(biofieldContext?.stressLevel),
       breath_pattern: [4, 6, 8], // Default optimal pattern
-      additional_context: buildContextString(userMessage, conversationHistory),
+      additional_context: buildContextString(userMessage, conversationHistory, imageBase64),
     };
 
     const response = await fetch(
@@ -180,18 +183,26 @@ function getFallbackResponse(
  */
 function buildContextString(
   currentMessage: string,
-  history: LiraMessage[]
+  history: LiraMessage[],
+  imageBase64?: string
 ): string {
+  let context = "";
+
   if (history.length === 0) {
-    return `First message: ${currentMessage}`;
+    context = `First message: ${currentMessage}`;
+  } else {
+    const recentHistory = history.slice(-3); // Last 3 messages
+    const conversationSummary = recentHistory
+      .map((msg) => `${msg.role}: ${msg.content.substring(0, 100)}`)
+      .join(" | ");
+    context = `Conversation context: ${conversationSummary} | Current: ${currentMessage}`;
   }
 
-  const recentHistory = history.slice(-3); // Last 3 messages
-  const conversationSummary = recentHistory
-    .map((msg) => `${msg.role}: ${msg.content.substring(0, 100)}`)
-    .join(" | ");
+  if (imageBase64) {
+    context += ` | User uploaded an image (please analyze and help interpret NAV-related documents, forms, or letters)`;
+  }
 
-  return `Conversation context: ${conversationSummary} | Current: ${currentMessage}`;
+  return context;
 }
 
 /**
