@@ -4,10 +4,9 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { UserCircle, Menu, ChevronDown, Home, BookOpen, Lightbulb, Heart, Compass, Briefcase, MessageSquare, FileText, Bell, Scale, Settings } from "lucide-react";
+import { UserCircle, ChevronDown, Home, BookOpen, Lightbulb, Heart, Compass, Briefcase, MessageSquare, FileText, Bell, Scale, Settings } from "lucide-react";
 
 interface HeaderProps {
-  onMenuToggle?: () => void;
   className?: string;
 }
 
@@ -34,7 +33,7 @@ interface NavItem {
  * @example
  * <Header onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
  */
-export default function Header({ onMenuToggle, className }: HeaderProps) {
+export default function Header({ className }: HeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -100,15 +99,6 @@ export default function Header({ onMenuToggle, className }: HeaderProps) {
     >
       {/* Left side: Logo and menu */}
       <div className="flex items-center gap-4 relative" ref={dropdownRef}>
-        {/* Mobile menu button */}
-        <button
-          onClick={onMenuToggle}
-          className="lg:hidden p-2 hover:bg-white/10 rounded transition-colors"
-          aria-label="Åpne meny"
-        >
-          <Menu className="h-6 w-6" />
-        </button>
-
         {/* Logo with dropdown */}
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}

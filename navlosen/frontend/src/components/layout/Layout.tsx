@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Header from "./Header";
-import Sidebar from "./Sidebar";
 import DisclaimerFooter from "./DisclaimerFooter";
 import { MessageSquare } from "lucide-react";
 
@@ -20,8 +19,7 @@ interface LayoutProps {
  * Based on Design System v1.0
  *
  * Structure:
- * - Header (fixed top, 64px)
- * - Sidebar (240px desktop, overlay mobile)
+ * - Header (fixed top, 64px) with dropdown navigation
  * - Main content area
  * - Floating chatbot button (bottom right)
  *
@@ -31,31 +29,23 @@ interface LayoutProps {
  * </Layout>
  */
 export default function Layout({ children, className }: LayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
     <div className="flex flex-col h-screen bg-[var(--color-bg-secondary)]">
       {/* Header */}
-      <Header onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+      <Header />
 
-      {/* Main layout: Sidebar + Content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-        {/* Main content */}
-        <main
-          className={cn(
-            "flex-1 overflow-y-auto",
-            "p-4 md:p-6 lg:p-8",
-            className
-          )}
-        >
-          <div className="max-w-7xl mx-auto w-full">
-            {children}
-          </div>
-        </main>
-      </div>
+      {/* Main content */}
+      <main
+        className={cn(
+          "flex-1 overflow-y-auto",
+          "p-4 md:p-6 lg:p-8",
+          className
+        )}
+      >
+        <div className="max-w-7xl mx-auto w-full">
+          {children}
+        </div>
+      </main>
 
       {/* Disclaimer Footer */}
       <DisclaimerFooter />
