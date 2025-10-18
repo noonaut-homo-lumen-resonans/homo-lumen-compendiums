@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
-import { ArrowLeft, ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, MessageCircle, Pause, Clock } from "lucide-react";
 import { StressState } from "@/types";
+import { uiPolicy, mapStressToState } from "@/lib/stressPolicy";
 
 export interface LiraAnswer {
   questionId: string;
@@ -25,6 +26,7 @@ interface Stage3LiraChatProps {
   onBack: () => void;
   onNext: () => void;
   polyvagalState: string;
+  stressLevel?: number; // 1-10 stress level for policy calculation
 }
 
 /**
@@ -44,8 +46,13 @@ export default function Stage3LiraChat({
   onBack,
   onNext,
   polyvagalState,
+  stressLevel = 5,
 }: Stage3LiraChatProps) {
   const [currentAnswers, setCurrentAnswers] = useState<Record<string, string>>({});
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Get UI policy for current state
+  const policy = uiPolicy(stressState);
 
   // Load existing answers
   useEffect(() => {
@@ -57,57 +64,48 @@ export default function Stage3LiraChat({
   }, [liraAnswers]);
 
   const getQuestions = (): LiraQuestion[] => {
-    if (stressState === "dorsal") {
-      // High stress: only 2 essential questions
-      return [
-        {
-          id: "safety",
-          text: "Er du trygg akkurat nå?",
-          type: "choice",
-          options: ["Ja, jeg er trygg", "Nei, jeg føler meg utrygg", "Usikker"],
-          required: true,
-        },
-        {
-          id: "support",
-          text: "Trenger du å snakke med noen nå?",
-          type: "choice",
-          options: ["Ja, jeg vil snakke med noen", "Nei, jeg klarer meg", "Kanskje senere"],
-          required: true,
-        },
-      ];
-    }
-
-    if (stressState === "sympathetic") {
-      // Medium stress: 3-4 focused questions
-      return [
-        {
-          id: "trigger",
-          text: "Hva skjedde som aktiverte deg i dag?",
-          type: "text",
-        },
-        {
-          id: "sleep",
-          text: "Hvor mange timer sov du i natt?",
-          type: "choice",
-          options: ["Under 4 timer", "4-6 timer", "6-8 timer", "Over 8 timer"],
-        },
-        {
-          id: "help-need",
-          text: "Hva vil hjelpe deg mest akkurat nå?",
-          type: "choice",
-          options: [
-            "Puste-øvelse",
-            "Snakke med noen",
-            "Ta en pause",
-            "Gjøre noe fysisk",
-            "Annet"
-          ],
-        },
-      ];
-    }
-
-    // Ventral: 5 deeper questions for insight building
-    return [
+    // Define all possible questions
+    const allQuestions: LiraQuestion[] = [
+      // Dorsal (safety-focused)
+      {
+        id: "safety",
+        text: "Er du trygg akkurat nå?",
+        type: "choice",
+        options: ["Ja, jeg er trygg", "Nei, jeg føler meg utrygg", "Usikker"],
+        required: true,
+      },
+      {
+        id: "support",
+        text: "Trenger du å snakke med noen nå?",
+        type: "choice",
+        options: ["Ja, jeg vil snakke med noen", "Nei, jeg klarer meg", "Kanskje senere"],
+        required: true,
+      },
+      // Sympathetic (action-focused)
+      {
+        id: "trigger",
+        text: "Hva skjedde som aktiverte deg i dag?",
+        type: "text",
+      },
+      {
+        id: "sleep",
+        text: "Hvor mange timer sov du i natt?",
+        type: "choice",
+        options: ["Under 4 timer", "4-6 timer", "6-8 timer", "Over 8 timer"],
+      },
+      {
+        id: "help-need",
+        text: "Hva vil hjelpe deg mest akkurat nå?",
+        type: "choice",
+        options: [
+          "Puste-øvelse",
+          "Snakke med noen",
+          "Ta en pause",
+          "Gjøre noe fysisk",
+          "Annet"
+        ],
+      },
+      // Ventral (insight-focused)
       {
         id: "day-summary",
         text: "Hvordan vil du beskrive dagen din så langt?",
@@ -142,6 +140,26 @@ export default function Stage3LiraChat({
         type: "text",
       },
     ];
+
+    // Filter by policy.allowedTypes and limit to policy.maxQuestionsStage3
+    const filtered = allQuestions
+      .filter((q) => policy.allowedTypes.includes(q.type))
+      .slice(0, policy.maxQuestionsStage3);
+
+    // If dorsal, prioritize safety/support questions
+    if (stressState === "dorsal") {
+      return filtered.filter((q) => ["safety", "support"].includes(q.id)).slice(0, 2);
+    }
+
+    // If sympathetic, prioritize action-oriented questions
+    if (stressState === "sympathetic") {
+      return filtered
+        .filter((q) => ["trigger", "sleep", "help-need", "safety"].includes(q.id))
+        .slice(0, 4);
+    }
+
+    // Ventral: return all filtered questions
+    return filtered;
   };
 
   const questions = getQuestions();

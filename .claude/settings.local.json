@@ -24,7 +24,10 @@
       "Bash(git push:*)",
       "Bash(gh repo list:*)",
       "Read(//c/Users/onigo/NAV LOSEN/homo-lumen-ama/**)",
-      "Bash(git show:*)"
+      "Bash(git show:*)",
+      "Bash(git checkout:*)",
+      "Bash(pkill:*)",
+      "Bash(npx tsc --noEmit)"
     ],
     "deny": [],
     "ask": []
