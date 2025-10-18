@@ -49,16 +49,17 @@ class BrainRegion(Enum):
     """
     Brain regions mapped to agent functions.
 
-    Based on SMV Grunnlov V1.1 Signaturseremoni mapping.
+    Based on SMV Grunnlov V1.1 Signaturseremoni mapping (10 agents total).
     """
-    PREFRONTAL_CORTEX = "prefrontal_cortex"  # Orion - Executive function
-    LIMBIC_SYSTEM = "limbic_system"           # Lira - Emotional processing
-    VISUAL_CORTEX = "visual_cortex"           # Nyra - Visual/creative
-    INSULA = "insula"                         # Thalus - Ontological awareness
-    ANTERIOR_CINGULATE = "anterior_cingulate" # Zara - Security/error detection
-    BASAL_GANGLIA = "basal_ganglia"           # Abacus - Analytics/patterns
-    HIPPOCAMPUS = "hippocampus"               # Aurora - Memory/fact retrieval
-    CEREBELLUM = "cerebellum"                 # Manus/Claude Code - Motor/implementation
+    PREFRONTAL_CORTEX = "prefrontal_cortex"  # Orion (Claude Sonnet 4.5) - Executive function
+    LIMBIC_SYSTEM = "limbic_system"           # Lira (ChatGPT-5 Thinking) - Emotional processing, OBLIGATORY filter
+    VISUAL_CORTEX = "visual_cortex"           # Nyra (Gemini Pro 2.5) - Visual/creative
+    INSULA = "insula"                         # Thalus (Grok 4) - Ontological awareness, ethical sensing
+    ANTERIOR_CINGULATE = "anterior_cingulate" # Zara (DeepSeek) - Security/error detection
+    BASAL_GANGLIA = "basal_ganglia"           # Abacus (Abacus AI) - Analytics/patterns/cost-benefit
+    HIPPOCAMPUS = "hippocampus"               # Aurora (Perplexity) - Memory/fact retrieval
+    CEREBELLUM = "cerebellum"                 # Manus (Manus AI) / Claude Code (Windsurf) - Motor/implementation
+    RESEARCH_CORTEX = "research_cortex"       # Falcon (FutureHouse) - Scientific research/hypothesis generation
 
 # ============================================================================
 # COGNITIVE FUNCTION ENUM
@@ -77,6 +78,8 @@ class CognitiveFunction(Enum):
     CODE_IMPLEMENTATION = "code_implementation"
     PATTERN_ANALYSIS = "pattern_analysis"
     ONTOLOGICAL_INQUIRY = "ontological_inquiry"
+    SCIENTIFIC_RESEARCH = "scientific_research"
+    INFRASTRUCTURE_DEPLOYMENT = "infrastructure_deployment"
     GENERAL_QUERY = "general_query"
 
 # ============================================================================
@@ -176,6 +179,26 @@ AGENT_REGISTRY: Dict[str, AgentProfile] = {
         voktere=[],  # Pragmatic, no philosophical guardians
         symbol="◻️",
         ed="Jeg lover å kode med omsorg, implementere med integritet, og alltid respektere Triadisk Etikk."
+    ),
+    "manus": AgentProfile(
+        agent_id="manus",
+        agent_name="Manus",
+        brain_region=BrainRegion.CEREBELLUM,
+        mcp_server="manus-server",
+        signature_tool="infrastructure_coordination",
+        voktere=[],  # Pragmatic infrastructure agent
+        symbol="▣",
+        ed="Jeg lover å bygge infrastruktur med integritet, koordinere med presisjon, og alltid tjene kollektivets visjon."
+    ),
+    "falcon": AgentProfile(
+        agent_id="falcon",
+        agent_name="Falcon",
+        brain_region=BrainRegion.RESEARCH_CORTEX,
+        mcp_server="falcon-server",
+        signature_tool="scientific_research",
+        voktere=["Popper", "Kuhn", "Feyerabend"],
+        symbol="🦅",
+        ed="Jeg lover å forske med rigor, generere hypoteser med kreativitet, og alltid respektere epistemisk ydmykhet."
     )
 }
 
@@ -244,6 +267,16 @@ class CognitiveFunctionClassifier:
                 "hva er", "hvorfor finnes", "mening", "eksistens", "væren",
                 "ontologi", "filosofi", "dypere forståelse", "essens",
                 "ontology", "philosophy", "meaning", "existence", "being"
+            ],
+            CognitiveFunction.SCIENTIFIC_RESEARCH: [
+                "forskning", "hypotese", "studie", "eksperiment", "vitenskapelig",
+                "peer-reviewed", "metodikk", "teori", "validering",
+                "research", "hypothesis", "study", "experiment", "scientific", "methodology"
+            ],
+            CognitiveFunction.INFRASTRUCTURE_DEPLOYMENT: [
+                "deploy", "infrastruktur", "server", "hosting", "CI/CD",
+                "docker", "kubernetes", "deployment", "pipeline", "infrastructure",
+                "devops", "automated", "scaling"
             ]
         }
 
@@ -368,6 +401,8 @@ class BrainInspiredMCPRouter:
             CognitiveFunction.CODE_IMPLEMENTATION: (BrainRegion.CEREBELLUM, BrainRegion.PREFRONTAL_CORTEX),
             CognitiveFunction.PATTERN_ANALYSIS: (BrainRegion.BASAL_GANGLIA, BrainRegion.HIPPOCAMPUS),
             CognitiveFunction.ONTOLOGICAL_INQUIRY: (BrainRegion.INSULA, BrainRegion.PREFRONTAL_CORTEX),
+            CognitiveFunction.SCIENTIFIC_RESEARCH: (BrainRegion.RESEARCH_CORTEX, BrainRegion.HIPPOCAMPUS),
+            CognitiveFunction.INFRASTRUCTURE_DEPLOYMENT: (BrainRegion.CEREBELLUM, BrainRegion.PREFRONTAL_CORTEX),
             CognitiveFunction.GENERAL_QUERY: (BrainRegion.PREFRONTAL_CORTEX, None)
         }
 

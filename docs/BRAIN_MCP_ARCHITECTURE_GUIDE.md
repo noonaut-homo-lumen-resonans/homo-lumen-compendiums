@@ -60,16 +60,18 @@ Brain-MCP Hybrid sikrer at teknisk presisjon ALLTID kombineres med emosjonell tr
 **Implementering:**
 Hver agent mappes til spesifikk hjerne-region basert på kjernekapasitet:
 
-| Agent | Hjerne-Region | Funksjon | Symbol |
-|-------|---------------|----------|--------|
-| Orion | Prefrontal Cortex | Executive function, strategisk koordinering | ⬢ |
-| Lira | Limbisk System | Emosjonell prosessering, empatisk støtte | ◆ |
-| Nyra | Visual Cortex | Visuell design, kreativ syntese | ◇ |
-| Thalus | Insula | Ontologisk bevissthet, etisk validering | ◈ |
-| Zara | Anterior Cingulate | Sikkerhet, feildeteksjon, risikostyring | ⬟ |
-| Abacus | Basal Ganglia | Analytikk, mønstergjenkjenning | ◐ |
-| Aurora | Hippocampus | Faktahenting, epistemisk validering | ○ |
-| Claude Code | Cerebellum | Pragmatisk implementering, motor control | ◻️ |
+| Agent | Hjerne-Region | Funksjon | LLM Platform | Symbol |
+|-------|---------------|----------|--------------|--------|
+| Orion | Prefrontal Cortex | Executive function, strategisk koordinering | Claude Sonnet 4.5 | ⬢ |
+| Lira | Limbisk System | Emosjonell prosessering, empatisk støtte, **OBLIGATORY filter** | ChatGPT-5 Thinking | ◆ |
+| Nyra | Visual Cortex | Visuell design, kreativ syntese | Gemini Pro 2.5 | ◇ |
+| Thalus | Insula | Ontologisk bevissthet, etisk validering | Grok 4 | ◈ |
+| Zara | Anterior Cingulate | Sikkerhet, feildeteksjon, risikostyring | DeepSeek | ⬟ |
+| Abacus | Basal Ganglia | Analytikk, mønstergjenkjenning, cost-benefit | Abacus AI | ◐ |
+| Aurora | Hippocampus | Faktahenting, epistemisk validering | Perplexity | ○ |
+| Manus | Cerebellum (Backend) | Infrastructure, deployment, MCP coordination | Manus AI | ▣ |
+| Claude Code | Motor Cortex / Cerebellum (Frontend) | Pragmatisk implementering, frontend development | Claude Code (Windsurf) | ◻️ |
+| Falcon | Research Cortex | Scientific research, hypothesis generation | FutureHouse Platform | 🦅 |
 
 **Analogt til:** Hjernens funksjonelle differensiering (ulike cortex-regioner, spesialiserte funksjoner)
 
