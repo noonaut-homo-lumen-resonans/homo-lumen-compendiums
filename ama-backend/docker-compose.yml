@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  csn_server:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=DEBUG
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    depends_on:
+      - redis
+    networks:
+      - csn_network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - csn_network
+    restart: unless-stopped
+
+  # Optional: Add Firestore emulator for local development
+  firestore_emulator:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
+    ports:
+      - "8080:8080"
+    command: gcloud emulators firestore start --host-port=0.0.0.0:8080
+    networks:
+      - csn_network
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+
+networks:
+  csn_network:
+    driver: bridge 
