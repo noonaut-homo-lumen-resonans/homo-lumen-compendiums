@@ -5,16 +5,87 @@ import Layout from "@/components/layout/Layout";
 import MasteryLog from "@/components/mestring/MasteryLog";
 import BiofeltCheckpoint from "@/components/mestring/BiofeltCheckpoint";
 import JourneySuccess from "@/components/mestring/JourneySuccess";
-import { BookOpen, Heart, Compass, Sparkles } from "lucide-react";
+import PersonalityAvatar from "@/components/traits/PersonalityAvatar";
+import PersonalityModal from "@/components/traits/PersonalityModal";
+import BigFiveSurvey from "@/components/traits/BigFiveSurvey";
+import { BookOpen, Heart, Compass, Sparkles, User } from "lucide-react";
+import { BigFive } from "@/types";
+import { loadBigFive, saveSelfReport, deleteBigFiveData } from "@/utils/bigfive/mergeProfiles";
+import {
+  calculateCompositeStressScore,
+  type CompositeStressInput,
+  type LiraAnswer,
+} from "@/lib/compositeStressScore";
+import { SomaticSignal } from "@/types";
 
 export default function MinReisePage() {
   const [activeView, setActiveView] = useState<"overview" | "mastery" | "checkpoint" | "celebration">("overview");
+  const [bigFive, setBigFive] = useState<BigFive | undefined>(undefined);
+  const [currentState, setCurrentState] = useState<"ventral" | "sympathetic" | "dorsal">("ventral");
+  const [showPersonalityModal, setShowPersonalityModal] = useState(false);
+  const [showSurvey, setShowSurvey] = useState(false);
+
+  const handleSurveyComplete = (newBigFive: BigFive) => {
+    saveSelfReport(newBigFive);
+    setBigFive(newBigFive);
+    setShowSurvey(false);
+    setShowPersonalityModal(true);
+  };
+
+  const handleDelete = () => {
+    deleteBigFiveData();
+    setBigFive(undefined);
+    setShowPersonalityModal(false);
+  };
+
+  const handleEdit = () => {
+    setShowPersonalityModal(false);
+    setShowSurvey(true);
+  };
 
   useEffect(() => {
     // Hide sidebar on this page
     const sidebar = document.querySelector('aside');
     if (sidebar) {
       sidebar.style.display = 'none';
+    }
+
+    // Load BigFive and polyvagal state
+    if (typeof window !== "undefined") {
+      try {
+        // Load BigFive personality data
+        const loadedBigFive = loadBigFive();
+        if (loadedBigFive) {
+          setBigFive(loadedBigFive);
+        }
+
+        // Load polyvagal state from Mestring data
+        const savedEmotions = localStorage.getItem("navlosen-emotions");
+        const savedStressLevel = localStorage.getItem("navlosen-stress-level");
+        const savedSignals = localStorage.getItem("navlosen-somatic-signals");
+        const savedAnswers = localStorage.getItem("navlosen-lira-answers");
+
+        if (savedEmotions || savedStressLevel || savedSignals || savedAnswers) {
+          const compositeInput: CompositeStressInput = {
+            stressSlider: savedStressLevel ? Number(savedStressLevel) : 5,
+            selectedEmotions: savedEmotions
+              ? JSON.parse(savedEmotions).map((e: { word: string; quadrant: number | null }) => ({
+                  word: e.word,
+                  quadrant: e.quadrant || 1,
+                }))
+              : [],
+            somaticSignals: savedSignals
+              ? JSON.parse(savedSignals)
+              : ([] as SomaticSignal[]),
+            liraAnswers: savedAnswers ? JSON.parse(savedAnswers) : ([] as LiraAnswer[]),
+          };
+
+          const result = calculateCompositeStressScore(compositeInput);
+          setCurrentState(result.polyvagalState);
+        }
+      } catch (e) {
+        console.error("Failed to load personality or biofield data", e);
+      }
     }
 
     return () => {
@@ -68,8 +139,8 @@ export default function MinReisePage() {
               </div>
             </div>
 
-            {/* Three navigation cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Navigation cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <button
                 onClick={() => setActiveView("mastery")}
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border-2 border-transparent hover:border-purple-300 text-left"
@@ -123,6 +194,34 @@ export default function MinReisePage() {
                   Se din reise →
                 </div>
               </button>
+
+              <button
+                onClick={() => setShowPersonalityModal(true)}
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border-2 border-transparent hover:border-orange-300 text-left"
+              >
+                <div className="mb-4 flex items-center justify-center">
+                  {bigFive ? (
+                    <PersonalityAvatar
+                      bigFive={bigFive}
+                      polyvagalState={currentState}
+                      size="medium"
+                      interactive={false}
+                      showLabel={false}
+                    />
+                  ) : (
+                    <User className="h-12 w-12 text-orange-600" />
+                  )}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Din personlighet
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Utforsk din personlighetsprofil og hvordan den påvirker din reise.
+                </p>
+                <div className="text-orange-600 font-medium text-sm">
+                  {bigFive ? "Se profil →" : "Lag profil →"}
+                </div>
+              </button>
             </div>
 
             {/* Back link */}
@@ -163,6 +262,56 @@ export default function MinReisePage() {
             showAnimation={true}
           />
         </div>
+      )}
+
+      {/* Personality Modal */}
+      {showPersonalityModal && bigFive && (
+        <PersonalityModal
+          bigFive={bigFive}
+          polyvagalState={currentState}
+          onClose={() => setShowPersonalityModal(false)}
+          onEdit={handleEdit}
+        />
+      )}
+
+      {/* If no BigFive but clicked personality card, show survey */}
+      {showPersonalityModal && !bigFive && !showSurvey && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
+            <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-4">
+              Lag din personlighetsprofil
+            </h3>
+            <p className="text-[var(--color-text-secondary)] mb-6">
+              Du har ikke laget en personlighetsprofil ennå. Vil du svare på noen korte spørsmål for å få personaliserte anbefalinger?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowPersonalityModal(false);
+                  setShowSurvey(true);
+                }}
+                className="flex-1 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors"
+              >
+                Ja, start spørreskjema
+              </button>
+              <button
+                onClick={() => setShowPersonalityModal(false)}
+                className="flex-1 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors"
+              >
+                Ikke nå
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* BigFive Survey */}
+      {showSurvey && (
+        <BigFiveSurvey
+          onComplete={handleSurveyComplete}
+          onCancel={() => setShowSurvey(false)}
+          polyvagalState={currentState}
+        />
       )}
       </div>
     </Layout>

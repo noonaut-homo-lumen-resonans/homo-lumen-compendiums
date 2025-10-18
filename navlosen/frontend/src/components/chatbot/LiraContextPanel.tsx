@@ -5,7 +5,7 @@ import { Heart, Activity, User, ExternalLink, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import type { BiofieldContext } from "@/lib/liraService";
 import type { SomaticSignal, BigFive } from "@/types";
-import BigFiveMini from "@/components/traits/BigFiveMini";
+import PersonalityAvatar from "@/components/traits/PersonalityAvatar";
 import BigFiveSurvey from "@/components/traits/BigFiveSurvey";
 import { loadBigFive, saveSelfReport } from "@/utils/bigfive/mergeProfiles";
 
@@ -301,11 +301,16 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
       )}
 
       {/* Big Five Personality Profile */}
-      <BigFiveMini
-        bigFive={bigFive}
-        onEdit={() => setShowSurvey(true)}
-        className="mb-4"
-      />
+      <div className="mb-4 flex justify-center">
+        <PersonalityAvatar
+          bigFive={bigFive}
+          polyvagalState={biofieldContext?.polyvagalState}
+          size="medium"
+          interactive={true}
+          showLabel={true}
+          onEdit={() => setShowSurvey(true)}
+        />
+      </div>
 
       {/* Update Button */}
       <Link

@@ -20,7 +20,9 @@ import {
   type CompositeStressInput,
   type LiraAnswer,
 } from "@/lib/compositeStressScore";
-import { SomaticSignal } from "@/types";
+import { SomaticSignal, BigFive } from "@/types";
+import PersonalityAvatar from "@/components/traits/PersonalityAvatar";
+import { loadBigFive } from "@/utils/bigfive/mergeProfiles";
 
 /**
  * NAV-Losen Dashboard (Homepage)
@@ -43,6 +45,7 @@ export default function Dashboard() {
   const [compositeScore, setCompositeScore] = useState<number>(5);
   const [confidence, setConfidence] = useState<number>(0);
   const [hasData, setHasData] = useState<boolean>(false);
+  const [bigFive, setBigFive] = useState<BigFive | undefined>(undefined);
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -75,6 +78,12 @@ export default function Dashboard() {
           setCurrentState(result.polyvagalState);
           setCompositeScore(result.compositeScore);
           setConfidence(result.confidence);
+        }
+
+        // Load BigFive personality data
+        const loadedBigFive = loadBigFive();
+        if (loadedBigFive) {
+          setBigFive(loadedBigFive);
         }
       } catch (e) {
         console.error("Failed to load dashboard data", e);
@@ -252,30 +261,46 @@ export default function Dashboard() {
                 </p>
 
                 {hasData && (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-gray-200">
-                    <div>
-                      <p className="text-sm text-gray-600">Kompositt Score</p>
-                      <p className="text-2xl font-bold text-[var(--color-primary)]">
-                        {compositeScore.toFixed(1)}/10
-                      </p>
+                  <div className="flex flex-col md:flex-row gap-6 mt-4 pt-4 border-t border-gray-200">
+                    {/* Stats grid */}
+                    <div className="flex-1 grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-600">Kompositt Score</p>
+                        <p className="text-2xl font-bold text-[var(--color-primary)]">
+                          {compositeScore.toFixed(1)}/10
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Tilstand</p>
+                        <p className="text-lg font-semibold">{uiConfig.stateLabel}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Analysetillit</p>
+                        <p className="text-lg font-semibold">
+                          {Math.round(confidence * 100)}%
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Sist oppdatert</p>
+                        <p className="text-lg font-semibold flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          I dag
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Tilstand</p>
-                      <p className="text-lg font-semibold">{uiConfig.stateLabel}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Analysetillit</p>
-                      <p className="text-lg font-semibold">
-                        {Math.round(confidence * 100)}%
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Sist oppdatert</p>
-                      <p className="text-lg font-semibold flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        I dag
-                      </p>
-                    </div>
+
+                    {/* Personality Avatar */}
+                    {bigFive && (
+                      <div className="flex justify-center items-center">
+                        <PersonalityAvatar
+                          bigFive={bigFive}
+                          polyvagalState={currentState}
+                          size="large"
+                          interactive={true}
+                          showLabel={false}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
