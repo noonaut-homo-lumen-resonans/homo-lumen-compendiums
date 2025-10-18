@@ -4,7 +4,10 @@ import React, { useState, useEffect } from "react";
 import { Heart, Activity, User, ExternalLink, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import type { BiofieldContext } from "@/lib/liraService";
-import type { SomaticSignal } from "@/types";
+import type { SomaticSignal, BigFive } from "@/types";
+import BigFiveMini from "@/components/traits/BigFiveMini";
+import BigFiveSurvey from "@/components/traits/BigFiveSurvey";
+import { loadBigFive, saveSelfReport } from "@/utils/bigfive/mergeProfiles";
 
 interface LiraContextPanelProps {
   biofieldContext?: BiofieldContext;
@@ -30,6 +33,8 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
   const [emotions, setEmotions] = useState<{ word: string; quadrant: number | null }[]>([]);
   const [somaticSignals, setSomaticSignals] = useState<SomaticSignal[]>([]);
   const [lastUpdated, setLastUpdated] = useState<number | null>(null);
+  const [bigFive, setBigFive] = useState<BigFive | undefined>(undefined);
+  const [showSurvey, setShowSurvey] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -59,6 +64,10 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
     if (timestamp) {
       setLastUpdated(parseInt(timestamp));
     }
+
+    // Load Big Five profile
+    const loadedBigFive = loadBigFive();
+    setBigFive(loadedBigFive);
   }, []);
 
   // Get polyvagal state display info
@@ -136,6 +145,13 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
 
   // Count checked somatic signals
   const checkedSignals = somaticSignals.filter(s => s.checked);
+
+  // Handle survey completion
+  const handleSurveyComplete = (newBigFive: BigFive) => {
+    saveSelfReport(newBigFive);
+    setBigFive(newBigFive);
+    setShowSurvey(false);
+  };
 
   // Format last updated time
   const formatTimestamp = (timestamp: number) => {
@@ -284,6 +300,13 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
         </div>
       )}
 
+      {/* Big Five Personality Profile */}
+      <BigFiveMini
+        bigFive={bigFive}
+        onEdit={() => setShowSurvey(true)}
+        className="mb-4"
+      />
+
       {/* Update Button */}
       <Link
         href="/mestring"
@@ -300,6 +323,15 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
           veiledningen til hvordan du har det akkurat nå.
         </p>
       </div>
+
+      {/* Big Five Survey Modal */}
+      {showSurvey && (
+        <BigFiveSurvey
+          onComplete={handleSurveyComplete}
+          onCancel={() => setShowSurvey(false)}
+          polyvagalState={biofieldContext?.polyvagalState}
+        />
+      )}
     </div>
   );
 }

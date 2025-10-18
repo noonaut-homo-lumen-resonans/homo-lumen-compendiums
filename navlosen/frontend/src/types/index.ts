@@ -132,6 +132,35 @@ export interface MusicFrequency {
   audioUrl?: string;
 }
 
+// Big Five (OCEAN) personality traits
+// Used as weak priors for recommendation re-ranking
+// Source: self-report (voluntary) or inferred (passive, from quadrant patterns)
+export interface BigFiveUncertainty {
+  O?: number; // 0..1, how uncertain we are about Openness
+  C?: number; // Conscientiousness
+  E?: number; // Extraversion
+  A?: number; // Agreeableness
+  N?: number; // Neuroticism
+}
+
+export interface BigFive {
+  O?: number; // Openness to Experience, 0..1
+  C?: number; // Conscientiousness, 0..1
+  E?: number; // Extraversion, 0..1
+  A?: number; // Agreeableness, 0..1
+  N?: number; // Neuroticism, 0..1
+  updatedAt?: string; // ISO timestamp
+  source?: "self_report" | "inferred" | "mixed";
+  uncertainty?: BigFiveUncertainty;
+}
+
+// Privacy preferences for Big Five data
+export interface BigFivePolicy {
+  persist: boolean; // Store locally?
+  sync: boolean; // Sync to backend?
+  useForReranking: boolean; // Use in recommendation re-ranking?
+}
+
 export interface SessionData {
   emotions: { word: string; quadrant: number | null }[];
   stressLevel: number;
@@ -139,5 +168,6 @@ export interface SessionData {
   liraAnswers: LiraAnswer[];
   healthConnect?: HealthConnectData;
   weather?: WeatherData;
+  bigFive?: BigFive; // Snapshot at recommendation time
   timestamp: string;
 }
