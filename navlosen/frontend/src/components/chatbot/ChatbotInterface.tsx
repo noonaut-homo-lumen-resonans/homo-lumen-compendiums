@@ -50,7 +50,7 @@ export default function ChatbotInterface() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showCamera, setShowCamera] = useState<boolean>(false);
 
-  // Voice state
+  // Voice input state
   const [isListening, setIsListening] = useState<boolean>(false);
   const [speechRecognition, setSpeechRecognition] = useState<any>(null);
 
@@ -69,7 +69,7 @@ export default function ChatbotInterface() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Load biofield context on mount
+  // Load biofield context and initialize speech recognition on mount
   useEffect(() => {
     const context = loadBiofieldContext();
     setBiofieldContext(context);
@@ -296,73 +296,6 @@ export default function ChatbotInterface() {
     }
   };
 
-  // Toggle voice recognition
-  const toggleVoiceInput = () => {
-    if (!speechRecognition) {
-      alert("Talegjenkjenning støttes ikke i denne nettleseren. Prøv Chrome eller Edge.");
-      return;
-    }
-
-    if (isListening) {
-      speechRecognition.stop();
-      setIsListening(false);
-    } else {
-      speechRecognition.start();
-      setIsListening(true);
-    }
-  };
-
-  // Handle emotion selection from sidebar
-  const handleEmotionSelect = (emotion: string) => {
-    // Save emotion to localStorage for Mestring integration
-    const existingEmotions = localStorage.getItem("navlosen-emotions");
-    const emotions = existingEmotions ? JSON.parse(existingEmotions) : [];
-
-    // Add new emotion if not already present
-    const emotionExists = emotions.some((e: any) => e.word === emotion);
-    if (!emotionExists) {
-      emotions.push({ word: emotion, quadrant: getEmotionQuadrant(emotion) });
-      localStorage.setItem("navlosen-emotions", JSON.stringify(emotions));
-    }
-
-    // Navigate to Mestring page (Stage 2 - Signals)
-    localStorage.setItem("navlosen-mestring-stage", "signals");
-    window.location.href = "/mestring";
-  };
-
-  // Helper: Get quadrant for emotion word
-  const getEmotionQuadrant = (word: string): number => {
-    const quadrantWords = {
-      1: ["Gledelig", "Entusiastisk", "Inspirert", "Optimistisk", "Spent",
-          "Energisk", "Leken", "Stolt", "Ekstatisk", "Begeistret",
-          "Ivrig", "Opprømt", "Fornøyd", "Lykkelig", "Begeistring",
-          "Levende", "Vital", "Motivert", "Selvsikker", "Modig",
-          "Fascinert", "Engasjert", "Aktiv", "Kreativ", "Triumferende"],
-      2: ["Rolig", "Takknemlig", "Trygg", "Tilfreds", "Fokusert",
-          "Fredelig", "Håpefull", "Avslappet", "Behagelig", "Tålmodig",
-          "Harmonisk", "Balansert", "Ydmyk", "Omsorgsfull", "Kjærlig",
-          "Aksepterende", "Fornuftig", "Reflektert", "Konsentrert", "Stabil",
-          "Mild", "Tillitsfull", "Verdsatt", "Anerkjent", "Medfølende"],
-      3: ["Trist", "Nedfor", "Utmattet", "Sårbar", "Ensom",
-          "Fortvilet", "Nummen", "Håpløs", "Deprimert", "Skuffet",
-          "Mislykket", "Resignert", "Tomhet", "Sorgfull", "Tapende",
-          "Ute av kontroll", "Hjelpeløs", "Tungsinn", "Uverdig", "Skamfull",
-          "Skyldig", "Trett", "Passiv", "Apatisk", "Likegyldig"],
-      4: ["Frustrert", "Sint", "Irritert", "Engstelig", "Nervøs",
-          "Urolig", "Overveldet", "Stresset", "Redd", "Panisk",
-          "Anspent", "Presset", "Skremt", "Provosert", "Rasende",
-          "Aggressiv", "Defensiv", "Bitter", "Fiendtlig", "Mistenksom",
-          "Bekymret", "Urolig", "Forvirret", "Kaotisk", "Ustabil"],
-    };
-
-    for (const [quadrant, words] of Object.entries(quadrantWords)) {
-      if (words.includes(word)) {
-        return parseInt(quadrant, 10);
-      }
-    }
-    return 1; // Default to quadrant 1
-  };
-
   // Handle sending message (with optional image)
   const handleSend = async (predefinedMessage?: string) => {
     const messageToSend = predefinedMessage || input.trim();
@@ -456,48 +389,101 @@ export default function ChatbotInterface() {
     setMessages([welcomeMessage]);
   };
 
+  // Toggle voice input (speech recognition)
+  const toggleVoiceInput = () => {
+    if (!speechRecognition) {
+      alert(
+        "Talegjenkjenning støttes ikke i denne nettleseren. Prøv Chrome eller Edge."
+      );
+      return;
+    }
+
+    if (isListening) {
+      speechRecognition.stop();
+      setIsListening(false);
+    } else {
+      speechRecognition.start();
+      setIsListening(true);
+    }
+  };
+
+  // Handle emotion selection from sidebar
+  const handleEmotionSelect = (emotion: string) => {
+    // Save emotion to localStorage for Mestring integration
+    const existingEmotions = localStorage.getItem("navlosen-emotions");
+    const emotions = existingEmotions ? JSON.parse(existingEmotions) : [];
+
+    // Add new emotion if not already present
+    const emotionExists = emotions.some((e: any) => e.word === emotion);
+    if (!emotionExists) {
+      emotions.push({ word: emotion, quadrant: getEmotionQuadrant(emotion) });
+      localStorage.setItem("navlosen-emotions", JSON.stringify(emotions));
+    }
+
+    // Navigate to Mestring page (Stage 2 - Signals)
+    localStorage.setItem("navlosen-mestring-stage", "signals");
+    window.location.href = "/mestring";
+  };
+
+  // Get quadrant number for an emotion word
+  const getEmotionQuadrant = (emotion: string): number => {
+    const quadrantWords = {
+      1: ["Gledelig", "Entusiastisk", "Inspirert", "Optimistisk", "Spent", "Energisk"],
+      2: ["Rolig", "Takknemlig", "Trygg", "Tilfreds", "Fokusert", "Fredelig"],
+      3: ["Trist", "Nedfor", "Utmattet", "Sårbar", "Ensom", "Nummen"],
+      4: ["Frustrert", "Sint", "Irritert", "Engstelig", "Nervøs", "Overveldet", "Stresset", "Redd"],
+    };
+
+    for (const [quadrant, words] of Object.entries(quadrantWords)) {
+      if (words.includes(emotion)) {
+        return parseInt(quadrant);
+      }
+    }
+    return 4; // Default to quadrant 4
+  };
+
   return (
     <div className="flex gap-4">
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col h-[calc(100vh-16rem)] bg-white rounded-lg shadow-lg">
+      <div className="flex flex-col flex-1 h-[calc(100vh-16rem)] bg-white rounded-lg shadow-lg">
         {/* Header */}
         <header className="p-4 border-b flex items-center justify-between bg-purple-50">
-          <div className="flex items-center gap-3">
-            <MessageCircle className="w-6 h-6 text-purple-500" />
-            <div>
-              <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
-                Lira - NAV-Losen Chatbot
-              </h2>
-              {biofieldContext && (
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  Stressnivå: {biofieldContext.stressLevel}/10 (
-                  {biofieldContext.polyvagalState === "ventral"
-                    ? "Rolig"
-                    : biofieldContext.polyvagalState === "sympathetic"
-                    ? "Aktivert"
-                    : "Overveldet"}
-                  )
-                </p>
-              )}
-            </div>
+        <div className="flex items-center gap-3">
+          <MessageCircle className="w-6 h-6 text-purple-500" />
+          <div>
+            <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+              Lira - NAV-Losen Chatbot
+            </h2>
+            {biofieldContext && (
+              <p className="text-xs text-[var(--color-text-secondary)]">
+                Stressnivå: {biofieldContext.stressLevel}/10 (
+                {biofieldContext.polyvagalState === "ventral"
+                  ? "Rolig"
+                  : biofieldContext.polyvagalState === "sympathetic"
+                  ? "Aktivert"
+                  : "Overveldet"}
+                )
+              </p>
+            )}
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowEmotionSidebar(!showEmotionSidebar)}
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Følelser"
-            >
-              <Heart className={`w-5 h-5 ${showEmotionSidebar ? "text-red-500" : ""}`} />
-            </button>
-            <button
-              onClick={handleReset}
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Start ny samtale"
-            >
-              <RotateCcw className="w-5 h-5" />
-            </button>
-          </div>
-        </header>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowEmotionSidebar(!showEmotionSidebar)}
+            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+            title="Følelser"
+          >
+            <Heart className="w-5 h-5" />
+          </button>
+          <button
+            onClick={handleReset}
+            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+            title="Start ny samtale"
+          >
+            <RotateCcw className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
 
       {/* Messages */}
       <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-50">
@@ -753,6 +739,7 @@ export default function ChatbotInterface() {
           </div>
         </div>
       </div>
+    </div>
 
       {/* Emotion Sidebar (på høyre side) */}
       {showEmotionSidebar && (
