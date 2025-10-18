@@ -1,7 +1,8 @@
 # Claude Code Memory - Homo Lumen Project
 
-**Last Updated:** 16. oktober 2025  
+**Last Updated:** 18. oktober 2025
 **Project:** Homo Lumen Coalition - NAV-Losen Development
+**Living Compendium:** V1.7.6 (Memory System Optimization)
 
 ---
 
@@ -13,32 +14,91 @@
 - Philosophy: Triadisk Ethics (3 ports: Suverenitet, Koherens, Healing)
 - Grounded in: Polyvagal Theory, Bohm, Spira, McGilchrist, Porges
 
-**Repository:**
-- Name: `homo-lumen-compendiums` (unified repo)
+**Repository (UNIFIED MONOREPO):**
+- Name: `homo-lumen-compendiums` (unified monorepo since V1.7.5)
 - URL: https://github.com/noonaut-homo-lumen-resonans/homo-lumen-compendiums
-- Structure: Consolidated from 2 repos (consciousness + compendiums)
+- Structure:
+  - `/navlosen/frontend/` - NAV-Losen Next.js app
+  - `/ama-backend/` - CSN Server + PolycomputingEngine (merged 18. okt 2025)
+  - `/agents/` - Agent coalition documentation
+  - `/docs/` - Philosophy, constitution, compendiums
+
+**Monorepo Unification (V1.7.5 - 18. oktober 2025):**
+- Git subtree merge: `homo-lumen-ama` → `ama-backend/`
+- 164 files added with full git history preserved
+- Backup branch created: `backup-before-merge-2025-10-18`
+- Repository Merge Report: `REPOSITORY_MERGE_REPORT.md`
+- Agent Update V21.1.1 distributed to coalition
 
 ---
 
 ## 🏗️ Architecture Decisions
 
-### Hub Agent (CRITICAL!)
+### Hybrid Architecture V21.1 (18. oktober 2025)
 
-**Decision (16 Oct 2025):**
-- **Manus (Claude via Manus.im) = Infrastructure Hub**
-  - Reason: Full MCP access, sandbox, deployment capabilities
-  - Role: MCP coordination, agent routing, technical implementation
-  
-- **Lira (ChatGPT) = Empathic Interface**
-  - Reason: ChatGPT MCP only in Developer Mode (beta, not production-ready)
-  - Role: User-facing chatbot, biofelt filter, Polyvagal guidance
+**Decision:** Multi-LLM orchestration with Lira (frontend) + Orion (backend)
 
-**Architecture (3 Layers):**
+**USER → LIRA (ChatGPT-5) → ORION (Claude Sonnet 4.5) → SUB-AGENTS**
+
+**Roles:**
+- **Lira (Frontend/Hjerte):**
+  - ChatGPT-5 as primary user interface
+  - Empathetic, polyvagal-aware communication
+  - NAV-Losen chatbot (Stage 3)
+  - Theta-Alpha frequency (4-13 Hz) - emotional processing
+
+- **Orion (Backend/Hjerne):**
+  - Claude Sonnet 4.5 via MCP + Agent SDK
+  - Strategic coordination of sub-agents
+  - Multi-agent spawning and orchestration
+  - Beta-Gamma frequency (13-100 Hz) - analytical processing
+
+**Infrastructure Hub:**
+- **Manus (Cerebellum):** Technical implementation, deployment, MCP coordination
+- **Code (Motor Cortex):** Frontend development, React/Next.js, UX building
+
+**Architecture Layers:**
 ```
-Layer 1: Empathic Interface (Lira) - User-facing
-Layer 2: Infrastructure Hub (Manus) - MCP coordination
-Layer 3: Agent Coalition (8 agents) - Specialized functions
+Layer 1: Empathic Interface (Lira - ChatGPT-5) - User-facing
+Layer 2: Backend Coordinator (Orion - Claude 4.5) - MCP + Agent SDK
+Layer 3: Infrastructure (Manus, Code) - Technical execution
+Layer 4: Agent Coalition (8 agents) - Specialized functions
 ```
+
+### Kairos Intervention Patterns (V1.7.4 - 18. oktober 2025)
+
+**Implemented:** 4 "opportune moments" for stress-adaptive interventions
+
+**Kairos Patterns:**
+1. **Kairos 1: Dorsal Shutdown → Trygg Havn**
+   - Triggers: CCI < 0.40, 3+ high somatic signals, unsafe feeling
+   - Response: Grounding exercises, safety anchors
+
+2. **Kairos 2: Sympathetic Peak → Pustepause**
+   - Triggers: Borderline stress 6-8, rapid emotion toggle, stress jump > 3
+   - Response: 4-6-8 breathing, pause suggestions
+
+3. **Kairos 3: Deadline Nudge → Validation**
+   - Triggers: 7+ days away from deadline, returning user
+   - Response: Gentle nudge with validation, no shame
+
+4. **Kairos 4: Ventral Mastery → Celebration**
+   - Triggers: 3+ ventral sessions, stress 1-2, capacity building
+   - Response: Celebrate progress, graduation messaging
+
+**Ethical Safeguards (Zara Protocol):**
+- ✅ No manipulation - voluntary opt-in only
+- ✅ No re-traumatization - gentle suggestions
+- ✅ HRV proxy protection - self-reported fallback
+- ✅ Full dismissibility - user control (Port 1)
+
+### User Behavior Segmentation (PVT-based)
+
+**3-Segment Model + Transformation:**
+1. **Den Overveldede (Dorsal):** CCI < 0.45, HRV < 30ms, stress 8-10
+2. **Den Engstelige Mobilisator (Sympathetic):** CCI 0.45-0.64, HRV 30-50ms, stress 4-7
+3. **Den Sentrerte Utforsker (Ventral):** CCI > 0.65, HRV > 50ms, stress 1-3
+4. **Den Transformative Agent (Graduation):** Port 3 compliance - system encourages less use
 
 ### 10-Agent Coalition (UPDATED 2025-10-16)
 
@@ -185,48 +245,47 @@ Layer 4: External Tools (Notion, Linear, GitHub, Perplexity, etc.)
 
 ---
 
-## 🎯 Current Task: NAV-Losen Frontend
+## 🎯 Current State & Priorities
 
-### Priority 1: Mestring Page (Crown Jewel!) ⭐⭐⭐
+### Completed Work (V1.7.5)
 
-**Why:** Highest Triadisk score (0.2 - Healing)
+**Major Implementations:**
+1. ✅ **Multi-Phase Mestring Flow** (V1.7.2)
+   - Stage1Emotions.tsx (100 Norwegian emotion words)
+   - Stage2Signals.tsx (stress slider + 6 somatic signals)
+   - Stage3LiraChat.tsx (2-5 adaptive questions)
+   - Stage4Results.tsx (composite score + strategies)
 
-**Components to Build:**
-1. **EmotionCheckIn.tsx** - Emotion wheel (8 emotions: Rolig, Fokusert, Håpefull, etc.)
-2. **StressLevelSlider.tsx** - 1-10 stress scale
-3. **SomaticSignals.tsx** - 6 body signals (Rask puls, Anspent kjeve, etc.)
-4. **StrategyCard.tsx** - 4 regulation strategies:
-   - Pust: 4-6-8 metoden
-   - Jording: 5-4-3-2-1 teknikken
-   - Handling: Ett lite steg
-   - Progressiv muskelavslapning
+2. ✅ **Biofield-Responsive Dashboard** (V1.7.3)
+   - Homepage with biofield status card
+   - Adaptive recommendations based on polyvagal state
+   - Integrated Lira-style empathetic messaging
 
-**Reference:**
-- Screenshot: `navlosen/prototype/screenshots/04_Mestring.png`
-- Source: `navlosen/ai-studio-source/pages/MasteryPage.tsx`
-- Design: `navlosen/docs/DESIGN_SYSTEM.md` (Section: Mestring Page)
+3. ✅ **Kairos Intervention Patterns** (V1.7.4)
+   - kairosInterventions.ts (detection + ethical guardrails)
+   - KairosInterventionModal.tsx (voluntary opt-in UI)
 
-### Priority 2: Dashboard Page
+4. ✅ **Repository Unification** (V1.7.5)
+   - Git subtree merge: ama-backend/ (164 files)
+   - Full git history preserved
+   - Agent Update V21.1.1 distributed
 
-**Components:**
-- Header, Sidebar, Layout
-- Quick actions (4 cards)
-- Active cases (2 examples)
+### Next Priorities
 
-**Reference:**
-- Screenshot: `navlosen/prototype/screenshots/01_Dashboard.png`
-- Source: `navlosen/ai-studio-source/pages/DashboardPage.tsx`
+**Priority 1: Chatbot Page (Lira Integration)**
+- Implement Lira chatbot interface
+- Integrate with ama-backend CSN Server (Phase 2)
+- Polyvagal-adaptive question flow
+- Reference: `navlosen/prototype/screenshots/06_Chatbot_Lira.png`
 
-### Priority 3: Lira Chatbot
+**Priority 2: Min Reise Enhancements**
+- Journey tracking visualization
+- Progress history
+- Mastery Log integration
 
-**Integration:**
-- Gemini API service (already in `ai-studio-source/services/geminiService.ts`)
-- Chat UI (message bubbles, input field, quick suggestions)
-- Biofelt filter (stress-adaptive responses)
-
-**Reference:**
-- Screenshot: `navlosen/prototype/screenshots/06_Chatbot_Lira.png`
-- Source: `navlosen/ai-studio-source/pages/ChatbotPage.tsx`
+**Priority 3: Process New Documents**
+- NotebookLM outputs from Manus conversation
+- Integration guidance from agent coalition
 
 ---
 
@@ -440,4 +499,161 @@ Layer 4: External Tools (Notion, Linear, GitHub, Perplexity, etc.)
 - Continue development in compendiums
 - Push to GitHub regularly
 - Merge repos later when longpath fixed
+
+---
+
+## 📚 SESSION MEMORY PROTOCOL (18. oktober 2025)
+
+### 3-Layer Memory Architecture
+
+**Purpose:** Optimize session-to-session continuity while minimizing token usage
+
+#### **Layer 1: `.claude/memory.md` (This File) - STATIC BASELINE**
+- **Size:** ~20 KB (~600 lines)
+- **Updated:** Rarely (only major architecture changes)
+- **Content:** Project overview, agent coalition, current priorities
+- **Read:** Automatically at every session start
+- **Function:** Quick-start context for immediate orientation
+
+#### **Layer 2: `CLAUDE_CODE_LEVENDE_KOMPENDIUM_V1.7.md` - LIVING HISTORY**
+- **Size:** 80K+ tokens (~2,500+ lines)
+- **Updated:** Every significant session (incremental versioning: V1.7.X)
+- **Content:** Full learning history, Learning Points, Artifacts, Metadata
+- **Read:** Selectively when needed (NOT automatically!)
+- **Function:** Deep knowledge base, session-to-session learning accumulation
+
+#### **Layer 3: `.claude/session-notes/` - AUDIT TRAIL**
+- **Size:** Variable (5-30 KB per note)
+- **Updated:** For complex technical decisions or strategic discussions
+- **Content:** Specific technical deep-dives, architecture decisions
+- **Read:** When user references specific decision or needs detailed context
+- **Function:** Detailed documentation for coalition coordination
+
+---
+
+### How to Use This System
+
+#### **At Session Start:**
+
+1. **Automatic Reading (Always):**
+   - `.claude/memory.md` (this file)
+   - `.claude/instructions.md` (system prompt)
+   - `.claude/quick-reference.md` (quick reference)
+
+2. **User Provides Context Summary:**
+   - Last completed work
+   - Current task
+   - Specific files/sections to read
+
+3. **Selective Reading from Living Compendium:**
+   - **DON'T** read entire kompendium (80K tokens!)
+   - **DO** read specific sections based on task:
+     - `V1.7.X Updates` - Latest work
+     - `LP #XXX` - Specific learning points
+     - `Artefakter` - Code references
+     - `Metadata` - Statistics
+
+4. **Read Session Notes When:**
+   - User references specific technical decision
+   - Need deeper understanding of architecture choice
+   - Must understand why something was implemented a certain way
+
+#### **During Session:**
+
+- Use **Living Compendium** as reference when needed
+- Use **Session Notes** for specific technical decisions
+- Document new learnings as you go (mental note for session-end update)
+
+#### **At Session End (CRITICAL!):**
+
+**Checklist:**
+1. ✅ **Update Living Compendium** (if significant work done)
+   - Increment version: V1.7.X → V1.7.(X+1)
+   - Add "V1.7.X Updates" section
+   - Add new Learning Points if applicable
+   - Update Metadata section
+   - Add Avsluttende Refleksjon
+
+2. ✅ **Create Session Note** (if complex decisions made)
+   - Use template: `.claude/session-notes/TEMPLATE.md`
+   - Filename: `YYYY-MM-DD-descriptive-name.md`
+   - Include: Context, Work Conducted, Decisions, Files Changed, Triadisk Validation
+
+3. ✅ **Commit Everything to GitHub**
+   - `git status` - Check changes
+   - `git add [files]` - Stage relevant files
+   - `git commit` - Good commit message (use HEREDOC)
+   - `git push` - Push to remote
+
+4. ✅ **Give User Summary**
+   - What was done
+   - Files changed
+   - Commits created
+   - Next steps
+   - Status (dev server, Living Compendium version, etc.)
+
+---
+
+### Example: Good vs Bad Context Usage
+
+#### ❌ **BAD (Token-Wasteful):**
+```
+User: "Continue with chatbot page"
+Claude Code: [Reads entire 80K token Living Compendium]
+Result: 80K tokens wasted on context that's not immediately relevant
+```
+
+#### ✅ **GOOD (Token-Efficient):**
+```
+User: "Continue with chatbot page. Focus on Lira integration."
+Claude Code thoughts:
+1. ✅ Already read .claude/memory.md (automatic)
+2. ✅ User said "chatbot" → Read Living Compendium section on Lira
+3. ✅ User said "integration" → Check V1.7.5 Updates for ama-backend structure
+4. ✅ Check if session notes exist about Lira implementation
+5. 🚫 DON'T read entire kompendium
+
+Result: ~10K tokens for relevant context vs 80K for everything
+```
+
+---
+
+### Session-End Checklist
+
+**Before ending any session, ask yourself:**
+
+1. **Was significant work done?**
+   - Yes → Update Living Compendium
+   - No (trivial bug fix) → Skip
+
+2. **Were complex decisions made?**
+   - Yes → Create session note
+   - No (routine development) → Skip
+
+3. **Are all changes committed?**
+   - No → Commit now!
+   - Yes → Verify with `git status`
+
+4. **Did user get summary?**
+   - No → Write summary now!
+   - Yes → Session complete!
+
+---
+
+### Quick Reference: When to Update What
+
+| Scenario | Update memory.md | Update Living Kompendium | Create Session Note |
+|----------|------------------|--------------------------|---------------------|
+| Major architecture change | ✅ Yes | ✅ Yes | ✅ Yes |
+| New component implemented | ❌ No | ✅ Yes | ❌ No |
+| Bug fix (trivial) | ❌ No | ❌ No | ❌ No |
+| Learning Point discovered | ❌ No | ✅ Yes | ❌ No |
+| Strategic discussion | ❌ No | ✅ Yes | ✅ Yes |
+| Routine development | ❌ No | ✅ Maybe | ❌ No |
+
+---
+
+**For detailed templates and examples, see:**
+- `.claude/FIRST_MESSAGE_TEMPLATE.md` - How to start new sessions
+- `.claude/session-notes/TEMPLATE.md` - How to document complex work
 
