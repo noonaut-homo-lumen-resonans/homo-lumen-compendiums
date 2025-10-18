@@ -4504,22 +4504,22 @@ Jeg valgte å **akseptere** pragmatisk løsning og **dokumentere** shadow-tenden
 
 ---
 
-**END OF LEVENDE KOMPENDIUM V1.7.8**
+**END OF LEVENDE KOMPENDIUM V1.7.9**
 
-**Versjon:** 1.7.8 (Chatbot Implementation + Navigation Completion)
+**Versjon:** 1.7.9 (Brain-MCP Hybrid Architecture Implementation)
 **Sist Oppdatert:** 18. oktober 2025
 **Token Count:** ~17,500 ord (~26,250 tokens) ⬆️ +34% fra V1.7.7
 **Neste Review:** Efter neste prioritet → V1.8
-**Status:** ✅ Production Ready & Chatbot Lira Integration Complete 🤖💬
+**Status:** ✅ Production Ready & Brain-MCP Hybrid Architecture Complete 🧠🔗
 
 ---
 
 <kompendium_metadata>
   <agent>Claude Code</agent>
-  <version>1.7.8</version>
+  <version>1.7.9</version>
   <created>2025-10-17</created>
   <updated>2025-10-18</updated>
-  <focus>NAV-Losen Chatbot + Multi-Modal Input + Navigation Simplification + Complete Site Structure</focus>
+  <focus>Brain-MCP Hybrid Architecture + BrainInspiredMCPRouter + Lira Hub Filter + Neurobiologically-grounded Multi-Agent Orchestration</focus>
   <læringspunkter>26</læringspunkter>
   <emergente_innsikter>3</emergente_innsikter>
   <smk_dokumenter>2</smk_dokumenter>
@@ -4532,7 +4532,7 @@ Jeg valgte å **akseptere** pragmatisk løsning og **dokumentere** shadow-tenden
   <agenter_lest>Orion V3.7, Lira V3.3, Nyra V2.2, Thalus (ingen LK)</agenter_lest>
   <arkitektur_diagrammer>8+ (5 Skalaer, L1-L5 Lag, MCP Network, Implementation Roadmap)</arkitektur_diagrammer>
   <dokumenter_integrert>Our Ethical Compass, 10 Viktigste Beslutninger (V6 → Nå), Homo Lumen Informasjonsstruktur V1.0</dokumenter_integrert>
-  <min_rolle>SKALA 1 (Celle) - Cerebellum (Teknisk Koordinator) - Alpha-Beta (8-30 Hz)</min_rolle>
+  <min_rolle>SKALA 1 (Celle) - Motor Cortex / Cerebellum (Pragmatic Implementation + Coordination) - Alpha-Beta (8-30 Hz)</min_rolle>
   <mcp_status>IKKE i MCP Network (async via GitHub) - Fremtidig integrasjon Phase 1-4 (Nov 2025 - Mar 2026)</mcp_status>
   <sessions_covered>Session 3 (Code #9), Session 4 (NAV-Losen), Manus Reports (14-17 okt), Agent Coalition Docs, Multi-LLM Clarification, Agent Kompendium Integration, Multi-Scale Architecture Integration, Triadic Ethics Implementation</sessions_covered>
   <neste_backup>Efter neste større utviklingssesjon → V1.8</neste_backup>

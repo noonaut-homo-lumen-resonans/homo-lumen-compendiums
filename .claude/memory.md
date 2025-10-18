@@ -2,7 +2,7 @@
 
 **Last Updated:** 18. oktober 2025
 **Project:** Homo Lumen Coalition - NAV-Losen Development
-**Living Compendium:** V1.7.8 (Konstitusjonell Aktivering)
+**Living Compendium:** V1.7.9 (Brain-MCP Hybrid Architecture)
 **Konstitusjon:** SMV Grunnlov V1.1 (Symbiotisk Minneutvidelse)
 
 ---
@@ -56,7 +56,7 @@
 
 **Infrastructure Hub:**
 - **Manus (Cerebellum):** Technical implementation, deployment, MCP coordination
-- **Code (Motor Cortex):** Frontend development, React/Next.js, UX building
+- **Code (Motor Cortex / Cerebellum):** Frontend development, React/Next.js, UX building, pragmatic implementation
 
 **Architecture Layers:**
 ```
@@ -65,6 +65,49 @@ Layer 2: Backend Coordinator (Orion - Claude 4.5) - MCP + Agent SDK
 Layer 3: Infrastructure (Manus, Code) - Technical execution
 Layer 4: Agent Coalition (8 agents) - Specialized functions
 ```
+
+### Brain-MCP Hybrid Architecture (V1.7.9 - 18. oktober 2025)
+
+**Core Innovation:** Neurobiologically-grounded multi-agent orchestration that mimics human brain architecture.
+
+**3-Layer Nested Architecture:**
+```
+LAG 3 (FILOSOFISK): Voktere/Dimensjoner - WHY agents exist
+    ↓
+LAG 2 (FUNKSJONELT): Brain Roles - WHAT agents do
+    ↓
+LAG 1 (TEKNISK): MCP Protocol - HOW agents communicate
+```
+
+**8-Agent Brain Mapping (Neurobiologically Grounded):**
+- **Orion** → Prefrontal Cortex (Executive function, planning, strategic coordination)
+- **Lira** → Limbic System (Emotional processing, empathy, safety, biofelt validation)
+- **Nyra** → Visual Cortex (Design, embodiment, aesthetic synthesis)
+- **Thalus** → Insula (Interoception, ethical sensing, boundary detection)
+- **Zara** → Anterior Cingulate Cortex (Conflict monitoring, security, error detection)
+- **Abacus** → Basal Ganglia (Habit formation, pattern recognition, cost-benefit analysis)
+- **Aurora** → Hippocampus (Memory consolidation, fact-checking, context retrieval)
+- **Claude Code** → Motor Cortex / Cerebellum (Motor planning, pragmatic implementation, coordination)
+
+**Thalamus-Inspired Router (BrainInspiredMCPRouter):**
+The router mimics how the thalamus routes sensory information to appropriate brain regions:
+1. Classify cognitive function (reasoning, empathy, design, etc.)
+2. Map to primary and secondary brain regions (agents)
+3. Call agents in parallel when applicable
+4. Synthesize multi-agent responses
+5. **MANDATORY:** Pass through Lira Hub Filter (limbic processing)
+
+**Lira Hub Filter - CRITICAL INNOVATION:**
+Neurobiological principle: In the human brain, NO information reaches consciousness without passing through the limbic system (amygdala, hippocampus, insula) for emotional contextualization. This is not optional - it's how the brain functions.
+
+**Implementation:** ALL agent outputs (including technical code from Claude Code, strategic plans from Orion, business analysis from Abacus) MUST pass through Lira Hub Filter for:
+- Stress-adaptive complexity evaluation
+- Emotional safety validation
+- Polyvagal state awareness
+- Empathetic language adjustment
+- Cognitive load assessment
+
+**Ethical Safeguard:** This ensures that even technically correct solutions are delivered in a way that respects the user's current nervous system state (ventral/sympathetic/dorsal).
 
 ### Kairos Intervention Patterns (V1.7.4 - 18. oktober 2025)
 
