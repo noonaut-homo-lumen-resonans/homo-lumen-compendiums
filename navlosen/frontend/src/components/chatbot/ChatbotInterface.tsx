@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Button from "@/components/ui/Button";
+import LiraContextPanel from "@/components/chatbot/LiraContextPanel";
 import {
   MessageCircle,
   Send,
@@ -24,19 +25,19 @@ import {
 } from "@/lib/liraService";
 
 /**
- * ChatbotInterface Component
+ * Lira Chat Interface Component
  *
- * Real-time chat interface with Lira (GPT-4 via CSN Server)
+ * Empatisk chat-grensesnitt med Lira (GPT-4 via CSN Server)
+ * som tilpasser seg brukerens emosjonelle tilstand fra Mestring.
  *
  * Features:
- * - Message history with user/Lira differentiation
- * - Polyvagal-adaptive quick actions (context-aware)
- * - Image upload (file picker) and camera capture
- * - Image preview in messages
- * - Auto-scroll to latest message
- * - Loading indicator during API calls
- * - Error handling with fallback messages
- * - AI disclaimer and "Snakk med veileder" option
+ * - Polyvagal-adaptive welcome messages + quick actions
+ * - Multi-modal input: Text, voice (Web Speech API), image upload, camera capture
+ * - Emotion sidebar with direct Mestring integration
+ * - Message history with localStorage persistence
+ * - Biofield context integration (stress, emotions, somatic signals)
+ * - Auto-scroll, loading indicators, error handling
+ * - AI disclaimer and "Snakk med veileder" link
  *
  * Triadisk Score: 0.2 (PROCEED)
  */
@@ -106,7 +107,7 @@ export default function ChatbotInterface() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const savedMessages = localStorage.getItem("navlosen-chatbot-history");
+    const savedMessages = localStorage.getItem("navlosen-lira-history");
     if (savedMessages) {
       try {
         const parsed = JSON.parse(savedMessages);
@@ -131,7 +132,7 @@ export default function ChatbotInterface() {
     if (typeof window === "undefined") return;
     if (messages.length === 0) return;
 
-    localStorage.setItem("navlosen-chatbot-history", JSON.stringify(messages));
+    localStorage.setItem("navlosen-lira-history", JSON.stringify(messages));
   }, [messages]);
 
   // Auto-scroll to bottom when messages change
@@ -380,7 +381,7 @@ export default function ChatbotInterface() {
       return;
     }
 
-    localStorage.removeItem("navlosen-chatbot-history");
+    localStorage.removeItem("navlosen-lira-history");
     const welcomeMessage: LiraMessage = {
       role: "assistant",
       content: getWelcomeMessage(biofieldContext),
@@ -444,6 +445,9 @@ export default function ChatbotInterface() {
 
   return (
     <div className="flex gap-4">
+      {/* Context Panel (Left Side) */}
+      <LiraContextPanel biofieldContext={biofieldContext} />
+
       {/* Main Chat Area */}
       <div className="flex flex-col flex-1 h-[calc(100vh-16rem)] bg-white rounded-lg shadow-lg">
         {/* Header */}
@@ -452,7 +456,7 @@ export default function ChatbotInterface() {
           <MessageCircle className="w-6 h-6 text-purple-500" />
           <div>
             <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
-              Lira - NAV-Losen Chatbot
+              Chat med Lira
             </h2>
             {biofieldContext && (
               <p className="text-xs text-[var(--color-text-secondary)]">
@@ -744,7 +748,7 @@ export default function ChatbotInterface() {
       {/* Emotion Sidebar (på høyre side) */}
       {showEmotionSidebar && (
         <div className="w-80 h-[calc(100vh-16rem)] bg-white rounded-lg shadow-lg p-4 overflow-y-auto">
-          <div className="mb-4">
+          <div className="mb-4 pb-3 border-b">
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
               <Heart className="w-5 h-5 text-red-500" />
               Følelser
@@ -753,6 +757,32 @@ export default function ChatbotInterface() {
               Klikk på en følelse → Gå direkte til Mestring
             </p>
           </div>
+
+          {/* Dine valgte emosjoner (fra Mestring) */}
+          {biofieldContext && biofieldContext.selectedEmotions && biofieldContext.selectedEmotions.length > 0 && (
+            <div className="mb-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+              <h4 className="text-sm font-semibold text-purple-700 mb-2 flex items-center gap-2">
+                ⭐ Dine valgte emosjoner
+              </h4>
+              <div className="flex flex-wrap gap-1">
+                {biofieldContext.selectedEmotions.map((emotion, idx) => (
+                  <span
+                    key={idx}
+                    className="px-2 py-1 text-xs bg-white border-2 border-purple-400 text-purple-800 rounded-full font-medium"
+                  >
+                    {emotion.word}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-purple-600 mt-2">
+                Fra din siste Mestring-økt
+              </p>
+            </div>
+          )}
+
+          <p className="text-xs text-[var(--color-text-secondary)] mb-3 italic">
+            Alle følelser (velg for å legge til):
+          </p>
 
           {/* Quadrant 1: Positive + High Energy (Green) */}
           <div className="mb-4">

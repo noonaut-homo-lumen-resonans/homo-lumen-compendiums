@@ -45,7 +45,7 @@ export default function Header({ className }: HeaderProps) {
     { id: "mestring", label: "Mestring", icon: "heart", path: "/mestring" },
     { id: "min-reise", label: "Min Reise", icon: "compass", path: "/min-reise" },
     { id: "jobb", label: "Jobb", icon: "briefcase", path: "/jobb" },
-    { id: "chatbot", label: "Chatbot", icon: "chat", path: "/chatbot" },
+    { id: "lira", label: "Lira", icon: "chat", path: "/chatbot" },
     { id: "dokumenter", label: "Dokumenter", icon: "file", path: "/dokumenter" },
     { id: "paminnelser", label: "Påminnelser", icon: "bell", path: "/paminnelser" },
     { id: "rettigheter", label: "Rettigheter", icon: "scale", path: "/rettigheter" },

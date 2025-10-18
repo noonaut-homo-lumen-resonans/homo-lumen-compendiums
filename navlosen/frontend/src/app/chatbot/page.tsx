@@ -6,16 +6,17 @@ import ChatbotInterface from "@/components/chatbot/ChatbotInterface";
 import { MessageCircle } from "lucide-react";
 
 /**
- * Chatbot Page - Lira NAV-Losen Chatbot
+ * Lira Page - Empatisk AI-veileder for NAV
  *
- * Standalone chat interface with Lira (GPT-4 via CSN Server)
- * for empathetic NAV guidance and biofield-responsive support.
+ * Chat med Lira (GPT-4 via CSN Server) som forstår din emosjonelle tilstand
+ * og tilpasser veiledningen basert på Mestring-data (stress, emosjoner, kropp).
  *
  * Features:
  * - Real-time GPT-4 responses via ama-backend CSN Server
- * - Polyvagal-adaptive quick actions (if biofield context available)
+ * - Polyvagal-adaptive quick actions (based on biofield context)
  * - Empathetic NAV guidance with Lira's personality
- * - Integration with Mestring biofield data (optional)
+ * - Integration with Mestring biofield data (stress, emotions, somatic signals)
+ * - Multi-modal input: text, voice, camera, emotion selection
  *
  * Triadisk Score: 0.2 (PROCEED)
  * - Port 1 (Suverenitet): Clear AI disclaimer, user controls conversation
@@ -33,19 +34,20 @@ export default function ChatbotPage() {
             <span>NAV-Losen</span>
             <span className="mx-2">/</span>
             <span className="text-[var(--color-text-primary)] font-medium">
-              Chatbot
+              Lira
             </span>
           </div>
 
           <div className="flex items-center gap-3 mb-2">
             <MessageCircle className="h-8 w-8 text-purple-500" />
             <h1 className="text-3xl font-bold text-[var(--color-text-primary)]">
-              Chatbot
+              Chat med Lira
             </h1>
           </div>
           <p className="text-lg text-[var(--color-text-secondary)]">
-            Chat med Lira - din empatiske AI-veileder. Jeg kan forklare
-            begreper, foreslå neste steg og peke deg til riktige skjema.
+            Din empatiske AI-veileder som forstår hvordan du har det. Jeg kan forklare
+            NAV-begreper, foreslå neste steg og peke deg til riktige skjema - tilpasset
+            din emosjonelle tilstand.
           </p>
         </div>
 
