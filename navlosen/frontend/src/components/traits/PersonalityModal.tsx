@@ -66,7 +66,7 @@ export default function PersonalityModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 md:p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl mx-auto p-4 md:p-6 lg:p-8 overflow-y-auto max-h-[95vh]">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl mx-auto p-6 md:p-8 lg:p-10 overflow-y-auto max-h-[95vh]">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-text-primary)]">
@@ -113,43 +113,47 @@ export default function PersonalityModal({
         </div>
 
         {/* Traits */}
-        <div className="space-y-4 mb-8">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">
             Dine fem dimensjoner (OCEAN)
           </h3>
 
-          {traits.map((trait) => {
-            const value = (bigFive[trait.key] ?? 0.5) as number;
-            const percentage = Math.round(value * 100);
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {traits.map((trait) => {
+              const value = (bigFive[trait.key] ?? 0.5) as number;
+              const percentage = Math.round(value * 100);
 
-            return (
-              <div key={trait.key}>
-                {/* Label */}
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-gray-900 w-6">
-                      {trait.key}
-                    </span>
-                    <span className="text-sm font-semibold text-gray-700">
-                      {trait.label}
-                    </span>
+              return (
+                <div key={trait.key} className="bg-gray-50 rounded-lg p-4">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg font-bold text-gray-900 w-8">
+                        {trait.key}
+                      </span>
+                      <span className="text-base font-semibold text-gray-700">
+                        {trait.label}
+                      </span>
+                    </div>
+                    <span className="text-lg font-bold text-gray-900">{percentage}%</span>
                   </div>
-                  <span className="text-sm text-gray-600">{percentage}%</span>
-                </div>
 
-                {/* Bar */}
-                <div className="relative h-8 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${trait.color} transition-all duration-500`}
-                    style={{ width: `${percentage}%` }}
-                  />
-                  <div className="absolute inset-0 flex items-center px-3">
-                    <span className="text-xs text-gray-600">{trait.desc}</span>
+                  {/* Bar */}
+                  <div className="h-3 bg-gray-200 rounded-full overflow-hidden mb-3">
+                    <div
+                      className={`h-full ${trait.color} transition-all duration-500`}
+                      style={{ width: `${percentage}%` }}
+                    />
                   </div>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {trait.desc}
+                  </p>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Source info */}
