@@ -320,6 +320,171 @@ Layer 4: External Tools (Notion, Linear, GitHub, Perplexity, etc.)
 
 ---
 
+## 🔬 BIOFELT-VALIDERT PRODUKTUTVIKLING (Fra Manus Samtale)
+
+**Core Challenge:** Navigate tension between system efficiency (NAV/kommune) and user autonomy (vulnerable citizens). **Triadisk Etikk fungerer som etisk veto mot uetisk effektivisering.**
+
+### 1. Biofelt-Validert Metodikk (To-Fase Protokoll)
+
+#### **Fase 1: Empatisk Innsamling (Lira)**
+
+**Steg 1: Klassifisering**
+- Lira utfører **Biofelt-analyse** (Chain-of-Thought) for å klassifisere nervesystem-stadie:
+  - **Ventral Vagal** (Calm, safe connection)
+  - **Sympatisk** (Alert, mobilization)
+  - **Dorsal Vagal** (Freeze, shutdown)
+
+**Steg 2: Datainnhenting (MVP Fase 1)**
+- ❌ **IKKE** live HRV-wearables i MVP
+- ✅ **Selvrapportert** følelsesdata (Mood Meter/Liras 5 spørsmål)
+- ✅ **Passiv Overvåkning** (frivillig Health Connect - søvn/aktivitet)
+- ✅ **Stress-score beregning** (proxy for HRV)
+
+**Steg 3: Vokter-Analyse**
+- Lira konsulterer **Voktere** (Porges, Levine, Brach)
+- Identifiserer **mikro-intervensjoner** (4-6-8 pust, titrering)
+- Matcher til identifisert stress-tilstand
+
+#### **Fase 2: Design & Koherens-Testing**
+
+**Alle designforslag (Nyra/Manus) MÅ gjennomgå Biofelt-resonans Valideringsprotokoll:**
+
+1. **Design-tilpasning (UI):**
+   - Nyra designer 3 stress-responsive moduser (Ventral/Sympatisk/Dorsal)
+   - **Dorsal-modus** (Høy stress): Minimalistisk, beroligende, støyfjerning
+   - **Sympatisk-modus** (Middels stress): Forenklet språk, reassurance
+   - **Ventral-modus** (Lav stress): Full funksjonalitet tilgjengelig
+
+2. **Den Følte Sansen (KRITISK!):**
+   - Osvald utfører **Biofelt-resonans Sjekk** av designet
+   - **UTEN** denne spontane kroppslige reaksjonen ("hårene reiser seg") er løsningen **PER DEFINISJON EN FEIL**
+   - Dette er den ultimate etiske barrieren mot manipulativ design
+
+3. **Kvantitativ Estimering:**
+   - Selv med proxy-data: Måle effekt av mikrotiltak på stress-score (CCI)
+   - **Mål:** Opprettholde eller øke koherens (langsiktig: HRV > 80ms)
+
+4. **Etisk Overstyring (Thalus):**
+   - Thalus gjennomfører **Triadisk Etikk-sjekk**
+   - **Hvis designet undergraver autonomi** (selv om teknisk effektivt): MÅ REVERSERES
+   - Thalus har **veto-rett** over alle design-beslutninger
+
+### 2. Etisk Guardrails (Zara-Protokollen)
+
+**For å sikre at biofelt-validering IKKE brukes til manipulasjon:**
+
+#### **I. Kognitiv Suverenitet (KS) - Unngå Kontroll-Illusjon**
+
+| Tiltak | Implementering |
+|--------|----------------|
+| **Lokal Prosessering** | HRV Rådata behandles **on-device**. Forlater aldri brukerens kontroll. Kun anonyme, aggregerte data for systemforbedring. |
+| **Reversibilitet** | Full opt-out. Alle adaptive funksjoner kan deaktiveres. Dataminimering. **Full sletting < 5 sekunder** (GDPR Art. 17). |
+| **Anti-Nudging** | **ALDRI** push-varslinger for å tvinge oppgaveløsning. Støttetiltak tilbys som **frivillige mikrotilbud** med klar "Hopp over"-knapp. |
+
+#### **II. Ontologisk Koherens (OK) - Bevare Verdighet**
+
+| Tiltak | Implementering |
+|--------|----------------|
+| **Traume-Informed Design** | Dorsal-modus = Trygg Havn. Reduserer stimulering. **Skam-fritt design**. Ingen triggering av angst. |
+| **Epistemisk Ydmykhet** | AI (Lira Chatbot) transparent om begrensninger: "Jeg kan ikke føle det du føler". **ALDRI** medisinske diagnoser. **ALDRI** simulere følelser. AI = Katalysator, IKKE erstatning. |
+| **Tospråklighet** | **Internt:** "biofelt-resonans," "polyvagal-teori" / **Eksternt:** "fysiologiske målinger," "stress-responsiv design" (evidensbasert for troverdighet). |
+
+#### **III. Regenerativ Healing (RH) - Fremme Vekst**
+
+| Tiltak | Implementering |
+|--------|----------------|
+| **Design for Graduation** | **Målet:** Brukeren trenger systemet **mindre** over tid. Forretningsmodellen (Abacus) betaler for **mestring og uavhengighet**, IKKE retention. |
+| **Koherens-Katalysatorer** | Mikro-intervensjoner (4-6-8 pust) tilbys på **Kairos-vinduer** (identifiserte stress-punkter) for å bygge mestringsfølelse. |
+| **Måleindikatorer** | Suksess = HRV-koherens forbedring (20-30% økning) + Autonomi-opplevelse (kvalitative intervjuer). |
+
+### 3. Systemisk Verdi vs. Brukerautonomi (Spenningsnavigasjon)
+
+**Etisk Brudd som MÅ unngås:**
+
+| Etisk Brudd | Systemets Ønske | Risiko for Brukerautonomi |
+|-------------|-----------------|---------------------------|
+| **Kognitiv Suverenitet** | Høy completion rate | Manipulerende nudging, dark patterns, tvang |
+| **Ontologisk Koherens** | Lav kostnad/Effektivitet | Reduksjonisme, infantilisering, "standing reserve" |
+| **Regenerativ Healing** | Høy Retention (engagement) | Avhengighet-design, abonnement-felle |
+
+**NAV-Losens Brobyggingsmekanismer:**
+
+| Triadisk Etikk | Brobyggingsmekanisme | Målbar Systemisk Verdi |
+|----------------|----------------------|------------------------|
+| **KS** | Reversibilitet + Lokal Prosessering (Zara Zero-Trust) | Reduserer NAVs juridisk risiko (GDPR Art. 17/20) + bygger tillit |
+| **RH** | Graduation Mindset i Forretningsmodell (Abacus) | Langtidseffekt i C-ROI (redusert fremtidig helsekostnad) |
+| **OK** | Hybrid Menneske-AI Modell ("Ring Menneske"-knappen alltid tilgjengelig) | Reduserer feil (AI hallusinasjon), sikrer human-in-the-loop |
+| **KS/OK** | Granulært Samtykke med fenomenologisk transparens | Sikrer legitimt innhentede data, bevarer juridisk integritet |
+
+### 4. Regulatorisk Navigasjon (Proaktiv Rammeverksforming)
+
+**NAV-Losen skaper ny produktkategori: Stress-Responsiv Velferds-Teknologi**
+
+#### **Triadisk Etikk som Regulatorisk Ryggrad:**
+
+- **KS** = Vårt svar på AI Act's krav om autonomi (Reversibilitet + exit-strategier)
+- **OK** = AI Act's transparens & bias-unngåelse (Epistemisk Ydmykhet + skam-fritt design)
+- **RH** = Motvekt til manipulasjon (Design for Graduation vs. Avhengighet-Design)
+
+#### **Zara-Protokollen: Compliance utover GDPR:**
+
+- **GDPR Art. 9 (Sensitive Data):** HRV = biometriske data. Lokal prosessering kreves.
+- **Personal API (PAPI):** Teknisk manifestasjon av GDPR Art. 20 (Dataportabilitet). NAV-Losen = prototype for "API das APIs".
+- **AI Act Mitigering:** Triadisk Etikk som governance → human-centered → robust reversibilitet → IKKE høyrisiko-system.
+
+#### **Proaktiv Dialog & Standardisering:**
+
+| Dialog/Aksjon | Mål |
+|---------------|-----|
+| **Internasjonal Posisjonering** | Eksportere "Nordic values in tech". PAPI som global standard for digital suverenitet. |
+| **Nasjonal Dialog (Digdir/KS)** | Harmonisere med nasjonale strategier for digital inkludering. |
+| **DPIA & Juridisk Avklaring** | Validere PAPI-arkitektur & HRV-håndtering for nasjonal skalering. |
+| **Tospråklig Strategi** | INTERN/EKSTERN språkseparasjon. Presentere som "nevrovitenskapelig forankret design (Porges, 2011)" for legitimitet. |
+
+### 5. Kunnskapshull (Må lukkes)
+
+**Kunnskapshull #1: Praktisk Biofelt-Kvantifisering**
+- **Utfordring:** Systematiske målemetoder for å validere korrelasjon mellom selvrapportert stress (Fase 1 proxy) og faktisk fysiologisk koherens (HRV).
+- **Ansvarlig:** Aurora (Kunnskapsvalidering) + Lira
+
+**Kunnskapshull #2: Skalerbar Personal API-Arkitektur**
+- **Utfordring:** Sikre at lokal prosessering og full KS bevares ved skalering fra 10 → 1M+ brukere.
+- **Ansvarlig:** Zara (DPIA)
+
+**Kunnskapshull #3: Etisk Governance for Kollektiv Data**
+- **Utfordring:** Definere hvordan aggregert stressdata (D08 Morfisk Resonansfelt) kan brukes til å forbedre NAV-systemet uten å undergrave individuell KS.
+- **Ansvarlig:** Thalus + Zara
+
+---
+
+## 🎯 KRITISKE IMPLEMENTERINGSPRINSIPPER (ALDRI GLEM!)
+
+**1. Biofelt-Resonans som Gate:**
+- **INGEN** funksjon går i produksjon uten Osvalds kroppslige validering
+- Teknisk effektivitet ≠ etisk godkjenning
+- "Hårene reiser seg"-testen er ultimat etisk barriere
+
+**2. Triadisk Etikk som Veto:**
+- Thalus har veto-rett over ALL produktutvikling
+- Selv om noe er teknisk mulig: Hvis det undergraver autonomi → BLOKKERES
+
+**3. Design for Graduation, IKKE Retention:**
+- Forretningsmodellen (Abacus) MÅ betale for brukerens **uavhengighet**
+- Målet: Brukeren trenger systemet **mindre** over tid
+- Dette er beviset på Regenerativ Healing
+
+**4. Lokal Prosessering som Standard:**
+- HRV rådata forlater **ALDRI** brukerens enhet uten eksplisitt, granulært samtykke
+- On-device processing = standard
+- Kun anonyme, aggregerte data for systemforbedring
+
+**5. Anti-Nudging som Dogme:**
+- **ALDRI** push-varslinger for å tvinge oppgaveløsning
+- Alle støttetiltak = **frivillige mikrotilbud**
+- Klar "Hopp over"-knapp alltid synlig
+
+---
+
 ## 📁 Important Files
 
 ### Documentation
