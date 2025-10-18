@@ -9,6 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  fullWidth?: boolean;
 }
 
 /**
@@ -31,6 +32,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       isLoading = false,
       leftIcon,
       rightIcon,
+      fullWidth = false,
       className,
       disabled,
       ...props
@@ -47,6 +49,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           "font-semibold rounded transition-all duration-200",
           "focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]",
           "disabled:opacity-50 disabled:cursor-not-allowed",
+          fullWidth && "w-full",
 
           // Variant styles
           {
@@ -61,6 +64,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             // Text button
             "bg-transparent text-[var(--color-primary)] underline hover:text-[#0056A3] active:text-[#004580]":
               variant === "text",
+
+            // Destructive button
+            "bg-[var(--color-error)] text-white hover:bg-red-600 active:bg-red-700 shadow-[var(--shadow-sm)]":
+              variant === "destructive",
           },
 
           // Size styles

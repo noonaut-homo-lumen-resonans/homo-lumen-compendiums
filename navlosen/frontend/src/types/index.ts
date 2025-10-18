@@ -4,7 +4,7 @@
  */
 
 // Button variants
-export type ButtonVariant = "primary" | "secondary" | "text";
+export type ButtonVariant = "primary" | "secondary" | "text" | "destructive";
 export type ButtonSize = "small" | "medium" | "large";
 
 // Status badges

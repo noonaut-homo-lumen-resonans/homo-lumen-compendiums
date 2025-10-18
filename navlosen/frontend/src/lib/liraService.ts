@@ -15,6 +15,7 @@ export interface BiofieldContext {
   stressLevel: number; // 1-10
   polyvagalState: "ventral" | "sympathetic" | "dorsal";
   emotions?: string[];
+  selectedEmotions?: { word: string; quadrant: number | null }[];
   somaticSignals?: string[];
   lastMestringTimestamp?: number;
 }

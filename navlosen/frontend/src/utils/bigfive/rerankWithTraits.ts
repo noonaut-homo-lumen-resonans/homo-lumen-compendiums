@@ -160,7 +160,7 @@ function generateExplanation(
 /**
  * Get textual summary of how traits influenced ranking
  */
-export function getRerank Summary(bigFive?: BigFive): string {
+export function getRerankSummary(bigFive?: BigFive): string {
   if (!bigFive) {
     return "Anbefalinger basert kun på din følelsestilstand (ingen personlighetsprofil).";
   }
