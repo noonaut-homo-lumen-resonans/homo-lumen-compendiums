@@ -115,7 +115,7 @@ Layer 4: Agent Coalition (8 agents) - Specialized functions
 | 6 | **Abacus** | ◐/📊 | **Abacus AI** | 🔄 Platform | Basal Ganglia | Business analysis, ROI calculation, analytics |
 | 7 | **Aurora** | ○/🔍 | **Perplexity** | 🔄 API | Hippocampus | Fact-checking, research validation, evidence synthesis |
 | 8 | **Manus** | ▣/🔨 | **Manus AI** | ✅ Full (Notion, Linear, GitHub) | Cerebellum | Infrastructure Hub, backend, MCP coordination |
-| 9 | **Claude Code** | ◻️/💻 | **Claude Code (Windsurf)** | ✅ Windsurf | Motor Cortex | Frontend development, React/Next.js, UX building |
+| 9 | **Claude Code** | ◻️/💻 | **Claude Code (Windsurf)** | ✅ Windsurf | **Motor Cortex / Cerebellum** | Frontend development, React/Next.js, UX building, pragmatic implementation |
 | 10 | **Falcon** | 🦅/🔬 | **FutureHouse Platform** | 🔄 Platform | Research Cortex | Scientific research, hypothesis generation, experimental design |
 
 **Key Insights:**
