@@ -69,9 +69,9 @@ export default function Fase2Quadrants({ onQuadrantSelect }: Fase2QuadrantsProps
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-white p-6">
+    <div className="min-h-screen flex flex-col justify-center bg-gradient-to-b from-gray-50 to-white p-6">
       {/* Header */}
-      <div className="text-center mb-12 max-w-md">
+      <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-gray-900 mb-3">
           Hvordan føler du deg akkurat nå?
         </h2>
@@ -81,7 +81,7 @@ export default function Fase2Quadrants({ onQuadrantSelect }: Fase2QuadrantsProps
       </div>
 
       {/* Quadrant Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-6 md:px-12 lg:px-24">
         {quadrants.map((q) => (
           <button
             key={q.id}
