@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 import type { EmotionWord } from "./emotionData";
 
 interface Fase4DefinitionProps {
   emotion: EmotionWord;
   onContinue: () => void;
+  onBack?: () => void; // Optional callback to go back and choose different emotion
 }
 
 /**
@@ -25,6 +26,7 @@ interface Fase4DefinitionProps {
 export default function Fase4Definition({
   emotion,
   onContinue,
+  onBack,
 }: Fase4DefinitionProps) {
   // Get quadrant color
   const getQuadrantColor = () => {
@@ -63,18 +65,37 @@ export default function Fase4Definition({
             </p>
           </div>
 
-          {/* Continue Button */}
-          <button
-            onClick={onContinue}
-            className="w-full flex items-center justify-between px-6 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:shadow-lg group"
-            style={{
-              backgroundColor: getQuadrantColor(),
-              color: "white",
-            }}
-          >
-            <span>Fortsett</span>
-            <ArrowRight className="w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" />
-          </button>
+          {/* Buttons */}
+          <div className="flex gap-3">
+            {/* Back Button - optional */}
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:shadow-lg border-2"
+                style={{
+                  borderColor: getQuadrantColor(),
+                  color: getQuadrantColor(),
+                  backgroundColor: "white",
+                }}
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Velg annen</span>
+              </button>
+            )}
+
+            {/* Continue Button */}
+            <button
+              onClick={onContinue}
+              className="flex-1 flex items-center justify-between px-6 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:shadow-lg group"
+              style={{
+                backgroundColor: getQuadrantColor(),
+                color: "white",
+              }}
+            >
+              <span>Fortsett</span>
+              <ArrowRight className="w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" />
+            </button>
+          </div>
         </div>
       </div>
 

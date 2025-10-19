@@ -27,7 +27,10 @@
       "Bash(git show:*)",
       "Bash(git checkout:*)",
       "Bash(pkill:*)",
-      "Bash(npx tsc --noEmit)"
+      "Bash(npx tsc --noEmit)",
+      "Bash(node verify-q1-emotions.js)",
+      "Bash(node verify-all-emotions.js)",
+      "Bash(node verify-personality-face.js)"
     ],
     "deny": [],
     "ask": []

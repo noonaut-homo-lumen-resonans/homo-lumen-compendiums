@@ -76,11 +76,27 @@ export default function MestringPage() {
   const handleEmotionSelect = (emotion: EmotionWord) => {
     setSelectedEmotion(emotion);
     setShowDefinition(true);
+
+    // Save selected emotion to localStorage for Dashboard display
+    if (typeof window !== "undefined") {
+      localStorage.setItem("navlosen-selected-emotion", JSON.stringify({
+        word: emotion.word,
+        color: emotion.color,
+        svgPath: emotion.svgPath || "",
+        definition: emotion.definition
+      }));
+    }
   };
 
   const handleDefinitionContinue = () => {
     setShowDefinition(false);
     setCurrentFase("pressure-signals");
+  };
+
+  const handleDefinitionBack = () => {
+    // Close definition popup to let user choose a different emotion
+    setShowDefinition(false);
+    // Stay on landscape phase so user can see all emotions
   };
 
   const handlePressureSignalsContinue = (data: {
@@ -195,14 +211,26 @@ export default function MestringPage() {
         <EmotionBadge emotion={selectedEmotion} />
       )}
 
-      {renderCurrentFase()}
+      {/* Always render landscape if emotion is selected but definition is showing */}
+      {showDefinition && currentFase === "landscape" ? (
+        <>
+          {/* Show landscape in background */}
+          <Fase3EmotionLandscape
+            quadrant={selectedQuadrant}
+            onEmotionSelect={handleEmotionSelect}
+          />
 
-      {/* Definition Modal Overlay */}
-      {showDefinition && selectedEmotion && (
-        <Fase4Definition
-          emotion={selectedEmotion}
-          onContinue={handleDefinitionContinue}
-        />
+          {/* Definition Modal Overlay on top */}
+          {selectedEmotion && (
+            <Fase4Definition
+              emotion={selectedEmotion}
+              onContinue={handleDefinitionContinue}
+              onBack={handleDefinitionBack}
+            />
+          )}
+        </>
+      ) : (
+        renderCurrentFase()
       )}
     </div>
   );

@@ -47,6 +47,12 @@ export default function Dashboard() {
   const [confidence, setConfidence] = useState<number>(0);
   const [hasData, setHasData] = useState<boolean>(false);
   const [bigFive, setBigFive] = useState<BigFive | undefined>(undefined);
+  const [selectedEmotion, setSelectedEmotion] = useState<{
+    word: string;
+    color: string;
+    svgPath: string;
+    definition: string;
+  } | null>(null);
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -56,8 +62,19 @@ export default function Dashboard() {
         const savedStressLevel = localStorage.getItem("navlosen-stress-level");
         const savedSignals = localStorage.getItem("navlosen-somatic-signals");
         const savedAnswers = localStorage.getItem("navlosen-lira-answers");
+        const savedSelectedEmotion = localStorage.getItem("navlosen-selected-emotion");
 
-        if (savedEmotions || savedStressLevel || savedSignals || savedAnswers) {
+        // Load selected emotion for avatar display
+        if (savedSelectedEmotion) {
+          try {
+            const emotion = JSON.parse(savedSelectedEmotion);
+            setSelectedEmotion(emotion);
+          } catch (e) {
+            console.error("Failed to parse selected emotion", e);
+          }
+        }
+
+        if (savedEmotions || savedStressLevel || savedSignals || savedAnswers || savedSelectedEmotion) {
           setHasData(true);
 
           // Build composite input
@@ -314,18 +331,59 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    {/* Personality Avatar */}
-                    {bigFive && (
-                      <div className="flex justify-center items-center">
-                        <PersonalityAvatar
-                          bigFive={bigFive}
-                          polyvagalState={currentState}
-                          size="large"
-                          interactive={true}
-                          showLabel={false}
-                        />
-                      </div>
-                    )}
+                    {/* Emotion Avatar or Personality Avatar */}
+                    <div className="flex flex-col gap-4 justify-center items-center">
+                      {/* Emotion Avatar */}
+                      {selectedEmotion && (
+                        <div className="flex flex-col items-center">
+                          <p className="text-xs text-gray-600 mb-2 uppercase font-medium">
+                            Din følelse
+                          </p>
+                          <div className="relative w-24 h-24 flex-shrink-0">
+                            {selectedEmotion.svgPath && selectedEmotion.svgPath !== "" ? (
+                              <svg
+                                viewBox="0 0 100 100"
+                                className="w-full h-full breathe-animation drop-shadow-lg"
+                              >
+                                <path
+                                  d={selectedEmotion.svgPath}
+                                  fill={selectedEmotion.color}
+                                />
+                              </svg>
+                            ) : (
+                              <div
+                                className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl drop-shadow-lg breathe-animation"
+                                style={{ backgroundColor: selectedEmotion.color }}
+                              >
+                                {selectedEmotion.word.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+                          <p
+                            className="text-lg font-bold mt-2 text-center"
+                            style={{ color: selectedEmotion.color }}
+                          >
+                            {selectedEmotion.word}
+                          </p>
+                          <p className="text-xs text-gray-600 italic text-center max-w-[200px]">
+                            {selectedEmotion.definition}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Personality Avatar */}
+                      {bigFive && (
+                        <div className="flex justify-center items-center">
+                          <PersonalityAvatar
+                            bigFive={bigFive}
+                            polyvagalState={currentState}
+                            size="large"
+                            interactive={true}
+                            showLabel={false}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>

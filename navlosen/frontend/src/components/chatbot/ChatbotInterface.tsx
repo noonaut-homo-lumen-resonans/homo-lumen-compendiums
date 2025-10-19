@@ -23,6 +23,7 @@ import {
   type LiraMessage,
   type BiofieldContext,
 } from "@/lib/liraService";
+import { Q1_EMOTIONS, Q2_EMOTIONS, Q3_EMOTIONS, Q4_EMOTIONS } from "@/components/mestring/hwf/emotionData";
 
 /**
  * Lira Chat Interface Component
@@ -410,6 +411,20 @@ export default function ChatbotInterface() {
 
   // Handle emotion selection from sidebar
   const handleEmotionSelect = (emotion: string) => {
+    // Find full emotion data from emotionData arrays
+    const allEmotions = [...Q1_EMOTIONS, ...Q2_EMOTIONS, ...Q3_EMOTIONS, ...Q4_EMOTIONS];
+    const fullEmotionData = allEmotions.find(e => e.word === emotion);
+
+    if (fullEmotionData) {
+      // Save full emotion data for Dashboard avatar display
+      localStorage.setItem("navlosen-selected-emotion", JSON.stringify({
+        word: fullEmotionData.word,
+        color: fullEmotionData.color,
+        svgPath: fullEmotionData.svgPath || "",
+        definition: fullEmotionData.definition
+      }));
+    }
+
     // Save emotion to localStorage for Mestring integration
     const existingEmotions = localStorage.getItem("navlosen-emotions");
     const emotions = existingEmotions ? JSON.parse(existingEmotions) : [];

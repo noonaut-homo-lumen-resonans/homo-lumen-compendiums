@@ -35,6 +35,12 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
   const [lastUpdated, setLastUpdated] = useState<number | null>(null);
   const [bigFive, setBigFive] = useState<BigFive | undefined>(undefined);
   const [showSurvey, setShowSurvey] = useState(false);
+  const [selectedEmotion, setSelectedEmotion] = useState<{
+    word: string;
+    color: string;
+    svgPath: string;
+    definition: string;
+  } | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -63,6 +69,16 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
     const timestamp = localStorage.getItem("navlosen-last-mestring-timestamp");
     if (timestamp) {
       setLastUpdated(parseInt(timestamp));
+    }
+
+    // Load selected emotion for avatar display
+    const savedSelectedEmotion = localStorage.getItem("navlosen-selected-emotion");
+    if (savedSelectedEmotion) {
+      try {
+        setSelectedEmotion(JSON.parse(savedSelectedEmotion));
+      } catch (e) {
+        console.error("Failed to parse selected emotion", e);
+      }
     }
 
     // Load Big Five profile
@@ -300,17 +316,74 @@ export default function LiraContextPanel({ biofieldContext }: LiraContextPanelPr
         </div>
       )}
 
+      {/* Emotion Avatar */}
+      {selectedEmotion && (
+        <div className="mb-4 p-4 bg-white border border-gray-200 rounded-lg">
+          <p className="text-xs text-gray-600 mb-3 uppercase font-medium text-center">
+            Din følelse
+          </p>
+          <div className="flex flex-col items-center">
+            <div className="relative w-20 h-20 flex-shrink-0 mb-2">
+              {selectedEmotion.svgPath && selectedEmotion.svgPath !== "" ? (
+                <svg
+                  viewBox="0 0 100 100"
+                  className="w-full h-full breathe-animation drop-shadow-lg"
+                >
+                  <path
+                    d={selectedEmotion.svgPath}
+                    fill={selectedEmotion.color}
+                  />
+                </svg>
+              ) : (
+                <div
+                  className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-lg drop-shadow-lg breathe-animation"
+                  style={{ backgroundColor: selectedEmotion.color }}
+                >
+                  {selectedEmotion.word.charAt(0).toUpperCase()}
+                </div>
+              )}
+            </div>
+            <p
+              className="text-base font-bold text-center"
+              style={{ color: selectedEmotion.color }}
+            >
+              {selectedEmotion.word}
+            </p>
+            <p className="text-xs text-gray-600 italic text-center mt-1">
+              {selectedEmotion.definition}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Big Five Personality Profile */}
-      <div className="mb-4 flex justify-center">
-        <PersonalityAvatar
-          bigFive={bigFive}
-          polyvagalState={biofieldContext?.polyvagalState}
-          size="medium"
-          interactive={true}
-          showLabel={true}
-          onEdit={() => setShowSurvey(true)}
-        />
-      </div>
+      {bigFive ? (
+        <div className="mb-4 flex justify-center">
+          <PersonalityAvatar
+            bigFive={bigFive}
+            polyvagalState={biofieldContext?.polyvagalState}
+            size="medium"
+            interactive={true}
+            showLabel={true}
+            onEdit={() => setShowSurvey(true)}
+          />
+        </div>
+      ) : (
+        <div className="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <p className="text-xs text-gray-600 text-center mb-2">
+            <strong>Personlighetsprofil</strong>
+          </p>
+          <p className="text-xs text-gray-500 text-center mb-3">
+            Fyll ut en kort personlighetstest for at Lira skal kunne gi deg mer personlig veiledning.
+          </p>
+          <button
+            onClick={() => setShowSurvey(true)}
+            className="w-full py-2 px-4 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-lg transition-colors text-sm font-medium"
+          >
+            Fyll ut personlighetstest
+          </button>
+        </div>
+      )}
 
       {/* Update Button */}
       <Link
