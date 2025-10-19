@@ -25,6 +25,7 @@ export default function Fase3EmotionLandscape({
   onEmotionSelect,
 }: Fase3EmotionLandscapeProps) {
   const [time, setTime] = useState(0);
+  const [clickedEmotionId, setClickedEmotionId] = useState<string | null>(null);
 
   // Continuous floating animation
   useEffect(() => {
@@ -38,13 +39,13 @@ export default function Fase3EmotionLandscape({
     return Math.sin(time + index * 0.5) * 10; // Vertical offset in px
   };
 
-  // Quadrant background colors
+  // Quadrant background colors (20-30% darker for better contrast)
   const getQuadrantBg = (q: 1 | 2 | 3 | 4) => {
     const colors = {
-      1: "linear-gradient(135deg, #FF8A80 0%, #FF6F61 50%, #E63946 100%)", // Rød
-      2: "linear-gradient(135deg, #FFE44D 0%, #FFD700 50%, #F4A300 100%)", // Gul
-      3: "linear-gradient(135deg, #8BA3F0 0%, #6A88E3 50%, #4A5FBF 100%)", // Blå
-      4: "linear-gradient(135deg, #A8E8C8 0%, #88D8B0 50%, #5FBE8D 100%)", // Grønn
+      1: "linear-gradient(135deg, #D65A50 0%, #CC4D3E 50%, #B82020 100%)", // Rød (mørkere)
+      2: "linear-gradient(135deg, #E6C300 0%, #CCAA00 50%, #B39000 100%)", // Gul (mørkere)
+      3: "linear-gradient(135deg, #6080D0 0%, #4A66CC 50%, #3A4FA8 100%)", // Blå (mørkere)
+      4: "linear-gradient(135deg, #78C8A0 0%, #60B088 50%, #4A9966 100%)", // Grønn (mørkere)
     };
     return colors[q];
   };
@@ -54,48 +55,13 @@ export default function Fase3EmotionLandscape({
     return ALL_EMOTIONS.filter((e) => e.quadrant === q);
   };
 
-  // Shape styling with CSS clip-path
-  const getShapeStyle = (emotion: EmotionWord) => {
-    const baseSize = 100; // Smaller for grid layout
-    switch (emotion.shape) {
-      case "circle":
-        return {
-          width: `${baseSize}px`,
-          height: `${baseSize}px`,
-          borderRadius: "50%",
-        };
-      case "diamond":
-        return {
-          width: `${baseSize}px`,
-          height: `${baseSize}px`,
-          borderRadius: "10%",
-          transform: "rotate(45deg)",
-        };
-      case "rounded-square":
-        return {
-          width: `${baseSize}px`,
-          height: `${baseSize}px`,
-          borderRadius: "25%",
-        };
-      case "hexagon":
-        return {
-          width: `${baseSize}px`,
-          height: `${baseSize * 1.15}px`,
-          clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-        };
-      case "star-6":
-        return {
-          width: `${baseSize}px`,
-          height: `${baseSize}px`,
-          clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
-        };
-      case "star-8":
-        return {
-          width: `${baseSize}px`,
-          height: `${baseSize}px`,
-          clipPath: "polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%)",
-        };
-    }
+  // Handle emotion click with morph animation
+  const handleEmotionClick = (emotion: EmotionWord) => {
+    setClickedEmotionId(emotion.id);
+    // Wait for morph animation to complete before showing definition
+    setTimeout(() => {
+      onEmotionSelect(emotion);
+    }, 300);
   };
 
   // Render quadrant
@@ -122,27 +88,62 @@ export default function Fase3EmotionLandscape({
         <div className="pt-16 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 place-items-center min-h-full">
           {emotions.map((emotion, index) => {
             const floatOffset = getFloatingOffset(index);
-            const shapeStyle = getShapeStyle(emotion);
+            const isClicked = clickedEmotionId === emotion.id;
+            const hasUniqueSvg = !!emotion.svgPath;
 
             return (
               <button
                 key={emotion.id}
-                onClick={() => onEmotionSelect(emotion)}
-                className="flex items-center justify-center text-white font-semibold text-xs transition-all duration-300 hover:scale-110 hover:shadow-2xl relative"
+                onClick={() => handleEmotionClick(emotion)}
+                className="relative flex items-center justify-center overflow-visible transition-all duration-300 hover:scale-110 hover:shadow-2xl"
                 style={{
-                  ...shapeStyle,
-                  backgroundColor: emotion.color,
-                  transform: `translateY(${floatOffset}px) ${emotion.shape === 'diamond' ? 'rotate(45deg)' : ''}`,
-                  transition: "transform 0.3s ease-out, box-shadow 0.3s ease-out",
+                  width: "100px",
+                  height: "100px",
+                  transform: `translateY(${floatOffset}px)`,
                 }}
               >
-                {/* Word */}
-                <span
-                  className="relative z-10 drop-shadow-lg text-center px-2"
-                  style={{ transform: emotion.shape === 'diamond' ? 'rotate(-45deg)' : 'none' }}
-                >
-                  {emotion.word}
-                </span>
+                {/* Square (default state) or SVG (clicked state) */}
+                {!isClicked || !hasUniqueSvg ? (
+                  // Square shape (before click)
+                  <div
+                    className="absolute inset-0 flex items-center justify-center rounded-lg animate-breathe"
+                    style={{
+                      backgroundColor: emotion.color,
+                      transition: "all 0.3s ease-out",
+                    }}
+                  >
+                    <span className="relative z-10 drop-shadow-lg text-center px-2 text-white font-semibold text-xs">
+                      {emotion.word}
+                    </span>
+                  </div>
+                ) : (
+                  // Unique SVG shape (after click)
+                  <svg
+                    viewBox="0 0 100 100"
+                    className="absolute inset-0 w-full h-full animate-morph animate-breathe"
+                    style={{
+                      transition: "all 0.3s ease-out",
+                    }}
+                  >
+                    <path
+                      d={emotion.svgPath}
+                      fill={emotion.color}
+                      className="drop-shadow-lg"
+                    />
+                    <text
+                      x="50"
+                      y="50"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fill="white"
+                      fontSize="8"
+                      fontWeight="600"
+                      className="drop-shadow-lg"
+                    >
+                      {emotion.word}
+                    </text>
+                  </svg>
+                )}
               </button>
             );
           })}
@@ -173,6 +174,38 @@ export default function Fase3EmotionLandscape({
         {renderQuadrant(3)}
         {renderQuadrant(4)}
       </div>
+
+      {/* CSS Animations */}
+      <style jsx>{`
+        @keyframes breathe {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.02);
+          }
+        }
+
+        @keyframes morph {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.15);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        .animate-breathe {
+          animation: breathe 4s ease-in-out infinite;
+        }
+
+        .animate-morph {
+          animation: morph 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 }

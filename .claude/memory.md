@@ -2,7 +2,7 @@
 
 **Last Updated:** 19. oktober 2025
 **Project:** Homo Lumen Coalition - NAV-Losen Development
-**Living Compendium:** V1.7.12 (HWF-Inspired Mestring Flow - Marc Brackett's Mood Meter Integration)
+**Living Compendium:** V1.7.12 (Competitive Analysis - Mental Health Apps & NAV-Losen Differentiators)
 **Konstitusjon:** Homo Lumen Constitution V1.2 (Carpe Verum formalized)
 **Coalition Motto:** **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
 **Internal Mantra:** Human Knowledge Framework (see `/docs/HUMAN_KNOWLEDGE_MANTRA.md`)
