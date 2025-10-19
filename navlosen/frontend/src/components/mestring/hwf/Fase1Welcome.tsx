@@ -21,8 +21,8 @@ interface Fase1WelcomeProps {
  */
 export default function Fase1Welcome({ onContinue }: Fase1WelcomeProps) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 via-purple-50 to-pink-50 p-6">
-      <div className="max-w-lg w-full text-center space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 via-purple-50 to-pink-50 px-4 md:px-12 lg:px-24 py-12">
+      <div className="w-full max-w-3xl text-center space-y-8">
         {/* Icon */}
         <div className="flex justify-center">
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg">

@@ -81,7 +81,7 @@ export default function Fase2Quadrants({ onQuadrantSelect }: Fase2QuadrantsProps
       </div>
 
       {/* Quadrant Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-4 md:px-12 lg:px-24">
         {quadrants.map((q) => (
           <button
             key={q.id}
