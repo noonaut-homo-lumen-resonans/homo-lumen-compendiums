@@ -1,8 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import type { EmotionWord } from "./emotionData";
+import { getKairosWindowFromBigFive, getKairosAdjustedDefinition, type KairosWindow } from "@/utils/kairosMapping";
+import { affectBus } from "@/utils/affectBus";
+import { loadBigFive } from "@/utils/bigfive/mergeProfiles";
 
 interface Fase4DefinitionProps {
   emotion: EmotionWord;
@@ -28,6 +31,29 @@ export default function Fase4Definition({
   onContinue,
   onBack,
 }: Fase4DefinitionProps) {
+  const [kairosWindow, setKairosWindow] = useState<KairosWindow | null>(null);
+  const [adjustedDefinition, setAdjustedDefinition] = useState<string>(emotion.definition);
+  const [showExtendedInfo, setShowExtendedInfo] = useState<boolean>(false);
+
+  // Compute Kairos Window on mount
+  useEffect(() => {
+    const bigFive = loadBigFive();
+    if (bigFive) {
+      const latestAffect = affectBus.getLatest();
+      const window = getKairosWindowFromBigFive(bigFive, {
+        valence: latestAffect?.valence ?? 0,
+        arousal: latestAffect?.arousal ?? 0.5,
+        hrvRmssd: latestAffect?.hrvRmssd ?? 50,
+      });
+      setKairosWindow(window);
+
+      // Adjust definition based on complexity
+      const adjusted = getKairosAdjustedDefinition(emotion.definition, window);
+      setAdjustedDefinition(adjusted.definition);
+      setShowExtendedInfo(adjusted.showExtendedInfo);
+    }
+  }, [emotion.definition]);
+
   // Get quadrant color
   const getQuadrantColor = () => {
     const colors = {
@@ -61,8 +87,19 @@ export default function Fase4Definition({
               {emotion.word}
             </h3>
             <p className="text-lg text-gray-700 leading-relaxed">
-              {emotion.definition}
+              {adjustedDefinition}
             </p>
+
+            {/* Extended info for high complexity users */}
+            {showExtendedInfo && (
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-600 italic">
+                  💡 <strong>Dypere forståelse:</strong> Denne følelsen oppstår ofte i{" "}
+                  {emotion.quadrant === 1 || emotion.quadrant === 4 ? "trygge" : "utfordrende"} situasjoner
+                  og kan påvirke både kroppens spenningsnivå og tankemønstre.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Buttons */}
