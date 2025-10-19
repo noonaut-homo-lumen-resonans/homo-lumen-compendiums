@@ -1,0 +1,22 @@
+# netlify.toml
+[build]
+  command = "python -m pip install --upgrade pip && python -m pip install mkdocs-techdocs-core && python -m mkdocs build"
+  publish = "site"
+  # (husk PYTHON_VERSION env i Netlify eller legg det her)
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+[[plugins]]
+  package = "netlify-plugin-checklinks"
+  [plugins.inputs]
+    # Ikke følg eksterne lenker i CI
+    checkExternal = false
+    # Eller whitelist spesifikke domener hvis du VIL sjekke eksterne senere:
+    skipPatterns = [
+      "https://fonts.gstatic.com",
+      "https://fonts.googleapis.com"
+    ]
+    recursive = true
+    pretty = true
+    retry = 2
+    maxConcurrent = 100
