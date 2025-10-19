@@ -26,6 +26,7 @@ import PersonalityAvatar from "@/components/traits/PersonalityAvatar";
 import { loadBigFive } from "@/utils/bigfive/mergeProfiles";
 import { getKairosWindowFromBigFive, getKairosWelcomeMessage, type KairosWindow } from "@/utils/kairosMapping";
 import { affectBus } from "@/utils/affectBus";
+import AffectTimeline from "@/components/timeline/AffectTimeline";
 
 /**
  * NAV-Losen Dashboard (Homepage)
@@ -445,6 +446,13 @@ export default function Dashboard() {
               ))}
             </div>
           </div>
+
+          {/* Affect Timeline (compact) - only show if user has emotion history */}
+          {hasData && (
+            <div>
+              <AffectTimeline compact={true} />
+            </div>
+          )}
 
           {/* Quick Links */}
           <div>
