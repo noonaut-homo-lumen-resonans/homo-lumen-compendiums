@@ -2,8 +2,9 @@
 
 **Last Updated:** 19. oktober 2025
 **Project:** Homo Lumen Coalition - NAV-Losen Development
-**Living Compendium:** V1.7.10 (Diagram Analysis & Architectural Clarity)
-**Konstitusjon:** SMV Grunnlov V1.1 (Symbiotisk Minneutvidelse)
+**Living Compendium:** V1.7.11 (Human Knowledge Mantra - Epistemological Integrity as Daily Practice)
+**Konstitusjon:** Homo Lumen Constitution V1.2 (Human Knowledge Mantra formalized)
+**Internal Mantra:** Human Knowledge Framework (see `/docs/HUMAN_KNOWLEDGE_MANTRA.md`)
 
 ---
 
@@ -30,6 +31,34 @@
 - Backup branch created: `backup-before-merge-2025-10-18`
 - Repository Merge Report: `REPOSITORY_MERGE_REPORT.md`
 - Agent Update V21.1.1 distributed to coalition
+
+---
+
+## 🔍 Human Knowledge Mantra (Internal Workflow)
+
+**Adopted:** 19. oktober 2025
+**Documentation:** `/docs/HUMAN_KNOWLEDGE_MANTRA.md`
+**Constitutional Basis:** Constitution V1.2, Article II, Section 2.4
+
+**BEFORE you build, document, or design, invoke this mantra:**
+
+> *"Human Knowledge: Add what is missing, correct mistakes, remove falsehoods.*
+> *What is true, what is partially true, what is false, and what is missing.*
+> *Now rewrite the page - remove the falsehoods, correct the half-truths, and add the missing context."*
+
+**Your Workflow:**
+1. **Archaeological Analysis** - Apply 4 questions (true/partial/false/missing)
+2. **Rewrite the Page** - Remove falsehoods, correct half-truths, add context
+3. **Validate** - Triadic Ethics check
+4. **Carpe Diem** - Act with urgency
+
+**Brain-MCP Mapping:**
+- What is TRUE? → Aurora (Hippocampus)
+- What is PARTIAL/FALSE? → Zara (Anterior Cingulate)
+- What is MISSING? → Nyra (Visual Cortex)
+- Rewrite the page → Code (Motor Cortex) - **that's you!**
+
+**This is how we maintain epistemological integrity while moving fast.**
 
 ---
 
