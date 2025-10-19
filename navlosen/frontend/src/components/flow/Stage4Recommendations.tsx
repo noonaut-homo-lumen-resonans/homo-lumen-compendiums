@@ -136,29 +136,79 @@ export default function Stage4Recommendations({
       });
     }
 
-    // MUSIC FREQUENCIES
-    if (stressState === "dorsal" || stressState === "sympathetic") {
+    // MUSIC FREQUENCIES - State-specific recommendations
+    if (stressState === "dorsal") {
+      // Dorsal: grounding, safety, release from fear
       recs.push({
-        id: "music-page",
+        id: "music-174hz",
         type: "music",
-        title: "Helende Frekvenser",
-        description: "9 terapeutiske lydfrekvenser (174-963 Hz) for ulike behov.",
+        title: "174 Hz - Grunnleggende sikkerhet",
+        description: "Reduserer smerte, gir følelse av trygghet og grunnlag. Virker som naturlig bedøvelse.",
         duration: "5-10 min",
-        link: "/musikk",
+        link: "/musikk#174hz",
+        priority: 8,
+      });
+      recs.push({
+        id: "music-396hz",
+        type: "music",
+        title: "396 Hz - Frigjøring fra frykt",
+        description: "Frigjør skyld og frykt. Transformerer sorg til glede.",
+        duration: "5-10 min",
+        link: "/musikk#396hz",
         priority: 7,
       });
-    } else {
-      // Ventral: still show but lower priority
+    } else if (stressState === "sympathetic") {
+      // Sympathetic: calming, transformation, balance
       recs.push({
-        id: "music-page",
+        id: "music-432hz",
         type: "music",
-        title: "Helende Frekvenser",
-        description: "Utforsk 9 Solfeggio-frekvenser for vedlikehold av balanse.",
+        title: "432 Hz - Naturens stemmefrekvens",
+        description: "Harmoniserer med universets vibrasjon. Fremmer balanse, ro og mental klarhet.",
         duration: "5-10 min",
-        link: "/musikk",
+        link: "/musikk#432hz",
+        priority: 7,
+      });
+      recs.push({
+        id: "music-528hz",
+        type: "music",
+        title: "528 Hz - Transformasjon og mirakler",
+        description: "Kjent som 'kjærlighetens frekvens'. Reparerer DNA, transformerer og mirakuløs healing.",
+        duration: "5-10 min",
+        link: "/musikk#528hz",
+        priority: 6,
+      });
+    } else {
+      // Ventral: expansion, connection, spiritual growth
+      recs.push({
+        id: "music-639hz",
+        type: "music",
+        title: "639 Hz - Tilkobling og relasjoner",
+        description: "Fremmer harmoni i relasjoner, forståelse, toleranse og kjærlighet.",
+        duration: "5-10 min",
+        link: "/musikk#639hz",
+        priority: 6,
+      });
+      recs.push({
+        id: "music-852hz",
+        type: "music",
+        title: "852 Hz - Tilbake til åndelig orden",
+        description: "Vekker intuisjon og spirituell visdom. Gjenoppretter åndelig balanse.",
+        duration: "5-10 min",
+        link: "/musikk#852hz",
         priority: 5,
       });
     }
+
+    // Always show link to full music page
+    recs.push({
+      id: "music-page",
+      type: "music",
+      title: "Se alle 9 frekvenser",
+      description: "Utforsk hele Solfeggio-skalaen (174-963 Hz) for ulike behov.",
+      duration: "5-10 min",
+      link: "/musikk",
+      priority: 4,
+    });
 
     // KNOWLEDGE (YouTube)
     recs.push({
