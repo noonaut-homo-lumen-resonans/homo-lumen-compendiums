@@ -24,6 +24,9 @@ import {
   type BiofieldContext,
 } from "@/lib/liraService";
 import { Q1_EMOTIONS, Q2_EMOTIONS, Q3_EMOTIONS, Q4_EMOTIONS } from "@/components/mestring/hwf/emotionData";
+import { getKairosWindowFromBigFive, getKairosWelcomeMessage, type KairosWindow } from "@/utils/kairosMapping";
+import { affectBus } from "@/utils/affectBus";
+import { loadBigFive } from "@/utils/bigfive/mergeProfiles";
 
 /**
  * Lira Chat Interface Component
@@ -64,6 +67,9 @@ export default function ChatbotInterface() {
     BiofieldContext | undefined
   >(undefined);
 
+  // Kairos Window (adaptive UX state)
+  const [kairosWindow, setKairosWindow] = useState<KairosWindow | null>(null);
+
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -75,6 +81,19 @@ export default function ChatbotInterface() {
   useEffect(() => {
     const context = loadBiofieldContext();
     setBiofieldContext(context);
+
+    // Load BigFive and compute Kairos Window
+    const bigFive = loadBigFive();
+    if (bigFive) {
+      const latestAffect = affectBus.getLatest();
+      const window = getKairosWindowFromBigFive(bigFive, {
+        valence: latestAffect?.valence ?? 0,
+        arousal: latestAffect?.arousal ?? 0.5,
+        hrvRmssd: latestAffect?.hrvRmssd ?? 50,
+        stressLevel: context?.stressLevel,
+      });
+      setKairosWindow(window);
+    }
 
     // Initialize Speech Recognition (if supported)
     if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
@@ -145,8 +164,14 @@ export default function ChatbotInterface() {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
-  // Get welcome message based on biofield context
+  // Get welcome message based on Kairos Window (personality + biofield)
   function getWelcomeMessage(context?: BiofieldContext): string {
+    // If Kairos Window available, use personalized greeting
+    if (kairosWindow) {
+      return getKairosWelcomeMessage(null, kairosWindow);
+    }
+
+    // Fallback to biofield-only greeting
     if (!context) {
       return "Hei, jeg er Lira. Jeg kan forklare begreper, foreslå neste steg og peke deg til riktige skjema. Jeg gir ikke juridiske råd, men jeg gjør det enklere å forstå valgene dine.";
     }

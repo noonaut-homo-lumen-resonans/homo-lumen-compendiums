@@ -24,6 +24,8 @@ import {
 import { SomaticSignal, BigFive } from "@/types";
 import PersonalityAvatar from "@/components/traits/PersonalityAvatar";
 import { loadBigFive } from "@/utils/bigfive/mergeProfiles";
+import { getKairosWindowFromBigFive, getKairosWelcomeMessage, type KairosWindow } from "@/utils/kairosMapping";
+import { affectBus } from "@/utils/affectBus";
 
 /**
  * NAV-Losen Dashboard (Homepage)
@@ -47,6 +49,7 @@ export default function Dashboard() {
   const [confidence, setConfidence] = useState<number>(0);
   const [hasData, setHasData] = useState<boolean>(false);
   const [bigFive, setBigFive] = useState<BigFive | undefined>(undefined);
+  const [kairosWindow, setKairosWindow] = useState<KairosWindow | null>(null);
   const [selectedEmotion, setSelectedEmotion] = useState<{
     word: string;
     color: string;
@@ -102,6 +105,16 @@ export default function Dashboard() {
         const loadedBigFive = loadBigFive();
         if (loadedBigFive) {
           setBigFive(loadedBigFive);
+
+          // Compute Kairos Window for personalized UX
+          const latestAffect = affectBus.getLatest();
+          const window = getKairosWindowFromBigFive(loadedBigFive, {
+            valence: latestAffect?.valence ?? 0,
+            arousal: latestAffect?.arousal ?? 0.5,
+            hrvRmssd: latestAffect?.hrvRmssd ?? 50,
+            stressLevel: compositeScore,
+          });
+          setKairosWindow(window);
         }
       } catch (e) {
         console.error("Failed to load dashboard data", e);
@@ -111,11 +124,16 @@ export default function Dashboard() {
 
   const uiConfig = getPolyvagalUIConfig(currentState);
 
-  // Get biofield message (inspired by AMA Lira's empathetic responses)
+  // Get biofield message (Kairos-aware personalized greeting)
   const getBiofieldMessage = () => {
     if (confidence === 0) {
+      // Use Kairos Window for personalized welcome if available
+      const welcomeText = kairosWindow
+        ? getKairosWelcomeMessage(null, kairosWindow)
+        : "Velkommen til NAV-Losen";
+
       return {
-        title: "Velkommen til NAV-Losen",
+        title: welcomeText,
         message: "Start din reise med å sjekke inn hvordan du har det akkurat nå.",
         icon: <Sparkles className="h-8 w-8 text-purple-500" />,
       };
