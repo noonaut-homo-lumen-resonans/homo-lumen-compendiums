@@ -179,7 +179,7 @@ export default function Fase3EmotionLandscape({
           msOverflowStyle: "none", // IE/Edge
         }}
       >
-        <div className="flex items-center gap-8 px-12 py-24 min-w-max">
+        <div className="flex flex-row items-center gap-4 px-6 py-24 min-w-max">
           {emotions.map((emotion, index) => {
             const floatOffset = getFloatingOffset(index);
             const shapeStyle = getShapeStyle(emotion);
