@@ -41,7 +41,7 @@ export default function Fase4Definition({
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end justify-center z-50 p-0">
       {/* Pop-up Box */}
       <div
-        className="w-full max-w-2xl bg-white rounded-t-3xl shadow-2xl transform transition-all duration-500 ease-out animate-slide-up"
+        className="w-full bg-white rounded-t-3xl shadow-2xl transform transition-all duration-500 ease-out animate-slide-up"
       >
         {/* Color accent bar */}
         <div
