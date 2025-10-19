@@ -13,6 +13,7 @@ import {
   Clock,
   Brain,
   Sparkles,
+  Music,
 } from "lucide-react";
 import {
   calculateCompositeStressScore,
@@ -165,6 +166,14 @@ export default function Dashboard() {
           icon: <Activity className="h-6 w-6" />,
           priority: "high" as const,
         },
+        {
+          id: "musikk-sikkerhet",
+          title: "174 Hz - Sikkerhet",
+          description: "Lydfrekvens for grunnleggende trygghet og smertereduksjon",
+          link: "/musikk#174hz",
+          icon: <Music className="h-6 w-6" />,
+          priority: "medium" as const,
+        },
       ];
     }
 
@@ -187,6 +196,14 @@ export default function Dashboard() {
           priority: "high" as const,
         },
         {
+          id: "musikk-balance",
+          title: "432 Hz - Balance",
+          description: "Naturens frekvens for ro og mental klarhet",
+          link: "/musikk#432hz",
+          icon: <Music className="h-6 w-6" />,
+          priority: "medium" as const,
+        },
+        {
           id: "min-reise",
           title: "Se din fremgang",
           description: "Spor hvordan tilstanden din utvikler seg over tid",
@@ -206,6 +223,14 @@ export default function Dashboard() {
         link: "/min-reise",
         icon: <Compass className="h-6 w-6" />,
         priority: "high" as const,
+      },
+      {
+        id: "musikk-connection",
+        title: "639 Hz - Tilkobling",
+        description: "Fremmer harmoni i relasjoner og kjærlighet",
+        link: "/musikk#639hz",
+        icon: <Music className="h-6 w-6" />,
+        priority: "medium" as const,
       },
       {
         id: "veiledninger",

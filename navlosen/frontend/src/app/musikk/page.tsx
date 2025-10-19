@@ -150,7 +150,9 @@ export default function MusikkPage() {
         {/* Frequency Players Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {frequencies.map((freq) => (
-            <FrequencyPlayer key={freq.id} frequency={freq} />
+            <div key={freq.id} id={freq.id}>
+              <FrequencyPlayer frequency={freq} />
+            </div>
           ))}
         </div>
 
