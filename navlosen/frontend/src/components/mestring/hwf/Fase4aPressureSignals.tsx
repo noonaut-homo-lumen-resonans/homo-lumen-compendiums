@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Button from "@/components/ui/Button";
-import { Activity, Heart, Moon, TrendingUp } from "lucide-react";
+import { Activity, Heart, Moon, TrendingUp, Smile, Zap, Wind, Sun } from "lucide-react";
 import type { SomaticSignal } from "@/types";
 
 interface Fase4aPressureSignalsProps {
@@ -17,15 +17,146 @@ interface Fase4aPressureSignalsProps {
   };
 }
 
+// Grouped somatic signals with color coding
 const SOMATIC_SIGNALS = [
-  { id: "hjertebank", label: "Hjertebank", icon: Heart },
-  { id: "tung-pust", label: "Tung pust", icon: Activity },
-  { id: "knyttneve", label: "Knyttnever", icon: Activity },
-  { id: "varm-bryst", label: "Varm i brystet", icon: Heart },
-  { id: "kald-svette", label: "Kald svette", icon: Activity },
-  { id: "knute-mage", label: "Knute i magen", icon: Activity },
-  { id: "tung-kropp", label: "Tung kropp", icon: TrendingUp },
-  { id: "anspent", label: "Anspente muskler", icon: Activity },
+  // POSITIVE SIGNALS (Grønn gruppe)
+  {
+    id: "lett-kropp",
+    label: "Lett i kroppen",
+    icon: Wind,
+    category: "positive",
+    color: "green"
+  },
+  {
+    id: "avslapte-muskler",
+    label: "Avslappete muskler",
+    icon: Smile,
+    category: "positive",
+    color: "green"
+  },
+  {
+    id: "rolig-pust",
+    label: "Rolig pust",
+    icon: Wind,
+    category: "positive",
+    color: "green"
+  },
+  {
+    id: "varm-fyldig",
+    label: "Varm og fyldig følelse",
+    icon: Sun,
+    category: "positive",
+    color: "green"
+  },
+  {
+    id: "energisk",
+    label: "Energisk",
+    icon: Zap,
+    category: "positive",
+    color: "green"
+  },
+  {
+    id: "rolig-hjerterytme",
+    label: "Rolig hjerterytme",
+    icon: Heart,
+    category: "positive",
+    color: "green"
+  },
+  {
+    id: "harene-reiser-seg",
+    label: "Hårene reiser seg",
+    icon: Zap,
+    category: "positive",
+    color: "green"
+  },
+
+  // NEUTRAL/AKTIVERING (Blå/Gul gruppe)
+  {
+    id: "varm-bryst",
+    label: "Varm i brystet",
+    icon: Heart,
+    category: "neutral",
+    color: "yellow"
+  },
+  {
+    id: "hjertebank",
+    label: "Hjertebank",
+    icon: Heart,
+    category: "neutral",
+    color: "yellow"
+  },
+  {
+    id: "rask-pust",
+    label: "Rask pust",
+    icon: Activity,
+    category: "neutral",
+    color: "yellow"
+  },
+  {
+    id: "sommerfugler-mage",
+    label: "Sommerfugler i magen",
+    icon: Activity,
+    category: "neutral",
+    color: "yellow"
+  },
+
+  // NEGATIVE/UBEHAG (Rød gruppe)
+  {
+    id: "tung-pust",
+    label: "Tung pust",
+    icon: Activity,
+    category: "negative",
+    color: "red"
+  },
+  {
+    id: "knyttneve",
+    label: "Knyttnever",
+    icon: Activity,
+    category: "negative",
+    color: "red"
+  },
+  {
+    id: "kald-svette",
+    label: "Kald svette",
+    icon: Activity,
+    category: "negative",
+    color: "red"
+  },
+  {
+    id: "knute-mage",
+    label: "Knute i magen",
+    icon: Activity,
+    category: "negative",
+    color: "red"
+  },
+  {
+    id: "tung-kropp",
+    label: "Tung kropp",
+    icon: TrendingUp,
+    category: "negative",
+    color: "red"
+  },
+  {
+    id: "anspent",
+    label: "Anspente muskler",
+    icon: Activity,
+    category: "negative",
+    color: "red"
+  },
+  {
+    id: "skjelving",
+    label: "Skjelving",
+    icon: Activity,
+    category: "negative",
+    color: "red"
+  },
+  {
+    id: "hodepine",
+    label: "Hodepine/press i hodet",
+    icon: Activity,
+    category: "negative",
+    color: "red"
+  },
 ];
 
 /**
@@ -157,14 +288,40 @@ export default function Fase4aPressureSignals({
               const Icon = signal.icon;
               const isSelected = selectedSignals.includes(signal.id);
 
+              // Color mapping for unselected state
+              const getUnselectedStyle = () => {
+                switch (signal.color) {
+                  case "green":
+                    return "border-green-300 text-green-700 hover:border-green-400 hover:bg-green-50";
+                  case "yellow":
+                    return "border-yellow-300 text-yellow-700 hover:border-yellow-400 hover:bg-yellow-50";
+                  case "red":
+                    return "border-red-300 text-red-700 hover:border-red-400 hover:bg-red-50";
+                  default:
+                    return "border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50";
+                }
+              };
+
+              // Color mapping for selected state
+              const getSelectedStyle = () => {
+                switch (signal.color) {
+                  case "green":
+                    return "bg-green-500 border-green-500 text-white shadow-lg";
+                  case "yellow":
+                    return "bg-yellow-500 border-yellow-500 text-white shadow-lg";
+                  case "red":
+                    return "bg-red-500 border-red-500 text-white shadow-lg";
+                  default:
+                    return "bg-purple-500 border-purple-500 text-white shadow-lg";
+                }
+              };
+
               return (
                 <button
                   key={signal.id}
                   onClick={() => toggleSignal(signal.id)}
                   className={`flex items-center gap-2 px-4 py-3 rounded-full border-2 transition-all duration-300 ${
-                    isSelected
-                      ? "bg-purple-500 border-purple-500 text-white shadow-lg"
-                      : "bg-white border-gray-300 text-gray-700 hover:border-purple-300 hover:bg-purple-50"
+                    isSelected ? getSelectedStyle() : `bg-white ${getUnselectedStyle()}`
                   }`}
                 >
                   <Icon className="w-4 h-4" />

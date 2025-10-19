@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { UserCircle, ChevronDown, Home, BookOpen, Lightbulb, Heart, Compass, Briefcase, MessageSquare, FileText, Bell, Scale, Settings } from "lucide-react";
+import { UserCircle, ChevronDown, Home, BookOpen, Heart, Compass, Briefcase, MessageSquare, FileText, Bell, Scale, Settings } from "lucide-react";
 
 interface HeaderProps {
   className?: string;
@@ -41,7 +41,6 @@ export default function Header({ className }: HeaderProps) {
   const navItems: NavItem[] = [
     { id: "dashboard", label: "Dashboard", icon: "home", path: "/" },
     { id: "veiledninger", label: "Veiledninger", icon: "book", path: "/veiledninger" },
-    { id: "forklar-brev", label: "Forklar brev", icon: "lightbulb", path: "/forklar-brev" },
     { id: "mestring", label: "Mestring", icon: "heart", path: "/mestring" },
     { id: "min-reise", label: "Min Reise", icon: "compass", path: "/min-reise" },
     { id: "jobb", label: "Jobb", icon: "briefcase", path: "/jobb" },
@@ -57,7 +56,6 @@ export default function Header({ className }: HeaderProps) {
     switch (iconName) {
       case "home": return <Home className={iconClass} />;
       case "book": return <BookOpen className={iconClass} />;
-      case "lightbulb": return <Lightbulb className={iconClass} />;
       case "heart": return <Heart className={iconClass} />;
       case "compass": return <Compass className={iconClass} />;
       case "briefcase": return <Briefcase className={iconClass} />;
