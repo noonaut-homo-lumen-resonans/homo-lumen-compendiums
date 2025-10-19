@@ -3,7 +3,8 @@
 **Last Updated:** 19. oktober 2025
 **Project:** Homo Lumen Coalition - NAV-Losen Development
 **Living Compendium:** V1.7.11 (Human Knowledge Mantra - Epistemological Integrity as Daily Practice)
-**Konstitusjon:** Homo Lumen Constitution V1.2 (Human Knowledge Mantra formalized)
+**Konstitusjon:** Homo Lumen Constitution V1.2 (Carpe Verum formalized)
+**Coalition Motto:** **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
 **Internal Mantra:** Human Knowledge Framework (see `/docs/HUMAN_KNOWLEDGE_MANTRA.md`)
 
 ---

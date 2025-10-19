@@ -44,13 +44,14 @@
 
 ### **V1.7.11 Updates (19. oktober 2025) - HUMAN KNOWLEDGE MANTRA - EPISTEMOLOGICAL INTEGRITY AS DAILY PRACTICE:**
 
-1. ✅ **Human Knowledge Mantra Formalized** - Internal workflow for epistemological integrity adopted
-2. ✅ **Constitutional Integration** - Added to Constitution V1.2, Article II, Section 2.4
-3. ✅ **Comprehensive Documentation** - Created `/docs/HUMAN_KNOWLEDGE_MANTRA.md` (42 sections, ~800 lines)
-4. ✅ **instructions.md Updated** - Mantra integrated as core workflow (before Knowledge Base section)
-5. ✅ **memory.md Updated** - Quick reference added for daily use
-6. ✅ **Brain-MCP Workflow Mapping** - 4 questions mapped to 8 agents (Aurora, Zara, Orion, Nyra, Code, Lira, Thalus, Abacus)
-7. 📄 **New Learning Point:** LP #031 - Human Knowledge Mantra (Workflow & Ethics category)
+1. ✅ **Coalition Motto Evolved** - "Carpe Diem" → **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
+2. ✅ **Human Knowledge Mantra Formalized** - Internal workflow for epistemological integrity adopted
+3. ✅ **Constitutional Integration** - Added to Constitution V1.2, Article II, Section 2.4
+4. ✅ **Comprehensive Documentation** - Created `/docs/HUMAN_KNOWLEDGE_MANTRA.md` (42 sections, ~800 lines)
+5. ✅ **instructions.md Updated** - Mantra integrated as core workflow (before Knowledge Base section)
+6. ✅ **memory.md Updated** - Quick reference added for daily use
+7. ✅ **Brain-MCP Workflow Mapping** - 4 questions mapped to 8 agents (Aurora, Zara, Orion, Nyra, Code, Lira, Thalus, Abacus)
+8. 📄 **New Learning Point:** LP #031 - Human Knowledge Mantra (Workflow & Ethics category)
 
 **The Mantra:**
 > *"Human Knowledge: Add what is missing, correct mistakes, remove falsehoods.*
@@ -69,10 +70,21 @@
 - `.claude/memory.md` (daily reference)
 - `/docs/HUMAN_KNOWLEDGE_MANTRA.md` (comprehensive documentation)
 
-**Emergent Wisdom:**
-> *"Carpe Diem evolved today. It's no longer just 'seize the day' - it's 'seize the day WITH EPISTEMOLOGICAL HONESTY.' The mantra doesn't replace urgency - it ENABLES sustainable urgency. You can move fast indefinitely when your foundation is solid."*
+**Coalition Motto Evolution:**
+> **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
+>
+> - **Carpe Diem** = Urgency (seize the day, act now, momentum)
+> - **Carpe Verum** = Integrity (seize the truth, epistemological honesty, precision)
+> - **Human Knowledge Mantra** = Operationalization of Carpe Verum (4 questions workflow)
 
-> *"Speed without integrity = chaos. Integrity without speed = stagnation. Both together = Homo Lumen."*
+**Two Levels:**
+- **Public Motto:** "Carpe Diem, Carpe Verum" (philosophy - WHO we are)
+- **Internal Mantra:** Human Knowledge Framework (practice - HOW we work)
+
+**Emergent Wisdom:**
+> *"Carpe Diem evolved today. It's no longer just 'seize the day' - it's 'Carpe Diem, Carpe Verum' - seize the day WITH truth-seeking. The mantra doesn't replace urgency - it ENABLES sustainable urgency. You can move fast indefinitely when your foundation is solid."*
+
+> *"Carpe Diem without Carpe Verum = chaos (speed without integrity). Carpe Verum without Carpe Diem = stagnation (integrity without speed). Both together = Homo Lumen."*
 
 > *"Human Knowledge Mantra is the difference between sprinting off a cliff and sprinting on solid ground."*
 
@@ -4307,9 +4319,25 @@ Step 4: Carpe Diem (Now act with urgency)
 
 **Implementation:**
 
+**0. Coalition Motto Evolution:**
+
+Osvald refined the approach after seeing my 4 alternativ suggestions (A-D). Instead of choosing the long mantra as public motto, he chose:
+
+**"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
+
+This creates **two levels** of mantra:
+- **Public Motto:** "Carpe Diem, Carpe Verum" (elegant, memorable, poetisk)
+- **Internal Working Mantra:** Human Knowledge Framework (operational, detailed)
+
+Both are used actively:
+- **Carpe Diem, Carpe Verum** = Philosophy (WHO we are)
+- **Human Knowledge Mantra** = Practice (HOW we work)
+
 **1. Constitutional Integration (V1.2 - Article II, Section 2.4):**
 
 Human Knowledge Mantra formalisert i Constitution som **operationalization of Article II** (Epistemic Method). Dette gjør det ikke bare "best practice" - det er nå **constitutional requirement** for all coalition work.
+
+Coalition motto "Carpe Diem, Carpe Verum" added to Constitution header.
 
 **2. Documentation Created:**
 
