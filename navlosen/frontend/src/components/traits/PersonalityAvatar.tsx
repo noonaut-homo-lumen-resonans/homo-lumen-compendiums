@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { BigFive } from "@/types";
-import { getAuraConfig, getFaceConfig, getPersonalityDescription } from "@/utils/personalityMapping";
+import { getAuraConfig, getPersonalityDescription } from "@/utils/personalityMapping";
 import PersonalityModal from "./PersonalityModal";
 
 interface PersonalityAvatarProps {
@@ -18,15 +18,18 @@ interface PersonalityAvatarProps {
 /**
  * PersonalityAvatar Component
  *
- * Visual representation of Big Five personality traits as an animated avatar.
+ * Visual representation of Big Five personality traits as an abstract animated orb.
  *
  * Structure:
  * - Layer 1: Aura (colored glow based on dominant trait)
- * - Layer 2: Face (expression based on polyvagal state)
+ * - Layer 2: Core circle (solid color, no face)
  * - Layer 3: Animations (breathing, hover, float)
+ * - Text: Expanded personality description
  *
  * Design principles:
+ * - Abstract, non-anthropomorphic (no facial features)
  * - Polyvagal-safe: Calm, breathing animations (4-6-8 rhythm)
+ * - Rich textual description of personality traits
  * - Interactive: Click for details, hover for tooltip
  * - Accessible: Keyboard navigable, ARIA labels
  *
@@ -65,7 +68,6 @@ export default function PersonalityAvatar({
   }
 
   const auraConfig = getAuraConfig(bigFive, polyvagalState);
-  const faceConfig = getFaceConfig(polyvagalState);
   const description = getPersonalityDescription(bigFive);
 
   const handleClick = () => {
@@ -106,53 +108,16 @@ export default function PersonalityAvatar({
             }}
           />
 
-          {/* Face Layer (SVG) */}
+          {/* Core circle (no face, just color) */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-3/5 h-3/5"
+            <div
+              className="w-3/5 h-3/5 rounded-full"
               style={{
+                backgroundColor: auraConfig.primaryColor,
+                opacity: 0.9,
                 filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
               }}
-            >
-              {/* Face circle */}
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                fill={auraConfig.primaryColor}
-                opacity="0.9"
-              />
-
-              {/* Eyes */}
-              <ellipse
-                cx="9"
-                cy="10"
-                rx="1.5"
-                ry={1.5 * faceConfig.eyeOpenness}
-                fill="white"
-              />
-              <ellipse
-                cx="15"
-                cy="10"
-                rx="1.5"
-                ry={1.5 * faceConfig.eyeOpenness}
-                fill="white"
-              />
-
-              {/* Pupils */}
-              <circle cx="9" cy="10" r="0.8" fill="#333" />
-              <circle cx="15" cy="10" r="0.8" fill="#333" />
-
-              {/* Mouth */}
-              <path
-                d={faceConfig.mouthPath}
-                stroke="white"
-                strokeWidth="1"
-                fill="none"
-                strokeLinecap="round"
-              />
-            </svg>
+            />
           </div>
 
           {/* Hover tooltip */}
@@ -166,11 +131,11 @@ export default function PersonalityAvatar({
 
         {/* Label */}
         {showLabel && (
-          <div className="mt-3 text-center">
-            <p className="text-sm font-semibold text-[var(--color-text-primary)]">
+          <div className="mt-3 w-full px-2">
+            <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-2 text-center">
               Din personlighet
             </p>
-            <p className="text-xs text-[var(--color-text-secondary)] mt-1 max-w-[200px]">
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
               {description}
             </p>
           </div>

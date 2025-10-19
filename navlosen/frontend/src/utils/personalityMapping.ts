@@ -130,13 +130,58 @@ export function getAuraConfig(bigFive: BigFive, polyvagalState: "ventral" | "sym
 }
 
 /**
- * Get face configuration
+ * Get face configuration based on personality traits (primary) and polyvagal state (secondary)
+ *
+ * Design decision: Personality determines baseline expression, polyvagal state modulates it
+ * - High E+A = friendly smile (regardless of current state)
+ * - High N or low polyvagal = slightly dampened expression
  */
-export function getFaceConfig(polyvagalState: "ventral" | "sympathetic" | "dorsal" = "ventral"): FaceConfig {
-  const mouthPath = getFaceExpression(polyvagalState);
+export function getFaceConfig(
+  polyvagalState: "ventral" | "sympathetic" | "dorsal" = "ventral",
+  bigFive?: BigFive
+): FaceConfig {
+  let mouthPath: string;
+  let eyeOpenness: number;
 
-  // Eye openness decreases in dorsal state
-  const eyeOpenness = polyvagalState === "dorsal" ? 0.6 : polyvagalState === "sympathetic" ? 0.8 : 1.0;
+  // If BigFive data available, use personality traits to determine baseline expression
+  if (bigFive) {
+    const E = bigFive.E ?? 0.5; // Extraversion
+    const A = bigFive.A ?? 0.5; // Agreeableness
+    const N = bigFive.N ?? 0.5; // Neuroticism
+
+    // High Extraversion + Agreeableness = warm, friendly smile
+    // Low Extraversion = more neutral/reserved expression
+    const friendliness = (E + A) / 2;
+
+    if (friendliness > 0.6) {
+      // Friendly smile (high E+A)
+      mouthPath = "M10,15 Q12,13 14,15"; // Smile
+      eyeOpenness = 1.0; // Wide, friendly eyes
+    } else if (friendliness > 0.4) {
+      // Gentle/neutral expression (moderate E+A)
+      mouthPath = "M10,15 Q12,14 14,15"; // Slight smile
+      eyeOpenness = 0.9;
+    } else {
+      // Reserved/serious expression (low E+A)
+      mouthPath = "M10,15 L14,15"; // Neutral line
+      eyeOpenness = 0.8;
+    }
+
+    // Neuroticism dampens expression slightly (worried/tense)
+    if (N > 0.7) {
+      eyeOpenness = Math.max(0.7, eyeOpenness - 0.1);
+    }
+
+    // Polyvagal state can modulate but not override personality
+    // Only in extreme dorsal state (shutdown), show slight dampening
+    if (polyvagalState === "dorsal") {
+      eyeOpenness = Math.max(0.6, eyeOpenness - 0.2);
+    }
+  } else {
+    // Fallback: Use only polyvagal state (old behavior)
+    mouthPath = getFaceExpression(polyvagalState);
+    eyeOpenness = polyvagalState === "dorsal" ? 0.6 : polyvagalState === "sympathetic" ? 0.8 : 1.0;
+  }
 
   return {
     mouthPath,
@@ -145,7 +190,7 @@ export function getFaceConfig(polyvagalState: "ventral" | "sympathetic" | "dorsa
 }
 
 /**
- * Get textual personality description
+ * Get textual personality description (expanded for richer context)
  */
 export function getPersonalityDescription(bigFive: BigFive): string {
   const O = bigFive.O ?? 0.5;
@@ -156,31 +201,33 @@ export function getPersonalityDescription(bigFive: BigFive): string {
 
   const traits: string[] = [];
 
-  // Openness
-  if (O > 0.65) traits.push("kreativ og nysgjerrig");
-  else if (O < 0.35) traits.push("praktisk og realistisk");
+  // Openness - kreativitet og åpenhet for nye erfaringer
+  if (O > 0.65) traits.push("kreativ og nysgjerrig, du setter pris på nye ideer og erfaringer");
+  else if (O > 0.35) traits.push("åpen for nye perspektiver når det føles riktig");
+  else traits.push("praktisk og realistisk, du foretrekker kjente løsninger");
 
-  // Conscientiousness
-  if (C > 0.65) traits.push("strukturert og målrettet");
-  else if (C < 0.35) traits.push("fleksibel og spontan");
+  // Conscientiousness - struktur og målrettethet
+  if (C > 0.65) traits.push("strukturert og målrettet, du liker å ha kontroll og planlegge fremover");
+  else if (C > 0.35) traits.push("balanserer planlegging med fleksibilitet");
+  else traits.push("fleksibel og spontan, du tilpasser deg lett til endringer");
 
-  // Extraversion
-  if (E > 0.65) traits.push("utadvendt og energisk");
-  else if (E < 0.35) traits.push("innadvendt og reflektert");
+  // Extraversion - sosial energi
+  if (E > 0.65) traits.push("utadvendt og energisk, du får energi fra å være sammen med andre");
+  else if (E > 0.35) traits.push("trives både med sosial tid og tid alene");
+  else traits.push("innadvendt og reflektert, du trenger tid alene for å lade batteriene");
 
-  // Agreeableness
-  if (A > 0.65) traits.push("empatisk og samarbeidsvillig");
-  else if (A < 0.35) traits.push("selvstendig og direkte");
+  // Agreeableness - samarbeid og empati
+  if (A > 0.65) traits.push("empatisk og samarbeidsvillig, du bryr deg dypt om andre mennesker");
+  else if (A > 0.35) traits.push("balanserer mellom egne behov og andres");
+  else traits.push("selvstendig og direkte, du setter grenser og prioriterer dine egne behov");
 
-  // Neuroticism
-  if (N > 0.65) traits.push("følsomhet for stress");
-  else if (N < 0.35) traits.push("emosjonelt stabil");
+  // Neuroticism - emosjonell stabilitet
+  if (N > 0.65) traits.push("følsom for stress og bekymring, du reagerer sterkt på utfordringer");
+  else if (N > 0.35) traits.push("opplever både rolige og stressende perioder");
+  else traits.push("emosjonelt stabil og rolig, du håndterer stress godt");
 
-  if (traits.length === 0) {
-    return "Du har en balansert personlighetsprofil.";
-  }
-
-  return `Du er ${traits.slice(0, -1).join(", ")}${traits.length > 1 ? " og " : ""}${traits[traits.length - 1]}.`;
+  // Join traits with proper punctuation
+  return traits.join(". ") + ".";
 }
 
 /**
