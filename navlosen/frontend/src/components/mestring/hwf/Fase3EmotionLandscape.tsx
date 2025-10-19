@@ -98,11 +98,9 @@ export default function Fase3EmotionLandscape({
     setIsDragging(false);
   };
 
-  // Get color for specific emotion based on intensity
+  // Get color for specific emotion - now using direct HEX from Mood Meter
   const getEmotionColor = (emotion: EmotionWord) => {
-    const intensity = emotion.colorIntensity;
-    // Mix between light and dark based on intensity
-    return intensity > 0.7 ? colors.dark : intensity > 0.4 ? colors.primary : colors.light;
+    return emotion.color; // Direct HEX color from emotionData
   };
 
   // Get floating animation offset
@@ -120,23 +118,35 @@ export default function Fase3EmotionLandscape({
           height: `${baseSize}px`,
           borderRadius: "50%",
         };
-      case "oval-h":
-        return {
-          width: `${baseSize * 1.3}px`,
-          height: `${baseSize}px`,
-          borderRadius: "50%",
-        };
-      case "oval-v":
-        return {
-          width: `${baseSize}px`,
-          height: `${baseSize * 1.3}px`,
-          borderRadius: "50%",
-        };
-      case "blob":
+      case "diamond":
         return {
           width: `${baseSize}px`,
           height: `${baseSize}px`,
-          borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
+          borderRadius: "10%",
+        };
+      case "rounded-square":
+        return {
+          width: `${baseSize}px`,
+          height: `${baseSize}px`,
+          borderRadius: "25%",
+        };
+      case "hexagon":
+        return {
+          width: `${baseSize}px`,
+          height: `${baseSize * 1.15}px`,
+          clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+        };
+      case "star-6":
+        return {
+          width: `${baseSize}px`,
+          height: `${baseSize}px`,
+          clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+        };
+      case "star-8":
+        return {
+          width: `${baseSize}px`,
+          height: `${baseSize}px`,
+          clipPath: "polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%)",
         };
     }
   };
