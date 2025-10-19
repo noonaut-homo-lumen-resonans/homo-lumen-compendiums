@@ -1,0 +1,61 @@
+site_name: 'Homo Lumen - Living Compendia'
+site_description: 'Agent Coalition Documentation - TechDocs PoC'
+site_author: 'Homo Lumen Agent Coalition'
+
+# Repository (for "Edit this page" links)
+repo_url: https://github.com/noonaut-homo-lumen-resonans/homo-lumen-compendiums
+repo_name: 'homo-lumen-compendiums'
+
+# Documentation directory
+docs_dir: 'techdocs-source'
+
+# Theme configuration
+theme:
+  name: material
+  palette:
+    primary: 'indigo'
+    accent: 'cyan'
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+# Plugins
+plugins:
+  - search
+  - techdocs-core
+
+# Markdown extensions
+markdown_extensions:
+  - admonition
+  - codehilite
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+
+# Navigation structure (Diátaxis-based)
+nav:
+  - Home: index.md
+  - Tutorials:
+      - Getting Started: tutorials/getting-started.md
+  - How-To Guides:
+      - Add New Learning Point: how-to/add-learning-point.md
+  - Explanation:
+      - Architecture:
+          - Brain-MCP Hybrid: explanation/architecture/brain-mcp-hybrid.md
+          - 10-Agent Coalition: explanation/architecture/10-agent-coalition.md
+      - Philosophy:
+          - Carpe Diem Carpe Verum: explanation/philosophy/carpe-diem-verum.md
+          - Triadic Ethics: explanation/philosophy/triadic-ethics.md
+  - Reference:
+      - Learning Points:
+          - LP #037 HWF Complete: reference/learning-points/lp-037-hwf-complete.md
+          - LP #038 MCP A2A Guide: reference/learning-points/lp-038-mcp-a2a.md
+      - Agent Index: reference/agent-index.md
