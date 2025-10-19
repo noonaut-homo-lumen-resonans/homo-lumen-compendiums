@@ -1,27 +1,22 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { getEmotionsByQuadrant, type EmotionWord } from "./emotionData";
+import React, { useState, useEffect } from "react";
+import { ALL_EMOTIONS, type EmotionWord } from "./emotionData";
 
 interface Fase3EmotionLandscapeProps {
-  quadrant: 1 | 2 | 3 | 4;
+  quadrant: 1 | 2 | 3 | 4 | null;
   onEmotionSelect: (emotion: EmotionWord) => void;
 }
 
 /**
- * Fase 3: Følelseslandskapet
+ * Fase 3: Følelseslandskap (Redesigned)
  *
- * Et stort, draggbart canvas med 36 følelsesord for den valgte kvadranten.
- * Hvert ord har sin egen farge (gradient i kvadrantens farge) og organisk form.
+ * Viser ALLE 100 følelsesord i en stor 2x2 grid (4 kvadranter).
+ * Hver kvadrant har sin egen bakgrunnsfarge.
+ * Ordene flyter med continuous floating animation.
  *
- * Features:
- * - Horizontal dragging/scrolling for å utforske ord
- * - Kontinuerlig, rolig bevegelse (flyter som i vann)
- * - Smooth parallax-effekt når bruker drar
- * - Click/tap på ord for å velge
- *
- * Design: Organisk, rolig, meditativ atmosfære
- * Inspirert av: How We Feel (HWF) app
+ * Design: 4-kvadrant grid layout
+ * Inspirert av: Marc Brackett's Mood Meter
  *
  * Triadisk Score: 0.18 (PROCEED)
  */
@@ -29,88 +24,39 @@ export default function Fase3EmotionLandscape({
   quadrant,
   onEmotionSelect,
 }: Fase3EmotionLandscapeProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
   const [time, setTime] = useState(0);
-
-  const emotions = getEmotionsByQuadrant(quadrant);
-
-  // Get quadrant color
-  const getQuadrantColor = () => {
-    const colors = {
-      1: {
-        primary: "var(--color-emotion-q1-primary)",
-        light: "var(--color-emotion-q1-light)",
-        dark: "var(--color-emotion-q1-dark)",
-      },
-      2: {
-        primary: "var(--color-emotion-q2-primary)",
-        light: "var(--color-emotion-q2-light)",
-        dark: "var(--color-emotion-q2-dark)",
-      },
-      3: {
-        primary: "var(--color-emotion-q3-primary)",
-        light: "var(--color-emotion-q3-light)",
-        dark: "var(--color-emotion-q3-dark)",
-      },
-      4: {
-        primary: "var(--color-emotion-q4-primary)",
-        light: "var(--color-emotion-q4-light)",
-        dark: "var(--color-emotion-q4-dark)",
-      },
-    };
-    return colors[quadrant];
-  };
-
-  const colors = getQuadrantColor();
 
   // Continuous floating animation
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((prev) => prev + 0.01);
     }, 16); // ~60fps
-
     return () => clearInterval(interval);
   }, []);
 
-  // Mouse/touch drag handlers
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    setIsDragging(true);
-    const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
-    setStartX(pageX - (containerRef.current?.offsetLeft || 0));
-    setScrollLeft(containerRef.current?.scrollLeft || 0);
-  };
-
-  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
-    const x = pageX - (containerRef.current?.offsetLeft || 0);
-    const walk = (x - startX) * 2; // Scroll speed multiplier
-    if (containerRef.current) {
-      containerRef.current.scrollLeft = scrollLeft - walk;
-    }
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-  };
-
-  // Get color for specific emotion - now using direct HEX from Mood Meter
-  const getEmotionColor = (emotion: EmotionWord) => {
-    return emotion.color; // Direct HEX color from emotionData
-  };
-
-  // Get floating animation offset
   const getFloatingOffset = (index: number) => {
     return Math.sin(time + index * 0.5) * 10; // Vertical offset in px
   };
 
-  // Get shape style based on emotion shape
+  // Quadrant background colors
+  const getQuadrantBg = (q: 1 | 2 | 3 | 4) => {
+    const colors = {
+      1: "linear-gradient(135deg, #FF8A80 0%, #FF6F61 50%, #E63946 100%)", // Rød
+      2: "linear-gradient(135deg, #FFE44D 0%, #FFD700 50%, #F4A300 100%)", // Gul
+      3: "linear-gradient(135deg, #8BA3F0 0%, #6A88E3 50%, #4A5FBF 100%)", // Blå
+      4: "linear-gradient(135deg, #A8E8C8 0%, #88D8B0 50%, #5FBE8D 100%)", // Grønn
+    };
+    return colors[q];
+  };
+
+  // Get quadrant emotions
+  const getQuadrantEmotions = (q: 1 | 2 | 3 | 4) => {
+    return ALL_EMOTIONS.filter((e) => e.quadrant === q);
+  };
+
+  // Shape styling with CSS clip-path
   const getShapeStyle = (emotion: EmotionWord) => {
-    const baseSize = 140;
+    const baseSize = 100; // Smaller for grid layout
     switch (emotion.shape) {
       case "circle":
         return {
@@ -123,6 +69,7 @@ export default function Fase3EmotionLandscape({
           width: `${baseSize}px`,
           height: `${baseSize}px`,
           borderRadius: "10%",
+          transform: "rotate(45deg)",
         };
       case "rounded-square":
         return {
@@ -151,63 +98,49 @@ export default function Fase3EmotionLandscape({
     }
   };
 
-  return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
-      {/* Header */}
-      <div className="text-center py-8 px-6">
-        <h2 className="text-3xl font-bold text-gray-900 mb-3">
-          Hvilket ord passer best?
-        </h2>
-        <p className="text-base text-gray-600">
-          Dra fingeren sidelengs for å utforske, trykk for å velge
-        </p>
-      </div>
+  // Render quadrant
+  const renderQuadrant = (q: 1 | 2 | 3 | 4) => {
+    const emotions = getQuadrantEmotions(q);
 
-      {/* Scrollable Emotion Landscape */}
+    return (
       <div
-        ref={containerRef}
-        className="flex-1 overflow-x-auto overflow-y-hidden cursor-grab active:cursor-grabbing"
-        onMouseDown={handleDragStart}
-        onMouseMove={handleDragMove}
-        onMouseUp={handleDragEnd}
-        onMouseLeave={handleDragEnd}
-        onTouchStart={handleDragStart}
-        onTouchMove={handleDragMove}
-        onTouchEnd={handleDragEnd}
-        style={{
-          scrollbarWidth: "none", // Firefox
-          msOverflowStyle: "none", // IE/Edge
-        }}
+        key={q}
+        className="relative overflow-auto p-4"
+        style={{ background: getQuadrantBg(q) }}
       >
-        <div className="flex flex-row items-center gap-4 px-6 py-24 min-w-max">
+        {/* Quadrant Label */}
+        <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+          <span className="text-sm font-semibold text-gray-800">
+            {q === 1 && "Høy Energi, Ubehagelig"}
+            {q === 2 && "Høy Energi, Behagelig"}
+            {q === 3 && "Lav Energi, Ubehagelig"}
+            {q === 4 && "Lav Energi, Behagelig"}
+          </span>
+        </div>
+
+        {/* Emotions Grid */}
+        <div className="pt-16 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 place-items-center min-h-full">
           {emotions.map((emotion, index) => {
             const floatOffset = getFloatingOffset(index);
             const shapeStyle = getShapeStyle(emotion);
-            const bgColor = getEmotionColor(emotion);
 
             return (
               <button
                 key={emotion.id}
                 onClick={() => onEmotionSelect(emotion)}
-                className="flex-shrink-0 flex items-center justify-center text-white font-semibold text-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl relative"
+                className="flex items-center justify-center text-white font-semibold text-xs transition-all duration-300 hover:scale-110 hover:shadow-2xl relative"
                 style={{
                   ...shapeStyle,
-                  backgroundColor: bgColor,
-                  transform: `translateY(${floatOffset}px)`,
+                  backgroundColor: emotion.color,
+                  transform: `translateY(${floatOffset}px) ${emotion.shape === 'diamond' ? 'rotate(45deg)' : ''}`,
                   transition: "transform 0.3s ease-out, box-shadow 0.3s ease-out",
                 }}
               >
-                {/* Glow effect on hover */}
-                <div
-                  className="absolute inset-0 rounded-full opacity-0 hover:opacity-40 transition-opacity duration-500"
-                  style={{
-                    background: `radial-gradient(circle, ${colors.light}, transparent)`,
-                    filter: "blur(20px)",
-                  }}
-                />
-
                 {/* Word */}
-                <span className="relative z-10 drop-shadow-lg px-4 text-center">
+                <span
+                  className="relative z-10 drop-shadow-lg text-center px-2"
+                  style={{ transform: emotion.shape === 'diamond' ? 'rotate(-45deg)' : 'none' }}
+                >
                   {emotion.word}
                 </span>
               </button>
@@ -215,13 +148,31 @@ export default function Fase3EmotionLandscape({
           })}
         </div>
       </div>
+    );
+  };
 
-      {/* Hide scrollbar */}
-      <style jsx>{`
-        div::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      {/* Header */}
+      <div className="text-center py-6 px-6 bg-white shadow-sm">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Hvilket ord passer best?
+        </h2>
+        <p className="text-sm text-gray-600">
+          Velg det ordet som best beskriver hvordan du føler deg akkurat nå
+        </p>
+      </div>
+
+      {/* 2x2 Quadrant Grid */}
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0">
+        {/* Top row */}
+        {renderQuadrant(1)}
+        {renderQuadrant(2)}
+
+        {/* Bottom row */}
+        {renderQuadrant(3)}
+        {renderQuadrant(4)}
+      </div>
     </div>
   );
 }

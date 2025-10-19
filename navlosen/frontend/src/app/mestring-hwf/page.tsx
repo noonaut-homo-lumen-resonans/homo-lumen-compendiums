@@ -60,7 +60,7 @@ export default function MestringHWFPage() {
 
   // Phase handlers
   const handleWelcomeContinue = () => {
-    setCurrentFase("quadrants");
+    setCurrentFase("landscape"); // Skip quadrants, go directly to landscape
   };
 
   const handleQuadrantSelect = (quadrant: 1 | 2 | 3 | 4) => {
@@ -101,7 +101,6 @@ export default function MestringHWFPage() {
         return <Fase2Quadrants onQuadrantSelect={handleQuadrantSelect} />;
 
       case "landscape":
-        if (!selectedQuadrant) return null;
         return (
           <Fase3EmotionLandscape
             quadrant={selectedQuadrant}
