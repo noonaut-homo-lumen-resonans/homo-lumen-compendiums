@@ -70,6 +70,29 @@
   --color-storm-dark: #475569; /* Stormfull natt */
   --color-path-light: #DBEAFE; /* Stien til havnen */
 
+  /* How We Feel (HWF) Emotion Quadrant Colors */
+  /* Based on Circumplex Model (Energy + Valence) */
+
+  /* Q1: High Energy, Unpleasant (Rød/Korall) */
+  --color-emotion-q1-primary: #FF6F61; /* Stress, sinne, angst, panikk */
+  --color-emotion-q1-light: #FF8A80;
+  --color-emotion-q1-dark: #E63946;
+
+  /* Q2: High Energy, Pleasant (Gul/Gull) */
+  --color-emotion-q2-primary: #FFD700; /* Glede, entusiasme, spenning */
+  --color-emotion-q2-light: #FFE44D;
+  --color-emotion-q2-dark: #F4A300;
+
+  /* Q3: Low Energy, Unpleasant (Blå) */
+  --color-emotion-q3-primary: #6A88E3; /* Tristhet, ensomhet, utmattelse */
+  --color-emotion-q3-light: #8BA3F0;
+  --color-emotion-q3-dark: #4A5FBF;
+
+  /* Q4: Low Energy, Pleasant (Grønn/Mint) */
+  --color-emotion-q4-primary: #88D8B0; /* Ro, avslappethet, ettertanke */
+  --color-emotion-q4-light: #A8E8C8;
+  --color-emotion-q4-dark: #5FBE8D;
+
   /* Spacing Scale (8px base) */
   --space-xs: 4px;
   --space-sm: 8px;
