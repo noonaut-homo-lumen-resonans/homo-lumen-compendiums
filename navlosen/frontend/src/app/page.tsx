@@ -27,6 +27,7 @@ import { loadBigFive } from "@/utils/bigfive/mergeProfiles";
 import { getKairosWindowFromBigFive, getKairosWelcomeMessage, type KairosWindow } from "@/utils/kairosMapping";
 import { affectBus } from "@/utils/affectBus";
 import AffectTimeline from "@/components/timeline/AffectTimeline";
+import MicroChallengeCard from "@/components/challenges/MicroChallengeCard";
 
 /**
  * NAV-Losen Dashboard (Homepage)
@@ -445,6 +446,11 @@ export default function Dashboard() {
                 </Link>
               ))}
             </div>
+          </div>
+
+          {/* Micro-Challenge Card */}
+          <div>
+            <MicroChallengeCard compact={false} />
           </div>
 
           {/* Affect Timeline (compact) - only show if user has emotion history */}
