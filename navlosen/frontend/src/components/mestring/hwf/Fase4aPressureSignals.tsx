@@ -65,8 +65,8 @@ export default function Fase4aPressureSignals({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-purple-50 to-pink-50 p-6">
-      <div className="max-w-3xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-purple-50 to-pink-50 px-4 md:px-12 lg:px-24 py-12">
+      <div className="w-full max-w-5xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-3">
