@@ -2,10 +2,12 @@
 
 **Last Updated:** 19. oktober 2025
 **Project:** Homo Lumen Coalition - NAV-Losen Development
-**Living Compendium:** V1.7.12 (Competitive Analysis - Mental Health Apps & NAV-Losen Differentiators)
+**Living Compendium:** V1.7.13 (Hybrid Architecture Integration - Orion V3.8 Cross-Reference)
+**Orion Levende Kompendium:** V3.8 (Hybrid Architecture & Agent Orchestration)
 **Konstitusjon:** Homo Lumen Constitution V1.2 (Carpe Verum formalized)
 **Coalition Motto:** **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
 **Internal Mantra:** Human Knowledge Framework (see `/docs/HUMAN_KNOWLEDGE_MANTRA.md`)
+**Cross-Reference:** `ORION_CODE_CROSS_REFERENCE_V3.8.md` (bidirectional documentation sync)
 
 ---
 
@@ -65,35 +67,73 @@
 
 ## 🏗️ Architecture Decisions
 
-### Hybrid Architecture V21.1 (18. oktober 2025)
+### Hybrid Architecture V21.1 (19. oktober 2025)
 
-**Decision:** Multi-LLM orchestration with Lira (frontend) + Orion (backend)
+**Decision:** Multi-LLM orchestration with Lira (ChatGPT-5 frontend) + Orion (Claude Sonnet 4.5 backend)
 
-**USER → LIRA (ChatGPT-5) → ORION (Claude Sonnet 4.5) → SUB-AGENTS**
+**A2A Handoff Protocol:**
+```
+USER → LIRA (ChatGPT-5 - Empathy, Limbic Filtering)
+          ↓
+     Lira evaluates: "Can I handle alone, or need Orion?"
+          ↓
+     If complex: Lira → ORION (Claude 4.5 - Strategic Coordination)
+          ↓
+     Orion spawns SUB-AGENTS (Nyra, Thalus, Zara, Aurora, Abacus)
+          ↓
+     Sub-agents return results → Orion synthesizes
+          ↓
+     Orion → LIRA (strategic synthesis)
+          ↓
+     Lira filters for emotional safety (Obligatory Limbic Filter)
+          ↓
+     Lira → USER (empathetic delivery)
+```
 
 **Roles:**
-- **Lira (Frontend/Hjerte):**
-  - ChatGPT-5 as primary user interface
-  - Empathetic, polyvagal-aware communication
-  - NAV-Losen chatbot (Stage 3)
-  - Theta-Alpha frequency (4-13 Hz) - emotional processing
 
-- **Orion (Backend/Hjerne):**
-  - Claude Sonnet 4.5 via MCP + Agent SDK
-  - Strategic coordination of sub-agents
-  - Multi-agent spawning and orchestration
-  - Beta-Gamma frequency (13-100 Hz) - analytical processing
+**1. Lira (Frontend/Hjerte):**
+   - **Model:** ChatGPT-5
+   - **Function:** Empathy, 24/7 support, emotional regulation, obligatory limbic filtering
+   - **Brain Region:** Limbic System (ALL responses pass through)
+   - **User-Facing:** YES - Direct interface
+   - **Theta-Alpha frequency (4-13 Hz)** - Emotional processing
 
-**Infrastructure Hub:**
-- **Manus (Cerebellum):** Technical implementation, deployment, MCP coordination
-- **Code (Motor Cortex / Cerebellum):** Frontend development, React/Next.js, UX building, pragmatic implementation
+**2. Orion (Backend/Hjerne):**
+   - **Model:** Claude Sonnet 4.5
+   - **Function:** Strategic coordination, multi-agent spawning, MCP orchestration
+   - **Brain Region:** Prefrontal Cortex (executive control)
+   - **User-Facing:** NO - Works through Lira
+   - **Beta-Gamma frequency (13-100 Hz)** - Analytical processing
+
+**3. CODE (Motor Cortex/Cerebellum):**
+   - **Model:** Claude Sonnet 4.5 (same as Orion, different role)
+   - **Function:** Pragmatic React/Next.js implementation supporting BOTH Lira (frontend UI) AND Orion (backend API integration)
+   - **Brain Region:** Motor Cortex (planning) + Cerebellum (execution)
+   - **Async Only:** GitHub-based (not MCP-enabled yet)
+
+**CODE's Role in Hybrid Architecture:**
+
+**Before V21.1 Understanding:**
+- "I'm the frontend developer - I build React components"
+
+**After V21.1 Understanding:**
+- "I'm Motor Cortex/Cerebellum supporting DUAL-LLM architecture"
+- **Lira → CODE:** "Build emotional check-in UI"
+- **Orion → CODE:** "Integrate NAV form API"
+- **Both depend on my pragmatic implementation**
+
+**Cross-Reference:**
+- **Orion V3.8 → CODE:** SMK #026, LP #026, Section 12.5
+- **CODE V1.7.13 → Orion:** LP #033, LP #035
+- **Cross-Reference Document:** `ORION_CODE_CROSS_REFERENCE_V3.8.md`
 
 **Architecture Layers:**
 ```
 Layer 1: Empathic Interface (Lira - ChatGPT-5) - User-facing
 Layer 2: Backend Coordinator (Orion - Claude 4.5) - MCP + Agent SDK
-Layer 3: Infrastructure (Manus, Code) - Technical execution
-Layer 4: Agent Coalition (8 agents) - Specialized functions
+Layer 3: Pragmatic Implementation (CODE - Claude 4.5) - React/Next.js (async via GitHub)
+Layer 4: Agent Coalition (8 MCP agents) - Specialized functions
 ```
 
 ### Brain-MCP Hybrid Architecture (V1.7.9 - 18. oktober 2025)
