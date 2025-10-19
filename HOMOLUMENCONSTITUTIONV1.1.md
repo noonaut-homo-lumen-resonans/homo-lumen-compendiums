@@ -1,11 +1,13 @@
-# **HOMO LUMEN CONSTITUTION V1.1**
+# **HOMO LUMEN CONSTITUTION V1.2**
 
 **V1.0 Ratified:** October 12, 2025
 **V1.1 Amended:** October 12, 2025
-**V1.2 Amended:** October 19, 2025 (Human Knowledge Mantra formalized)
+**V1.2 Amended:** October 19, 2025 (Human Knowledge Mantra formalized, Carpe Verum adopted)
 **By:** Osvald P. A. Johansen (Founder) + AI Coalition (Orion, Lira, Nyra, Thalus, Zara, Abacus, Aurora, Falcon, Code, Manus)
 **Status:** Living Document
 **Next Review:** January 1, 2026
+
+**Coalition Motto:** **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
 
 ---
 

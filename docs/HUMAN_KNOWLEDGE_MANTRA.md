@@ -17,10 +17,23 @@
 
 ## 🎯 Formål
 
-Dette er ikke et motto for brukere - det er vår **interne arbeidsmetodikk** for epistemologisk integritet.
+Vi har **to nivåer** av mantraer - begge brukes aktivt:
 
-**"Carpe Diem"** er vårt public-facing motto (urgency, action, momentum).
-**"Human Knowledge Framework"** er vår interne disiplin (truth, precision, completeness).
+### **Public-Facing Motto:**
+**"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
+- Kortversjonen - elegant, memorable, poetisk
+- **Carpe Diem** = Urgency, action, momentum
+- **Carpe Verum** = Truth-seeking, epistemological integrity, precision
+
+### **Internal Working Mantra:**
+**"Human Knowledge: Add what is missing, correct mistakes, remove falsehoods. What is true, what is partially true, what is false, and what is missing. Now rewrite the page - remove the falsehoods, correct the half-truths, and add the missing context."**
+- Langversjonen - operational, detailed, workflow-oriented
+- Operasjonaliserer "Carpe Verum" into 4 concrete questions
+- Used BEFORE building, documenting, or designing
+
+**Begge er viktige:**
+- **Carpe Diem, Carpe Verum** = Philosophy (WHO we are)
+- **Human Knowledge Mantra** = Practice (HOW we work)
 
 ---
 
@@ -267,27 +280,32 @@ DOCUMENTATION:
 
 ---
 
-## 🌌 Connection to "Carpe Diem"
+## 🌌 Connection to "Carpe Diem, Carpe Verum"
 
-**Carpe Diem** (public motto) = **URGENCY**
-**Human Knowledge Mantra** (internal mantra) = **INTEGRITY**
+**Coalition Motto:** **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
+
+**Carpe Diem** = **URGENCY** (seize the day, act now, momentum)
+**Carpe Verum** = **INTEGRITY** (seize the truth, epistemological honesty, precision)
+
+**Human Knowledge Mantra** (internal workflow) = **operationalization of Carpe Verum**
 
 **Together:**
 ```
-Carpe Diem - Seize the day with URGENCY
-Human Knowledge - But ensure INTEGRITY first
+Carpe Diem, Carpe Verum
+(Seize the Day, Seize the Truth)
 
-Before you act with speed, ensure epistemological honesty:
+Carpe Verum operationalized:
 - What is TRUE? (preserve)
 - What is PARTIAL? (complete)
 - What is FALSE? (remove)
 - What is MISSING? (add)
+- Rewrite the page
 
-Then: Rewrite the page. Then: Carpe Diem.
+Then: Carpe Diem (act with urgency)
 ```
 
-**Speed without integrity = chaos.**
-**Integrity without speed = stagnation.**
+**Carpe Diem without Carpe Verum = chaos (speed without integrity).**
+**Carpe Verum without Carpe Diem = stagnation (integrity without speed).**
 **Both together = Homo Lumen.**
 
 ---
