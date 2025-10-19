@@ -1,340 +1,209 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Layout from "@/components/layout/Layout";
-import Stage1Emotions from "@/components/mestring/Stage1Emotions";
-import Stage2Signals from "@/components/mestring/Stage2Signals";
+import React, { useState } from "react";
+import { ArrowLeft } from "lucide-react";
+import Fase1Welcome from "@/components/mestring/hwf/Fase1Welcome";
+import Fase2Quadrants from "@/components/mestring/hwf/Fase2Quadrants";
+import Fase3EmotionLandscape from "@/components/mestring/hwf/Fase3EmotionLandscape";
+import Fase4Definition from "@/components/mestring/hwf/Fase4Definition";
+import Fase4aPressureSignals from "@/components/mestring/hwf/Fase4aPressureSignals";
+import Fase6Results from "@/components/mestring/hwf/Fase6Results";
+import EmotionBadge from "@/components/mestring/hwf/EmotionBadge";
 import Stage3LiraChat from "@/components/mestring/Stage3LiraChat";
-import Stage4Results from "@/components/mestring/Stage4Results";
-import KairosInterventionModal from "@/components/mestring/KairosInterventionModal";
-import { SomaticSignal } from "@/types";
-import { Heart } from "lucide-react";
-import {
-  calculateCompositeStressScore,
-  type CompositeStressInput,
-  type LiraAnswer,
-} from "@/lib/compositeStressScore";
-import {
-  detectKairosPatterns,
-  loadHistoricalContext,
-  updateHistoricalContext,
-  type KairosIntervention,
-  type KairosContext,
-} from "@/lib/kairosInterventions";
+import type { EmotionWord } from "@/components/mestring/hwf/emotionData";
+import type { LiraAnswer } from "@/lib/compositeStressScore";
 
-type FlowStage = "emotions" | "signals" | "chat" | "results";
+type HWFFase =
+  | "welcome"
+  | "quadrants"
+  | "landscape"
+  | "definition"
+  | "pressure-signals"
+  | "lira-chat"
+  | "results";
 
 /**
- * Mestring Page - Multi-Stage Adaptive Flow
+ * Mestring - How We Feel Inspired Flow
  *
- * NAV-Losen's stress regulation and self-awareness page
- * Based on Polyvagal Theory by Stephen Porges
+ * 6-fase guidet brukeropplevelse basert på "How We Feel" app design:
  *
- * 4-stage wizard that guides users through:
- * 1. Emotion Check-in (100 words in 4 quadrants)
- * 2. Trykk & Signaler (Stress slider + Somatic awareness)
- * 3. Lira Chat (2-5 adaptive questions based on stress state)
- * 4. Results (Composite stress score + Recommended strategies + Min Reise link)
+ * **Fase 1:** Velkomsthilsen - Introduksjon til verktøyet
+ * **Fase 2:** 4 Kvadranter - Høy/Lav energi × Behagelig/Ubehagelig
+ * **Fase 3:** Følelseslandskap - 100 norske emosjoner i 4-kvadrant grid
+ * **Fase 4:** Definisjon - Popup med ordets betydning
+ * **Fase 4a:** Trykk & Kroppslige Signaler - Slider + tags + Health Connect
+ * **Fase 5-6:** Lira Dialog - 4 spørsmål + anbefaling
  *
- * Features:
- * - Composite Stress Score (weighted combination of all inputs)
- * - Polyvagal state indicator throughout flow
- * - Personalized regulation strategies
+ * Design Philosophy:
+ * - Minimalistisk, rolig, trygg atmosfære
+ * - HWF fargepalett (Rød, Gul, Blå, Grønn)
+ * - Smooth animasjoner (ease-in-out)
+ * - Triadisk Ethics i hver fase
+ * - 100 unike SVG-former for hver emosjon
  *
- * Triadisk Score: 0.2 (PROCEED)
- * - Suverenitet: User-controlled regulation and progression
- * - Koherens: Grounded in neuroscience
- * - Healing: Direct capacity building
+ * Living Compendium V1.7.14
+ * HWF Emotion Wheel: 100% Complete
+ * Triadisk Score: 0.18 (PROCEED)
  */
 export default function MestringPage() {
-  // Stage management
-  const [currentStage, setCurrentStage] = useState<FlowStage>("emotions");
-
-  // Default somatic signals
-  const defaultSomaticSignals: SomaticSignal[] = [
-    { id: "rask-puls", label: "Rask puls eller hjertebank", checked: false },
-    { id: "anspent-kjeve", label: "Anspent kjeve eller skuldre", checked: false },
-    { id: "grunn-pust", label: "Grunn eller rask pust", checked: false },
-    { id: "mage-uro", label: "Uro i magen eller kvalme", checked: false },
-    { id: "trett", label: "Tretthet eller tung kropp", checked: false },
-    { id: "nummen", label: "Nummen eller koblet fra", checked: false },
-  ];
-
-  // Session state
-  const [selectedEmotions, setSelectedEmotions] = useState<{ word: string; quadrant: number | null }[]>([]);
-  const [stressLevel, setStressLevel] = useState<number>(5);
-  const [somaticSignals, setSomaticSignals] = useState<SomaticSignal[]>(defaultSomaticSignals);
+  const [currentFase, setCurrentFase] = useState<HWFFase>("welcome");
+  const [selectedQuadrant, setSelectedQuadrant] = useState<1 | 2 | 3 | 4 | null>(null);
+  const [selectedEmotion, setSelectedEmotion] = useState<EmotionWord | null>(null);
+  const [showDefinition, setShowDefinition] = useState(false);
+  const [pressureData, setPressureData] = useState<{
+    pressure: number;
+    signals: string[];
+  } | null>(null);
   const [liraAnswers, setLiraAnswers] = useState<LiraAnswer[]>([]);
 
-  // Kairos intervention state
-  const [activeIntervention, setActiveIntervention] = useState<KairosIntervention | null>(null);
-  const [dismissedInterventions, setDismissedInterventions] = useState<Set<string>>(new Set());
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedStage = localStorage.getItem("navlosen-mestring-stage");
-      const savedEmotions = localStorage.getItem("navlosen-emotions");
-      const savedStressLevel = localStorage.getItem("navlosen-stress-level");
-      const savedSignals = localStorage.getItem("navlosen-somatic-signals");
-      const savedAnswers = localStorage.getItem("navlosen-lira-answers");
-
-      if (savedStage) setCurrentStage(savedStage as FlowStage);
-      if (savedEmotions) {
-        try {
-          setSelectedEmotions(JSON.parse(savedEmotions));
-        } catch (e) {
-          console.error("Failed to parse emotions from localStorage", e);
-        }
-      }
-      if (savedStressLevel) setStressLevel(Number(savedStressLevel));
-      if (savedSignals) {
-        try {
-          setSomaticSignals(JSON.parse(savedSignals));
-        } catch (e) {
-          console.error("Failed to parse signals from localStorage", e);
-        }
-      }
-      if (savedAnswers) {
-        try {
-          setLiraAnswers(JSON.parse(savedAnswers));
-        } catch (e) {
-          console.error("Failed to parse answers from localStorage", e);
-        }
-      }
-    }
-  }, []);
-
-  // Save to localStorage when stage changes
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-mestring-stage", currentStage);
-    }
-  }, [currentStage]);
-
-  // Save to localStorage when state changes
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-emotions", JSON.stringify(selectedEmotions));
-    }
-  }, [selectedEmotions]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-stress-level", String(stressLevel));
-    }
-  }, [stressLevel]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-somatic-signals", JSON.stringify(somaticSignals));
-    }
-  }, [somaticSignals]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navlosen-lira-answers", JSON.stringify(liraAnswers));
-    }
-  }, [liraAnswers]);
-
-  // Calculate Composite Stress Score
-  const compositeInput: CompositeStressInput = {
-    stressSlider: stressLevel,
-    selectedEmotions: selectedEmotions.map((e) => ({
-      word: e.word,
-      quadrant: e.quadrant || 1,
-    })),
-    somaticSignals,
-    liraAnswers,
+  // Mock Health Connect data (replace with real API later)
+  const healthData = {
+    sleep: 5,
+    steps: 2300,
+    hrv: undefined,
   };
 
-  const compositeResult = calculateCompositeStressScore(compositeInput);
-  const currentState = compositeResult.polyvagalState;
-
-  // Detect Kairos interventions when data changes
-  useEffect(() => {
-    // Only detect on Stage 2 or later (need stress data)
-    if (currentStage === "emotions") return;
-
-    const historicalContext = loadHistoricalContext();
-
-    const kairosContext: KairosContext = {
-      stressLevel,
-      selectedEmotions,
-      somaticSignals,
-      liraAnswers,
-      polyvagalState: currentState,
-      ...historicalContext,
-    };
-
-    const interventions = detectKairosPatterns(kairosContext);
-
-    // Show highest-confidence intervention that hasn't been dismissed
-    const interventionToShow = interventions.find(
-      (intervention) => !dismissedInterventions.has(intervention.pattern)
-    );
-
-    if (interventionToShow) {
-      setActiveIntervention(interventionToShow);
-    }
-  }, [currentStage, stressLevel, selectedEmotions, somaticSignals, liraAnswers, currentState, dismissedInterventions]);
-
-  // Background color based on stress state
-  const getBackgroundColor = (): string => {
-    switch (currentState) {
-      case "ventral":
-        return "bg-green-50";
-      case "sympathetic":
-        return "bg-orange-50";
-      case "dorsal":
-        return "bg-blue-50";
-    }
+  // Phase handlers
+  const handleWelcomeContinue = () => {
+    setCurrentFase("landscape"); // Skip quadrants, go directly to landscape
   };
 
-  // Navigation handlers
-  const handleNext = (nextStage: FlowStage) => {
-    setCurrentStage(nextStage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleQuadrantSelect = (quadrant: 1 | 2 | 3 | 4) => {
+    setSelectedQuadrant(quadrant);
+    setCurrentFase("landscape");
   };
 
-  const handleBack = (prevStage: FlowStage) => {
-    setCurrentStage(prevStage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleEmotionSelect = (emotion: EmotionWord) => {
+    setSelectedEmotion(emotion);
+    setShowDefinition(true);
+  };
+
+  const handleDefinitionContinue = () => {
+    setShowDefinition(false);
+    setCurrentFase("pressure-signals");
+  };
+
+  const handlePressureSignalsContinue = (data: {
+    pressure: number;
+    signals: string[];
+  }) => {
+    setPressureData(data);
+    setCurrentFase("lira-chat");
+  };
+
+  const handleLiraComplete = (answers: LiraAnswer[]) => {
+    setLiraAnswers(answers);
+    setCurrentFase("results");
   };
 
   const handleRestart = () => {
-    // Update historical context before restarting
-    updateHistoricalContext(currentState, stressLevel);
-
-    setCurrentStage("emotions");
-    setSelectedEmotions([]);
-    setStressLevel(5);
-    setSomaticSignals(defaultSomaticSignals);
+    setCurrentFase("welcome");
+    setSelectedQuadrant(null);
+    setSelectedEmotion(null);
+    setShowDefinition(false);
+    setPressureData(null);
     setLiraAnswers([]);
-    setActiveIntervention(null);
-    setDismissedInterventions(new Set());
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Kairos intervention handlers
-  const handleInterventionAccept = () => {
-    if (!activeIntervention) return;
+  const handleGoHome = () => {
+    window.location.href = "/";
+  };
 
-    // Handle different action types
-    switch (activeIntervention.suggestion.actionType) {
-      case "breathing":
-        // Navigate to breathing exercise (future implementation)
-        // For now, just dismiss and continue
-        setActiveIntervention(null);
-        break;
-      case "grounding":
-        // Navigate to grounding exercise (future implementation)
-        setActiveIntervention(null);
-        break;
-      case "celebration":
-        // Show celebration message (future implementation)
-        setActiveIntervention(null);
-        break;
-      case "continue":
-        // Just continue
-        setActiveIntervention(null);
-        break;
+  // Render current phase
+  const renderCurrentFase = () => {
+    switch (currentFase) {
+      case "welcome":
+        return <Fase1Welcome onContinue={handleWelcomeContinue} />;
+
+      case "quadrants":
+        return <Fase2Quadrants onQuadrantSelect={handleQuadrantSelect} />;
+
+      case "landscape":
+        return (
+          <Fase3EmotionLandscape
+            quadrant={selectedQuadrant}
+            onEmotionSelect={handleEmotionSelect}
+          />
+        );
+
+      case "pressure-signals":
+        return (
+          <Fase4aPressureSignals
+            onContinue={handlePressureSignalsContinue}
+            healthData={healthData}
+          />
+        );
+
+      case "lira-chat":
+        if (!selectedEmotion || !pressureData) return null;
+
+        // Determine stress state from pressure
+        const getStressState = () => {
+          if (pressureData.pressure <= 3) return "ventral";
+          if (pressureData.pressure <= 7) return "sympathetic";
+          return "dorsal";
+        };
+
+        return (
+          <div className="min-h-screen">
+            <Stage3LiraChat
+              stressState={getStressState()}
+              liraAnswers={liraAnswers}
+              onAnswersChange={setLiraAnswers}
+              onBack={() => setCurrentFase("pressure-signals")}
+              onNext={() => setCurrentFase("results")}
+              polyvagalState={getStressState()}
+              stressLevel={pressureData.pressure}
+            />
+          </div>
+        );
+
+      case "results":
+        if (!selectedEmotion || !pressureData) return null;
+
+        return (
+          <Fase6Results
+            selectedEmotion={selectedEmotion}
+            pressureLevel={pressureData.pressure}
+            selectedSignals={pressureData.signals}
+            onRestart={handleRestart}
+            onGoHome={handleGoHome}
+          />
+        );
+
+      default:
+        return null;
     }
   };
 
-  const handleInterventionDismiss = () => {
-    if (!activeIntervention) return;
-
-    // Mark this intervention as dismissed for this session
-    setDismissedInterventions((prev) => new Set(prev).add(activeIntervention.pattern));
-    setActiveIntervention(null);
-  };
-
   return (
-    <Layout>
-      <div
-        className={`min-h-screen transition-all duration-700 ease-in-out ${getBackgroundColor()} -m-4 md:-m-6 lg:-m-8 p-4 md:p-6 lg:p-8`}
-        style={{
-          transform: `scale(${currentState === "dorsal" ? 0.98 : 1})`,
-        }}
-      >
-        {/* Page header (only show on first stage) */}
-        {currentStage === "emotions" && (
-          <div className="w-full mb-8 text-left">
-            {/* Breadcrumb */}
-            <div className="mb-4 text-sm text-[var(--color-text-secondary)]">
-              <span>NAV-Losen</span>
-              <span className="mx-2">/</span>
-              <span className="text-[var(--color-text-primary)] font-medium">Mestring</span>
-            </div>
+    <div className="relative">
+      {/* Back to Dashboard Button */}
+      {currentFase !== "welcome" && (
+        <button
+          onClick={() => window.location.href = "/"}
+          className="fixed top-6 left-6 z-40 flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-700 rounded-full shadow-md hover:bg-white hover:shadow-lg transition-all"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm font-medium">Tilbake</span>
+        </button>
+      )}
 
-            <div className="flex items-center gap-3 mb-2">
-              <Heart className="h-8 w-8 text-red-500" />
-              <h1 className="text-3xl font-bold text-[var(--color-text-primary)] text-left">
-                Mestring og Indre Ro
-              </h1>
-            </div>
-            <p className="text-lg text-[var(--color-text-secondary)] text-left">
-              Et trygt rom for å sjekke inn med deg selv og finne verktøy for
-              regulering.
-            </p>
-          </div>
-        )}
+      {/* Floating Emotion Badge - shows after emotion is selected */}
+      {selectedEmotion && currentFase !== "landscape" && !showDefinition && (
+        <EmotionBadge emotion={selectedEmotion} />
+      )}
 
-        {/* Main content */}
-        <div className="w-full">
-          {currentStage === "emotions" && (
-            <Stage1Emotions
-              selectedEmotions={selectedEmotions}
-              onChange={setSelectedEmotions}
-              onNext={() => handleNext("signals")}
-              polyvagalState={currentState}
-            />
-          )}
+      {renderCurrentFase()}
 
-          {currentStage === "signals" && (
-            <Stage2Signals
-              stressLevel={stressLevel}
-              onStressChange={setStressLevel}
-              somaticSignals={somaticSignals}
-              onSignalsChange={setSomaticSignals}
-              onBack={() => handleBack("emotions")}
-              onNext={() => handleNext("chat")}
-              polyvagalState={currentState}
-            />
-          )}
-
-          {currentStage === "chat" && (
-            <Stage3LiraChat
-              stressState={currentState}
-              liraAnswers={liraAnswers}
-              onAnswersChange={setLiraAnswers}
-              onBack={() => handleBack("signals")}
-              onNext={() => handleNext("results")}
-              polyvagalState={currentState}
-            />
-          )}
-
-          {currentStage === "results" && (
-            <Stage4Results
-              compositeResult={compositeResult}
-              selectedEmotions={selectedEmotions}
-              stressLevel={stressLevel}
-              somaticSignals={somaticSignals}
-              onBack={() => handleBack("chat")}
-              onRestart={handleRestart}
-              polyvagalState={currentState}
-            />
-          )}
-        </div>
-
-        {/* Kairos Intervention Modal - Port 1 Compliant (always dismissible) */}
-        <KairosInterventionModal
-          intervention={activeIntervention}
-          onAccept={handleInterventionAccept}
-          onDismiss={handleInterventionDismiss}
+      {/* Definition Modal Overlay */}
+      {showDefinition && selectedEmotion && (
+        <Fase4Definition
+          emotion={selectedEmotion}
+          onContinue={handleDefinitionContinue}
         />
-      </div>
-    </Layout>
+      )}
+    </div>
   );
 }
