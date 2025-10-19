@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Layout from "@/components/layout/Layout";
+import { ArrowLeft } from "lucide-react";
 import Fase1Welcome from "@/components/mestring/hwf/Fase1Welcome";
 import Fase2Quadrants from "@/components/mestring/hwf/Fase2Quadrants";
 import Fase3EmotionLandscape from "@/components/mestring/hwf/Fase3EmotionLandscape";
@@ -167,18 +167,27 @@ export default function MestringHWFPage() {
   };
 
   return (
-    <Layout>
-      <div className="relative">
-        {renderCurrentFase()}
+    <div className="relative">
+      {/* Back to Dashboard Button */}
+      {currentFase !== "welcome" && (
+        <button
+          onClick={() => window.location.href = "/"}
+          className="fixed top-6 left-6 z-40 flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-700 rounded-full shadow-md hover:bg-white hover:shadow-lg transition-all"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm font-medium">Tilbake</span>
+        </button>
+      )}
 
-        {/* Definition Modal Overlay */}
-        {showDefinition && selectedEmotion && (
-          <Fase4Definition
-            emotion={selectedEmotion}
-            onContinue={handleDefinitionContinue}
-          />
-        )}
-      </div>
-    </Layout>
+      {renderCurrentFase()}
+
+      {/* Definition Modal Overlay */}
+      {showDefinition && selectedEmotion && (
+        <Fase4Definition
+          emotion={selectedEmotion}
+          onContinue={handleDefinitionContinue}
+        />
+      )}
+    </div>
   );
 }
