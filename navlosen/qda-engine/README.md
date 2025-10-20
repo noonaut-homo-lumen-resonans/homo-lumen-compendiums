@@ -37,8 +37,11 @@ qda-engine/
 │   └── python/
 │       └── neurobiological_qda.py              # Python reference (future)
 └── examples/
-    ├── nextjs-api-route.ts                     # Example for Web Console
-    └── react-native-integration.tsx            # Example for Mobile App
+    ├── nextjs-api-route.ts                     # ✅ Next.js API route
+    ├── react-native-integration.tsx            # ✅ React Native integration
+    ├── qda-tests.test.ts                       # ✅ Unit tests (Jest)
+    ├── LayerVisualization.tsx                  # ✅ Dashboard component
+    └── supabase-migration.sql                  # ✅ Database schema
 ```
 
 ---
@@ -292,6 +295,84 @@ QDA v2.0 is designed for progressive enhancement:
 1. Check Vokteren's `danger_keywords` list
 2. Ensure `escalation_needed` flag is respected
 3. Test with known critical phrases: "selvmord", "ta livet mitt"
+
+---
+
+## 📦 Ready-to-Use Examples
+
+All examples are in [`examples/`](examples/) - copy-paste ready for Manus:
+
+### 1. Next.js API Route
+**File:** [nextjs-api-route.ts](examples/nextjs-api-route.ts)
+```typescript
+// Copy to: web-console/app/api/qda/respond/route.ts
+export async function POST(req: NextRequest) {
+  const qda = new NeurobiologicalQDA('Lira');
+  const response = await qda.respond(message, context, biofelt);
+  return NextResponse.json({ response: response.final_response, ... });
+}
+```
+**Features:**
+- Full error handling
+- Supabase logging integration
+- Health check endpoint (GET)
+- Ready for production
+
+### 2. React Native Integration
+**File:** [react-native-integration.tsx](examples/react-native-integration.tsx)
+```typescript
+// Copy to: mobile-app/src/screens/LiraChatScreen.tsx
+const generateLiraResponse = async (userMessage: string) => {
+  const response = await fetch(`${WEB_CONSOLE_URL}/api/qda/respond`, { ... });
+  return response.data.response; // Falls back to mock on error
+}
+```
+**Features:**
+- Polyvagal state calculation
+- Fallback to mock responses
+- Debug info in __DEV__ mode
+- Session history tracking
+
+### 3. Unit Tests
+**File:** [qda-tests.test.ts](examples/qda-tests.test.ts)
+```typescript
+// Copy to: web-console/lib/qda/__tests__/neurobiological-qda.test.ts
+// Run with: npm test
+```
+**Coverage:**
+- 6 test suites (one per layer + integration)
+- 20+ tests (danger detection, polyvagal states, cost validation)
+- Critical query escalation tests
+- Strategen conditional activation tests
+
+### 4. Dashboard Component
+**File:** [LayerVisualization.tsx](examples/LayerVisualization.tsx)
+```tsx
+// Copy to: web-console/components/qda/LayerVisualization.tsx
+<LayerVisualization
+  response={qdaResponse}
+  polyvagalState="sympathetic"
+  showDebugInfo={true}
+/>
+```
+**Features:**
+- Polyvagal-adaptive colors
+- Expandable layer details
+- Cost/time tracking
+- Responsive design
+
+### 5. Database Schema
+**File:** [supabase-migration.sql](examples/supabase-migration.sql)
+```sql
+-- Run in Supabase SQL Editor
+CREATE TABLE qda_usage (...);
+CREATE VIEW qda_daily_cost_per_user AS ...;
+```
+**Features:**
+- RLS policies (user privacy)
+- Analytics views (cost tracking)
+- Admin functions (system stats)
+- Indexes for performance
 
 ---
 
