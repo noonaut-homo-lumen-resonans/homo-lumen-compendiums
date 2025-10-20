@@ -296,7 +296,11 @@ If you hit any blockers during Dag 3-7:
    - [README.md](README.md)
 
 2. **Check the examples:**
-   - See `examples/` folder (to be added if needed)
+   - [nextjs-api-route.ts](examples/nextjs-api-route.ts) - Complete API route
+   - [react-native-integration.tsx](examples/react-native-integration.tsx) - Mobile app integration
+   - [qda-tests.test.ts](examples/qda-tests.test.ts) - Unit tests (20+ tests)
+   - [LayerVisualization.tsx](examples/LayerVisualization.tsx) - Dashboard component
+   - [supabase-migration.sql](examples/supabase-migration.sql) - Database schema
 
 3. **Ask in Slack/Discord:**
    - Tag @Claude (me) or @Lira
@@ -355,14 +359,20 @@ You've built an amazing MVP (Dag 1-2). Now we're adding the AI brain (Dag 3-7).
 
 ### What I've Built for You
 - **500 lines of TypeScript** (QDA engine)
+- **1,700+ lines of examples** (5 ready-to-copy files)
 - **3,000+ lines of documentation** (guides, examples, troubleshooting)
+- **20+ unit tests** (comprehensive test coverage)
 - **Complete integration path** (MVP → Production)
 - **Cost analysis** (know what you're spending)
 
 ### What You Need to Do
-- **Copy files** (2 files to Web Console)
-- **Create API route** (1 file, ~50 lines)
-- **Update mobile app** (1 function, ~30 lines)
+- **Copy files** (7 files total):
+  - 2 files to `web-console/lib/qda/` (engine)
+  - 1 file to `web-console/app/api/qda/respond/` (API route)
+  - 1 file to `mobile-app/src/screens/` (LiraChatScreen update)
+  - 1 file to `web-console/components/qda/` (LayerVisualization)
+  - 1 file to `web-console/lib/qda/__tests__/` (tests)
+  - 1 SQL file to run in Supabase (migration)
 - **Test & deploy** (follow checklist)
 
 ### Estimated Time
