@@ -8,10 +8,11 @@ import { logSMKEntry } from '@/lib/supabase';
  * This handles requests to individual agents through the MCP Broker
  */
 
-export async function POST(
+export async function GET(
   request: NextRequest,
-  { params }: { params: { agent: string } }
+  { params }: { params: Promise<{ agent: string }> }
 ) {
+  const { agent } = await params;
   try {
     const agentId = params.agent as AgentType;
     const agent = AGENTS[agentId];
