@@ -146,6 +146,27 @@ const categories: (GuideCategory | "Alle")[] = [
 
 const recommendedIds = new Set(["dagpenger", "sykepenger", "sosialhjelp"]);
 
+const faqItems = [
+  {
+    id: "faq-1",
+    question: "Hvordan vet jeg hvilke dokumenter jeg trenger?",
+    answer:
+      "Hver veiledning starter med en sjekkliste for dokumenter. Vi oppdaterer listene fortløpende når NAV endrer krav. Mangler du noe, viser vi hvordan du bestiller det.",
+  },
+  {
+    id: "faq-2",
+    question: "Kan jeg skrive ut en PDF av veiledningen?",
+    answer:
+      "Ja. Nederst i hver veiledning finner du «Last ned som PDF». Den inkluderer alle steg, sjekklister og viktige lenker.",
+  },
+  {
+    id: "faq-3",
+    question: "Hva gjør jeg hvis jeg trenger hjelp underveis?",
+    answer:
+      "Klikk «Chat med Lira» for å få svar med utgangspunkt i guiden du står i. Ved behov kan du booke time med NAV-veileder direkte fra veiledningen.",
+  },
+];
+
 export default function VeiledningerPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
@@ -258,11 +279,7 @@ export default function VeiledningerPage() {
                     type="button"
                     role="tab"
                     aria-selected={isActive}
-                    onClick={() =>
-                      setSelectedCategory((prev) =>
-                        prev === category ? "Alle" : category
-                      )
-                    }
+                    onClick={() => setSelectedCategory(category)}
                     className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                       isActive
                         ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-white"
@@ -392,35 +409,19 @@ export default function VeiledningerPage() {
             <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
               Vanlige spørsmål
             </h2>
-            <details className="group rounded-2xl border border-gray-200 bg-white p-4">
-              <summary className="cursor-pointer text-base font-semibold text-[var(--color-text-primary)] group-open:text-[var(--color-primary)]">
-                Hvordan vet jeg hvilke dokumenter jeg trenger?
-              </summary>
-              <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-                Hver veiledning starter med en sjekkliste for dokumenter. Vi
-                oppdaterer listene fortløpende når NAV endrer krav. Mangler du
-                noe, viser vi hvordan du bestiller det.
-              </p>
-            </details>
-            <details className="group rounded-2xl border border-gray-200 bg-white p-4">
-              <summary className="cursor-pointer text-base font-semibold text-[var(--color-text-primary)] group-open:text-[var(--color-primary)]">
-                Kan jeg skrive ut en PDF av veiledningen?
-              </summary>
-              <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-                Ja. Nederst i hver veiledning finner du «Last ned som PDF». Den
-                inkluderer alle steg, sjekklister og viktige lenker.
-              </p>
-            </details>
-            <details className="group rounded-2xl border border-gray-200 bg-white p-4">
-              <summary className="cursor-pointer text-base font-semibold text-[var(--color-text-primary)] group-open:text-[var(--color-primary)]">
-                Hva gjør jeg hvis jeg trenger hjelp underveis?
-              </summary>
-              <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-                Klikk «Chat med Lira» for å få svar med utgangspunkt i guiden du
-                står i. Ved behov kan du booke time med NAV-veileder direkte
-                fra veiledningen.
-              </p>
-            </details>
+            {faqItems.map((faq) => (
+              <details
+                key={faq.id}
+                className="group rounded-2xl border border-gray-200 bg-white p-4"
+              >
+                <summary className="cursor-pointer text-base font-semibold text-[var(--color-text-primary)] group-open:text-[var(--color-primary)]">
+                  {faq.question}
+                </summary>
+                <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
           </section>
 
           {/* Support CTA */}
