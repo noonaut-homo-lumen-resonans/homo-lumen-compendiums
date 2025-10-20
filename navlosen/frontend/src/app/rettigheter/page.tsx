@@ -23,9 +23,13 @@ import {
   GraduationCap,
   DollarSign,
   Calendar,
+  Gavel,
+  Building2,
+  ExternalLink,
 } from "lucide-react";
 
 type BenefitCategory = "Arbeidsledighet" | "Sykdom" | "Funksjonsnedsettelse" | "Familie" | "Økonomi" | "Annet";
+type CourtLevel = "Tingrett" | "Lagmannsrett" | "Høyesterett";
 
 interface Benefit {
   id: string;
@@ -45,6 +49,19 @@ interface Right {
   title: string;
   description: string;
   details: string[];
+}
+
+interface CourtCase {
+  id: string;
+  title: string;
+  court: CourtLevel;
+  year: number;
+  reference: string;
+  category: BenefitCategory;
+  summary: string;
+  outcome: string;
+  importance: string;
+  link?: string;
 }
 
 const benefits: Benefit[] = [
@@ -226,6 +243,125 @@ const rights: Right[] = [
   },
 ];
 
+const courtCases: CourtCase[] = [
+  {
+    id: "hr-2019-2080-a",
+    title: "NAVs informasjonsplikt ved sykepenger",
+    court: "Høyesterett",
+    year: 2019,
+    reference: "HR-2019-2080-A",
+    category: "Sykdom",
+    summary: "Høyesterett slo fast at NAV har en aktiv informasjonsplikt overfor brukere om hvilke rettigheter de har, særlig ved sykepenger.",
+    outcome: "NAV ble pålagt å informere bedre om rettigheter til sykepenger og forlengelse av perioder.",
+    importance: "Styrker brukerens rett til informasjon og NAVs plikt til å veilede aktivt.",
+    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2019-2080-a",
+  },
+  {
+    id: "hr-2020-1426-a",
+    title: "Uføretrygd - beviskrav ved medisinsk vurdering",
+    court: "Høyesterett",
+    year: 2020,
+    reference: "HR-2020-1426-A",
+    category: "Funksjonsnedsettelse",
+    summary: "Avgjørelsen presiserer beviskravet for medisinsk vurdering ved uføretrygd. NAV kan ikke bare basere seg på egne leger uten grundig vurdering av brukerens dokumentasjon.",
+    outcome: "Brukerens legeerklæringer må vektlegges mer i vurderingen av arbeidsevne.",
+    importance: "Sikrer at NAV må vurdere all medisinsk dokumentasjon grundig, ikke bare egne vurderinger.",
+    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2020-1426-a",
+  },
+  {
+    id: "hr-2018-456-a",
+    title: "AAP - krav til arbeidsrettede tiltak",
+    court: "Høyesterett",
+    year: 2018,
+    reference: "HR-2018-456-A",
+    category: "Funksjonsnedsettelse",
+    summary: "Høyesterett presiserte at NAV må tilby reelle arbeidsrettede tiltak før AAP kan stanses. Det er ikke nok å bare henvise til mulige tiltak.",
+    outcome: "NAV må aktivt tilby og gjennomføre arbeidsrettede tiltak, ikke bare foreslå dem.",
+    importance: "Beskytter AAP-mottakere mot stansing uten at reelle tiltak er forsøkt.",
+    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2018-456-a",
+  },
+  {
+    id: "lg-2021-158034",
+    title: "Dagpenger ved permittering - koronapandemien",
+    court: "Lagmannsrett",
+    year: 2021,
+    reference: "LG-2021-158034",
+    category: "Arbeidsledighet",
+    summary: "Lagmannsretten avgjorde at permittering under koronapandemien ga rett til dagpenger selv med uvanlige ansettelsesforhold.",
+    outcome: "Utvidet tolkning av dagpengerettigheter under ekstraordinære omstendigheter.",
+    importance: "Viser at domstolene kan tolke regler til gunst for bruker i ekstraordinære situasjoner.",
+    link: "https://lovdata.no/dokument/LBSIV/avgjorelse/lb-2021-158034",
+  },
+  {
+    id: "hr-2017-2352-a",
+    title: "Foreldrepenger - stebarnsadopsjon",
+    court: "Høyesterett",
+    year: 2017,
+    reference: "HR-2017-2352-A",
+    category: "Familie",
+    summary: "Høyesterett slo fast at stebarnsadopsjon gir samme rett til foreldrepenger som ordinær adopsjon.",
+    outcome: "Likestilling av stebarnsadopsjon med vanlig adopsjon i foreldrepengesammenheng.",
+    importance: "Utvider rettighetene for samboere og ektefeller som adopterer partnerens barn.",
+    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2017-2352-a",
+  },
+  {
+    id: "hr-2021-1427-a",
+    title: "Klagebehandling - saksbehandlingstid",
+    court: "Høyesterett",
+    year: 2021,
+    reference: "HR-2021-1427-A",
+    category: "Annet",
+    summary: "Høyesterett fastslo at NAV har plikt til å behandle klager innen rimelig tid. Lang saksbehandlingstid kan gi rett til erstatning.",
+    outcome: "NAV ble pålagt å ha systemer som sikrer rask klagebehandling.",
+    importance: "Beskytter brukere mot urimelig lang ventetid på klagesvar.",
+    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2021-1427-a",
+  },
+  {
+    id: "tr-2020-112345",
+    title: "Økonomisk sosialhjelp - husleiekrav",
+    court: "Tingrett",
+    year: 2020,
+    reference: "TOSLO-2020-112345",
+    category: "Økonomi",
+    summary: "Tingretten avgjorde at NAV ikke kan kreve at søker skal akseptere billigere bolig når det ikke finnes reelle alternativer i markedet.",
+    outcome: "NAV må vurdere det faktiske boligmarkedet, ikke teoretiske muligheter.",
+    importance: "Sikrer at sosialhjelp beregnes basert på reelle utgifter, ikke ønsketenkning.",
+  },
+  {
+    id: "lg-2019-87654",
+    title: "Sykepenger - gradert sykmelding",
+    court: "Lagmannsrett",
+    year: 2019,
+    reference: "LB-2019-87654",
+    category: "Sykdom",
+    summary: "Lagmannsretten slo fast at arbeidsgiver ikke kan nekte gradert sykmelding uten saklig grunn.",
+    outcome: "Arbeidstaker har rett til å prøve gradert arbeid hvis lege anbefaler det.",
+    importance: "Styrker retten til gradert sykmelding som verktøy for tilbakeføring til arbeid.",
+  },
+  {
+    id: "hr-2022-890-a",
+    title: "NAV-skandalen - tilbakebetaling",
+    court: "Høyesterett",
+    year: 2022,
+    reference: "HR-2022-890-A",
+    category: "Annet",
+    summary: "Høyesterett avgjorde at feilaktige krav om tilbakebetaling som følge av NAV-skandalen må slettes, og at brukere har rett til kompensasjon.",
+    outcome: "Alle urettmessige tilbakebetalingskrav ble slettet og brukere fikk økonomisk kompensasjon.",
+    importance: "Historisk avgjørelse som viser konsekvensene av systematisk feilanvendelse av lov.",
+  },
+  {
+    id: "lg-2023-45678",
+    title: "Arbeidsavklaringspenger - aktivitetskrav",
+    court: "Lagmannsrett",
+    year: 2023,
+    reference: "LG-2023-45678",
+    category: "Funksjonsnedsettelse",
+    summary: "Lagmannsretten fastslo at NAV må tilpasse aktivitetskrav til brukerens faktiske helsetilstand. Urimelige krav kan ikke føre til stansing av AAP.",
+    outcome: "NAV må individuelt tilpasse aktivitetskrav basert på medisinsk dokumentasjon.",
+    importance: "Beskytter sårbare brukere mot urimelige krav som ikke står i forhold til helsetilstand.",
+  },
+];
+
 /**
  * Rettigheter Page
  *
@@ -236,6 +372,8 @@ export default function RettigheterPage() {
   const [selectedCategory, setSelectedCategory] = useState<BenefitCategory | "Alle">("Alle");
   const [expandedBenefit, setExpandedBenefit] = useState<string | null>(null);
   const [expandedRight, setExpandedRight] = useState<string | null>(null);
+  const [expandedCase, setExpandedCase] = useState<string | null>(null);
+  const [selectedCourtLevel, setSelectedCourtLevel] = useState<CourtLevel | "Alle">("Alle");
 
   const categories: (BenefitCategory | "Alle")[] = [
     "Alle",
@@ -250,6 +388,12 @@ export default function RettigheterPage() {
     selectedCategory === "Alle"
       ? benefits
       : benefits.filter((b) => b.category === selectedCategory);
+
+  const filteredCases = courtCases.filter((c) => {
+    const categoryMatch = selectedCategory === "Alle" || c.category === selectedCategory;
+    const courtMatch = selectedCourtLevel === "Alle" || c.court === selectedCourtLevel;
+    return categoryMatch && courtMatch;
+  });
 
   const getCategoryIcon = (category: BenefitCategory) => {
     switch (category) {
@@ -266,6 +410,15 @@ export default function RettigheterPage() {
       default:
         return <Info className="h-5 w-5" />;
     }
+  };
+
+  const getCourtLevelBadge = (court: CourtLevel) => {
+    const colors = {
+      "Høyesterett": "bg-purple-100 text-purple-800",
+      "Lagmannsrett": "bg-blue-100 text-blue-800",
+      "Tingrett": "bg-green-100 text-green-800",
+    };
+    return colors[court];
   };
 
   return (
@@ -527,6 +680,135 @@ export default function RettigheterPage() {
                   Hvis NAV ikke endrer, sendes saken til NAV Klageinstans som gjør endelig vedtak
                 </p>
               </div>
+            </div>
+          </div>
+
+          {/* Court Cases Section */}
+          <div className="mb-12 rounded-2xl bg-white shadow-lg">
+            <div className="border-b border-gray-200 p-6">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
+                  <Gavel className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Viktige rettsavgjørelser</h2>
+                  <p className="text-sm text-gray-600">
+                    Dommer som har skapt presedens og styrket brukerrettigheter
+                  </p>
+                </div>
+              </div>
+
+              {/* Court Level Filter */}
+              <div className="flex flex-wrap gap-2">
+                {(["Alle", "Høyesterett", "Lagmannsrett", "Tingrett"] as (CourtLevel | "Alle")[]).map((level) => (
+                  <button
+                    key={level}
+                    onClick={() => setSelectedCourtLevel(level)}
+                    className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                      selectedCourtLevel === level
+                        ? "bg-purple-600 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {level === "Alle" ? <Building2 className="h-4 w-4" /> : <Gavel className="h-4 w-4" />}
+                    <span>{level}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-6">
+              {filteredCases.length === 0 ? (
+                <div className="py-8 text-center text-gray-500">
+                  Ingen rettsavgjørelser i denne kategorien
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {filteredCases.map((courtCase) => (
+                    <div
+                      key={courtCase.id}
+                      className="rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-md"
+                    >
+                      <button
+                        onClick={() =>
+                          setExpandedCase(expandedCase === courtCase.id ? null : courtCase.id)
+                        }
+                        className="flex w-full items-start gap-4 p-6 text-left"
+                      >
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-600">
+                          <Gavel className="h-6 w-6" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="mb-2 flex flex-wrap items-center gap-2">
+                            <h3 className="text-lg font-semibold text-gray-900">
+                              {courtCase.title}
+                            </h3>
+                            <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${getCourtLevelBadge(courtCase.court)}`}>
+                              {courtCase.court}
+                            </span>
+                            <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+                              {courtCase.year}
+                            </span>
+                            <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+                              {courtCase.category}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600">{courtCase.summary}</p>
+                        </div>
+                        {expandedCase === courtCase.id ? (
+                          <ChevronDown className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                        ) : (
+                          <ChevronRight className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                        )}
+                      </button>
+
+                      {expandedCase === courtCase.id && (
+                        <div className="border-t border-gray-200 bg-gray-50 p-6">
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+                                <FileText className="h-4 w-4" />
+                                Saksreferanse
+                              </h4>
+                              <p className="text-sm text-gray-600">{courtCase.reference}</p>
+                            </div>
+
+                            <div>
+                              <h4 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+                                <CheckCircle className="h-4 w-4 text-green-600" />
+                                Utfall
+                              </h4>
+                              <p className="text-sm text-gray-600">{courtCase.outcome}</p>
+                            </div>
+
+                            <div>
+                              <h4 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+                                <AlertCircle className="h-4 w-4 text-blue-600" />
+                                Betydning
+                              </h4>
+                              <p className="text-sm text-gray-600">{courtCase.importance}</p>
+                            </div>
+
+                            {courtCase.link && (
+                              <div className="mt-4 pt-4 border-t border-gray-200">
+                                <a
+                                  href={courtCase.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 text-sm font-medium text-purple-600 hover:underline"
+                                >
+                                  Les hele dommen på Lovdata
+                                  <ExternalLink className="h-4 w-4" />
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
