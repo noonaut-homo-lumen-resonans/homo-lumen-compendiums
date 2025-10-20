@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Layout from "@/components/layout/Layout";
 import Button from "@/components/ui/Button";
 import DocumentHelper from "@/components/veiledninger/DocumentHelper";
+import jsQR from "jsqr";
 import {
   FileText,
   Search,
@@ -22,6 +23,8 @@ import {
   X,
   Edit2,
   Check,
+  Camera,
+  QrCode,
 } from "lucide-react";
 
 type DocumentCategory = "Alle" | "Personalia" | "Arbeid" | "Økonomi" | "Helse" | "Diverse";
@@ -59,6 +62,15 @@ export default function DokumenterPage() {
   const [editName, setEditName] = useState("");
   const [editCategory, setEditCategory] = useState<DocumentCategory>("Diverse");
   const [editNotes, setEditNotes] = useState("");
+
+  // Camera and QR states
+  const [showCamera, setShowCamera] = useState(false);
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [qrResult, setQrResult] = useState<string | null>(null);
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Load documents from localStorage on mount
   useEffect(() => {
@@ -186,6 +198,122 @@ export default function DokumenterPage() {
     setEditingDocument(null);
   };
 
+  // Start camera for taking photo
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" }
+      });
+      setCameraStream(stream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setShowCamera(true);
+      setShowQRScanner(false);
+    } catch (error) {
+      console.error("Failed to start camera:", error);
+      alert("Kunne ikke åpne kamera. Sjekk tillatelser.");
+    }
+  };
+
+  // Capture photo from camera
+  const capturePhoto = () => {
+    if (!videoRef.current || !canvasRef.current) return;
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.drawImage(video, 0, 0);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+
+      const file = new File(
+        [blob],
+        `photo-${Date.now()}.jpg`,
+        { type: "image/jpeg" }
+      );
+
+      handleDocumentAdded(file, "camera");
+      stopCamera();
+    }, "image/jpeg", 0.9);
+  };
+
+  // Start QR scanner
+  const startQRScanner = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" }
+      });
+      setCameraStream(stream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setShowQRScanner(true);
+      setShowCamera(false);
+      setQrResult(null);
+
+      // Start scanning loop
+      scanQRCode();
+    } catch (error) {
+      console.error("Failed to start QR scanner:", error);
+      alert("Kunne ikke åpne kamera. Sjekk tillatelser.");
+    }
+  };
+
+  // Scan for QR codes
+  const scanQRCode = () => {
+    if (!videoRef.current || !canvasRef.current || !showQRScanner) return;
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+      if (code) {
+        setQrResult(code.data);
+        stopCamera();
+        return;
+      }
+    }
+
+    // Continue scanning
+    requestAnimationFrame(scanQRCode);
+  };
+
+  // Stop camera
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      setCameraStream(null);
+    }
+    setShowCamera(false);
+    setShowQRScanner(false);
+  };
+
+  // Cleanup camera on unmount
+  useEffect(() => {
+    return () => {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [cameraStream]);
+
   // Format file size
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
@@ -262,15 +390,33 @@ export default function DokumenterPage() {
                 />
               </div>
 
-              {/* Upload Button */}
-              <Button
-                variant="primary"
-                size="medium"
-                leftIcon={<Upload className="h-5 w-5" />}
-                onClick={() => setShowUploadSection(!showUploadSection)}
-              >
-                Last opp dokument
-              </Button>
+              {/* Action Buttons */}
+              <div className="flex gap-2">
+                <Button
+                  variant="primary"
+                  size="medium"
+                  leftIcon={<Upload className="h-5 w-5" />}
+                  onClick={() => setShowUploadSection(!showUploadSection)}
+                >
+                  Last opp
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="medium"
+                  leftIcon={<Camera className="h-5 w-5" />}
+                  onClick={startCamera}
+                >
+                  Ta bilde
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="medium"
+                  leftIcon={<QrCode className="h-5 w-5" />}
+                  onClick={startQRScanner}
+                >
+                  Skann QR
+                </Button>
+              </div>
             </div>
 
             {/* Category Filters */}
@@ -631,6 +777,144 @@ export default function DokumenterPage() {
                   </div>
                 </>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Camera Modal */}
+        {showCamera && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
+            <div className="w-full max-w-2xl space-y-4">
+              <div className="flex items-center justify-between text-white">
+                <h3 className="text-xl font-bold">Ta bilde</h3>
+                <button
+                  onClick={stopCamera}
+                  className="rounded-lg p-2 hover:bg-white/10"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              <div className="relative overflow-hidden rounded-xl bg-black">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  className="w-full"
+                />
+              </div>
+
+              <div className="flex justify-center gap-3">
+                <Button
+                  variant="primary"
+                  size="large"
+                  leftIcon={<Camera className="h-6 w-6" />}
+                  onClick={capturePhoto}
+                >
+                  Ta bilde
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="large"
+                  onClick={stopCamera}
+                >
+                  Avbryt
+                </Button>
+              </div>
+
+              <canvas ref={canvasRef} className="hidden" />
+            </div>
+          </div>
+        )}
+
+        {/* QR Scanner Modal */}
+        {showQRScanner && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
+            <div className="w-full max-w-2xl space-y-4">
+              <div className="flex items-center justify-between text-white">
+                <h3 className="text-xl font-bold">Skann QR-kode</h3>
+                <button
+                  onClick={stopCamera}
+                  className="rounded-lg p-2 hover:bg-white/10"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              <div className="relative overflow-hidden rounded-xl bg-black">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  className="w-full"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-48 w-48 border-4 border-green-500 rounded-lg"></div>
+                </div>
+              </div>
+
+              <div className="rounded-lg bg-white p-4 text-center">
+                <p className="text-sm text-gray-600">
+                  {qrResult ? `QR-kode skannet: ${qrResult}` : "Plasser QR-koden inne i rammen"}
+                </p>
+              </div>
+
+              <div className="flex justify-center">
+                <Button
+                  variant="secondary"
+                  size="large"
+                  onClick={stopCamera}
+                >
+                  Lukk
+                </Button>
+              </div>
+
+              <canvas ref={canvasRef} className="hidden" />
+            </div>
+          </div>
+        )}
+
+        {/* QR Result Modal */}
+        {qrResult && !showQRScanner && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-xl font-bold text-[var(--color-text-primary)]">
+                  QR-kode skannet
+                </h3>
+                <button
+                  onClick={() => setQrResult(null)}
+                  className="rounded-lg p-2 hover:bg-gray-100"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="mb-4 rounded-lg bg-gray-50 p-4">
+                <p className="break-all text-sm font-mono">{qrResult}</p>
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  variant="primary"
+                  size="medium"
+                  className="flex-1"
+                  onClick={() => {
+                    navigator.clipboard.writeText(qrResult);
+                    alert("Kopiert til utklippstavle!");
+                  }}
+                >
+                  Kopier
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="medium"
+                  className="flex-1"
+                  onClick={() => setQrResult(null)}
+                >
+                  Lukk
+                </Button>
+              </div>
             </div>
           </div>
         )}
