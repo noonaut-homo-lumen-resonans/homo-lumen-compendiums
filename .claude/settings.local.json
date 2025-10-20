@@ -32,7 +32,14 @@
       "Bash(node verify-all-emotions.js)",
       "Bash(node verify-personality-face.js)",
       "Bash(npx next lint --file src/app/veiledninger/page.tsx)",
-      "Bash(npx tsc --noEmit --skipLibCheck)"
+      "Bash(npx tsc --noEmit --skipLibCheck)",
+      "Bash(curl http://localhost:3009/jobb -s -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl http://localhost:3009/dokumenter -s -o /dev/null -w \"%{http_code}\")",
+      "Bash(git reset HEAD ../../.claude/settings.local.json ../qda-engine/docs/*.md)",
+      "Read(//c/Users/onigo/NAV LOSEN/**)",
+      "Bash(mv homo-lumen-compendiums \"temp-backup/homo-lumen-compendiums-backup-20251020\")",
+      "Bash(mv homo-lumen-compendiums-1 homo-lumen-compendiums)",
+      "Bash(cmd //c \"rename homo-lumen-compendiums-1 homo-lumen-compendiums\")"
     ],
     "deny": [],
     "ask": []
