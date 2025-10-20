@@ -450,7 +450,7 @@ export default function JobbPage() {
                 Bygg en sterk CV
               </h2>
               <p className="text-lg text-[var(--color-text-secondary)]">
-                Vår CV-builder hjelper deg med å lage en profesjonell CV som skiller seg ut. Med maler, tips og eksempler får du en CV som viser dine styrker.
+                Vår CV-builder hjelper deg med å lage en profesjonell CV som skiller seg ut. Med maler, tips og eksempler får du en CV som viser dine styrker. Eller chat med Lira for personlig veiledning.
               </p>
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
@@ -460,6 +460,10 @@ export default function JobbPage() {
                 <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
                   <CheckCircle2 className="h-5 w-5 text-green-600" />
                   Steg-for-steg veiledning og eksempler
+                </div>
+                <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  Lira gir personlige råd basert på din erfaring
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
                   <CheckCircle2 className="h-5 w-5 text-green-600" />
@@ -473,6 +477,14 @@ export default function JobbPage() {
                   leftIcon={<FileText className="h-5 w-5" />}
                 >
                   Start CV-builder
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="medium"
+                  leftIcon={<MessageCircle className="h-5 w-5" />}
+                  onClick={() => router.push("/chatbot")}
+                >
+                  Chat med Lira
                 </Button>
                 <Button variant="secondary" size="medium">
                   Se eksempler
