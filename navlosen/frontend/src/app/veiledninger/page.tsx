@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Layout from "@/components/layout/Layout";
 import Button from "@/components/ui/Button";
+import DocumentHelper from "@/components/veiledninger/DocumentHelper";
 import {
   BookOpen,
   ChevronRight,
@@ -12,6 +13,7 @@ import {
   Clock,
   Search,
   Sparkles,
+  FileCheck,
 } from "lucide-react";
 
 type GuideCategory =
@@ -172,6 +174,7 @@ export default function VeiledningerPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] =
     useState<(typeof categories)[number]>("Alle");
+  const [expandedGuideId, setExpandedGuideId] = useState<string | null>(null);
 
   const normalizedSearch = searchTerm.trim().toLowerCase();
 
@@ -304,7 +307,7 @@ export default function VeiledningerPage() {
               {recommendedGuides.map((guide) => (
                 <article
                   key={guide.id}
-                  className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md"
+                  className="flex flex-col rounded-2xl border border-blue-100 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md"
                 >
                   <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
                     {guide.category}
@@ -318,15 +321,47 @@ export default function VeiledningerPage() {
                   <div className="mt-4 text-xs text-[var(--color-text-tertiary)]">
                     {guide.updated} · {guide.estimatedTime}
                   </div>
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    className="mt-4 w-full justify-between"
-                    rightIcon={<ChevronRight className="h-4 w-4" />}
-                    onClick={() => handleOpenGuide(guide.id)}
-                  >
-                    Åpne veiledning
-                  </Button>
+
+                  {/* Document Helper Section - Expandable */}
+                  {expandedGuideId === guide.id && (
+                    <div className="mt-4 space-y-3 rounded-xl border-2 border-blue-200 bg-blue-50/50 p-4">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-[var(--color-text-primary)]">
+                        <FileCheck className="h-5 w-5 text-blue-600" />
+                        Forbered dokumentene dine
+                      </div>
+                      <DocumentHelper
+                        documentType={guide.title}
+                        onDocumentAdded={(file, type) => {
+                          console.log(`Dokument lagt til for ${guide.title}:`, file.name, type);
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  <div className="mt-4 space-y-2">
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      className="w-full justify-between"
+                      rightIcon={<ChevronRight className="h-4 w-4" />}
+                      onClick={() => handleOpenGuide(guide.id)}
+                    >
+                      Åpne veiledning
+                    </Button>
+                    <Button
+                      variant="text"
+                      size="small"
+                      className="w-full"
+                      leftIcon={<FileCheck className="h-4 w-4" />}
+                      onClick={() =>
+                        setExpandedGuideId((prev) =>
+                          prev === guide.id ? null : guide.id
+                        )
+                      }
+                    >
+                      {expandedGuideId === guide.id ? "Skjul dokumenter" : "Forbered dokumenter"}
+                    </Button>
+                  </div>
                 </article>
               ))}
             </div>
@@ -378,16 +413,48 @@ export default function VeiledningerPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="mt-4 flex flex-wrap items-center gap-3">
-                      <Button
-                        variant="primary"
-                        size="small"
-                        className="flex-1 justify-center"
-                        rightIcon={<ChevronRight className="h-4 w-4" />}
-                        onClick={() => handleOpenGuide(guide.id)}
-                      >
-                        Gå til veiledning
-                      </Button>
+
+                    {/* Document Helper Section - Expandable */}
+                    {expandedGuideId === guide.id && (
+                      <div className="mt-4 space-y-3 rounded-xl border-2 border-blue-200 bg-blue-50/50 p-4">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-[var(--color-text-primary)]">
+                          <FileCheck className="h-5 w-5 text-blue-600" />
+                          Forbered dokumentene dine
+                        </div>
+                        <DocumentHelper
+                          documentType={guide.title}
+                          onDocumentAdded={(file, type) => {
+                            console.log(`Dokument lagt til for ${guide.title}:`, file.name, type);
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="mt-4 space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Button
+                          variant="primary"
+                          size="small"
+                          className="flex-1 justify-center"
+                          rightIcon={<ChevronRight className="h-4 w-4" />}
+                          onClick={() => handleOpenGuide(guide.id)}
+                        >
+                          Gå til veiledning
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="small"
+                          leftIcon={<FileCheck className="h-4 w-4" />}
+                          onClick={() =>
+                            setExpandedGuideId((prev) =>
+                              prev === guide.id ? null : guide.id
+                            )
+                          }
+                        >
+                          {expandedGuideId === guide.id ? "Skjul" : "Dokumenter"}
+                        </Button>
+                      </div>
                       <button
                         type="button"
                         className="text-sm font-medium text-[var(--color-primary)] underline-offset-2 transition-colors hover:underline"
