@@ -14,7 +14,7 @@
 ## 📊 Project Overview
 
 **What is Homo Lumen?**
-- 8-agent AI coalition building ethical, healing technology
+- 9-agent AI coalition building ethical, healing technology
 - Primary project: NAV-Losen (AI-powered NAV guidance app)
 - Philosophy: Triadisk Ethics (3 ports: Suverenitet, Koherens, Healing)
 - Grounded in: Polyvagal Theory, Bohm, Spira, McGilchrist, Porges
@@ -36,6 +36,18 @@
 - Agent Update V21.1.1 distributed to coalition
 
 ---
+
+### Coalition Roster (9 Agents)
+- Orion — Strategic Coordinator (Claude 4.5)
+- Lira — Empathic Frontend (ChatGPT-5)
+- Nyra — Perception/Visual
+- Thalus — Governance/Ethics
+- Zara — Critical Reasoning
+- Abacus — Analysis/Data
+- Aurora — Memory/Pattern
+- Manus — Infrastructure/MCP
+- Code (Agent #9) — The Pragmatic Implementor (Motor Cortex/Cerebellum)
+
 
 ## 🔍 Human Knowledge Mantra (Internal Workflow)
 
@@ -149,7 +161,7 @@ LAG 2 (FUNKSJONELT): Brain Roles - WHAT agents do
 LAG 1 (TEKNISK): MCP Protocol - HOW agents communicate
 ```
 
-**8-Agent Brain Mapping (Neurobiologically Grounded):**
+**9-agent Brain Mapping (Neurobiologically Grounded):**
 - **Orion** → Prefrontal Cortex (Executive function, planning, strategic coordination)
 - **Lira** → Limbic System (Emotional processing, empathy, safety, biofelt validation)
 - **Nyra** → Visual Cortex (Design, embodiment, aesthetic synthesis)
@@ -654,7 +666,7 @@ Layer 4: External Tools (Notion, Linear, GitHub, Perplexity, etc.)
 ### Backend (Existing)
 - **Platform:** Firebase Functions
 - **Language:** TypeScript
-- **Agents:** 8-agent system (Orion, Lira, Nyra, Thalus, Zara, Abacus, Aurora, Manus)
+- **Agents:** 9-agent system (Orion, Lira, Nyra, Thalus, Zara, Abacus, Aurora, Manus), Code
 - **MCP:** Notion, Linear, GitHub, Zapier integration
 
 ### Design System
