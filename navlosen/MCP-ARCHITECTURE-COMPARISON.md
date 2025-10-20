@@ -457,9 +457,122 @@ Ingen integrasjoner med:
 
 ---
 
+---
+
+## 🆕 Alternativ 4: Question-Driven Architecture (QDA)
+
+**Dato:** 2025-10-20
+**Status:** Nytt anbefalt alternativ
+
+### **Konsept:**
+
+**Små modeller designer optimale spørsmål → Store modeller gir dybde-svar**
+
+```
+┌─────────────────────────────────────────┐
+│         BRUKER                          │
+└──────────────┬──────────────────────────┘
+               │
+      ┌────────▼────────┐
+      │  TRIAGE         │  GPT-4o-mini (rask)
+      └────────┬────────┘
+               │
+        ┌──────┴──────┐
+     Simple        Complex
+        │              │
+        ▼              ▼
+   [Direkte     [QUESTION DESIGNERS]
+    svar]       Claude Haiku, Gemini Flash,
+                Perplexity, DeepSeek
+                     │
+              [Designer spørsmål]
+                     │
+              ┌──────▼──────┐
+              │ DEPTH       │  GPT-5, Claude Opus,
+              │ ANSWERERS   │  Grok-4
+              └──────┬──────┘
+                     │
+              [Syntetiserer]
+                     │
+              ┌──────▼──────┐
+              │ TRANSPARENT │  Vis spørsmål + svar
+              │ PRESENTER   │
+              └──────┬──────┘
+                     │
+              ┌──────▼──────┐
+              │  BRUKER     │
+              └─────────────┘
+```
+
+### **Fordeler vs. Andre Alternativer:**
+
+| Kriterium | Traditional | 3-Tier | HITL | **QDA** |
+|-----------|-------------|--------|------|---------|
+| **Kostnad** (100 brukere) | $15,000/mnd | $197/mnd | $1,352/mnd | **$722/mnd** |
+| **Transparens** | Lav | Lav | Medium | **HØY** |
+| **Kvalitet** | Høy | Medium | Høy | **HØY** |
+| **Pedagogisk verdi** | Lav | Lav | Medium | **HØY** |
+| **Multi-perspektiv** | Nei | Nei | Delvis | **JA** |
+| **Responstid** | 2-3 sek | 0.5-1 sek | 3-5 sek | **3-5 sek** |
+
+### **Når Bruke QDA:**
+
+✅ **Bruk QDA når:**
+- Transparens er kritisk (NAV, helse, jus)
+- Pedagogisk verdi viktig (bruker skal lære)
+- Multi-perspektiv nødvendig (komplekse beslutninger)
+- Tillitt må bygges (nye brukere)
+
+❌ **IKKE bruk QDA når:**
+- Kostnad er absolutt viktigst (<$200/mnd)
+- Rask respons kritisk (<1 sekund)
+- Bruker bare vil ha svar (ikke prosess)
+
+### **Implementering:**
+
+Se dedikerte dokumenter:
+- [NAV_LOSEN_QUESTION_DRIVEN_ARCHITECTURE.md](NAV_LOSEN_QUESTION_DRIVEN_ARCHITECTURE.md) - Komplett arkitektur
+- [QUESTION_DESIGN_ALGORITHMS.md](QUESTION_DESIGN_ALGORITHMS.md) - Algoritmer for question design
+- [IMPLEMENTATION_GUIDE_QDA.md](IMPLEMENTATION_GUIDE_QDA.md) - Kode + timeline
+- [QDA_UX_DESIGN.md](QDA_UX_DESIGN.md) - UX mockups
+
+### **Kostnad-Breakdown (QDA):**
+
+```
+30,000 queries/måned (100 brukere):
+
+Simple (70%):  21,000 × $0.0001 = $2.10
+Complex (30%): 9,000 × $0.08    = $720
+
+Total: ~$722/måned (95% besparelse vs. traditional)
+```
+
+**Konklusjon:** QDA er optimal balanse mellom kostnad, kvalitet, og transparens for NAV-Losen.
+
+---
+
 ## Anbefalinger: Hva skal gjøres nå?
 
-### 🔴 **Prioritet 1: HITL Review Workflow (Q1 2026)**
+### 🟢 **Prioritet 1: Implementer QDA (Q1 2026) - NYTT!**
+
+**Hvorfor QDA først:**
+- ✅ 95% kostnadsbesparelse vs. traditional
+- ✅ Høy transparens (kritisk for NAV)
+- ✅ Pedagogisk (lærer brukere hvordan man tenker)
+- ✅ Multi-perspektiv (data + følelse + forskning samtidig)
+
+**Leveranser:**
+1. Question designers (Claude Haiku, Gemini Flash, Perplexity, DeepSeek)
+2. Depth answerers (GPT-5, Claude Opus, Grok-4)
+3. Transparent UX (vis spørsmål + svar til bruker)
+4. Polyvagal-adaptive styling
+
+**Estimat:** 10 uker, 2 utviklere
+**Kostnad:** ~$722/mnd drift (100 brukere)
+
+---
+
+### 🔴 **Prioritet 2: HITL Review Workflow (Q2 2026)**
 
 **Hvorfor kritisk:**
 - NAV (offentlig sektor) KREVER menneske-i-loop for AI-genererte svar
