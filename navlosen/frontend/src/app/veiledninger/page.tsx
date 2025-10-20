@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Layout from "@/components/layout/Layout";
 import Button from "@/components/ui/Button";
 import {
@@ -11,7 +13,6 @@ import {
   Search,
   Sparkles,
 } from "lucide-react";
-import Link from "next/link";
 
 type GuideCategory =
   | "Arbeidsledighet"
@@ -36,7 +37,7 @@ const guides: Guide[] = [
     title: "Slik søker du dagpenger",
     category: "Arbeidsledighet",
     summary:
-      "For deg som nylig har mistet jobben. Vi guider deg trygt gjennom kravene, dokumentasjonen og innsendingen i Altinn.",
+      "For deg som nylig har mistet jobben. Vi følger deg gjennom krav, dokumentasjon og innsending i Altinn.",
     estimatedTime: "15 minutter",
     stepsCount: 6,
     updated: "Oppdatert 10. oktober 2025",
@@ -47,29 +48,31 @@ const guides: Guide[] = [
     title: "Slik fungerer sykepenger",
     category: "Sykdom",
     summary:
-      "Gir oversikt over hva som kreves fra deg og arbeidsgiver, og hvordan du følger søknaden i NAV-dine saker.",
+      "Oversikt over krav til deg og arbeidsgiver, og hvordan du følger søknaden i NAV-kontoen din.",
     estimatedTime: "12 minutter",
     stepsCount: 5,
     updated: "Oppdatert 3. oktober 2025",
-    firstStep: "Registrer sykefraværet og send egenmelding eller sykmelding fra lege.",
+    firstStep:
+      "Registrer sykefraværet og send egenmelding eller sykmelding fra lege.",
   },
   {
     id: "barnetrygd",
     title: "Slik fungerer barnetrygd",
     category: "Familie og barn",
     summary:
-      "Alt om barnetrygd: hvem som har rett, hvordan du søker, og når utbetalingen kommer.",
+      "Hvem har rett, hvordan søker du, og når kommer utbetalingen? Alt i én guide.",
     estimatedTime: "8 minutter",
     stepsCount: 4,
     updated: "Oppdatert 25. september 2025",
-    firstStep: "Sjekk at barnet er registrert i Folkeregisteret på din adresse.",
+    firstStep:
+      "Sjekk at barnet er registrert i Folkeregisteret på din adresse.",
   },
   {
     id: "foreldrepenger",
     title: "Slik søker du foreldrepenger",
     category: "Familie og barn",
     summary:
-      "Planlegg permisjonen, del foreldrepengeperioden og send søknaden før termin.",
+      "Planlegg permisjonen, del perioden og send søknaden før termin for å unngå forsinkelser.",
     estimatedTime: "18 minutter",
     stepsCount: 7,
     updated: "Oppdatert 9. oktober 2025",
@@ -84,29 +87,32 @@ const guides: Guide[] = [
     estimatedTime: "6 minutter",
     stepsCount: 3,
     updated: "Oppdatert 7. oktober 2025",
-    firstStep: "Bekreft at barnet ikke mottar offentlige barnehagesubsidier.",
+    firstStep:
+      "Bekreft at barnet ikke mottar barnehagestøtte eller 20 timer gratis SFO.",
   },
   {
     id: "sfo",
     title: "Slik søker du redusert betaling i SFO",
     category: "Familie og barn",
     summary:
-      "Finn kommunens ordninger, dokumenter inntekt og send søknaden før fristen.",
+      "Finn kommunens ordninger, dokumenter inntekt og send søknaden før søknadsfristen.",
     estimatedTime: "9 minutter",
     stepsCount: 4,
     updated: "Oppdatert 1. oktober 2025",
-    firstStep: "Hent fjorårets skattemelding og dokumentasjon på endret inntekt.",
+    firstStep:
+      "Hent fjorårets skattemelding og dokumentasjon på endret inntekt.",
   },
   {
     id: "sosialhjelp",
     title: "Slik søker du økonomisk sosialhjelp",
     category: "Økonomi",
     summary:
-      "Gir sikker veiledning gjennom vurdering av behov, dokumentasjon og møte med NAV-kontor.",
+      "Vurder behov, dokumenter situasjonen og forbered møte med NAV-kontoret på en trygg måte.",
     estimatedTime: "20 minutter",
     stepsCount: 6,
     updated: "Oppdatert 18. oktober 2025",
-    firstStep: "Lag oversikt over faste utgifter, inntekter og oppsparte midler.",
+    firstStep:
+      "Lag en oversikt over faste utgifter, inntekter og oppsparte midler.",
   },
   {
     id: "boutgifter",
@@ -117,14 +123,15 @@ const guides: Guide[] = [
     estimatedTime: "11 minutter",
     stepsCount: 5,
     updated: "Oppdatert 30. september 2025",
-    firstStep: "Sjekk om du allerede mottar bostøtte eller andre boligtilskudd.",
+    firstStep:
+      "Sjekk om du allerede mottar bostøtte eller andre tilskudd fra kommunen.",
   },
   {
     id: "kvalifiseringsprogram",
     title: "Veiledning for kvalifiseringsprogrammet",
     category: "Økonomi",
     summary:
-      "Gir deg oversikt over hvem som kan delta, hva programmet inneholder og hvordan du søker.",
+      "Hvem kan delta, hva inneholder programmet og hvordan søker du? Alt samlet på ett sted.",
     estimatedTime: "14 minutter",
     stepsCount: 6,
     updated: "Oppdatert 5. oktober 2025",
@@ -132,7 +139,7 @@ const guides: Guide[] = [
   },
 ];
 
-const categories: ("Alle" | GuideCategory)[] = [
+const categories: (GuideCategory | "Alle")[] = [
   "Alle",
   ...Array.from(new Set(guides.map((guide) => guide.category))),
 ];
@@ -140,6 +147,7 @@ const categories: ("Alle" | GuideCategory)[] = [
 const recommendedIds = new Set(["dagpenger", "sykepenger", "sosialhjelp"]);
 
 export default function VeiledningerPage() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] =
     useState<(typeof categories)[number]>("Alle");
@@ -150,9 +158,13 @@ export default function VeiledningerPage() {
     return guides.filter((guide) => {
       const matchesCategory =
         selectedCategory === "Alle" || guide.category === selectedCategory;
-      if (!matchesCategory) return false;
+      if (!matchesCategory) {
+        return false;
+      }
 
-      if (!normalizedSearch) return true;
+      if (!normalizedSearch) {
+        return true;
+      }
 
       const haystack = `${guide.title} ${guide.summary} ${guide.category}`.toLowerCase();
       return haystack.includes(normalizedSearch);
@@ -163,6 +175,10 @@ export default function VeiledningerPage() {
     () => guides.filter((guide) => recommendedIds.has(guide.id)),
     []
   );
+
+  const handleOpenGuide = (guideId: string) => {
+    router.push(`/veiledninger/${guideId}`);
+  };
 
   return (
     <Layout>
@@ -194,14 +210,17 @@ export default function VeiledningerPage() {
                   Veiledninger
                 </h1>
                 <p className="text-lg text-[var(--color-text-secondary)]">
-                  Finn trygge, oppdaterte veiledninger for NAV-prosesser. Vi følger deg fra forberedelser til innsending og oppfølging.
+                  Finn trygge, oppdaterte veiledninger for NAV-prosesser. Vi
+                  følger deg fra forberedelser til innsending og oppfølging.
                 </p>
                 <div className="flex flex-wrap gap-4 text-sm text-[var(--color-text-secondary)]">
                   <span className="inline-flex items-center gap-2">
-                    <ClipboardList className="h-4 w-4 text-blue-500" /> 9 temaguider klare
+                    <ClipboardList className="h-4 w-4 text-blue-500" />
+                    9 temaguider klare
                   </span>
                   <span className="inline-flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-blue-500" /> Estimert tid 6–20 min per guide
+                    <Clock className="h-4 w-4 text-blue-500" />
+                    Estimert tid 6–20 min per guide
                   </span>
                 </div>
               </div>
@@ -257,14 +276,14 @@ export default function VeiledningerPage() {
             </div>
           </section>
 
-          {/* Recommended Guides */}
+          {/* Recommended guides */}
           <section className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
                 Anbefalt å starte med
               </h2>
               <span className="text-sm text-[var(--color-text-secondary)]">
-                Curert av NAV-veiledere – høyest etterspørsel siste 90 dager
+                Kurert av NAV-veiledere – høyest etterspørsel siste 90 dager
               </span>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
@@ -290,6 +309,7 @@ export default function VeiledningerPage() {
                     size="small"
                     className="mt-4 w-full justify-between"
                     rightIcon={<ChevronRight className="h-4 w-4" />}
+                    onClick={() => handleOpenGuide(guide.id)}
                   >
                     Åpne veiledning
                   </Button>
@@ -311,7 +331,8 @@ export default function VeiledningerPage() {
 
             {filteredGuides.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-[var(--color-text-secondary)]">
-                Ingen veiledninger matcher søket ditt ennå. Prøv en annen kategori eller et annet søkeord.
+                Ingen veiledninger matcher søket ditt ennå. Prøv en annen
+                kategori eller et annet søkeord.
               </div>
             ) : (
               <div className="grid gap-6 md:grid-cols-2">
@@ -332,7 +353,9 @@ export default function VeiledningerPage() {
                         {guide.summary}
                       </p>
                       <div className="rounded-xl bg-[var(--color-primary)]/5 p-4 text-sm text-[var(--color-text-secondary)]">
-                        <p className="font-medium text-[var(--color-text-primary)]">Første steg</p>
+                        <p className="font-medium text-[var(--color-text-primary)]">
+                          Første steg
+                        </p>
                         <p>{guide.firstStep}</p>
                         <div className="mt-2 flex items-center gap-3 text-xs text-[var(--color-text-tertiary)]">
                           <span>{guide.stepsCount} steg</span>
@@ -347,6 +370,7 @@ export default function VeiledningerPage() {
                         size="small"
                         className="flex-1 justify-center"
                         rightIcon={<ChevronRight className="h-4 w-4" />}
+                        onClick={() => handleOpenGuide(guide.id)}
                       >
                         Gå til veiledning
                       </Button>
@@ -373,8 +397,9 @@ export default function VeiledningerPage() {
                 Hvordan vet jeg hvilke dokumenter jeg trenger?
               </summary>
               <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-                Hver veiledning starter med en sjekkliste for dokumenter. Vi oppdaterer listene fortløpende når NAV endrer krav.
-                Mangler du noe, viser vi hvordan du kan bestille det.
+                Hver veiledning starter med en sjekkliste for dokumenter. Vi
+                oppdaterer listene fortløpende når NAV endrer krav. Mangler du
+                noe, viser vi hvordan du bestiller det.
               </p>
             </details>
             <details className="group rounded-2xl border border-gray-200 bg-white p-4">
@@ -382,15 +407,18 @@ export default function VeiledningerPage() {
                 Kan jeg skrive ut en PDF av veiledningen?
               </summary>
               <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-                Ja. Nederst i hver veiledning finner du «Last ned som PDF». Den inkluderer alle steg, sjekklister og viktige lenker.
+                Ja. Nederst i hver veiledning finner du «Last ned som PDF». Den
+                inkluderer alle steg, sjekklister og viktige lenker.
               </p>
             </details>
             <details className="group rounded-2xl border border-gray-200 bg-white p-4">
               <summary className="cursor-pointer text-base font-semibold text-[var(--color-text-primary)] group-open:text-[var(--color-primary)]">
-                Hva om jeg trenger hjelp underveis?
+                Hva gjør jeg hvis jeg trenger hjelp underveis?
               </summary>
-              <p className="mt-3 space-y-2 text-sm text-[var(--color-text-secondary)]">
-                Klikk «Chat med Lira» for å få svar i kontekst av guiden du står i. Ved behov kan du booke samtale med NAV-veileder direkte fra guiden.
+              <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
+                Klikk «Chat med Lira» for å få svar med utgangspunkt i guiden du
+                står i. Ved behov kan du booke time med NAV-veileder direkte
+                fra veiledningen.
               </p>
             </details>
           </section>
@@ -398,9 +426,12 @@ export default function VeiledningerPage() {
           {/* Support CTA */}
           <section className="flex flex-col items-start gap-6 rounded-3xl border border-blue-200 bg-gradient-to-r from-blue-500 to-purple-500 p-8 text-white shadow-lg">
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold">Trenger du hjelp med neste steg?</h2>
+              <h2 className="text-2xl font-bold">
+                Trenger du hjelp med neste steg?
+              </h2>
               <p className="max-w-2xl text-sm text-white/90">
-                Kontakt NAV-veileder direkte eller lagre veiledningen til senere. Vi synkroniserer det du gjør her med Min Reise-dashbordet ditt.
+                Kontakt NAV-veileder eller lagre veiledningen til senere. Vi
+                synkroniserer det du gjør her med Min Reise-dashbordet ditt.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -411,7 +442,12 @@ export default function VeiledningerPage() {
               >
                 Book veiledningssamtale
               </Button>
-              <Button variant="text" size="medium" className="text-white hover:text-white/80">
+              <Button
+                variant="text"
+                size="medium"
+                className="text-white hover:text-white/80"
+                onClick={() => router.push("/min-reise")}
+              >
                 Gå til Min Reise
               </Button>
             </div>
