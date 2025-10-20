@@ -1,0 +1,205 @@
+{
+  "folders": [
+    {
+      "name": "🌿 Homo Lumen (Root)",
+      "path": "."
+    },
+    {
+      "name": "📚 Documentation",
+      "path": "./docs"
+    },
+    {
+      "name": "🤖 Agents (Code)",
+      "path": "./agents"
+    },
+    {
+      "name": "🔥 Firebase",
+      "path": "./firebase"
+    },
+    {
+      "name": "📱 Mobile",
+      "path": "./mobile"
+    },
+    {
+      "name": "🏛️ Infrastructure",
+      "path": "./infrastructure"
+    },
+    {
+      "name": "🧭 NAV-Losen",
+      "path": "./navlosen"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.firebase": true,
+      "**/__pycache__": true,
+      "**/.pytest_cache": true,
+      "**/.DS_Store": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.firebase": true,
+      "**/package-lock.json": true
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[markdown]": {
+      "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+      "editor.wordWrap": "on",
+      "editor.quickSuggestions": {
+        "comments": "off",
+        "strings": "off",
+        "other": "off"
+      }
+    },
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.tabSize": 4
+    },
+    "typescript.tsdk": "agents/node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "eslint.workingDirectories": [
+      "./agents"
+    ],
+    "python.defaultInterpreterPath": "/usr/bin/python3.11",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "markdown.preview.breaks": true,
+    "markdown.preview.linkify": true,
+    "git.ignoreLimitWarning": true,
+    "files.associations": {
+      "*.md": "markdown",
+      "*.yml": "yaml",
+      "*.yaml": "yaml"
+    },
+    "workbench.colorCustomizations": {
+      "activityBar.background": "#1a3a2e",
+      "activityBar.foreground": "#a8dadc",
+      "statusBar.background": "#1a3a2e",
+      "statusBar.foreground": "#a8dadc",
+      "titleBar.activeBackground": "#1a3a2e",
+      "titleBar.activeForeground": "#a8dadc"
+    },
+    "window.title": "🌿 Homo Lumen - ${activeEditorShort}${separator}${rootName}"
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "ms-python.python",
+      "ms-python.black-formatter",
+      "yzhang.markdown-all-in-one",
+      "bierner.markdown-mermaid",
+      "davidanson.vscode-markdownlint",
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "github.copilot",
+      "github.copilot-chat",
+      "eamodio.gitlens",
+      "gruntfuggly.todo-tree",
+      "streetsidesoftware.code-spell-checker",
+      "wayou.vscode-todo-highlight",
+      "ritwickdey.liveserver",
+      "ms-azuretools.vscode-docker",
+      "redhat.vscode-yaml",
+      "tamasfe.even-better-toml"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🤖 Build Agents",
+        "type": "npm",
+        "script": "build",
+        "path": "agents/",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$tsc"]
+      },
+      {
+        "label": "🧪 Test Agents",
+        "type": "npm",
+        "script": "test",
+        "path": "agents/",
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "🔥 Start Firebase Emulators",
+        "type": "shell",
+        "command": "cd firebase && firebase emulators:start",
+        "problemMatcher": []
+      },
+      {
+        "label": "🔥 Deploy Firebase Functions",
+        "type": "shell",
+        "command": "cd firebase && firebase deploy --only functions",
+        "problemMatcher": []
+      },
+      {
+        "label": "🏛️ Run Thalus Gate (Local)",
+        "type": "shell",
+        "command": "cd infrastructure && python3 notion/setup_ontology_audit_database.py",
+        "problemMatcher": []
+      },
+      {
+        "label": "📚 Preview Markdown",
+        "type": "shell",
+        "command": "code --preview ${file}",
+        "problemMatcher": []
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🤖 Debug Agents (Node)",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder:Agents (Code)}/src/pilot.ts",
+        "preLaunchTask": "🤖 Build Agents",
+        "outFiles": ["${workspaceFolder:Agents (Code)}/dist/**/*.js"],
+        "cwd": "${workspaceFolder:Agents (Code)}",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "🔥 Debug Firebase Functions",
+        "type": "node",
+        "request": "attach",
+        "port": 9229,
+        "restart": true,
+        "sourceMaps": true,
+        "outFiles": ["${workspaceFolder:Firebase}/**/*.js"]
+      },
+      {
+        "name": "🐍 Debug Python Script",
+        "type": "python",
+        "request": "launch",
+        "program": "${file}",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder:Infrastructure}"
+      }
+    ]
+  }
+}
+
