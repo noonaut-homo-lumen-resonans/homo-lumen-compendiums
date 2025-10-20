@@ -18,6 +18,8 @@ import {
 } from "@/lib/compositeStressScore";
 import { SomaticSignal } from "@/types";
 import AffectTimeline from "@/components/timeline/AffectTimeline";
+import HealthMetrics from "@/components/min-reise/HealthMetrics";
+import WeatherWidget from "@/components/min-reise/WeatherWidget";
 
 export default function MinReisePage() {
   const [activeView, setActiveView] = useState<"overview" | "mastery" | "checkpoint" | "celebration" | "timeline">("overview");
@@ -241,6 +243,12 @@ export default function MinReisePage() {
                   {bigFive ? "Se profil →" : "Lag profil →"}
                 </div>
               </button>
+
+              {/* Health Metrics Widget */}
+              <HealthMetrics />
+
+              {/* Weather Widget */}
+              <WeatherWidget />
             </div>
 
             {/* Back link */}
