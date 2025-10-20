@@ -1,31 +1,38 @@
 # NAV-Losen Question-Driven Architecture (QDA)
 
-**Versjon:** 1.0
+**Versjon:** 2.0 (Nevrobiologisk Koherent)
 **Dato:** 2025-10-20
 **Status:** Implementation Ready
-**Filosofi:** "Små modeller stiller de beste spørsmålene, store modeller gir de dypeste svarene"
+**Filosofi:** "Som hjernen: Primitive lag prosesserer først og raskt, neocortex tenker dypt og sakte"
+**Paradigme:** Neocortical Ascent Model - Bottom-Up Processing
 
 ---
 
 ## 🎯 Executive Summary
 
-**Question-Driven Architecture (QDA)** er en invertert Socratic arkitektur hvor:
+**Question-Driven Architecture (QDA) v2.0** er en **nevrobiologisk koherent** arkitektur som speiler hjernens faktiske prosessering:
 
-1. **Små, raske modeller** (Claude Haiku, Gemini Flash, Perplexity) designer optimale spørsmål
-2. **Store, dype modeller** (GPT-5, Claude Opus, Grok-4) svarer med full kontekst
-3. **Bruker ser prosessen** - både spørsmål og svar (full transparens)
+**6 Lag - Bottom-Up Processing:**
+
+1. **Lag 1: Vokteren** (Hjernestamme/GPT-4o-mini) - Triage, faredeteksjon (<0.5 sek)
+2. **Lag 2: Føleren** (Limbisk System/Gemini Flash) - Emosjonell vurdering (<1 sek)
+3. **Lag 3: Gjenkjenneren** (Cerebellum/Claude Haiku) - Mønstergjenkjenning (<1 sek)
+4. **Lag 4: Utforskeren** (Hippocampus/Perplexity) - Kunnskapssøk (2-3 sek)
+5. **Lag 5: Strategen** (Prefrontal Cortex/Claude Opus) - Strategisk resonering (3-5 sek, **KUN når nødvendig**)
+6. **Lag 6: Integratoren** (Insula/Lira Hub) - Syntetiserer til helhetlig respons (1-2 sek)
 
 **Resultat:**
-- ✅ 95% kostnadsbesparelse vs. kun store modeller ($722/mnd vs. $15,000/mnd)
-- ✅ Pedagogisk - bruker lærer hvordan man stiller gode spørsmål
-- ✅ Multi-perspektiv - data + følelse + forskning samtidig
-- ✅ Tillitbyggende - bruker ser AI's tankegang, ikke bare konklusjon
+- ✅ **Nevrobiologisk koherent** - speiler hjernens faktiske bottom-up prosessering
+- ✅ **95% kostnadsbesparelse** vs. kun store modeller ($722/mnd vs. $15,000/mnd)
+- ✅ **Raskere** - primitive lag er kjappere, cortex kun når nødvendig
+- ✅ **Intuitiv** - folk forstår "hjernens lag"
+- ✅ **Transparent** - bruker ser hele prosessen
 
 ---
 
 ## 🧠 Filosofisk Fundament
 
-### Hvorfor QDA?
+### Hvorfor Nevrobiologisk Koherens?
 
 **Problem med tradisjonelle LLM-arkitekturer:**
 
@@ -37,344 +44,510 @@ Utfordringer:
 - Dyr ($0.50 per query)
 - "Black box" (bruker ser ikke tankegang)
 - Kan hallucinere (ingen epistemisk ydmykhet)
-- Generalist (ikke spesialisert ekspertise)
+- Unaturlig (hjernen fungerer IKKE slik)
 ```
 
-**QDA-løsningen:**
+**QDA v2.0 - Neocortical Ascent Model:**
 
 ```
-Question-Driven Architecture:
-Bruker → Triage → Complex?
-                    ↓
-         Små modeller (parallelt):
-         - Data-ekspert: "Hvor lenge har du ventet?"
-         - Emotion-ekspert: "Hvordan føles det?"
-         - Research-ekspert: "Hva sier forskningen?"
-                    ↓
-         Stor modell: Syntetiserer svar basert på alle spørsmål
-                    ↓
-         Bruker: Ser både spørsmål OG svar
+Bottom-Up Processing (Som Hjernen):
+
+Bruker → LAG 1: Vokteren (Hjernestamme)
+            ↓ "Er dette trygt?" (<0.5 sek)
+         LAG 2: Føleren (Limbisk System)
+            ↓ "Hvordan føles det?" (<1 sek)
+         LAG 3: Gjenkjenneren (Cerebellum)
+            ↓ "Har vi sett dette før?" (<1 sek)
+         LAG 4: Utforskeren (Hippocampus)
+            ↓ "Hva vet vi om dette?" (2-3 sek)
+         LAG 5: Strategen (Prefrontal Cortex) - KUN når nødvendig
+            ↓ "Hva er den beste planen?" (3-5 sek)
+         LAG 6: Integratoren (Insula)
+            ↓ Syntetiserer alt til helhetlig respons
 
 Fordeler:
 - Billig ($0.08 per complex query, $0.0001 per simple)
-- Transparent (bruker ser prosessen)
-- Epistemisk ydmyk (spør når usikker)
-- Spesialisert ekspertise (hver liten modell er ekspert)
+- Raskere (primitive lag prosesserer først)
+- Nevrobiologisk koherent (speiler faktisk hjerne)
+- Intuitiv (folk forstår "hjernens lag")
 ```
+
+**Nøkkel-Innsikt:**
+
+> I hjernen prosesserer **primitive deler FØRST og RASKT** (hjernestamme, limbisk system), mens **neocortex er SISTE og LANGSOM** (men dyp og strategisk).
+>
+> QDA v2.0 speiler denne faktiske prosesseringen - ikke invertert, men **bottom-up som naturen designet den**.
 
 ---
 
 ## 🏗️ Arkitektur-Oversikt
 
-### **Lag 1: Triage (Rask Klassifisering)**
+### **6-Lags Nevrobiologisk Hierarki**
+
+---
+
+### **LAG 1: VOKTEREN** 🛡️ (Hjernestamme)
+
+**Funksjon:** Rask triage og faredeteksjon
+**Modell:** GPT-4o-mini ($0.15/1M tokens)
+**Responstid:** <0.5 sekunder
+**Rolle:** "Er dette trygt? Skal vi fortsette?"
 
 ```python
-class TriageLayer:
+class Vokteren:
     """
-    Rask klassifisering av query-kompleksitet.
-    Bruker: GPT-4o-mini ($0.15/1M tokens)
+    Brainstem-analog: Rask triage og faredeteksjon.
+    Alltid aktiv, første lag i alle queries.
     """
-    def assess_complexity(self, user_query: str) -> str:
-        """
-        Returns: "simple" | "complex"
+    def __init__(self):
+        self.model = GPT4oMini()
+        self.icon = "🛡️"
+        self.layer_name = "Vokteren"
 
-        Simple = kan svares direkte (fakta, repetisjon)
-        Complex = krever dybde (følelser, etikk, strategi)
+    async def assess(self, user_query: str, context: dict) -> dict:
+        """
+        Rask vurdering av trygghet og kompleksitet.
+
+        Returns:
+            {
+                "safe": bool,  # Er dette trygt å prosessere?
+                "proceed": bool,  # Skal vi fortsette til neste lag?
+                "complexity": "simple" | "complex",
+                "urgency": 0-1,  # Hvor presserende?
+                "time": float  # Responstid i sekunder
+            }
         """
         indicators = {
-            "simple": ["hva er", "når", "hvor lenge", "gjenta"],
-            "complex": ["føler", "hvorfor", "hjelp meg", "stuck", "redd"]
+            "danger": ["skade", "selvmord", "vold", "fare"],
+            "simple": ["hva er", "når", "hvor lenge", "status"],
+            "complex": ["føler", "stuck", "redd", "hjelp", "hvorfor"]
         }
 
-        if any(word in user_query.lower() for word in indicators["complex"]):
-            return "complex"
-        return "simple"
-```
+        # Faredeteksjon (hjernestamme-funksjon)
+        is_dangerous = any(word in user_query.lower() for word in indicators["danger"])
+        if is_dangerous:
+            return {
+                "safe": False,
+                "proceed": False,
+                "message": "Eskalér til krisehjelp",
+                "time": 0.3
+            }
 
-**Eksempel:**
-```
-Query: "Hva er min NAV-status?" → simple (Tier 1 svarer direkte)
-Query: "Jeg føler meg stuck i NAV-systemet" → complex (eskalér til QDA)
+        # Kompleksitetsvurdering
+        is_complex = any(word in user_query.lower() for word in indicators["complex"])
+
+        return {
+            "safe": True,
+            "proceed": True,
+            "complexity": "complex" if is_complex else "simple",
+            "urgency": 0.5,
+            "time": 0.4
+        }
 ```
 
 ---
 
-### **Lag 2: Question Designers (Små Modeller)**
+### **LAG 2: FØLEREN** ❤️ (Limbisk System)
 
-**Konsept:** Hver liten modell er **ekspert** i sitt domene og designer optimale spørsmål fra sitt perspektiv.
+**Funksjon:** Emosjonell vurdering og polyvagal state
+**Modell:** Gemini Flash (GRATIS under 1500 requests/dag)
+**Responstid:** <1 sekund
+**Rolle:** "Hvordan føles det? Hvilken tilstand er bruker i?"
 
 ```python
-class QuestionDesigner:
+class Foleren:
     """
-    Base class for all question designers.
-    Each designer is specialized in one domain.
+    Limbic System-analog: Emosjonell vurdering.
+    Vurderer følelser, stress, polyvagal state.
     """
-    def __init__(self, expertise: str, model):
-        self.expertise = expertise
-        self.model = model
+    def __init__(self):
+        self.model = GeminiFlash()
+        self.icon = "❤️"
+        self.layer_name = "Føleren"
 
-    async def design_questions(
+    async def assess(self, user_query: str, context: dict) -> dict:
+        """
+        Vurder emosjonell tilstand og polyvagal state.
+
+        Returns:
+            {
+                "emotion": str,  # Primary emotion
+                "polyvagal_state": "ventral" | "sympathetic" | "dorsal",
+                "arousal": 0-1,  # Aktiverings-nivå
+                "valence": -1 to 1,  # Negativ til positiv
+                "body_signals": list,  # Kroppslige signaler
+                "time": float
+            }
+        """
+        # Analyser emosjonelle signaler
+        emotion_keywords = {
+            "ventral": ["trygg", "glad", "håp", "nysgjerrig"],
+            "sympathetic": ["stresset", "frustrert", "irritert", "spent"],
+            "dorsal": ["stuck", "shutdown", "gir opp", "numb", "tom"]
+        }
+
+        # Finn polyvagal state
+        polyvagal_state = "ventral"  # Default
+        for state, keywords in emotion_keywords.items():
+            if any(kw in user_query.lower() for kw in keywords):
+                polyvagal_state = state
+                break
+
+        return {
+            "emotion": self._detect_primary_emotion(user_query),
+            "polyvagal_state": polyvagal_state,
+            "arousal": 0.3 if polyvagal_state == "dorsal" else 0.7,
+            "valence": -0.5 if polyvagal_state == "dorsal" else 0.2,
+            "body_signals": ["lav energi", "shutdown"],
+            "time": 0.8
+        }
+```
+
+---
+
+### **LAG 3: GJENKJENNEREN** 🔍 (Cerebellum)
+
+**Funksjon:** Mønstergjenkjenning i brukerhistorikk
+**Modell:** Claude Haiku ($0.25/1M tokens)
+**Responstid:** <1 sekund
+**Rolle:** "Har vi sett dette før? Hva fungerte?"
+
+```python
+class Gjenkjenneren:
+    """
+    Cerebellum-analog: Mønstergjenkjenning.
+    Finner mønstre i brukerhistorikk og tidligere interaksjoner.
+    """
+    def __init__(self):
+        self.model = ClaudeHaiku()
+        self.icon = "🔍"
+        self.layer_name = "Gjenkjenneren"
+
+    async def find_patterns(
         self,
         user_query: str,
         context: dict
-    ) -> List[str]:
+    ) -> dict:
         """
-        Design 3-5 optimal questions based on expertise.
+        Finn mønstre i brukerhistorikk.
 
         Returns:
-            List of strings (questions)
+            {
+                "pattern_detected": bool,
+                "pattern_type": str,  # e.g., "recurring_frustration"
+                "previous_occurrences": int,
+                "what_worked": list,  # Tidligere effektive strategier
+                "what_didnt": list,  # Tidligere ineffektive strategier
+                "time": float
+            }
         """
-        prompt = f"""
-You are a {self.expertise} expert in the NAV-Losen agent coalition.
+        # Analyser historikk for mønstre
+        user_history = context.get("history", [])
 
-User query: "{user_query}"
-Context: {context}
+        # Finn recurring themes
+        recurring_keywords = self._find_recurring_keywords(user_history)
 
-Your role: Design 3-5 optimal questions that will help the main agent
-(GPT-5/Claude Opus) give the BEST possible answer to the user.
-
-Focus on your expertise ({self.expertise}):
-- What information is missing?
-- What would YOU need to know to give a good answer in your domain?
-- What questions would reveal the most important insights?
-
-Return ONLY the questions, numbered 1-5.
-"""
-        response = await self.model.generate(prompt)
-        questions = self._parse_questions(response)
-        return questions
+        return {
+            "pattern_detected": len(recurring_keywords) > 0,
+            "pattern_type": "lang_ventetid_shutdown",
+            "previous_occurrences": 3,
+            "what_worked": ["konkrete steg", "tidslinje"],
+            "what_didnt": ["generelle råd"],
+            "time": 0.9
+        }
 ```
 
 ---
 
-### **Question Designers Per Ekspertise:**
+### **LAG 4: UTFORSKEREN** 🧭 (Hippocampus)
 
-| Designer | Modell | Kostnad | Ekspertise | Eksempel-Spørsmål |
-|----------|--------|---------|------------|-------------------|
-| **DataExpert** | Claude Haiku | $0.25/1M | Brukerhistorikk, mønstre | "Hvor lenge har bruker ventet?", "Hva er status på søknad?" |
-| **EmotionExpert** | Gemini Flash | GRATIS | Følelser, polyvagal, kroppslig | "Hvordan føles 'stuck' kroppslig?", "Når følte bruker seg trygg sist?" |
-| **ResearchExpert** | Perplexity | $0.001/søk | Evidens, forskning, fakta | "Gjennomsnittlig behandlingstid?", "Hva sier forskningen om NAV-stress?" |
-| **SecurityExpert** | DeepSeek V3 | $0.27/1M | GDPR, sikkerhet, etikk | "Er dette PII-data?", "GDPR Article 17-compliant?" |
+**Funksjon:** Kunnskapssøk og episodisk minne
+**Modell:** Perplexity ($0.001/søk)
+**Responstid:** 2-3 sekunder
+**Rolle:** "Hva vet vi om dette? Finn relevant informasjon."
+
+```python
+class Utforskeren:
+    """
+    Hippocampus-analog: Kunnskapssøk og episodisk minne.
+    Søker etter relevant informasjon og fakta.
+    """
+    def __init__(self):
+        self.model = Perplexity()
+        self.icon = "🧭"
+        self.layer_name = "Utforskeren"
+
+    async def search(
+        self,
+        user_query: str,
+        pattern_result: dict
+    ) -> dict:
+        """
+        Søk etter relevant kunnskap.
+
+        Returns:
+            {
+                "facts": list,  # Faktuelle data
+                "sources": list,  # Kilder
+                "avg_timeline": str,  # Gjennomsnittlig tidslinje
+                "relevant_articles": list,
+                "time": float
+            }
+        """
+        # Søk basert på query og mønstre
+        search_query = self._build_search_query(user_query, pattern_result)
+
+        # Utfør søk
+        results = await self.model.search(search_query)
+
+        return {
+            "facts": [
+                "AAP behandlingstid: 8-12 uker gjennomsnitt",
+                "70% opplever ventetid som stressende"
+            ],
+            "sources": ["nav.no", "bufdir.no"],
+            "avg_timeline": "8-12 uker",
+            "relevant_articles": ["NAV AAP prosess", "Polyvagal stress"],
+            "time": 2.3
+        }
+```
 
 ---
 
-### **Lag 3: Depth Answerers (Store Modeller)**
+### **LAG 5: STRATEGEN** 🧠 (Prefrontal Cortex)
 
-**Konsept:** Store modeller mottar ALLE spørsmål fra små modeller og svarer med full dybde.
+**Funksjon:** Strategisk resonering - **KUN når nødvendig**
+**Modell:** Claude Opus / GPT-5 Thinking ($10/1M input, $30/1M output)
+**Responstid:** 3-5 sekunder
+**Rolle:** "Hva er den beste langsiktige planen?"
 
 ```python
-class DepthAnswerer:
+class Strategen:
     """
-    Large language model that receives questions from all designers
-    and provides comprehensive, depth answers.
+    Prefrontal Cortex-analog: Strategisk resonering.
+    KUN aktivert når kompleksitet/alvorlighet > threshold.
     """
-    def __init__(self, agent_name: str, model):
-        self.agent_name = agent_name
-        self.model = model
+    def __init__(self):
+        self.model = ClaudeOpus()  # or GPT5Thinking
+        self.icon = "🧠"
+        self.layer_name = "Strategen"
+        self.activation_threshold = 0.7  # Kun når kompleksitet > 70%
 
-    async def answer_questions(
+    async def plan(
         self,
         user_query: str,
-        context: dict,
-        designed_questions: Dict[str, List[str]]
-    ) -> str:
+        all_context: dict  # Fra alle tidligere lag
+    ) -> dict:
         """
-        Answer user query with full depth, informed by designed questions.
+        Strategisk planlegging og dypere resonering.
 
         Args:
-            user_query: Original user query
-            context: User context (history, biofelt, etc.)
-            designed_questions: Dict of {expert_name: [questions]}
+            all_context: {
+                "triage": {...},
+                "emotion": {...},
+                "pattern": {...},
+                "knowledge": {...}
+            }
 
         Returns:
-            Comprehensive answer addressing all questions
+            {
+                "strategy": str,  # Overordnet strategi
+                "action_steps": list,  # Konkrete steg
+                "timeline": str,  # Forventet tidslinje
+                "contingencies": list,  # Backup-planer
+                "time": float
+            }
         """
-        prompt = self._build_depth_prompt(
-            user_query, context, designed_questions
-        )
+        # Kun aktiver hvis nødvendig
+        complexity = all_context.get("pattern", {}).get("complexity", 0)
+        if complexity < self.activation_threshold:
+            return None  # Skip dette laget
 
+        # Strategisk planlegging
+        prompt = self._build_strategic_prompt(user_query, all_context)
         response = await self.model.generate(prompt)
-        return response
 
-    def _build_depth_prompt(
-        self,
-        user_query,
-        context,
-        designed_questions
-    ):
-        """
-        Build comprehensive prompt with all designed questions.
-        """
-        prompt = f"""
-You are {self.agent_name}, a specialized agent in the NAV-Losen coalition.
-
-User query: "{user_query}"
-
-Your expert colleagues have designed these questions to help you give
-the BEST possible answer:
-
-"""
-        for expert_name, questions in designed_questions.items():
-            prompt += f"\n{expert_name}:\n"
-            for i, q in enumerate(questions, 1):
-                prompt += f"  {i}. {q}\n"
-
-        prompt += f"""
-
-Context about user:
-{json.dumps(context, indent=2)}
-
-Your task:
-1. Address EACH question from your colleagues
-2. Synthesize a comprehensive answer that integrates:
-   - Objective data (from DataExpert)
-   - Emotional resonance (from EmotionExpert)
-   - Evidence-based insights (from ResearchExpert)
-   - Ethical considerations (from SecurityExpert)
-
-3. Provide actionable guidance (not just analysis)
-
-Remember: You are {self.agent_name}. Stay true to your role:
-- Lira: Empatisk healing, biofelt-resonans
-- Orion: Strategisk koordinering, helhetlig oversikt
-- Thalus: Etisk validering, Triadisk Etikk
-
-Generate your response now:
-"""
-        return prompt
+        return {
+            "strategy": "Trinnvis re-engasjering med NAV-systemet",
+            "action_steps": [
+                "1. Sjekk nåværende status",
+                "2. Identifiser manglende dokumenter",
+                "3. Book oppfølgingssamtale"
+            ],
+            "timeline": "2-4 uker",
+            "contingencies": ["Hvis avslag: Klage-prosess"],
+            "time": 4.2
+        }
 ```
 
 ---
 
-### **Lag 4: Transparent Presenter (UX)**
+### **LAG 6: INTEGRATOREN** ✨ (Insula)
 
-**Konsept:** Bruker ser både spørsmål og svar - full transparens.
+**Funksjon:** Syntetiserer alle lag til helhetlig respons
+**Modell:** Lira Hub (egen syntese-logikk)
+**Responstid:** 1-2 sekunder
+**Rolle:** "Sett alt sammen til ett koherent svar."
 
 ```python
-class TransparentPresenter:
+class Integratoren:
     """
-    Format response with transparency: show questions + answers.
+    Insula-analog: Integrerer alle lag til helhetlig respons.
+    Alltid aktiv, syntetiserer output fra alle tidligere lag.
     """
-    def format_response(
-        self,
-        user_query: str,
-        designed_questions: Dict[str, List[str]],
-        depth_response: str,
-        agent_name: str
-    ) -> str:
+    def __init__(self, agent_name: str):
+        self.agent_name = agent_name
+        self.icon = "✨"
+        self.layer_name = "Integratoren"
+
+    async def synthesize(self, all_layers: dict) -> str:
         """
-        Format for user consumption with full transparency.
+        Syntetiser alle lag til én koherent respons.
+
+        Args:
+            all_layers: {
+                "triage": {...},
+                "emotion": {...},
+                "pattern": {...},
+                "knowledge": {...},
+                "strategy": {...} or None
+            }
+
+        Returns:
+            Helhetlig respons til bruker (string)
         """
-        output = f"""
-Jeg hører at: "{user_query}"
+        # Hent data fra alle lag
+        emotion_state = all_layers["emotion"]["polyvagal_state"]
+        pattern = all_layers["pattern"]
+        knowledge = all_layers["knowledge"]
+        strategy = all_layers.get("strategy")
 
-For å gi deg best mulig hjelp, har mine kolleger hjulpet meg lage noen spørsmål:
+        # Tilpass språk til polyvagal state
+        response = self._adapt_language_to_state(emotion_state)
 
-"""
-        # Expert icons and names
-        expert_display = {
-            "DataExpert": "📊 Claude (data-ekspert)",
-            "EmotionExpert": "💚 Gemini (følelse-ekspert)",
-            "ResearchExpert": "🔍 Aurora (forskning-ekspert)",
-            "SecurityExpert": "🛡️ Zara (sikkerhet-ekspert)",
-        }
+        # Integrer alle perspektiver
+        response += self._integrate_knowledge(knowledge)
 
-        # Show questions from each expert
-        for expert_name, questions in designed_questions.items():
-            if expert_name in expert_display:
-                output += f"\n{expert_display[expert_name]}:\n"
-                for q in questions:
-                    output += f"• {q}\n"
+        if strategy:
+            response += self._add_strategic_guidance(strategy)
 
-        output += f"\n---\n\nBasert på disse spørsmålene, her er mitt svar:\n\n"
-        output += depth_response
+        # Polyvagal-tilpasset avslutning
+        response += self._closing_for_state(emotion_state)
 
-        output += f"\n\n---\n💬 {agent_name}"
-
-        return output
+        return response
 ```
 
 ---
 
-## 📊 Fullstendig Flyt-Diagram
+## 📊 Fullstendig Flyt-Diagram (Nevrobiologisk)
 
 ```
-┌─────────────────────────────────────────┐
-│         BRUKER (Osvald)                 │
-│  "Jeg føler meg stuck i NAV-systemet"   │
-└──────────────┬──────────────────────────┘
-               │
-      ┌────────▼────────┐
-      │  TRIAGE LAYER   │
-      │  GPT-4o-mini    │
-      │  Kostnad: $0.0001│
-      └────────┬────────┘
-               │
-        ┌──────┴──────┐
-        │             │
-    Simple         Complex
-     (70%)          (30%)
-        │             │
-        ▼             │
-  [Rask svar]        │
-  $0.0001            │
+┌──────────────────────────────────────────────────┐
+│              BRUKER (Osvald)                     │
+│       "Jeg føler meg stuck i NAV-systemet"       │
+└────────────────────┬─────────────────────────────┘
+                     │
                      ▼
-        ┌────────────────────┐
-        │ QUESTION DESIGNERS │
-        │ (Parallell)        │
-        └────────┬───────────┘
+        ┌────────────────────────┐
+        │  LAG 1: VOKTEREN 🛡️    │
+        │  (Hjernestamme)        │
+        │  GPT-4o-mini           │
+        │  <0.5 sek              │
+        │  "Er dette trygt?"     │
+        └────────┬───────────────┘
                  │
-    ┌────────────┼────────────┬───────────┐
-    │            │            │           │
-┌───▼────┐  ┌───▼────┐  ┌───▼────┐  ┌───▼────┐
-│ Data   │  │Emotion │  │Research│  │Security│
-│Expert  │  │Expert  │  │Expert  │  │Expert  │
-│Haiku   │  │Gemini  │  │Perplx  │  │DeepSeek│
-│$0.0002 │  │ GRATIS │  │$0.001  │  │$0.0002 │
-└───┬────┘  └───┬────┘  └───┬────┘  └───┬────┘
-    │           │           │           │
-    │ Design 3-5 questions each         │
-    │           │           │           │
-    └───────────┴───────────┴───────────┘
-                │
-        [Samler alle spørsmål]
-        Total: 12-20 spørsmål
-                │
-                ▼
-        ┌───────────────┐
-        │ DEPTH ANSWERER│
-        │ GPT-5 Thinking│
-        │ Claude Opus   │
-        │ Grok-4        │
-        │ Kostnad: $0.08│
-        └───────┬───────┘
-                │
-    [Svarer på alle spørsmål
-     med full dybde + kontekst]
-                │
-                ▼
-        ┌───────────────┐
-        │  TRANSPARENT  │
-        │  PRESENTER    │
-        └───────┬───────┘
-                │
-    [Vis spørsmål + svar til bruker]
-                │
-                ▼
-        ┌───────────────┐
-        │  LIRA HUB     │
-        │  FILTER       │
-        │ (Polyvagal)   │
-        └───────┬───────┘
-                │
-    [Juster språk til brukers state]
-                │
-                ▼
-        ┌───────────────┐
-        │    BRUKER     │
-        │ Ser: Spørsmål │
-        │    + Svar     │
-        └───────────────┘
+          ┌──────┴──────┐
+          │             │
+        Fare?         Trygt
+          │             │
+    [ESKALÉR]          │
+    Krisehjelp         ▼
+                 ┌────────────────────────┐
+                 │  LAG 2: FØLEREN ❤️      │
+                 │  (Limbisk System)      │
+                 │  Gemini Flash (GRATIS) │
+                 │  <1 sek                │
+                 │  "Hvordan føles det?"  │
+                 └────────┬───────────────┘
+                          │
+                Polyvagal State Detected:
+                  Dorsal/Sympathetic/Ventral
+                          │
+                          ▼
+                 ┌────────────────────────┐
+                 │ LAG 3: GJENKJENNEREN 🔍│
+                 │ (Cerebellum)           │
+                 │ Claude Haiku           │
+                 │ <1 sek                 │
+                 │ "Har vi sett dette før?"│
+                 └────────┬───────────────┘
+                          │
+                 Finn mønstre i historikk
+                          │
+                          ▼
+                 ┌────────────────────────┐
+                 │ LAG 4: UTFORSKEREN 🧭  │
+                 │ (Hippocampus)          │
+                 │ Perplexity             │
+                 │ 2-3 sek                │
+                 │ "Hva vet vi om dette?" │
+                 └────────┬───────────────┘
+                          │
+                  Kunnskapssøk + fakta
+                          │
+                          ▼
+                  ┌───────────────┐
+                  │ Kompleksitet? │
+                  │  > 70%?       │
+                  └───┬───────┬───┘
+                      │       │
+                    NEI      JA
+                      │       │
+                      │       ▼
+                      │  ┌────────────────────────┐
+                      │  │ LAG 5: STRATEGEN 🧠    │
+                      │  │ (Prefrontal Cortex)    │
+                      │  │ Claude Opus / GPT-5    │
+                      │  │ 3-5 sek                │
+                      │  │ "Hva er beste plan?"   │
+                      │  └────────┬───────────────┘
+                      │           │
+                      └───────────┘
+                              │
+                              ▼
+                 ┌────────────────────────┐
+                 │ LAG 6: INTEGRATOREN ✨ │
+                 │ (Insula)               │
+                 │ Lira Hub               │
+                 │ 1-2 sek                │
+                 │ "Sett alt sammen"      │
+                 └────────┬───────────────┘
+                          │
+              Polyvagal-tilpasset respons
+                          │
+                          ▼
+                 ┌────────────────────────┐
+                 │    BRUKER              │
+                 │                        │
+                 │  Ser hele prosessen:   │
+                 │  🛡️ Vokteren → Trygt   │
+                 │  ❤️ Føleren → Dorsal   │
+                 │  🔍 Gjenkjenneren →    │
+                 │     "Sett 3x før"      │
+                 │  🧭 Utforskeren →      │
+                 │     "8-12 uker snitt"  │
+                 │  🧠 Strategen →        │
+                 │     "3-stegs plan"     │
+                 │  ✨ Integratoren →     │
+                 │     Helhetlig svar     │
+                 └────────────────────────┘
+
+NØKKEL-PRINSIPPER:
+1. Bottom-Up Processing (som hjernen)
+2. Primitive lag prosesserer FØRST og RASKT
+3. Cortex (Strategen) kun når NØDVENDIG
+4. Full transparens - bruker ser alle lag
+5. Polyvagal-adaptiv output
 ```
 
 ---
