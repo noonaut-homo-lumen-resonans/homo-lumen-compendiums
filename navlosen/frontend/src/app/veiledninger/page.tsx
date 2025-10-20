@@ -203,8 +203,7 @@ export default function VeiledningerPage() {
 
   return (
     <Layout>
-      <div className="bg-gradient-to-b from-blue-50 via-white to-purple-50 -m-4 md:-m-6 lg:-m-8 p-4 md:p-6 lg:p-8 min-h-screen">
-        <div className="mx-auto max-w-6xl space-y-12">
+      <div className="space-y-12">
           {/* Breadcrumb */}
           <div className="text-sm text-[var(--color-text-secondary)]">
             <Link
@@ -220,40 +219,38 @@ export default function VeiledningerPage() {
           </div>
 
           {/* Hero */}
-          <section className="grid gap-6 rounded-3xl bg-white/80 p-8 md:p-12 shadow-sm backdrop-blur">
-            <div className="flex flex-wrap items-start justify-between gap-6">
-              <div className="max-w-2xl space-y-4">
-                <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
-                  <Sparkles className="h-4 w-4" />
-                  Steg-for-steg veiledning
-                </div>
-                <h1 className="text-4xl font-bold tracking-tight text-[var(--color-text-primary)] md:text-5xl">
-                  Veiledninger
-                </h1>
-                <p className="text-lg text-[var(--color-text-secondary)]">
-                  Finn trygge, oppdaterte veiledninger for NAV-prosesser. Vi
-                  følger deg fra forberedelser til innsending og oppfølging.
-                </p>
-                <div className="flex flex-wrap gap-4 text-sm text-[var(--color-text-secondary)]">
-                  <span className="inline-flex items-center gap-2">
-                    <ClipboardList className="h-4 w-4 text-blue-500" />
-                    9 temaguider klare
-                  </span>
-                  <span className="inline-flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-blue-500" />
-                    Estimert tid 6–20 min per guide
-                  </span>
-                </div>
+          <section className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 rounded-3xl bg-white/80 p-8 md:p-12 shadow-sm backdrop-blur">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
+                <Sparkles className="h-4 w-4" />
+                Steg-for-steg veiledning
               </div>
-              <div className="hidden md:block">
-                <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-blue-100">
-                  <BookOpen className="h-12 w-12 text-blue-600" />
-                </div>
+              <h1 className="text-4xl font-bold tracking-tight text-[var(--color-text-primary)] md:text-5xl">
+                Veiledninger
+              </h1>
+              <p className="text-lg text-[var(--color-text-secondary)]">
+                Finn trygge, oppdaterte veiledninger for NAV-prosesser. Vi
+                følger deg fra forberedelser til innsending og oppfølging.
+              </p>
+              <div className="flex flex-wrap gap-4 text-sm text-[var(--color-text-secondary)]">
+                <span className="inline-flex items-center gap-2">
+                  <ClipboardList className="h-4 w-4 text-blue-500" />
+                  9 temaguider klare
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-blue-500" />
+                  Estimert tid 6–20 min per guide
+                </span>
+              </div>
+            </div>
+            <div className="hidden lg:flex items-start justify-center">
+              <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-blue-100">
+                <BookOpen className="h-12 w-12 text-blue-600" />
               </div>
             </div>
 
             {/* Search */}
-            <div className="relative">
+            <div className="relative lg:col-span-2">
               <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
               <input
                 type="search"
@@ -267,7 +264,7 @@ export default function VeiledningerPage() {
 
             {/* Categories */}
             <div
-              className="flex flex-wrap gap-2"
+              className="flex flex-wrap gap-2 lg:col-span-2"
               role="tablist"
               aria-label="Filtrer veiledninger etter kategori"
             >
@@ -425,17 +422,17 @@ export default function VeiledningerPage() {
           </section>
 
           {/* Support CTA */}
-          <section className="flex flex-col items-start gap-6 rounded-3xl border border-blue-200 bg-gradient-to-r from-blue-500 to-purple-500 p-8 text-white shadow-lg">
-            <div className="space-y-2">
+          <section className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 rounded-3xl border border-blue-200 bg-gradient-to-r from-blue-500 to-purple-500 p-8 text-white shadow-lg">
+            <div className="space-y-2 flex-1">
               <h2 className="text-2xl font-bold">
                 Trenger du hjelp med neste steg?
               </h2>
-              <p className="max-w-2xl text-sm text-white/90">
+              <p className="text-sm text-white/90 max-w-2xl">
                 Kontakt NAV-veileder eller lagre veiledningen til senere. Vi
                 synkroniserer det du gjør her med Min Reise-dashbordet ditt.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 md:flex-shrink-0">
               <Button
                 variant="secondary"
                 size="medium"
@@ -453,7 +450,6 @@ export default function VeiledningerPage() {
               </Button>
             </div>
           </section>
-        </div>
       </div>
     </Layout>
   );
