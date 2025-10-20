@@ -11,7 +11,7 @@ import {
   ChevronRight,
   ClipboardList,
   Clock,
-  Search,
+  MessageCircle,
   Sparkles,
   FileCheck,
 } from "lucide-react";
@@ -171,29 +171,17 @@ const faqItems = [
 
 export default function VeiledningerPage() {
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] =
     useState<(typeof categories)[number]>("Alle");
   const [expandedGuideId, setExpandedGuideId] = useState<string | null>(null);
-
-  const normalizedSearch = searchTerm.trim().toLowerCase();
 
   const filteredGuides = useMemo(() => {
     return guides.filter((guide) => {
       const matchesCategory =
         selectedCategory === "Alle" || guide.category === selectedCategory;
-      if (!matchesCategory) {
-        return false;
-      }
-
-      if (!normalizedSearch) {
-        return true;
-      }
-
-      const haystack = `${guide.title} ${guide.summary} ${guide.category}`.toLowerCase();
-      return haystack.includes(normalizedSearch);
+      return matchesCategory;
     });
-  }, [normalizedSearch, selectedCategory]);
+  }, [selectedCategory]);
 
   const recommendedGuides = useMemo(
     () => guides.filter((guide) => recommendedIds.has(guide.id)),
@@ -201,7 +189,8 @@ export default function VeiledningerPage() {
   );
 
   const handleOpenGuide = (guideId: string) => {
-    router.push(`/veiledninger/${guideId}`);
+    // Individual guide pages not implemented yet - expand document helper instead
+    setExpandedGuideId((prev) => (prev === guideId ? null : guideId));
   };
 
   return (
@@ -252,17 +241,33 @@ export default function VeiledningerPage() {
               </div>
             </div>
 
-            {/* Search */}
-            <div className="relative lg:col-span-2">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-              <input
-                type="search"
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Søk i veiledninger..."
-                className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-12 pr-4 text-base shadow-sm focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/50"
-                aria-label="Søk i veiledninger"
-              />
+            {/* Lira Chatbot */}
+            <div className="lg:col-span-2">
+              <div className="rounded-2xl border-2 border-[var(--color-secondary)] bg-gradient-to-r from-teal-50 to-blue-50 p-6 shadow-sm">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-secondary)]">
+                    <MessageCircle className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1 space-y-3">
+                    <div>
+                      <h3 className="text-lg font-bold text-[var(--color-text-primary)]">
+                        Spør Lira om hjelp
+                      </h3>
+                      <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                        Usikker på hvilken veiledning du trenger? Lira hjelper deg å finne riktig NAV-tjeneste basert på din situasjon.
+                      </p>
+                    </div>
+                    <Button
+                      variant="primary"
+                      size="medium"
+                      leftIcon={<MessageCircle className="h-5 w-5" />}
+                      onClick={() => router.push("/chatbot")}
+                    >
+                      Start samtale med Lira
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Categories */}
@@ -346,7 +351,7 @@ export default function VeiledningerPage() {
                       rightIcon={<ChevronRight className="h-4 w-4" />}
                       onClick={() => handleOpenGuide(guide.id)}
                     >
-                      Åpne veiledning
+                      {expandedGuideId === guide.id ? "Skjul detaljer" : "Vis detaljer"}
                     </Button>
                     <Button
                       variant="text"
@@ -432,29 +437,19 @@ export default function VeiledningerPage() {
 
                     {/* Action Buttons */}
                     <div className="mt-4 space-y-2">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <Button
-                          variant="primary"
-                          size="small"
-                          className="flex-1 justify-center"
-                          rightIcon={<ChevronRight className="h-4 w-4" />}
-                          onClick={() => handleOpenGuide(guide.id)}
-                        >
-                          Gå til veiledning
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          size="small"
-                          leftIcon={<FileCheck className="h-4 w-4" />}
-                          onClick={() =>
-                            setExpandedGuideId((prev) =>
-                              prev === guide.id ? null : guide.id
-                            )
-                          }
-                        >
-                          {expandedGuideId === guide.id ? "Skjul" : "Dokumenter"}
-                        </Button>
-                      </div>
+                      <Button
+                        variant="primary"
+                        size="small"
+                        className="w-full justify-center"
+                        leftIcon={<FileCheck className="h-4 w-4" />}
+                        onClick={() =>
+                          setExpandedGuideId((prev) =>
+                            prev === guide.id ? null : guide.id
+                          )
+                        }
+                      >
+                        {expandedGuideId === guide.id ? "Skjul dokumenthjelp" : "Forbered dokumenter"}
+                      </Button>
                       <button
                         type="button"
                         className="text-sm font-medium text-[var(--color-primary)] underline-offset-2 transition-colors hover:underline"

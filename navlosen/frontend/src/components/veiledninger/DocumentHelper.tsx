@@ -190,11 +190,6 @@ export default function DocumentHelper({
 
   return (
     <div className="space-y-4">
-      {/* Debug Info */}
-      <p className="text-xs text-gray-600 bg-yellow-100 p-2 rounded">
-        DEBUG: DocumentHelper rendret for "{documentType}"
-      </p>
-
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-3">
         {/* Upload File */}
