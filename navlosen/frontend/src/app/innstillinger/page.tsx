@@ -185,9 +185,9 @@ export default function InnstillingerPage() {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto py-8">
+      <div className="space-y-8">
         {/* Hero Section */}
-        <div className="relative mb-8 rounded-2xl bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 p-8 overflow-hidden">
+        <div className="relative rounded-2xl bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 p-8 overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-purple-100 rounded-full -mr-32 -mt-32 opacity-50"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-100 rounded-full -ml-24 -mb-24 opacity-50"></div>
 
@@ -208,7 +208,7 @@ export default function InnstillingerPage() {
 
         {/* Success Messages */}
         {dataExported && (
-          <div className="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded">
+          <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded">
             <p className="text-sm text-green-800 font-medium">
               ✅ Data eksportert! Filen er lastet ned.
             </p>
@@ -216,7 +216,7 @@ export default function InnstillingerPage() {
         )}
 
         {dataDeleted && (
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded">
+          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
             <p className="text-sm text-blue-800 font-medium">
               ✅ All data er slettet. Sender deg tilbake til startsiden...
             </p>
@@ -224,7 +224,7 @@ export default function InnstillingerPage() {
         )}
 
         {/* Account Section */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center gap-3 mb-4">
             <User className="h-6 w-6 text-indigo-600" />
             <h2 className="text-xl font-semibold text-gray-900">Konto</h2>
@@ -280,7 +280,7 @@ export default function InnstillingerPage() {
         </div>
 
         {/* Notification Settings */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center gap-3 mb-4">
             <Bell className="h-6 w-6 text-yellow-600" />
             <h2 className="text-xl font-semibold text-gray-900">Varsler</h2>
@@ -359,7 +359,7 @@ export default function InnstillingerPage() {
         </div>
 
         {/* Appearance Settings */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center gap-3 mb-4">
             <Globe className="h-6 w-6 text-purple-600" />
             <h2 className="text-xl font-semibold text-gray-900">Utseende</h2>
@@ -418,7 +418,7 @@ export default function InnstillingerPage() {
         </div>
 
         {/* Data Overview */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center gap-3 mb-4">
             <Database className="h-6 w-6 text-blue-600" />
             <h2 className="text-xl font-semibold text-gray-900">Dine Data</h2>
@@ -456,7 +456,7 @@ export default function InnstillingerPage() {
         </div>
 
         {/* Data Actions */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center gap-3 mb-4">
             <Shield className="h-6 w-6 text-purple-600" />
             <h2 className="text-xl font-semibold text-gray-900">Data-kontroll</h2>
