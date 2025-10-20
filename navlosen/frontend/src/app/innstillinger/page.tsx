@@ -1,9 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Layout from "@/components/layout/Layout";
 import Button from "@/components/ui/Button";
-import { Download, Trash2, Shield, Database, AlertTriangle } from "lucide-react";
+import GoogleSignIn from "@/components/auth/GoogleSignIn";
+import { useGoogleAuth } from "@/contexts/GoogleAuthContext";
+import {
+  Download,
+  Trash2,
+  Shield,
+  Database,
+  AlertTriangle,
+  Settings,
+  Bell,
+  Moon,
+  Sun,
+  Globe,
+  Lock,
+  User,
+  LogOut,
+  ChevronRight,
+} from "lucide-react";
 
 /**
  * Innstillinger (Settings) Page
@@ -25,10 +44,22 @@ import { Download, Trash2, Shield, Database, AlertTriangle } from "lucide-react"
  */
 
 export default function InnstillingerPage() {
+  const router = useRouter();
+  const { user, isAuthenticated, signOut, hasCalendarAccess, hasGmailAccess } = useGoogleAuth();
+
   const [dataSize, setDataSize] = useState<number>(0);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [dataDeleted, setDataDeleted] = useState(false);
   const [dataExported, setDataExported] = useState(false);
+
+  // Notification settings
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [pushNotifications, setPushNotifications] = useState(true);
+  const [reminderNotifications, setReminderNotifications] = useState(true);
+
+  // Appearance settings
+  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState("no");
 
   // Calculate total localStorage size on mount
   useEffect(() => {
@@ -40,8 +71,32 @@ export default function InnstillingerPage() {
         }
       }
       setDataSize(totalSize);
+
+      // Load settings from localStorage
+      const savedEmailNotif = localStorage.getItem("navlosen_settings_email_notif");
+      const savedPushNotif = localStorage.getItem("navlosen_settings_push_notif");
+      const savedReminderNotif = localStorage.getItem("navlosen_settings_reminder_notif");
+      const savedDarkMode = localStorage.getItem("navlosen_settings_dark_mode");
+      const savedLanguage = localStorage.getItem("navlosen_settings_language");
+
+      if (savedEmailNotif !== null) setEmailNotifications(savedEmailNotif === "true");
+      if (savedPushNotif !== null) setPushNotifications(savedPushNotif === "true");
+      if (savedReminderNotif !== null) setReminderNotifications(savedReminderNotif === "true");
+      if (savedDarkMode !== null) setDarkMode(savedDarkMode === "true");
+      if (savedLanguage) setLanguage(savedLanguage);
     }
   }, []);
+
+  // Save settings to localStorage when they change
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("navlosen_settings_email_notif", String(emailNotifications));
+      localStorage.setItem("navlosen_settings_push_notif", String(pushNotifications));
+      localStorage.setItem("navlosen_settings_reminder_notif", String(reminderNotifications));
+      localStorage.setItem("navlosen_settings_dark_mode", String(darkMode));
+      localStorage.setItem("navlosen_settings_language", language);
+    }
+  }, [emailNotifications, pushNotifications, reminderNotifications, darkMode, language]);
 
   /**
    * Export all localStorage data as JSON
@@ -131,11 +186,24 @@ export default function InnstillingerPage() {
   return (
     <Layout>
       <div className="max-w-4xl mx-auto py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Innstillinger</h1>
-          <p className="text-lg text-gray-600">
-            Administrer dine data og personvern
-          </p>
+        {/* Hero Section */}
+        <div className="relative mb-8 rounded-2xl bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 p-8 overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-purple-100 rounded-full -mr-32 -mt-32 opacity-50"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-100 rounded-full -ml-24 -mb-24 opacity-50"></div>
+
+          <div className="relative flex items-start gap-6">
+            <div className="flex-shrink-0">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center shadow-lg">
+                <Settings className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Innstillinger</h1>
+              <p className="text-lg text-gray-700">
+                Administrer din konto, preferanser og personvern
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Success Messages */}
@@ -154,6 +222,200 @@ export default function InnstillingerPage() {
             </p>
           </div>
         )}
+
+        {/* Account Section */}
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <User className="h-6 w-6 text-indigo-600" />
+            <h2 className="text-xl font-semibold text-gray-900">Konto</h2>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  Google-konto
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {isAuthenticated
+                    ? "Koblet til for kalender og e-post integrasjon"
+                    : "Koble til Google for kalender og e-post integrasjon"}
+                </p>
+              </div>
+              <GoogleSignIn />
+            </div>
+
+            {isAuthenticated && user && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 border border-gray-200 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lock className="h-4 w-4 text-green-600" />
+                    <span className="text-sm font-medium text-gray-900">
+                      Kalendertilgang
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    {hasCalendarAccess
+                      ? "✓ Aktivert - kan opprette kalenderavtaler"
+                      : "○ Ikke aktivert"}
+                  </p>
+                </div>
+
+                <div className="p-4 border border-gray-200 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lock className="h-4 w-4 text-green-600" />
+                    <span className="text-sm font-medium text-gray-900">
+                      E-post tilgang
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    {hasGmailAccess
+                      ? "✓ Aktivert - kan sende e-post"
+                      : "○ Ikke aktivert"}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Notification Settings */}
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Bell className="h-6 w-6 text-yellow-600" />
+            <h2 className="text-xl font-semibold text-gray-900">Varsler</h2>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  E-postvarsler
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Motta oppdateringer og påminnelser på e-post
+                </p>
+              </div>
+              <button
+                onClick={() => setEmailNotifications(!emailNotifications)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  emailNotifications ? "bg-blue-600" : "bg-gray-200"
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    emailNotifications ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  Push-varsler
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Motta varsler direkte i nettleseren
+                </p>
+              </div>
+              <button
+                onClick={() => setPushNotifications(!pushNotifications)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  pushNotifications ? "bg-blue-600" : "bg-gray-200"
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    pushNotifications ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  Påminnelser
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Motta påminnelser om frister og møter
+                </p>
+              </div>
+              <button
+                onClick={() => setReminderNotifications(!reminderNotifications)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  reminderNotifications ? "bg-blue-600" : "bg-gray-200"
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    reminderNotifications ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Appearance Settings */}
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Globe className="h-6 w-6 text-purple-600" />
+            <h2 className="text-xl font-semibold text-gray-900">Utseende</h2>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  Mørk modus
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Bytt mellom lyst og mørkt tema
+                </p>
+              </div>
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  darkMode ? "bg-gray-800" : "bg-gray-200"
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform flex items-center justify-center ${
+                    darkMode ? "translate-x-6" : "translate-x-1"
+                  }`}
+                >
+                  {darkMode ? (
+                    <Moon className="h-3 w-3 text-gray-800" />
+                  ) : (
+                    <Sun className="h-3 w-3 text-yellow-500" />
+                  )}
+                </span>
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  Språk
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Velg foretrukket språk for applikasjonen
+                </p>
+              </div>
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="no">Norsk</option>
+                <option value="en">English</option>
+                <option value="sv">Svenska</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
         {/* Data Overview */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
