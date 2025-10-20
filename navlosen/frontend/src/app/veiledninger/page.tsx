@@ -489,17 +489,17 @@ export default function VeiledningerPage() {
           </section>
 
           {/* Support CTA */}
-          <section className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 rounded-3xl border border-blue-200 bg-gradient-to-r from-blue-500 to-purple-500 p-8 text-white shadow-lg">
-            <div className="space-y-2 flex-1">
+          <section className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 rounded-3xl border border-blue-200 bg-gradient-to-r from-blue-500 to-purple-500 p-8 text-white shadow-lg">
+            <div className="space-y-2 md:flex-1">
               <h2 className="text-2xl font-bold">
                 Trenger du hjelp med neste steg?
               </h2>
-              <p className="text-sm text-white/90 max-w-2xl">
+              <p className="text-sm text-white/90">
                 Kontakt NAV-veileder eller lagre veiledningen til senere. Vi
                 synkroniserer det du gjør her med Min Reise-dashbordet ditt.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3 md:flex-shrink-0">
+            <div className="flex flex-col sm:flex-row gap-3 md:flex-shrink-0">
               <Button
                 variant="secondary"
                 size="medium"
