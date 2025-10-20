@@ -3,6 +3,8 @@
  * Created: 20. oktober 2025
  * Author: Manus (Agent #8)
  * Description: Chat with Lira for empathetic support and guidance
+ * 
+ * UPDATED: Dag 5 - QDA v2.0 Integration
  */
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -18,6 +20,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { supabase } from '../services/supabase';
+import { API_ENDPOINTS, FEATURES, TIMEOUTS } from '../config';
 
 interface Message {
   id: string;
@@ -29,7 +32,7 @@ interface Message {
 export default function LiraChatScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { quadrant, emotion, pressureSignals = [] } = route.params;
+  const { quadrant, emotion, pressureSignals = [], stressLevel = 5 } = route.params;
   
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
@@ -74,15 +77,14 @@ export default function LiraChatScreen() {
     setIsTyping(true);
 
     try {
-      // In MVP: Use mock response
-      // In production: Call OpenAI API via Supabase Edge Function
-      
-      const response = await generateLiraResponse(userMessage);
+      const response = FEATURES.USE_QDA_API
+        ? await generateQDAResponse(userMessage)
+        : await generateMockResponse(userMessage);
       
       setTimeout(() => {
         addMessage('lira', response);
         setIsTyping(false);
-      }, 1500);
+      }, TIMEOUTS.FALLBACK_DELAY);
       
     } catch (error) {
       console.error('Error sending message:', error);
@@ -91,8 +93,112 @@ export default function LiraChatScreen() {
     }
   };
 
-  const generateLiraResponse = async (userMessage: string): Promise<string> => {
-    // Mock responses for MVP
+  /**
+   * QDA v2.0 API Integration
+   * Calls Web Console /api/qda/respond endpoint
+   */
+  const generateQDAResponse = async (userMessage: string): Promise<string> => {
+    try {
+      // Calculate polyvagal state based on stress level
+      const polyvagalState = calculatePolyvagalState(stressLevel);
+      const arousal = calculateArousal(stressLevel);
+      const valence = calculateValence(quadrant);
+
+      // Build request payload
+      const payload = {
+        message: userMessage,
+        context: {
+          quadrant: quadrant,
+          emotion: emotion,
+          emotionWords: [],
+          pressureSignals: pressureSignals,
+          sessionHistory: messages.map(m => ({
+            role: m.role === 'user' ? 'user' : 'assistant',
+            content: m.content,
+            timestamp: m.timestamp.getTime(),
+          })),
+        },
+        userState: {
+          stressLevel: stressLevel,
+          polyvagalState: polyvagalState,
+          arousal: arousal,
+          valence: valence,
+        },
+      };
+
+      if (FEATURES.ENABLE_DEBUG_LOGS) {
+        console.log('[QDA] Request:', JSON.stringify(payload, null, 2));
+      }
+
+      // Call QDA API with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), TIMEOUTS.QDA_REQUEST);
+
+      const response = await fetch(API_ENDPOINTS.QDA_RESPOND, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (FEATURES.ENABLE_DEBUG_LOGS) {
+        console.log('[QDA] Response:', {
+          layers: data.layers?.map((l: any) => l.layer_name),
+          cost: data.total_cost,
+          time: data.total_time,
+          highest_layer: data.highest_layer_used,
+        });
+      }
+
+      return data.response;
+    } catch (error) {
+      console.error('[QDA] Error:', error);
+      // Fallback to mock response
+      return generateMockResponse(userMessage);
+    }
+  };
+
+  /**
+   * Helper: Calculate polyvagal state from stress level
+   */
+  const calculatePolyvagalState = (stressLevel: number): 'dorsal' | 'sympathetic' | 'ventral' => {
+    if (stressLevel >= 8) return 'dorsal';
+    if (stressLevel >= 5) return 'sympathetic';
+    return 'ventral';
+  };
+
+  /**
+   * Helper: Calculate arousal from stress level
+   */
+  const calculateArousal = (stressLevel: number): number => {
+    return stressLevel / 10.0; // Simple mapping: 0-10 → 0.0-1.0
+  };
+
+  /**
+   * Helper: Calculate valence from quadrant
+   */
+  const calculateValence = (quadrant?: string): number => {
+    if (!quadrant) return 0.0;
+    if (quadrant.includes('positivt')) return 0.5;
+    if (quadrant.includes('negativt')) return -0.5;
+    return 0.0;
+  };
+
+  /**
+   * Mock response (fallback)
+   * Used when QDA API is unavailable or disabled
+   */
+  const generateMockResponse = async (userMessage: string): Promise<string> => {
     const responses = [
       'Jeg hører deg. Det høres ut som en utfordrende situasjon. Kan du fortelle meg mer om hva som skjer?',
       'Takk for at du deler dette med meg. Dine følelser er helt gyldige. Hva tror du ville hjelpe deg akkurat nå?',
