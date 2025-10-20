@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Layout from "@/components/layout/Layout";
 import Button from "@/components/ui/Button";
+import GoogleSignIn from "@/components/auth/GoogleSignIn";
+import { useGoogleAuth } from "@/contexts/GoogleAuthContext";
 import {
   Briefcase,
   Search,
@@ -25,6 +27,11 @@ import {
   CheckCircle2,
   Loader2,
   AlertCircle,
+  Mail,
+  Send,
+  Inbox,
+  FolderOpen,
+  X,
 } from "lucide-react";
 
 type JobCategory = "Alle" | "Helse" | "Service" | "Teknologi" | "Håndverk" | "Kontor";
@@ -100,12 +107,20 @@ const categories: JobCategory[] = ["Alle", "Helse", "Service", "Teknologi", "Hå
 
 export default function JobbPage() {
   const router = useRouter();
+  const { isAuthenticated, hasGmailAccess, requestGmailAccess } = useGoogleAuth();
   const [selectedCategory, setSelectedCategory] = useState<JobCategory>("Alle");
   const [searchTerm, setSearchTerm] = useState("");
   const [jobListings, setJobListings] = useState<JobListing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [useMockData, setUseMockData] = useState(false);
+
+  // Gmail state
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<JobListing | null>(null);
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailBody, setEmailBody] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
   // Fetch jobs from API
   useEffect(() => {
@@ -200,6 +215,51 @@ export default function JobbPage() {
       year: "numeric"
     });
   }
+
+  // Handle opening email modal
+  const handleApplyWithEmail = (job: JobListing) => {
+    if (!hasGmailAccess) {
+      requestGmailAccess();
+      return;
+    }
+
+    setSelectedJob(job);
+    setEmailSubject(`Søknad på stilling som ${job.title} hos ${job.company}`);
+    setEmailBody(
+      `Hei,\n\n` +
+      `Jeg ønsker å søke på stillingen som ${job.title} hos ${job.company}.\n\n` +
+      `[Skriv din søknad her...]\n\n` +
+      `Med vennlig hilsen,\n` +
+      `[Ditt navn]`
+    );
+    setShowEmailModal(true);
+  };
+
+  // Handle sending email
+  const handleSendEmail = async () => {
+    setIsSending(true);
+
+    // Simulate sending
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    setIsSending(false);
+    setShowEmailModal(false);
+
+    alert(
+      "Demo-modus: E-post sendt via Gmail\n\n" +
+      `E-post til ${selectedJob?.company} er sendt!\n\n` +
+      "I produksjon ville dette:\n" +
+      "• Sende e-post via Gmail API\n" +
+      "• Lagre kopi i 'Sendt'-mappen\n" +
+      "• Spore svar fra arbeidsgiver\n" +
+      "• Organisere søknader i egne mapper\n" +
+      "• Varsle deg når du får svar"
+    );
+
+    setSelectedJob(null);
+    setEmailSubject("");
+    setEmailBody("");
+  };
 
   return (
     <Layout>
@@ -479,17 +539,27 @@ export default function JobbPage() {
                   <div className="mt-4 rounded-xl bg-gray-50 p-3 text-xs text-[var(--color-text-tertiary)]">
                     Søknadsfrist: {job.deadline}
                   </div>
-                  <div className="mt-4 flex gap-2">
+                  <div className="mt-4 flex flex-col gap-2">
+                    <div className="flex gap-2">
+                      <Button
+                        variant="primary"
+                        size="small"
+                        className="flex-1"
+                        rightIcon={<ChevronRight className="h-4 w-4" />}
+                      >
+                        Se annonse
+                      </Button>
+                      <Button variant="secondary" size="small">
+                        Lagre
+                      </Button>
+                    </div>
                     <Button
-                      variant="primary"
+                      variant="secondary"
                       size="small"
-                      className="flex-1"
-                      rightIcon={<ChevronRight className="h-4 w-4" />}
+                      leftIcon={<Mail className="h-4 w-4" />}
+                      onClick={() => handleApplyWithEmail(job)}
                     >
-                      Se annonse
-                    </Button>
-                    <Button variant="secondary" size="small">
-                      Lagre
+                      {hasGmailAccess ? "Søk via Gmail" : "Aktiver Gmail"}
                     </Button>
                   </div>
                 </article>
@@ -678,6 +748,123 @@ export default function JobbPage() {
           </div>
         </section>
       </div>
+
+      {/* Gmail Email Modal */}
+      {showEmailModal && selectedJob && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-3xl rounded-2xl bg-white shadow-xl">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-gray-200 p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+                  <Mail className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Send søknad via Gmail
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    {selectedJob.company} - {selectedJob.title}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setShowEmailModal(false);
+                  setSelectedJob(null);
+                }}
+                className="rounded-lg p-2 hover:bg-gray-100"
+              >
+                <X className="h-6 w-6 text-gray-600" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-4">
+              {/* Email Subject */}
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Emne
+                </label>
+                <input
+                  type="text"
+                  value={emailSubject}
+                  onChange={(e) => setEmailSubject(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+
+              {/* Email Body */}
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Melding
+                </label>
+                <textarea
+                  value={emailBody}
+                  onChange={(e) => setEmailBody(e.target.value)}
+                  rows={12}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 font-mono text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+
+              {/* Features Info */}
+              <div className="rounded-lg bg-blue-50 p-4">
+                <p className="text-sm font-medium text-blue-900 mb-2">
+                  📧 Gmail-integrasjon aktiv
+                </p>
+                <ul className="space-y-1 text-xs text-blue-800">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3" />
+                    E-posten sendes via din Gmail-konto
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3" />
+                    Kopi lagres automatisk i 'Sendt'-mappen
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3" />
+                    Du får varsling når arbeidsgiveren svarer
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3" />
+                    Organiseres i egen mappe for jobbsøknader
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex justify-end gap-3 border-t border-gray-200 p-6">
+              <Button
+                variant="secondary"
+                size="medium"
+                onClick={() => {
+                  setShowEmailModal(false);
+                  setSelectedJob(null);
+                }}
+                disabled={isSending}
+              >
+                Avbryt
+              </Button>
+              <Button
+                variant="primary"
+                size="medium"
+                leftIcon={
+                  isSending ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Send className="h-5 w-5" />
+                  )
+                }
+                onClick={handleSendEmail}
+                disabled={isSending || !emailSubject.trim() || !emailBody.trim()}
+              >
+                {isSending ? "Sender..." : "Send søknad"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }

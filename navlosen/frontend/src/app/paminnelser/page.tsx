@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Layout from "@/components/layout/Layout";
 import Button from "@/components/ui/Button";
+import GoogleSignIn from "@/components/auth/GoogleSignIn";
+import { useGoogleAuth } from "@/contexts/GoogleAuthContext";
 import {
   Bell,
   Plus,
@@ -20,6 +22,7 @@ import {
   AlertCircle,
   CheckCircle,
   MessageCircle,
+  RefreshCw,
 } from "lucide-react";
 
 type ReminderCategory = "Alle" | "Meldekort" | "Møter" | "Dokumenter" | "Søknader" | "Annet";
@@ -47,6 +50,7 @@ interface Reminder {
  */
 export default function PaminnelserPage() {
   const router = useRouter();
+  const { isAuthenticated, hasCalendarAccess, requestCalendarAccess } = useGoogleAuth();
 
   // Reminder state
   const [reminders, setReminders] = useState<Reminder[]>([]);
@@ -54,6 +58,7 @@ export default function PaminnelserPage() {
   const [selectedCategory, setSelectedCategory] = useState<ReminderCategory>("Alle");
   const [selectedPriority, setSelectedPriority] = useState<ReminderPriority | "Alle">("Alle");
   const [showCompleted, setShowCompleted] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Form state
   const [showForm, setShowForm] = useState(false);
@@ -242,6 +247,31 @@ export default function PaminnelserPage() {
           ? { ...r, status: r.status === "Fullført" ? "Aktiv" : "Fullført" }
           : r
       )
+    );
+  };
+
+  // Sync with Google Calendar
+  const handleCalendarSync = async () => {
+    if (!hasCalendarAccess) {
+      await requestCalendarAccess();
+      return;
+    }
+
+    setIsSyncing(true);
+
+    // Simulate sync
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    setIsSyncing(false);
+
+    alert(
+      "Demo-modus: Google Calendar synkronisering\n\n" +
+      `${reminders.filter(r => r.status === "Aktiv").length} påminnelser ble synkronisert til Google Calendar.\n\n` +
+      "I produksjon ville dette:\n" +
+      "• Opprette kalenderhendelser for hver påminnelse\n" +
+      "• Legge til varsler basert på forfallsdato\n" +
+      "• Holde endringer synkronisert begge veier\n" +
+      "• Importere hendelser fra Google Calendar som påminnelser"
     );
   };
 
@@ -562,6 +592,75 @@ export default function PaminnelserPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              )}
+            </div>
+
+            {/* Google Calendar Integration */}
+            <div className="border-t border-gray-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+              <div className="mb-4 flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="mb-2 flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-blue-600" />
+                    <h3 className="font-semibold text-gray-900">
+                      Google Calendar Synkronisering
+                    </h3>
+                  </div>
+                  <p className="mb-3 text-sm text-gray-600">
+                    {hasCalendarAccess
+                      ? "Synkroniser påminnelser med din Google Calendar for å få varsler på alle enheter"
+                      : "Koble til Google Calendar for automatisk synkronisering av påminnelser"}
+                  </p>
+                  {hasCalendarAccess && (
+                    <div className="flex flex-wrap gap-2 text-xs text-gray-600">
+                      <span className="flex items-center gap-1 rounded-full bg-white px-2 py-1">
+                        <CheckCircle className="h-3 w-3 text-green-600" />
+                        Tilgang gitt
+                      </span>
+                      <span className="flex items-center gap-1 rounded-full bg-white px-2 py-1">
+                        <Clock className="h-3 w-3 text-blue-600" />
+                        {stats.active} aktive påminnelser
+                      </span>
+                    </div>
+                  )}
+                </div>
+                {!isAuthenticated && (
+                  <div className="ml-4">
+                    <GoogleSignIn />
+                  </div>
+                )}
+              </div>
+
+              {isAuthenticated && (
+                <div className="flex gap-2">
+                  <Button
+                    variant={hasCalendarAccess ? "primary" : "secondary"}
+                    size="medium"
+                    leftIcon={
+                      isSyncing ? (
+                        <RefreshCw className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <RefreshCw className="h-5 w-5" />
+                      )
+                    }
+                    onClick={handleCalendarSync}
+                    disabled={isSyncing}
+                  >
+                    {isSyncing
+                      ? "Synkroniserer..."
+                      : hasCalendarAccess
+                      ? "Synkroniser nå"
+                      : "Aktiver synkronisering"}
+                  </Button>
+                </div>
+              )}
+
+              {!isAuthenticated && (
+                <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+                  <p className="text-sm text-blue-800">
+                    💡 Logg inn med Google for å aktivere automatisk synkronisering med
+                    Google Calendar
+                  </p>
                 </div>
               )}
             </div>
