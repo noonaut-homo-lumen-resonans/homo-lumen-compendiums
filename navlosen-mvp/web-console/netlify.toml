@@ -1,6 +1,2 @@
-[build]
-  command = "npm run build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/"
-  publish = ".next/standalone"
-
-[build.environment]
-  NODE_VERSION = "22"
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
