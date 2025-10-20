@@ -196,7 +196,7 @@ export default function DocumentHelper({
         <Button
           variant="secondary"
           size="medium"
-          leftIcon={<Upload className="h-5 w-5" />}
+          leftIcon={<Upload className="h-5 w-5 flex-shrink-0" />}
           onClick={() => fileInputRef.current?.click()}
         >
           Last opp dokument
@@ -215,7 +215,7 @@ export default function DocumentHelper({
         <Button
           variant="secondary"
           size="medium"
-          leftIcon={<Camera className="h-5 w-5" />}
+          leftIcon={<Camera className="h-5 w-5 flex-shrink-0" />}
           onClick={() => cameraInputRef.current?.click()}
         >
           Ta bilde
@@ -234,7 +234,7 @@ export default function DocumentHelper({
         <Button
           variant={isRecording ? "destructive" : "secondary"}
           size="medium"
-          leftIcon={<Mic className="h-5 w-5" />}
+          leftIcon={<Mic className="h-5 w-5 flex-shrink-0" />}
           onClick={handleVoiceRecording}
         >
           {isRecording ? `Stopp (${formatRecordingTime(recordingTime)})` : "Snakk inn"}
