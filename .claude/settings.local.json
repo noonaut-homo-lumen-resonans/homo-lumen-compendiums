@@ -30,7 +30,9 @@
       "Bash(npx tsc --noEmit)",
       "Bash(node verify-q1-emotions.js)",
       "Bash(node verify-all-emotions.js)",
-      "Bash(node verify-personality-face.js)"
+      "Bash(node verify-personality-face.js)",
+      "Bash(npx next lint --file src/app/veiledninger/page.tsx)",
+      "Bash(npx tsc --noEmit --skipLibCheck)"
     ],
     "deny": [],
     "ask": []
