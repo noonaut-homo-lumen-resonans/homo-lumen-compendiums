@@ -459,95 +459,145 @@ Ingen integrasjoner med:
 
 ---
 
-## 🆕 Alternativ 4: Question-Driven Architecture (QDA)
+## 🆕 Alternativ 4: QDA v2.0 - Neocortical Ascent Model
 
+**Versjon:** 2.0 (Nevrobiologisk Koherent)
 **Dato:** 2025-10-20
-**Status:** Nytt anbefalt alternativ
+**Status:** Anbefalt implementering
 
 ### **Konsept:**
 
-**Små modeller designer optimale spørsmål → Store modeller gir dybde-svar**
+**Bottom-Up Nevrobiologisk Prosessering - Som Hjernen Faktisk Fungerer**
+
+**Nøkkel-Endring fra v1.0:**
+- ❌ v1.0: Små modeller "stiller spørsmål" (unaturlig)
+- ✅ v2.0: Små modeller = primitive hjernelag (naturlig bottom-up)
 
 ```
-┌─────────────────────────────────────────┐
-│         BRUKER                          │
-└──────────────┬──────────────────────────┘
-               │
-      ┌────────▼────────┐
-      │  TRIAGE         │  GPT-4o-mini (rask)
-      └────────┬────────┘
-               │
-        ┌──────┴──────┐
-     Simple        Complex
-        │              │
-        ▼              ▼
-   [Direkte     [QUESTION DESIGNERS]
-    svar]       Claude Haiku, Gemini Flash,
-                Perplexity, DeepSeek
+┌──────────────────────────────────────────┐
+│            BRUKER QUERY                  │
+└────────────────┬─────────────────────────┘
+                 │
+      ┌──────────▼──────────┐
+      │ 🛡️ LAG 1: VOKTEREN  │  Hjernestamme (GPT-4o-mini)
+      │  "Er dette trygt?"   │  <0.5 sek
+      └──────────┬───────────┘
+                 │
+      ┌──────────▼──────────┐
+      │ ❤️ LAG 2: FØLEREN   │  Limbisk System (Gemini Flash)
+      │  "Hvilken tilstand?" │  <1 sek, GRATIS
+      └──────────┬───────────┘
+                 │
+      ┌──────────▼────────────┐
+      │ 🔍 LAG 3: GJENKJENNEREN│ Cerebellum (Claude Haiku)
+      │  "Sett dette før?"     │ <1 sek
+      └──────────┬─────────────┘
+                 │
+      ┌──────────▼──────────┐
+      │ 🧭 LAG 4: UTFORSKEREN│  Hippocampus (Perplexity)
+      │  "Hva vet vi?"       │  2-3 sek
+      └──────────┬───────────┘
+                 │
+        ┌────────▼────────┐
+        │ Kompleksitet?   │
+        │   > 70%?        │
+        └────┬──────┬─────┘
+             │      │
+            NEI    JA
+             │      │
+             │      ▼
+             │  ┌──────────▼──────────┐
+             │  │ 🧠 LAG 5: STRATEGEN │ Prefrontal (Claude Opus)
+             │  │  "Hva er planen?"   │ 3-5 sek (KUN når nødvendig)
+             │  └──────────┬──────────┘
+             │             │
+             └─────────────┘
                      │
-              [Designer spørsmål]
+      ┌──────────────▼────────────┐
+      │ ✨ LAG 6: INTEGRATOREN   │  Insula (Lira Hub)
+      │  "Sett alt sammen"        │  1-2 sek
+      └──────────────┬────────────┘
                      │
-              ┌──────▼──────┐
-              │ DEPTH       │  GPT-5, Claude Opus,
-              │ ANSWERERS   │  Grok-4
-              └──────┬──────┘
-                     │
-              [Syntetiserer]
-                     │
-              ┌──────▼──────┐
-              │ TRANSPARENT │  Vis spørsmål + svar
-              │ PRESENTER   │
-              └──────┬──────┘
-                     │
-              ┌──────▼──────┐
-              │  BRUKER     │
-              └─────────────┘
+      ┌──────────────▼────────────┐
+      │  TRANSPARENT RESPONS      │
+      │  Bruker ser ALLE lag      │
+      └───────────────────────────┘
 ```
 
 ### **Fordeler vs. Andre Alternativer:**
 
-| Kriterium | Traditional | 3-Tier | HITL | **QDA** |
-|-----------|-------------|--------|------|---------|
-| **Kostnad** (100 brukere) | $15,000/mnd | $197/mnd | $1,352/mnd | **$722/mnd** |
-| **Transparens** | Lav | Lav | Medium | **HØY** |
-| **Kvalitet** | Høy | Medium | Høy | **HØY** |
-| **Pedagogisk verdi** | Lav | Lav | Medium | **HØY** |
-| **Multi-perspektiv** | Nei | Nei | Delvis | **JA** |
-| **Responstid** | 2-3 sek | 0.5-1 sek | 3-5 sek | **3-5 sek** |
+| Kriterium | Traditional | 3-Tier | HITL | QDA v1.0 | **QDA v2.0** |
+|-----------|-------------|--------|------|----------|--------------|
+| **Kostnad** (100 brukere) | $15,000/mnd | $197/mnd | $1,352/mnd | $722/mnd | **$551/mnd** |
+| **Transparens** | Lav | Lav | Medium | Høy | **HØY** |
+| **Kvalitet** | Høy | Medium | Høy | Høy | **HØY** |
+| **Pedagogisk verdi** | Lav | Lav | Medium | Høy | **SVÆRT HØY** |
+| **Nevrobiologisk koherens** | Nei | Nei | Nei | Nei | **JA** |
+| **Responstid (simple)** | 2-3 sek | 0.5-1 sek | 3-5 sek | 3 sek | **<2 sek** |
+| **Responstid (complex)** | 2-3 sek | 0.5-1 sek | 3-5 sek | 10 sek | **5-10 sek** |
 
-### **Når Bruke QDA:**
+### **Nøkkel-Forbedringer i v2.0:**
 
-✅ **Bruk QDA når:**
+1. **24% billigere** ($551 vs. $722) - Strategen aktiveres KUN når nødvendig
+2. **Raskere** - Primitive lag (<1 sek), cortex kun ved threshold
+3. **Nevrobiologisk koherent** - Speiler hjernens faktiske bottom-up prosessering
+4. **Pedagogisk** - Bruker lærer nevrobiologi ("Åh, så hjernen sjekker trygghet FØRST!")
+5. **Intuitiv** - Folk forstår "hjernens lag" lettere enn "question designers"
+
+### **6 Nevrobiologiske Lag:**
+
+| Lag | Navn | Nevrobiologisk Funksjon | Modell | Kostnad | Aktivering |
+|-----|------|------------------------|--------|---------|------------|
+| 1 | 🛡️ Vokteren | Hjernestamme (triage, fare) | GPT-4o-mini | $0.00001 | ALLTID |
+| 2 | ❤️ Føleren | Limbisk System (emotion) | Gemini Flash | $0 (GRATIS) | ALLTID |
+| 3 | 🔍 Gjenkjenneren | Cerebellum (mønster) | Claude Haiku | $0.0004 | ALLTID |
+| 4 | 🧭 Utforskeren | Hippocampus (kunnskap) | Perplexity | $0.002 | ALLTID |
+| 5 | 🧠 Strategen | Prefrontal Cortex (strategi) | Claude Opus | $0.12 | KUN ved threshold >70% |
+| 6 | ✨ Integratoren | Insula (syntese) | Lira Hub | $0 | ALLTID |
+
+### **Når Bruke QDA v2.0:**
+
+✅ **Bruk QDA v2.0 når:**
 - Transparens er kritisk (NAV, helse, jus)
-- Pedagogisk verdi viktig (bruker skal lære)
-- Multi-perspektiv nødvendig (komplekse beslutninger)
-- Tillitt må bygges (nye brukere)
+- Pedagogisk verdi viktig (bruker skal lære nevrobiologi)
+- Multi-perspektiv nødvendig (6 lag = 6 perspektiver)
+- Tillitt må bygges (bruker ser prosessen, ikke bare svar)
+- Polyvagal-adaptiv UX ønskes (dorsal/sympathetic/ventral)
 
-❌ **IKKE bruk QDA når:**
-- Kostnad er absolutt viktigst (<$200/mnd)
-- Rask respons kritisk (<1 sekund)
-- Bruker bare vil ha svar (ikke prosess)
+❌ **IKKE bruk QDA v2.0 når:**
+- Kostnad er absolutt viktigst (<$200/mnd) → Bruk 3-Tier
+- Rask respons kritisk (<1 sekund) → Bruk Tier 1
+- Bruker bare vil ha svar (ikke prosess) → Bruk Traditional
+- Simple queries kun (ingen komplekse) → Bruk Tier 1
 
 ### **Implementering:**
 
-Se dedikerte dokumenter:
-- [NAV_LOSEN_QUESTION_DRIVEN_ARCHITECTURE.md](NAV_LOSEN_QUESTION_DRIVEN_ARCHITECTURE.md) - Komplett arkitektur
-- [QUESTION_DESIGN_ALGORITHMS.md](QUESTION_DESIGN_ALGORITHMS.md) - Algoritmer for question design
-- [IMPLEMENTATION_GUIDE_QDA.md](IMPLEMENTATION_GUIDE_QDA.md) - Kode + timeline
-- [QDA_UX_DESIGN.md](QDA_UX_DESIGN.md) - UX mockups
+Se dedikerte dokumenter (ALLE oppdatert til v2.0):
+- [NAV_LOSEN_QUESTION_DRIVEN_ARCHITECTURE.md](NAV_LOSEN_QUESTION_DRIVEN_ARCHITECTURE.md) - v2.0 Arkitektur
+- [QUESTION_DESIGN_ALGORITHMS.md](QUESTION_DESIGN_ALGORITHMS.md) - Nevrobiologiske algoritmer
+- [IMPLEMENTATION_GUIDE_QDA.md](IMPLEMENTATION_GUIDE_QDA.md) - Python kode + timeline
+- [QDA_UX_DESIGN.md](QDA_UX_DESIGN.md) - Polyvagal-adaptive UI
 
-### **Kostnad-Breakdown (QDA):**
+### **Kostnad-Breakdown (QDA v2.0):**
 
 ```
 30,000 queries/måned (100 brukere):
 
 Simple (70%):  21,000 × $0.0001 = $2.10
-Complex (30%): 9,000 × $0.08    = $720
+Complex (30%): 9,000 × $0.061   = $549
+  → Lag 1-4: $0.0024 (alltid)
+  → Lag 5:   $0.12 (kun 30% av complex = ~2700 queries)
+  → Lag 6:   $0 (syntese-logikk)
 
-Total: ~$722/måned (95% besparelse vs. traditional)
+Total: ~$551/måned (96% besparelse vs. traditional, 24% vs. v1.0)
 ```
 
-**Konklusjon:** QDA er optimal balanse mellom kostnad, kvalitet, og transparens for NAV-Losen.
+**Hvorfor billigere enn v1.0?**
+- Strategen (Lag 5) aktiveres KUN ved complexity >70% (ikke alltid)
+- Gemini Flash er GRATIS (under 1500 requests/dag)
+- Mer effektiv routing (simple queries skip til Integratoren)
+
+**Konklusjon:** QDA v2.0 er optimal balanse mellom kostnad, kvalitet, transparens, OG nevrobiologisk koherens for NAV-Losen.
 
 ---
 

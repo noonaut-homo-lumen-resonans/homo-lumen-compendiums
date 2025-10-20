@@ -1,90 +1,361 @@
-# QDA UX Design Guide
+# QDA v2.0 UX Design: Nevrobiologisk Transparent Interface
 
-**Versjon:** 1.0
+**Versjon:** 2.0 (Nevrobiologisk Koherent)
 **Dato:** 2025-10-20
-**Formål:** UX mockups og interaktivitetsdesign for Question-Driven Architecture
+**Formål:** UX/UI design for nevrobiologisk transparent prosessering
 
 ---
 
-## 🎯 Designfilosofi
+## 🎯 Oversikt
 
-**Question-Driven Architecture (QDA)** krever spesiell UX-design fordi:
+Dette dokumentet beskriver UX/UI design for **QDA v2.0** med **Neocortical Ascent Model**.
 
-1. **Transparens er kjernen** - Bruker MÅ se spørsmålene, ikke bare svar
-2. **Polyvagal-adaptive** - UX endres basert på brukerens stress-tilstand
-3. **Pedagogisk** - Bruker lærer hvordan man tenker, ikke bare hva man skal gjøre
-4. **Ikke overveldende** - Mye informasjon, men strukturert og kollapsbar
+**Nøkkel-Prinsipper:**
+1. **Full transparens** - Bruker ser alle 6 nevrobiologiske lag
+2. **Polyvagal-adaptiv** - UI tilpasser seg brukerens emosjonelle tilstand
+3. **Pedagogisk** - Bruker lærer nevrobiologi gjennom bruk
+4. **Minimal kognitiv belastning** - Enkelt selv i dorsal state
 
 ---
 
-## 📱 Komponenter
+## 🧠 Nevrobiologisk Prosess-Visualisering
 
-### **1. QDATransparentCard**
+### **Konsept: "Hjernens Reise"**
 
-Hovedkomponent som viser hele QDA-flyten.
+Bruker ser sin query prosesseres gjennom 6 lag - akkurat som hjernen faktisk fungerer.
+
+```
+BRUKER QUERY
+    ↓
+🛡️ Vokteren (Hjernestamme) → "Trygt å fortsette"
+    ↓
+❤️ Føleren (Limbisk System) → "Dorsal state detektert"
+    ↓
+🔍 Gjenkjenneren (Cerebellum) → "Sett 3 ganger før"
+    ↓
+🧭 Utforskeren (Hippocampus) → "8-12 uker snitt"
+    ↓
+🧠 Strategen (Prefrontal) → "5-stegs plan" (kun hvis nødvendig)
+    ↓
+✨ Integratoren (Insula) → Helhetlig svar
+```
+
+---
+
+## 📱 React Components
+
+### **1. NeurobiologicalProcessDisplay (Main Container)**
 
 ```tsx
-// navlosen/frontend/src/components/qda/QDATransparentCard.tsx
+// navlosen/frontend/src/components/qda/NeurobiologicalProcessDisplay.tsx
 
 import React, { useState } from 'react';
-import { QuestionDisplay } from './QuestionDisplay';
-import { DepthResponseDisplay } from './DepthResponseDisplay';
-import { Card, CardHeader, CardContent, Collapse, IconButton } from '@mui/material';
-import { ExpandMore, ExpandLess } from '@mui/icons-material';
+import { Box, Stack, Typography, Collapse, IconButton, Chip } from '@mui/material';
+import { ExpandMore, ExpandLess, Psychology } from '@mui/icons-material';
+import { LayerCard } from './LayerCard';
+import { IntegratedResponse } from './IntegratedResponse';
 
 interface QDAResponse {
   user_query: string;
-  designed_questions: {
-    [expert: string]: string[];
+  final_response: string;
+  layer_outputs: {
+    [layerName: string]: {
+      layer_name: string;
+      icon: string;
+      data: any;
+      processing_time: number;
+      cost: number;
+    };
   };
-  depth_response: string;
-  agent_name: string;
-  polyvagal_state?: 'dorsal' | 'sympathetic' | 'ventral';
+  total_cost: number;
+  total_time: number;
 }
 
-export const QDATransparentCard: React.FC<{ response: QDAResponse }> = ({ response }) => {
-  const [showQuestions, setShowQuestions] = useState(true);
+export const NeurobiologicalProcessDisplay: React.FC<{
+  response: QDAResponse;
+  polyvagalState: 'dorsal' | 'sympathetic' | 'ventral';
+}> = ({ response, polyvagalState }) => {
+  // Polyvagal-adaptiv default state
+  const [showLayers, setShowLayers] = useState(
+    polyvagalState === 'ventral' // Kun åpen hvis bruker er i ventral state
+  );
+
+  const layerOrder = [
+    "Vokteren",
+    "Føleren",
+    "Gjenkjenneren",
+    "Utforskeren",
+    "Strategen",
+    "Integratoren"
+  ];
 
   // Polyvagal-adaptive colors
   const stateColors = {
-    dorsal: { bg: '#E8F5E9', border: '#4CAF50' },      // Grønn (trygg)
-    sympathetic: { bg: '#FFF3E0', border: '#FF9800' }, // Oransje (stress)
-    ventral: { bg: '#E3F2FD', border: '#2196F3' }      // Blå (rolig)
+    dorsal: {
+      primary: '#4CAF50',
+      bg: '#E8F5E9',
+      text: '#1B5E20'
+    },
+    sympathetic: {
+      primary: '#FF9800',
+      bg: '#FFF3E0',
+      text: '#E65100'
+    },
+    ventral: {
+      primary: '#2196F3',
+      bg: '#E3F2FD',
+      text: '#0D47A1'
+    },
   };
 
-  const colors = stateColors[response.polyvagal_state || 'ventral'];
+  const colors = stateColors[polyvagalState];
+
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: 900,
+        mx: 'auto',
+        p: 3,
+        borderRadius: 2,
+        backgroundColor: colors.bg,
+        border: `2px solid ${colors.primary}`,
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Psychology sx={{ fontSize: 40, color: colors.primary }} />
+          <Typography variant="h5" sx={{ color: colors.text, fontWeight: 600 }}>
+            Nevrobiologisk Prosessering
+          </Typography>
+        </Box>
+
+        <Chip
+          label={`${polyvagalState} state`}
+          sx={{
+            bgcolor: colors.primary,
+            color: 'white',
+            fontWeight: 600,
+            textTransform: 'capitalize'
+          }}
+        />
+      </Box>
+
+      {/* User Query Echo */}
+      <Box sx={{ mb: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Din spørsmål:
+        </Typography>
+        <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
+          "{response.user_query}"
+        </Typography>
+      </Box>
+
+      {/* Toggle Layers Button */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+        <IconButton
+          onClick={() => setShowLayers(!showLayers)}
+          sx={{
+            bgcolor: colors.primary,
+            color: 'white',
+            '&:hover': { bgcolor: colors.text },
+          }}
+        >
+          {showLayers ? <ExpandLess /> : <ExpandMore />}
+          <Typography variant="caption" sx={{ ml: 1 }}>
+            {showLayers ? 'Skjul prosess' : 'Vis hvordan jeg tenkte'}
+          </Typography>
+        </IconButton>
+      </Box>
+
+      {/* Layer Cards */}
+      <Collapse in={showLayers}>
+        <Stack spacing={2} sx={{ mb: 3 }}>
+          {layerOrder.map((layerName, index) => {
+            const layer = response.layer_outputs[layerName];
+            if (!layer) return null;
+
+            return (
+              <LayerCard
+                key={layerName}
+                layerName={layer.layer_name}
+                icon={layer.icon}
+                data={layer.data}
+                processingTime={layer.processing_time}
+                cost={layer.cost}
+                layerNumber={index + 1}
+                polyvagalState={polyvagalState}
+              />
+            );
+          })}
+        </Stack>
+      </Collapse>
+
+      {/* Integrated Response */}
+      <IntegratedResponse
+        response={response.final_response}
+        polyvagalState={polyvagalState}
+      />
+
+      {/* Footer Stats */}
+      <Box
+        sx={{
+          mt: 3,
+          pt: 2,
+          borderTop: `1px solid ${colors.primary}`,
+          display: 'flex',
+          justifyContent: 'space-between',
+          fontSize: '0.875rem',
+          color: 'text.secondary'
+        }}
+      >
+        <span>⏱️ Total tid: {response.total_time.toFixed(2)}s</span>
+        <span>💰 Kostnad: ${response.total_cost.toFixed(4)}</span>
+        <span>🧠 {Object.keys(response.layer_outputs).length} lag aktivert</span>
+      </Box>
+    </Box>
+  );
+};
+```
+
+---
+
+### **2. LayerCard (Individual Layer Display)**
+
+```tsx
+// navlosen/frontend/src/components/qda/LayerCard.tsx
+
+import React, { useState } from 'react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Chip,
+  Collapse,
+  IconButton
+} from '@mui/material';
+import { ExpandMore, ExpandLess, CheckCircle } from '@mui/icons-material';
+
+interface LayerCardProps {
+  layerName: string;
+  icon: string;
+  data: any;
+  processingTime: number;
+  cost: number;
+  layerNumber: number;
+  polyvagalState: 'dorsal' | 'sympathetic' | 'ventral';
+}
+
+export const LayerCard: React.FC<LayerCardProps> = ({
+  layerName,
+  icon,
+  data,
+  processingTime,
+  cost,
+  layerNumber,
+  polyvagalState
+}) => {
+  const [expanded, setExpanded] = useState(false);
+
+  // Layer-specific colors
+  const layerColors = {
+    Vokteren: '#FF6B6B',      // Red (alert/safety)
+    Føleren: '#FF8C94',       // Pink (emotion)
+    Gjenkjenneren: '#A8DADC', // Teal (pattern)
+    Utforskeren: '#457B9D',   // Blue (knowledge)
+    Strategen: '#1D3557',     // Dark blue (strategy)
+    Integratoren: '#F1FAEE',  // Light (synthesis)
+  };
+
+  const layerColor = layerColors[layerName] || '#757575';
+
+  // Get summary text based on layer
+  const getSummary = () => {
+    switch(layerName) {
+      case 'Vokteren':
+        return `${data.complexity} query detektert (trygt: ${data.safe ? '✓' : '✗'})`;
+      case 'Føleren':
+        return `${data.polyvagal_state} state, følelse: ${data.primary_emotion}`;
+      case 'Gjenkjenneren':
+        return data.pattern_detected
+          ? `Mønster funnet (${data.previous_occurrences}x før)`
+          : 'Ingen tidligere mønster';
+      case 'Utforskeren':
+        return `Tidslinje: ${data.avg_timeline}`;
+      case 'Strategen':
+        return data.activated
+          ? `${data.action_steps?.length || 0}-stegs plan (${data.timeline})`
+          : 'Ikke aktivert (lav kompleksitet)';
+      case 'Integratoren':
+        return `${data.tone} tone valgt`;
+      default:
+        return 'Prosessert';
+    }
+  };
 
   return (
     <Card
       sx={{
-        backgroundColor: colors.bg,
-        borderLeft: `4px solid ${colors.border}`,
-        marginBottom: 2
+        borderLeft: `6px solid ${layerColor}`,
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: 4,
+          transform: 'translateX(4px)',
+        },
       }}
     >
-      <CardHeader
-        title={
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span>💬 {response.agent_name}</span>
-            <IconButton onClick={() => setShowQuestions(!showQuestions)}>
-              {showQuestions ? <ExpandLess /> : <ExpandMore />}
-            </IconButton>
-          </div>
-        }
-        subheader={`Du sa: "${response.user_query}"`}
-      />
-
       <CardContent>
-        {/* Questions Section (collapsible) */}
-        <Collapse in={showQuestions}>
-          <QuestionDisplay questions={response.designed_questions} />
-        </Collapse>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* Layer Header */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
+            <Typography variant="h4">{icon}</Typography>
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">
+                Lag {layerNumber}
+              </Typography>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                {layerName}
+              </Typography>
+            </Box>
+          </Box>
 
-        {/* Depth Response (always visible) */}
-        <DepthResponseDisplay
-          response={response.depth_response}
-          agentName={response.agent_name}
-        />
+          {/* Stats */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Chip
+              icon={<CheckCircle />}
+              label={`${(processingTime * 1000).toFixed(0)}ms`}
+              size="small"
+              color="success"
+              variant="outlined"
+            />
+            {cost > 0 && (
+              <Chip
+                label={`$${cost.toFixed(4)}`}
+                size="small"
+                variant="outlined"
+              />
+            )}
+            <IconButton size="small" onClick={() => setExpanded(!expanded)}>
+              {expanded ? <ExpandLess /> : <ExpandMore />}
+            </IconButton>
+          </Box>
+        </Box>
+
+        {/* Summary (always visible) */}
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1, ml: 8 }}>
+          {getSummary()}
+        </Typography>
+
+        {/* Detailed Data (expandable) */}
+        <Collapse in={expanded}>
+          <Box sx={{ mt: 2, ml: 8, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+            <pre style={{ fontSize: '0.75rem', margin: 0, whiteSpace: 'pre-wrap' }}>
+              {JSON.stringify(data, null, 2)}
+            </pre>
+          </Box>
+        </Collapse>
       </CardContent>
     </Card>
   );
@@ -93,593 +364,494 @@ export const QDATransparentCard: React.FC<{ response: QDAResponse }> = ({ respon
 
 ---
 
-### **2. QuestionDisplay**
-
-Viser spørsmål fra alle 4 eksperter.
+### **3. IntegratedResponse (Final Answer Display)**
 
 ```tsx
-// navlosen/frontend/src/components/qda/QuestionDisplay.tsx
+// navlosen/frontend/src/components/qda/IntegratedResponse.tsx
 
 import React from 'react';
-import { Box, Typography, Chip } from '@mui/material';
-
-interface QuestionDisplayProps {
-  questions: {
-    [expert: string]: string[];
-  };
-}
-
-const expertConfig = {
-  DataExpert: { icon: '📊', name: 'Claude (data-ekspert)', color: '#2196F3' },
-  EmotionExpert: { icon: '💚', name: 'Gemini (følelse-ekspert)', color: '#4CAF50' },
-  ResearchExpert: { icon: '🔍', name: 'Aurora (forskning-ekspert)', color: '#FF9800' },
-  SecurityExpert: { icon: '🛡️', name: 'Zara (sikkerhet-ekspert)', color: '#9C27B0' }
-};
-
-export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ questions }) => {
-  return (
-    <Box sx={{ marginBottom: 3 }}>
-      <Typography variant="body1" sx={{ marginBottom: 2, fontStyle: 'italic' }}>
-        For å gi deg best mulig hjelp, har mine kolleger hjulpet meg lage noen spørsmål:
-      </Typography>
-
-      {Object.entries(questions).map(([expertName, questionList]) => {
-        if (questionList.length === 0) return null;
-
-        const config = expertConfig[expertName as keyof typeof expertConfig];
-        if (!config) return null;
-
-        return (
-          <Box key={expertName} sx={{ marginBottom: 2 }}>
-            <Chip
-              label={`${config.icon} ${config.name}`}
-              sx={{
-                backgroundColor: config.color + '20',
-                color: config.color,
-                fontWeight: 'bold',
-                marginBottom: 1
-              }}
-            />
-            <ul style={{ marginLeft: 20, marginTop: 8 }}>
-              {questionList.map((question, index) => (
-                <li key={index}>
-                  <Typography variant="body2" sx={{ marginBottom: 0.5 }}>
-                    {question}
-                  </Typography>
-                </li>
-              ))}
-            </ul>
-          </Box>
-        );
-      })}
-
-      <Typography variant="caption" sx={{ display: 'block', marginTop: 2, fontStyle: 'italic', color: '#666' }}>
-        💡 Disse spørsmålene hjelper meg forstå din situasjon dypere
-      </Typography>
-    </Box>
-  );
-};
-```
-
----
-
-### **3. DepthResponseDisplay**
-
-Viser depth response med formattering.
-
-```tsx
-// navlosen/frontend/src/components/qda/DepthResponseDisplay.tsx
-
-import React from 'react';
-import { Box, Typography, Divider } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 
-interface DepthResponseDisplayProps {
+interface IntegratedResponseProps {
   response: string;
-  agentName: string;
+  polyvagalState: 'dorsal' | 'sympathetic' | 'ventral';
 }
 
-export const DepthResponseDisplay: React.FC<DepthResponseDisplayProps> = ({
+export const IntegratedResponse: React.FC<IntegratedResponseProps> = ({
   response,
-  agentName
+  polyvagalState
 }) => {
-  return (
-    <Box>
-      <Divider sx={{ marginY: 2 }} />
+  // Polyvagal-adaptive styling
+  const stateStyles = {
+    dorsal: {
+      bgcolor: '#E8F5E9',
+      borderColor: '#4CAF50',
+      fontSize: '1.1rem',  // Larger for easier reading
+      lineHeight: 1.8,     // More space between lines
+    },
+    sympathetic: {
+      bgcolor: '#FFF3E0',
+      borderColor: '#FF9800',
+      fontSize: '1rem',
+      lineHeight: 1.6,
+    },
+    ventral: {
+      bgcolor: '#E3F2FD',
+      borderColor: '#2196F3',
+      fontSize: '0.95rem',
+      lineHeight: 1.5,
+    },
+  };
 
-      <Typography variant="body1" sx={{ fontWeight: 'bold', marginBottom: 1 }}>
-        Basert på disse spørsmålene, her er mitt svar:
+  const styles = stateStyles[polyvagalState];
+
+  return (
+    <Paper
+      elevation={3}
+      sx={{
+        p: 3,
+        bgcolor: styles.bgcolor,
+        borderLeft: `6px solid ${styles.borderColor}`,
+      }}
+    >
+      <Typography variant="h6" gutterBottom sx={{ color: styles.borderColor, fontWeight: 600 }}>
+        ✨ Mitt Svar
       </Typography>
 
-      <Box sx={{
-        padding: 2,
-        backgroundColor: '#f9f9f9',
-        borderRadius: 2,
-        border: '1px solid #e0e0e0'
-      }}>
+      <Box
+        sx={{
+          fontSize: styles.fontSize,
+          lineHeight: styles.lineHeight,
+          '& p': { mb: 2 },
+          '& strong': { color: styles.borderColor },
+        }}
+      >
         <ReactMarkdown>{response}</ReactMarkdown>
       </Box>
-
-      <Typography variant="caption" sx={{ display: 'block', marginTop: 2, textAlign: 'right', color: '#666' }}>
-        — {agentName}
-      </Typography>
-    </Box>
+    </Paper>
   );
 };
 ```
 
 ---
 
-## 🎨 UX Mockups (Tekstbasert)
+## 🎨 Polyvagal-Adaptive Design System
 
-### **Mockup 1: Full QDA Response (Ventral State)**
+### **Color Palette Per State:**
 
+```typescript
+// navlosen/frontend/src/theme/polyvagalColors.ts
+
+export const polyvagalColors = {
+  dorsal: {
+    primary: '#4CAF50',      // Grønn (beroligende)
+    secondary: '#81C784',
+    background: '#E8F5E9',
+    text: '#1B5E20',
+    description: 'Dorsal vagal: Beroligende, grounding, konkret',
+  },
+  sympathetic: {
+    primary: '#FF9800',      // Orange (energi, men ikke alarm)
+    secondary: '#FFB74D',
+    background: '#FFF3E0',
+    text: '#E65100',
+    description: 'Sympathetic: Strukturert, rolig, fokusert',
+  },
+  ventral: {
+    primary: '#2196F3',      // Blå (åpen, sosial)
+    secondary: '#64B5F6',
+    background: '#E3F2FD',
+    text: '#0D47A1',
+    description: 'Ventral vagal: Åpen, utforskende, samarbeidende',
+  },
+};
 ```
-┌─────────────────────────────────────────────────────────┐
-│ 💬 Lira                                        [▼ Vis mindre] │
-│ Du sa: "Jeg føler meg stuck i NAV-systemet"            │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│ For å gi deg best mulig hjelp, har mine kolleger      │
-│ hjulpet meg lage noen spørsmål:                        │
-│                                                         │
-│ ┌─ 📊 Claude (data-ekspert) ─────────────────────┐    │
-│ │ • Hvor mange uker har du ventet på NAV-svar?   │    │
-│ │ • Har du mottatt bekreftelse på mottatt søknad?│    │
-│ │ • Er saksbehandler tildelt?                    │    │
-│ └─────────────────────────────────────────────────┘    │
-│                                                         │
-│ ┌─ 💚 Gemini (følelse-ekspert) ──────────────────┐    │
-│ │ • Hvordan føles 'stuck' kroppslig - tung       │    │
-│ │   brystkasse, anspent nakke, eller trøtthet?   │    │
-│ │ • Når følte du deg IKKE stuck sist gang?       │    │
-│ │ • Hva gir deg håp akkurat nå?                  │    │
-│ └─────────────────────────────────────────────────┘    │
-│                                                         │
-│ ┌─ 🔍 Aurora (forskning-ekspert) ────────────────┐    │
-│ │ • Gjennomsnittlig behandlingstid AAP 2025?     │    │
-│ │ • Faktorer som forsinker AAP-søknader?         │    │
-│ │ • Forskning om NAV-stress og polyvagal state?  │    │
-│ └─────────────────────────────────────────────────┘    │
-│                                                         │
-│ 💡 Disse spørsmålene hjelper meg forstå din            │
-│    situasjon dypere                                     │
-│                                                         │
-│ ─────────────────────────────────────────────────      │
-│                                                         │
-│ Basert på disse spørsmålene, her er mitt svar:        │
-│                                                         │
-│ ┌───────────────────────────────────────────────┐      │
-│ │ Jeg hører at du føler deg stuck, og det er   │      │
-│ │ helt forståelig. La meg adressere det mine   │      │
-│ │ kolleger spurte om:                           │      │
-│ │                                               │      │
-│ │ 📊 Fra Claude (data):                         │      │
-│ │ Du har ventet 6 uker på AAP-søknad. Du sendte│      │
-│ │ inn legeattester og egenvurdering. Din       │      │
-│ │ saksbehandler er tildelt (Marie Hansen).     │      │
-│ │                                               │      │
-│ │ 💚 Fra Gemini (følelse):                      │      │
-│ │ 'Stuck' føles som tung brystkasse og trøtthet│      │
-│ │ Du følte deg IKKE stuck da du fikk svarbrev.  │      │
-│ │ Håp kommer fra venner og at du har søkt.     │      │
-│ │                                               │      │
-│ │ 🔍 Fra Aurora (forskning):                    │      │
-│ │ Gjennomsnittlig behandlingstid: 8-12 uker.   │      │
-│ │ Forskning viser: NAV-stress ↑ dorsal state.  │      │
-│ │                                               │      │
-│ │ ───                                           │      │
-│ │                                               │      │
-│ │ Basert på dette ser jeg tre ting:            │      │
-│ │                                               │      │
-│ │ 1. OBJEKTIVT: Du er på normal track (6/8-12)  │      │
-│ │ 2. SUBJEKTIVT: 'Stuck' er REELL og viktig    │      │
-│ │ 3. HANDLINGER:                                │      │
-│ │    • Kort sikt: RAIN Practice (vil du prøve?) │      │
-│ │    • Medium: Ring Marie (sjekk om noe mangler)│      │
-│ │    • Lang sikt: Bygg mestringsstrategier     │      │
-│ │                                               │      │
-│ │ Du er ikke alene. Jeg er her. 💚             │      │
-│ │                                               │      │
-│ │ Hva føles mest nyttig for deg akkurat nå?    │      │
-│ └───────────────────────────────────────────────┘      │
-│                                                         │
-│                                        — Lira           │
-└─────────────────────────────────────────────────────────┘
+
+### **Typography Per State:**
+
+```typescript
+// navlosen/frontend/src/theme/polyvagalTypography.ts
+
+export const polyvagalTypography = {
+  dorsal: {
+    // Larger, clearer text for shutdown state
+    body1: {
+      fontSize: '1.1rem',
+      lineHeight: 1.8,
+      fontWeight: 400,
+    },
+    h6: {
+      fontSize: '1.3rem',
+      lineHeight: 1.6,
+      fontWeight: 600,
+    },
+  },
+  sympathetic: {
+    // Medium, structured text
+    body1: {
+      fontSize: '1rem',
+      lineHeight: 1.6,
+      fontWeight: 400,
+    },
+    h6: {
+      fontSize: '1.2rem',
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
+  },
+  ventral: {
+    // Normal, compact text
+    body1: {
+      fontSize: '0.95rem',
+      lineHeight: 1.5,
+      fontWeight: 400,
+    },
+    h6: {
+      fontSize: '1.1rem',
+      lineHeight: 1.4,
+      fontWeight: 600,
+    },
+  },
+};
 ```
 
 ---
 
-### **Mockup 2: Collapsed View (Polyvagal Dorsal - Høy Stress)**
+## 📐 Layout Patterns
 
-Når bruker er i dorsal state (høy stress), vises **kun** depth response automatisk, med mulighet til å ekspandere spørsmål senere.
+### **Pattern 1: Vertical Timeline (Default)**
+
+Best for **mobile** and **dorsal state** (easy to scroll).
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│ 💬 Lira                                        [▼ Vis mer] │
-│ Du sa: "Jeg føler meg stuck i NAV-systemet"            │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│ Jeg hører at du føler deg stuck, og det er            │
-│ helt forståelig.                                        │
-│                                                         │
-│ Du har ventet 6 uker på AAP-søknad - gjennomsnittlig  │
-│ tid er 8-12 uker, så du er på normal track.           │
-│                                                         │
-│ 'Stuck' føles som tung brystkasse. Dette er dorsal    │
-│ state (kroppens beskyttelsesmodus).                    │
-│                                                         │
-│ La oss ta ett steg om gangen:                          │
-│                                                         │
-│ 1. Pust med meg nå (4-6-8)                            │
-│ 2. Ring veileder hvis du trenger menneske-støtte      │
-│ 3. Du er ikke alene 💚                                 │
-│                                                         │
-│ Hva trenger du akkurat nå?                             │
-│                                                         │
-│                                        — Lira           │
-└─────────────────────────────────────────────────────────┘
-
-💡 Tip: Klikk "Vis mer" for å se hvilke spørsmål
-   jeg stilte for å forstå deg bedre
+┌─────────────────────┐
+│  User Query Echo    │
+└─────────────────────┘
+          ↓
+┌─────────────────────┐
+│  🛡️ Vokteren        │
+│  "Trygt"            │
+└─────────────────────┘
+          ↓
+┌─────────────────────┐
+│  ❤️ Føleren          │
+│  "Dorsal state"     │
+└─────────────────────┘
+          ↓
+┌─────────────────────┐
+│  🔍 Gjenkjenneren   │
+│  "Sett 3x før"      │
+└─────────────────────┘
+          ↓
+          ...
+          ↓
+┌─────────────────────┐
+│  ✨ Integrated       │
+│     Response        │
+└─────────────────────┘
 ```
 
-**Nøkkel:** Dorsal-tilpasset UX viser **mindre informasjon**, mer **emosjonell støtte**, og **konkrete handlinger** først.
+### **Pattern 2: Side-by-Side (Desktop, Ventral State)**
+
+Best for **desktop** and **ventral state** (more info visible).
+
+```
+┌──────────────────────────┬──────────────────────┐
+│  LAYERS (LEFT)           │  RESPONSE (RIGHT)    │
+│                          │                      │
+│  🛡️ Vokteren: Trygt      │  ✨ Integrated       │
+│  ❤️ Føleren: Dorsal      │                      │
+│  🔍 Gjenkjenneren: 3x    │     Response         │
+│  🧭 Utforskeren: 8-12    │     Content          │
+│  🧠 Strategen: 5-stegs   │     Here             │
+│  ✨ Integratoren         │                      │
+│                          │                      │
+└──────────────────────────┴──────────────────────┘
+```
 
 ---
 
-### **Mockup 3: Sympathetic State (Medium Stress)**
+## 🎭 Interaction Patterns
 
-```
-┌─────────────────────────────────────────────────────────┐
-│ 💬 Lira                                        [▼ Vis spørsmål] │
-│ Du sa: "Jeg føler meg stuck i NAV-systemet"            │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│ Jeg hører deg. La meg gi deg oversikt:                 │
-│                                                         │
-│ ✅ Status:                                              │
-│    • Ventet 6 uker (normalt er 8-12)                  │
-│    • Saksbehandler tildelt: Marie Hansen              │
-│    • Du er på riktig vei                              │
-│                                                         │
-│ 💡 Neste steg:                                          │
-│    1. Ring Marie (sjekk om noe mangler)               │
-│    2. RAIN Practice hvis stress øker                   │
-│    3. Jeg er her for deg                              │
-│                                                         │
-│ Hva vil du gjøre først?                                │
-│                                                         │
-│                                        — Lira           │
-└─────────────────────────────────────────────────────────┘
+### **Pattern 1: Progressive Disclosure**
 
-[▼ Vis hvilke spørsmål jeg stilte for å forstå deg]
-```
-
-**Nøkkel:** Sympathetic-tilpasset UX er **fokusert** og **handlingsorientert**, med mindre emosjonell elaborering.
-
----
-
-## 🔀 Interaktivitet & Tilstander
-
-### **1. Loading States**
+Lag vises sekvensielt mens de prosesseres (ikke alle på en gang).
 
 ```tsx
-// Loading animation mens QDA prosesserer
+// Pseudo-code for progressive disclosure
 
-<Box sx={{ textAlign: 'center', padding: 3 }}>
-  <CircularProgress />
-  <Typography variant="body2" sx={{ marginTop: 2 }}>
-    Samler spørsmål fra eksperter...
-  </Typography>
-
-  {/* Progress indicators */}
-  <Box sx={{ marginTop: 2 }}>
-    <Chip label="📊 Claude" size="small" sx={{ margin: 0.5 }} />
-    <Chip label="💚 Gemini" size="small" sx={{ margin: 0.5 }} />
-    <Chip label="🔍 Aurora" size="small" sx={{ margin: 0.5 }} />
-    <Chip label="🛡️ Zara" size="small" sx={{ margin: 0.5 }} />
-  </Box>
-
-  <Typography variant="caption" sx={{ display: 'block', marginTop: 2, color: '#666' }}>
-    Dette tar vanligvis 3-5 sekunder
-  </Typography>
-</Box>
-```
-
----
-
-### **2. Expandable Sections**
-
-```tsx
-// Bruker kan ekspandere/kollapse spørsmål-seksjon
-
-const [showQuestions, setShowQuestions] = useState(true);
-
-// Polyvagal-adaptive default:
-// - Dorsal: showQuestions = false (default collapsed)
-// - Sympathetic: showQuestions = false (default collapsed)
-// - Ventral: showQuestions = true (default expanded)
+const [visibleLayers, setVisibleLayers] = useState<string[]>([]);
 
 useEffect(() => {
-  if (polyvagalState === 'dorsal' || polyvagalState === 'sympathetic') {
-    setShowQuestions(false);
-  }
-}, [polyvagalState]);
-
-// Toggle button
-<Button
-  onClick={() => setShowQuestions(!showQuestions)}
-  variant="text"
-  size="small"
->
-  {showQuestions ? '▲ Vis mindre' : '▼ Vis spørsmål'}
-</Button>
-```
-
----
-
-### **3. Polyvagal-Adaptive Styling**
-
-```tsx
-// Farger og animasjoner endres basert på biofelt
-
-const polyvagalStyles = {
-  dorsal: {
-    backgroundColor: '#E8F5E9',  // Myk grønn (trygg)
-    borderColor: '#4CAF50',
-    animation: 'breathing 4s ease-in-out infinite',  // Puste-animasjon
-    fontSize: '16px',  // Større tekst (lettere å lese)
-  },
-  sympathetic: {
-    backgroundColor: '#FFF3E0',  // Varm oransje (aktiv)
-    borderColor: '#FF9800',
-    animation: 'pulse 2s ease-in-out infinite',  // Raskere puls
-    fontSize: '14px',  // Normal tekst
-  },
-  ventral: {
-    backgroundColor: '#E3F2FD',  // Rolig blå
-    borderColor: '#2196F3',
-    animation: 'none',  // Ingen animasjon (bruker er rolig)
-    fontSize: '14px',
-  }
-};
-
-// CSS keyframes
-const breathingAnimation = `
-  @keyframes breathing {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-  }
-`;
-
-const pulseAnimation = `
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
-  }
-`;
-```
-
----
-
-## 📊 Responsive Design
-
-### **Mobile View (< 600px)**
-
-```tsx
-// Stack components vertically on mobile
-
-<Box sx={{
-  display: 'flex',
-  flexDirection: 'column',
-  '@media (min-width: 600px)': {
-    flexDirection: 'row'  // Side-by-side on desktop
-  }
-}}>
-  <QuestionDisplay questions={questions} />
-  <DepthResponseDisplay response={response} />
-</Box>
-```
-
----
-
-### **Tablet View (600-960px)**
-
-- Spørsmål og svar side-by-side
-- Mindre padding
-- Font size 14px
-
----
-
-### **Desktop View (> 960px)**
-
-- Full width
-- Font size 16px
-- Mer whitespace
-
----
-
-## 🎯 Accessibility (WCAG 2.1 AA)
-
-### **1. Keyboard Navigation**
-
-```tsx
-// All interactive elements must be keyboard-accessible
-
-<IconButton
-  onClick={() => setShowQuestions(!showQuestions)}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      setShowQuestions(!showQuestions);
+  const revealLayers = async () => {
+    for (const layer of layerOrder) {
+      if (response.layer_outputs[layer]) {
+        await sleep(300); // 300ms delay between reveals
+        setVisibleLayers(prev => [...prev, layer]);
+      }
     }
-  }}
-  aria-label={showQuestions ? 'Skjul spørsmål' : 'Vis spørsmål'}
-  tabIndex={0}
->
-  {showQuestions ? <ExpandLess /> : <ExpandMore />}
-</IconButton>
+  };
+
+  revealLayers();
+}, [response]);
+```
+
+**Benefits:**
+- Bruker ser prosessen i sanntid
+- Mindre overwhelming enn alle lag samtidig
+- Pedagogisk (lærer rekkefølgen)
+
+### **Pattern 2: Hover for Details**
+
+Desktop: Hover over lag for å se detaljer
+Mobile: Tap for å ekspandere
+
+```tsx
+<LayerCard
+  onMouseEnter={() => setHoveredLayer(layerName)}
+  onMouseLeave={() => setHoveredLayer(null)}
+  expanded={hoveredLayer === layerName}
+/>
 ```
 
 ---
 
-### **2. Screen Reader Support**
+## 📱 Responsive Design
 
-```tsx
-// ARIA labels for all components
+### **Mobile (< 768px):**
 
-<Box role="region" aria-label="Spørsmål fra eksperter">
-  <QuestionDisplay questions={questions} />
-</Box>
+- **Vertical stack** av lag
+- **Larger text** (especially dorsal)
+- **One layer expanded** at a time
+- **Sticky header** med polyvagal state indicator
 
-<Box role="region" aria-label="Svar fra Lira">
-  <DepthResponseDisplay response={response} />
-</Box>
+### **Tablet (768px - 1024px):**
 
-// Announce when questions are loaded
-<div
-  role="status"
-  aria-live="polite"
-  aria-atomic="true"
-  className="sr-only"  // Visually hidden
->
-  {questionsLoaded && "Spørsmål fra eksperter er nå lastet"}
-</div>
+- **Vertical stack** av lag
+- **Two columns** for Integrated Response
+- **Expandable layers** (default collapsed)
+
+### **Desktop (> 1024px):**
+
+- **Side-by-side layout** (layers left, response right)
+- **All layers visible** at once
+- **Hover interactions** for details
+
+---
+
+## 🧪 User Testing Insights
+
+### **Scenario 1: Dorsal State User (Osvald)**
+
+**Context:** Bruker er i shutdown, føler seg stuck i NAV-systemet.
+
+**UX Adaptations:**
+1. ✅ **Larger text** (1.1rem vs 0.95rem)
+2. ✅ **Greener colors** (calming)
+3. ✅ **Fewer visible layers** by default (less overwhelming)
+4. ✅ **Konkrete action steps** (max 3 steps, not 5)
+5. ✅ **Shorter sentences** in Integrated Response
+
+**Mockup:**
+
+```
+┌─────────────────────────────────────────┐
+│  🧠 Nevrobiologisk Prosessering         │
+│                       [DORSAL STATE]    │
+├─────────────────────────────────────────┤
+│  Din spørsmål:                          │
+│  "Jeg føler meg stuck i NAV-systemet"   │
+├─────────────────────────────────────────┤
+│                                         │
+│  [Vis hvordan jeg tenkte] ▼             │
+│                                         │
+├─────────────────────────────────────────┤
+│  ✨ Mitt Svar                           │
+│                                         │
+│  Jeg hører deg. Det er tungt å føle    │
+│  seg stuck.                             │
+│                                         │
+│  **Fakta:** NAV AAP: 8-12 uker snitt    │
+│                                         │
+│  Jeg ser at dette har skjedd 3 ganger  │
+│  før. Sist gang fungerte "konkrete     │
+│  steg" godt.                            │
+│                                         │
+│  **Foreslått plan:**                    │
+│  - Sjekk status på Ditt NAV             │
+│  - Ring NAV hvis usikker                │
+│  - Book oppfølgingssamtale              │
+│                                         │
+│  Vi tar ett lite steg om gangen.        │
+│  Jeg er her. 💚                         │
+│                                         │
+│  — Lira                                 │
+└─────────────────────────────────────────┘
+```
+
+### **Scenario 2: Ventral State User (Kari)**
+
+**Context:** Bruker er nysgjerrig, ønsker å forstå hvordan systemet tenker.
+
+**UX Adaptations:**
+1. ✅ **All layers visible** by default
+2. ✅ **Detailed data** expandable
+3. ✅ **Side-by-side layout** (desktop)
+4. ✅ **Interactive hover** for insights
+5. ✅ **Full 5-step plan** visible
+
+**Mockup:**
+
+```
+┌────────────────────────┬──────────────────────────────┐
+│  LAYERS                │  ✨ MITT SVAR                │
+│                        │                              │
+│  🛡️ Vokteren           │  Hei! La oss se på dette    │
+│  ✓ Trygt (complex)     │  sammen.                     │
+│  0.4s | $0.00001       │                              │
+│                        │  **Slik tenkte jeg:**        │
+│  ❤️ Føleren            │                              │
+│  Dorsal state          │  🛡️ Vokteren: Trygt å       │
+│  Følelse: stuck        │     fortsette (complex)      │
+│  0.8s | $0            │                              │
+│                        │  ❤️ Føleren: Dorsal state,   │
+│  🔍 Gjenkjenneren      │     følelse: stuck           │
+│  Mønster: 3x før       │                              │
+│  "konkrete steg" ✓     │  🔍 Gjenkjenneren:          │
+│  0.9s | $0.0004        │     Gjentakende mønster (3x) │
+│                        │                              │
+│  🧭 Utforskeren        │  🧭 Utforskeren:             │
+│  Tidslinje: 8-12 uker  │     Gjennomsnitt 8-12 uker   │
+│  2.3s | $0.002         │                              │
+│                        │  🧠 Strategen: 5-stegs plan  │
+│  🧠 Strategen          │                              │
+│  ✓ Aktivert (score:1.0)│  ---                         │
+│  5-stegs plan          │                              │
+│  4.2s | $0.12          │  **Her er mitt svar:**       │
+│                        │                              │
+│  ✨ Integratoren       │  **Fakta:** NAV AAP: 8-12... │
+│  Tone: samarbeidende   │                              │
+│  1.5s | $0             │  Jeg ser at du føler deg     │
+│                        │  stuck...                    │
+│  [Expand All Details]  │                              │
+│                        │  **Foreslått plan:**         │
+│  ⏱️ 10.1s | 💰 $0.12   │  - 1. Sjekk status...        │
+│  🧠 6 lag aktivert     │  - 2. Identifiser...         │
+│                        │  - 3. Book...                │
+│                        │  - 4. Lag tidsplan...        │
+│                        │  - 5. Check-in med Lira...   │
+│                        │                              │
+│                        │  Håper dette hjelper! 💚     │
+│                        │  — Lira                      │
+└────────────────────────┴──────────────────────────────┘
 ```
 
 ---
 
-### **3. Color Contrast**
+## 🎬 Animation & Transitions
+
+### **Layer Reveal Animation:**
 
 ```tsx
-// All text must have sufficient contrast (4.5:1 for normal text)
+// Using Framer Motion
 
-const accessibleColors = {
-  dorsal: {
-    bg: '#E8F5E9',
-    text: '#1B5E20',  // Dark green (contrast ratio 7:1)
-    border: '#4CAF50'
-  },
-  sympathetic: {
-    bg: '#FFF3E0',
-    text: '#E65100',  // Dark orange (contrast ratio 4.8:1)
-    border: '#FF9800'
-  },
-  ventral: {
-    bg: '#E3F2FD',
-    text: '#0D47A1',  // Dark blue (contrast ratio 8:1)
-    border: '#2196F3'
-  }
+import { motion } from 'framer-motion';
+
+const LayerCard = ({ layer, index }) => (
+  <motion.div
+    initial={{ opacity: 0, x: -50 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{
+      delay: index * 0.2,  // Stagger effect
+      duration: 0.4,
+      ease: 'easeOut'
+    }}
+  >
+    <Card>...</Card>
+  </motion.div>
+);
+```
+
+### **Polyvagal State Transition:**
+
+```tsx
+// Smooth color transition when state changes
+
+const PolyvagalContainer = styled(Box)(({ theme, state }) => ({
+  backgroundColor: polyvagalColors[state].background,
+  borderColor: polyvagalColors[state].primary,
+  transition: 'all 0.6s ease-in-out',
+}));
+```
+
+---
+
+## 🌿 Accessibility
+
+### **ARIA Labels:**
+
+```tsx
+<Box role="region" aria-label="Nevrobiologisk prosessering">
+  {layerOrder.map(layer => (
+    <Card
+      key={layer}
+      role="article"
+      aria-labelledby={`layer-${layer}`}
+      aria-describedby={`layer-${layer}-summary`}
+    >
+      <Typography id={`layer-${layer}`}>
+        {layer.icon} {layer.name}
+      </Typography>
+      <Typography id={`layer-${layer}-summary`}>
+        {getSummary(layer)}
+      </Typography>
+    </Card>
+  ))}
+</Box>
+```
+
+### **Keyboard Navigation:**
+
+- `Tab` - Navigate between layers
+- `Enter` - Expand/collapse layer details
+- `Arrow Up/Down` - Navigate layers (skip Tab stops)
+- `Escape` - Collapse all layers
+
+### **Screen Reader Support:**
+
+```tsx
+// Announce layer completion to screen reader
+
+const announceLayerComplete = (layerName: string) => {
+  const announcement = document.createElement('div');
+  announcement.setAttribute('role', 'status');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.textContent = `${layerName} fullført`;
+  document.body.appendChild(announcement);
+
+  setTimeout(() => document.body.removeChild(announcement), 1000);
 };
 ```
 
 ---
 
-## 🧪 User Testing Scenarios
+## 🌿 Konklusjon
 
-### **Test 1: Transparency Comprehension**
+QDA v2.0 UX er designet for:
 
-**Task:** "Forklar hva du ser i denne meldingen fra Lira"
+✅ **Full transparens** - Bruker ser alle 6 nevrobiologiske lag
+✅ **Polyvagal-adaptiv** - UI tilpasser seg emosjonell tilstand
+✅ **Pedagogisk** - Bruker lærer nevrobiologi gjennom bruk
+✅ **Accessible** - WCAG 2.1 AA compliant
+✅ **Responsive** - Fungerer på mobile, tablet, desktop
 
-**Expected:** Bruker identifiserer:
-- Spørsmål fra eksperter
-- Svar fra Lira
-- Hvordan spørsmålene informerte svaret
-
-**Success Criteria:** 80% forståelse
-
----
-
-### **Test 2: Cognitive Load**
-
-**Task:** "Føles denne meldingen overveldende?"
-
-**Measurement:** NASA-TLX (Task Load Index)
-
-**Success Criteria:** TLX score < 50 (moderat belastning)
+**Design-filosofi:** Vis prosessen, ikke bare resultatet. Lær bruker å tenke som hjernen. 🧠✨
 
 ---
 
-### **Test 3: Polyvagal Adaptation**
-
-**Task:** Vis bruker QDA-response i 3 states (dorsal/sympathetic/ventral)
-
-**Question:** "Hvilken versjon foretrekker du når du er stresset?"
-
-**Expected:** Majoriteten foretrekker collapsed/fokusert view ved stress
-
----
-
-## 🌿 Design Principles (Oppsummert)
-
-1. **Transparens > Enkelhet**
-   - Vis prosessen, ikke bare resultatet
-
-2. **Polyvagal-Adaptive > One-Size-Fits-All**
-   - UX endres basert på brukerens tilstand
-
-3. **Pedagogisk > Instruktiv**
-   - Lær bruker hvordan man tenker, ikke bare hva man skal gjøre
-
-4. **Collapsible > Hidden**
-   - Informasjon er tilgjengelig, men ikke påtrengende
-
-5. **Accessible > Aesthetically Perfect**
-   - WCAG 2.1 AA compliance er ikke-forhandlingsbart
-
----
-
-## ✅ Implementation Checklist
-
-**Phase 1: Core Components**
-- [ ] Implementer `QDATransparentCard.tsx`
-- [ ] Implementer `QuestionDisplay.tsx`
-- [ ] Implementer `DepthResponseDisplay.tsx`
-- [ ] Test med statisk data (mock responses)
-
-**Phase 2: Interactivity**
-- [ ] Implementer expandable sections
-- [ ] Implementer polyvagal-adaptive styling
-- [ ] Implementer loading states
-- [ ] Test interaktivitet med 10 brukere
-
-**Phase 3: Accessibility**
-- [ ] Legg til ARIA labels
-- [ ] Implementer keyboard navigation
-- [ ] Test med screen reader (NVDA/JAWS)
-- [ ] Verifiser color contrast (4.5:1 minimum)
-
-**Phase 4: Responsive**
-- [ ] Test på mobile (< 600px)
-- [ ] Test på tablet (600-960px)
-- [ ] Test på desktop (> 960px)
-- [ ] Verifiser at alle layouts fungerer
-
-**Phase 5: User Testing**
-- [ ] 20 test-brukere (mixed polyvagal states)
-- [ ] Measure comprehension (transparency)
-- [ ] Measure cognitive load (NASA-TLX)
-- [ ] Iterate based on feedback
-
----
-
-## 🌿 Avsluttende Ord
-
-QDA UX er ikke bare "vise informasjon" - det er å **lære bruker hvordan AI tenker**, samtidig som vi respekterer deres kognitive og emosjonelle kapasitet i øyeblikket.
-
-Ved å kombinere:
-- **Transparens** (vis spørsmål + svar)
-- **Polyvagal adaptation** (tilpass til stress-tilstand)
-- **Collapsibility** (ikke overveld)
-- **Accessibility** (alle kan bruke det)
-
-...skaper vi en UX som både bygger tillit og mestringskompetanse.
-
-**Med ontologisk integritet, felt-bevissthet, og et snev av kosmisk humor!** 🌿✨
-
----
-
-**Versjon:** 1.0
+**Versjon:** 2.0
 **Sist oppdatert:** 2025-10-20
-**Neste review:** Etter user testing (Phase 5)
-**Forfatter:** Claude Code (Anthropic)
+**Neste review:** Etter Fase 1 implementering (uke 2)
+**Forfatter:** Claude Code (Anthropic) i samarbeid med Osvald Noonaut
+**Lisens:** Open Source (CC BY-SA 4.0)
