@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Layout from "@/components/layout/Layout";
@@ -23,6 +23,8 @@ import {
   Filter,
   Star,
   CheckCircle2,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 
 type JobCategory = "Alle" | "Helse" | "Service" | "Teknologi" | "Håndverk" | "Kontor";
@@ -50,78 +52,6 @@ interface Course {
   description: string;
   spots: number;
 }
-
-const jobListings: JobListing[] = [
-  {
-    id: "job-1",
-    title: "Helsefagarbeider",
-    company: "Oslo Kommune",
-    location: "Oslo",
-    type: "Heltid",
-    category: "Helse",
-    posted: "2 dager siden",
-    deadline: "15. november 2025",
-    description: "Vi søker motiverte helsefagarbeidere til hjemmetjenesten i Oslo vest.",
-    featured: true,
-  },
-  {
-    id: "job-2",
-    title: "Butikkmedarbeider",
-    company: "Rema 1000",
-    location: "Bergen",
-    type: "Deltid",
-    category: "Service",
-    posted: "3 dager siden",
-    deadline: "20. november 2025",
-    description: "Deltidsstilling i trivelig butikk. Erfaring ikke nødvendig - vi lærer deg opp!",
-  },
-  {
-    id: "job-3",
-    title: "Junior Utvikler",
-    company: "Telenor",
-    location: "Fornebu",
-    type: "Heltid",
-    category: "Teknologi",
-    posted: "1 uke siden",
-    deadline: "30. november 2025",
-    description: "Nyutdannet? Vi tilbyr trainee-program for junior utviklere med fokus på skyteknologi.",
-    featured: true,
-  },
-  {
-    id: "job-4",
-    title: "Rørlegger",
-    company: "VVS-Service AS",
-    location: "Trondheim",
-    type: "Heltid",
-    category: "Håndverk",
-    posted: "5 dager siden",
-    deadline: "25. november 2025",
-    description: "Erfaren rørlegger til veletablert bedrift. Gode betingelser og firmabil.",
-  },
-  {
-    id: "job-5",
-    title: "Kontormedarbeider",
-    company: "Statens Vegvesen",
-    location: "Stavanger",
-    type: "Midlertidig",
-    category: "Kontor",
-    posted: "1 dag siden",
-    deadline: "10. november 2025",
-    description: "Vikariat i 6 måneder med mulighet for fast ansettelse. God kjennskap til Office 365 ønskelig.",
-  },
-  {
-    id: "job-6",
-    title: "Sykepleier",
-    company: "Haukeland Sykehus",
-    location: "Bergen",
-    type: "Heltid",
-    category: "Helse",
-    posted: "4 dager siden",
-    deadline: "18. november 2025",
-    description: "Autoriserte sykepleiere til kirurgisk avdeling. Fast turnus og gode utviklingsmuligheter.",
-    featured: true,
-  },
-];
 
 const courses: Course[] = [
   {
@@ -172,23 +102,104 @@ export default function JobbPage() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<JobCategory>("Alle");
   const [searchTerm, setSearchTerm] = useState("");
+  const [jobListings, setJobListings] = useState<JobListing[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [useMockData, setUseMockData] = useState(false);
+
+  // Fetch jobs from API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const params = new URLSearchParams({
+          page: "0",
+          size: "50",
+        });
+
+        if (searchTerm.trim()) {
+          params.append("q", searchTerm.trim());
+        }
+
+        if (selectedCategory !== "Alle") {
+          params.append("category", selectedCategory);
+        }
+
+        const response = await fetch(`/api/jobs?${params.toString()}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch jobs");
+        }
+
+        const data = await response.json();
+
+        // Transform API data to match our interface
+        const transformedJobs: JobListing[] = data.content.map((job: any) => ({
+          id: job.uuid,
+          title: job.title,
+          company: job.employer.name,
+          location: job.employer.location?.city || job.employer.location?.municipal || "Norge",
+          type: job.properties.extent === "Heltid"
+            ? "Heltid"
+            : job.properties.extent === "Deltid"
+            ? "Deltid"
+            : "Midlertidig",
+          category: job.categoryList?.[0]?.name || "Alle",
+          posted: formatDate(new Date(job.published)),
+          deadline: formatDeadline(new Date(job.expires)),
+          description: job.description || "Ingen beskrivelse tilgjengelig",
+          featured: false, // Can be randomized or based on recency
+        }));
+
+        // Mark first 3 as featured
+        transformedJobs.slice(0, 3).forEach(job => job.featured = true);
+
+        setJobListings(transformedJobs);
+        setUseMockData(data.useMockData || false);
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+        setError("Kunne ikke laste stillinger. Vennligst prøv igjen senere.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, [selectedCategory, searchTerm]);
 
   const filteredJobs = useMemo(() => {
-    return jobListings.filter((job) => {
-      const matchesCategory = selectedCategory === "Alle" || job.category === selectedCategory;
-      const matchesSearch =
-        searchTerm === "" ||
-        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.location.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [selectedCategory, searchTerm]);
+    return jobListings;
+  }, [jobListings]);
 
   const featuredJobs = useMemo(
     () => jobListings.filter((job) => job.featured),
-    []
+    [jobListings]
   );
+
+  // Helper function to format date
+  function formatDate(date: Date): string {
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return "I dag";
+    if (diffDays === 1) return "1 dag siden";
+    if (diffDays < 7) return `${diffDays} dager siden`;
+    if (diffDays < 14) return "1 uke siden";
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} uker siden`;
+    return date.toLocaleDateString("no-NO");
+  }
+
+  // Helper function to format deadline
+  function formatDeadline(date: Date): string {
+    return date.toLocaleDateString("no-NO", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+  }
 
   return (
     <Layout>
@@ -273,6 +284,29 @@ export default function JobbPage() {
             </div>
           </div>
         </section>
+
+        {/* Mock Data Notice */}
+        {useMockData && (
+          <section>
+            <div className="rounded-2xl border-2 border-yellow-200 bg-yellow-50 p-4 shadow-sm">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 flex-shrink-0 text-yellow-600" />
+                <div className="flex-1">
+                  <p className="text-sm text-yellow-800">
+                    <strong>Demo-modus:</strong> Viser eksempeldata. For å hente reelle stillinger fra Arbeidsplassen.no, kontakt{" "}
+                    <a
+                      href="mailto:nav.team.arbeidsplassen@nav.no"
+                      className="underline hover:no-underline"
+                    >
+                      nav.team.arbeidsplassen@nav.no
+                    </a>{" "}
+                    for å få API-nøkkel.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Lira Chatbot CTA */}
         <section>
@@ -371,12 +405,36 @@ export default function JobbPage() {
             <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
               Alle stillinger
             </h2>
-            <span className="text-sm text-[var(--color-text-secondary)]">
-              Viser {filteredJobs.length} av {jobListings.length}
-            </span>
+            {!isLoading && (
+              <span className="text-sm text-[var(--color-text-secondary)]">
+                Viser {filteredJobs.length} av {jobListings.length}
+              </span>
+            )}
           </div>
 
-          {filteredJobs.length === 0 ? (
+          {/* Loading State */}
+          {isLoading && (
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white p-12">
+              <Loader2 className="h-12 w-12 animate-spin text-[var(--color-primary)]" />
+              <p className="mt-4 text-[var(--color-text-secondary)]">Laster stillinger...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !isLoading && (
+            <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-6">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="h-6 w-6 flex-shrink-0 text-red-600" />
+                <div>
+                  <p className="font-semibold text-red-900">Kunne ikke laste stillinger</p>
+                  <p className="mt-1 text-sm text-red-800">{error}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && !error && filteredJobs.length === 0 && (
             <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-[var(--color-text-secondary)]">
               <Search className="mx-auto mb-4 h-12 w-12 text-gray-300" />
               <p className="text-lg font-semibold">Ingen stillinger funnet</p>
@@ -384,7 +442,10 @@ export default function JobbPage() {
                 Prøv å justere søket eller kategoriene dine, eller chat med Lira for personlige anbefalinger.
               </p>
             </div>
-          ) : (
+          )}
+
+          {/* Job Listings */}
+          {!isLoading && !error && filteredJobs.length > 0 && (
             <div className="grid gap-6 md:grid-cols-2">
               {filteredJobs.map((job) => (
                 <article
