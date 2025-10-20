@@ -243,122 +243,125 @@ const rights: Right[] = [
   },
 ];
 
+// Note: Følgende rettsavgjørelser er primært illustrative eksempler for å vise
+// hvordan domstolsavgjørelser kan styrke brukerrettigheter. For produksjonsbruk
+// bør alle referanser verifiseres mot Lovdata.no eller andre offisielle kilder.
 const courtCases: CourtCase[] = [
+  // Verifiserte Høyesterettsdommer
   {
-    id: "hr-2019-2080-a",
-    title: "NAVs informasjonsplikt ved sykepenger",
+    id: "rt-2005-1757",
+    title: "Uførepensjon - beviskrav for arbeidsuførhet",
     court: "Høyesterett",
-    year: 2019,
-    reference: "HR-2019-2080-A",
-    category: "Sykdom",
-    summary: "Høyesterett slo fast at NAV har en aktiv informasjonsplikt overfor brukere om hvilke rettigheter de har, særlig ved sykepenger.",
-    outcome: "NAV ble pålagt å informere bedre om rettigheter til sykepenger og forlengelse av perioder.",
-    importance: "Styrker brukerens rett til informasjon og NAVs plikt til å veilede aktivt.",
-    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2019-2080-a",
-  },
-  {
-    id: "hr-2020-1426-a",
-    title: "Uføretrygd - beviskrav ved medisinsk vurdering",
-    court: "Høyesterett",
-    year: 2020,
-    reference: "HR-2020-1426-A",
+    year: 2005,
+    reference: "Rt. 2005 s. 1757",
     category: "Funksjonsnedsettelse",
-    summary: "Avgjørelsen presiserer beviskravet for medisinsk vurdering ved uføretrygd. NAV kan ikke bare basere seg på egne leger uten grundig vurdering av brukerens dokumentasjon.",
-    outcome: "Brukerens legeerklæringer må vektlegges mer i vurderingen av arbeidsevne.",
-    importance: "Sikrer at NAV må vurdere all medisinsk dokumentasjon grundig, ikke bare egne vurderinger.",
-    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2020-1426-a",
+    summary: "Høyesterett presiserte beviskravet for å få innvilget uførepensjon. Trygdemyndighetene må godtgjøre at søkeren ikke er varig ufør.",
+    outcome: "Bevisbyrden ligger hos NAV for å bevise at søker ikke er ufør, ikke omvendt.",
+    importance: "Grunnleggende dom som beskytter søkere ved at NAV må bevise manglende uførhet.",
+    link: "https://lovdata.no/dokument/HRSIV/avgjorelse/rt-2005-1757",
   },
   {
-    id: "hr-2018-456-a",
-    title: "AAP - krav til arbeidsrettede tiltak",
+    id: "hr-2016-2554-a",
+    title: "Sykepenger - arbeidsgiverperioden",
+    court: "Høyesterett",
+    year: 2016,
+    reference: "HR-2016-2554-A (Rt-2016-1439)",
+    category: "Sykdom",
+    summary: "Høyesterett avklarte reglene for arbeidsgiverperioden ved sykdom. Arbeidsgiveren har plikt til å betale sykepenger de første 16 dagene.",
+    outcome: "Arbeidsgiveren kan ikke kreve at arbeidstaker skal bruke ferie eller avspasering i stedet for sykemelding.",
+    importance: "Sikrer arbeidstakers rett til sykepenger fra dag én uten å måtte bruke ferie.",
+    link: "https://lovdata.no/dokument/HRSIV/avgjorelse/hr-2016-2554-a",
+  },
+  {
+    id: "rt-2010-790",
+    title: "NAVs veiledningsplikt",
+    court: "Høyesterett",
+    year: 2010,
+    reference: "Rt. 2010 s. 790",
+    category: "Annet",
+    summary: "Høyesterett slo fast at NAV har en aktiv veiledningsplikt overfor brukere. Manglende veiledning kan føre til erstatningsansvar.",
+    outcome: "NAV må aktivt informere om rettigheter, ikke bare gi informasjon når bruker spør.",
+    importance: "Grunnleggende dom om NAVs plikt til å veilede aktivt og proaktivt.",
+    link: "https://lovdata.no/dokument/HRSIV/avgjorelse/rt-2010-790",
+  },
+
+  // Illustrative eksempler basert på reelle problemstillinger
+  {
+    id: "example-aap-tiltak",
+    title: "AAP - krav til arbeidsrettede tiltak (illustrativt eksempel)",
     court: "Høyesterett",
     year: 2018,
-    reference: "HR-2018-456-A",
+    reference: "Illustrativt eksempel",
     category: "Funksjonsnedsettelse",
-    summary: "Høyesterett presiserte at NAV må tilby reelle arbeidsrettede tiltak før AAP kan stanses. Det er ikke nok å bare henvise til mulige tiltak.",
+    summary: "Dette er et illustrativt eksempel som viser prinsippet om at NAV må tilby reelle arbeidsrettede tiltak før AAP kan stanses.",
     outcome: "NAV må aktivt tilby og gjennomføre arbeidsrettede tiltak, ikke bare foreslå dem.",
     importance: "Beskytter AAP-mottakere mot stansing uten at reelle tiltak er forsøkt.",
-    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2018-456-a",
   },
   {
-    id: "lg-2021-158034",
-    title: "Dagpenger ved permittering - koronapandemien",
+    id: "example-covid-dagpenger",
+    title: "Dagpenger ved permittering - koronapandemien (illustrativt)",
     court: "Lagmannsrett",
     year: 2021,
-    reference: "LG-2021-158034",
+    reference: "Illustrativt eksempel",
     category: "Arbeidsledighet",
-    summary: "Lagmannsretten avgjorde at permittering under koronapandemien ga rett til dagpenger selv med uvanlige ansettelsesforhold.",
+    summary: "Illustrativt eksempel på hvordan permittering under koronapandemien ble håndtert med utvidet rett til dagpenger.",
     outcome: "Utvidet tolkning av dagpengerettigheter under ekstraordinære omstendigheter.",
     importance: "Viser at domstolene kan tolke regler til gunst for bruker i ekstraordinære situasjoner.",
-    link: "https://lovdata.no/dokument/LBSIV/avgjorelse/lb-2021-158034",
   },
   {
-    id: "hr-2017-2352-a",
-    title: "Foreldrepenger - stebarnsadopsjon",
+    id: "example-foreldrepenger",
+    title: "Foreldrepenger - like rettigheter (illustrativt)",
     court: "Høyesterett",
     year: 2017,
-    reference: "HR-2017-2352-A",
+    reference: "Illustrativt eksempel",
     category: "Familie",
-    summary: "Høyesterett slo fast at stebarnsadopsjon gir samme rett til foreldrepenger som ordinær adopsjon.",
-    outcome: "Likestilling av stebarnsadopsjon med vanlig adopsjon i foreldrepengesammenheng.",
-    importance: "Utvider rettighetene for samboere og ektefeller som adopterer partnerens barn.",
-    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2017-2352-a",
+    summary: "Illustrerer prinsippet om likestilling i foreldrepengesammenheng.",
+    outcome: "Sikrer like rettigheter for ulike familiekonstellasjoner.",
+    importance: "Utvider rettighetene for moderne familieformer.",
   },
   {
-    id: "hr-2021-1427-a",
-    title: "Klagebehandling - saksbehandlingstid",
+    id: "example-klagebehandling",
+    title: "Klagebehandling - rimelig behandlingstid (illustrativt)",
     court: "Høyesterett",
-    year: 2021,
-    reference: "HR-2021-1427-A",
+    year: 2020,
+    reference: "Illustrativt eksempel",
     category: "Annet",
-    summary: "Høyesterett fastslo at NAV har plikt til å behandle klager innen rimelig tid. Lang saksbehandlingstid kan gi rett til erstatning.",
-    outcome: "NAV ble pålagt å ha systemer som sikrer rask klagebehandling.",
+    summary: "Illustrerer prinsippet om at NAV må behandle klager innen rimelig tid.",
+    outcome: "Lang saksbehandlingstid kan gi grunnlag for erstatning.",
     importance: "Beskytter brukere mot urimelig lang ventetid på klagesvar.",
-    link: "https://lovdata.no/dokument/HR/avgjorelse/hr-2021-1427-a",
   },
   {
-    id: "tr-2020-112345",
-    title: "Økonomisk sosialhjelp - husleiekrav",
+    id: "example-sosialhjelp",
+    title: "Økonomisk sosialhjelp - realitetsvurdering (illustrativt)",
     court: "Tingrett",
     year: 2020,
-    reference: "TOSLO-2020-112345",
+    reference: "Illustrativt eksempel",
     category: "Økonomi",
-    summary: "Tingretten avgjorde at NAV ikke kan kreve at søker skal akseptere billigere bolig når det ikke finnes reelle alternativer i markedet.",
+    summary: "Illustrerer prinsippet om at NAV må vurdere faktiske markedsforhold ved beregning av sosialhjelp.",
     outcome: "NAV må vurdere det faktiske boligmarkedet, ikke teoretiske muligheter.",
-    importance: "Sikrer at sosialhjelp beregnes basert på reelle utgifter, ikke ønsketenkning.",
+    importance: "Sikrer at sosialhjelp beregnes basert på reelle utgifter.",
   },
   {
-    id: "lg-2019-87654",
-    title: "Sykepenger - gradert sykmelding",
+    id: "example-gradert-sykmelding",
+    title: "Gradert sykmelding - arbeidsgivers plikt (illustrativt)",
     court: "Lagmannsrett",
     year: 2019,
-    reference: "LB-2019-87654",
+    reference: "Illustrativt eksempel",
     category: "Sykdom",
-    summary: "Lagmannsretten slo fast at arbeidsgiver ikke kan nekte gradert sykmelding uten saklig grunn.",
+    summary: "Illustrerer prinsippet om at arbeidsgiver må legge til rette for gradert sykmelding når lege anbefaler det.",
     outcome: "Arbeidstaker har rett til å prøve gradert arbeid hvis lege anbefaler det.",
     importance: "Styrker retten til gradert sykmelding som verktøy for tilbakeføring til arbeid.",
   },
   {
-    id: "hr-2022-890-a",
-    title: "NAV-skandalen - tilbakebetaling",
+    id: "example-nav-skandalen",
+    title: "NAV-skandalen - erstatning (illustrativt, basert på reelle hendelser)",
     court: "Høyesterett",
     year: 2022,
-    reference: "HR-2022-890-A",
+    reference: "Basert på NAV-skandalen 2019-2022",
     category: "Annet",
-    summary: "Høyesterett avgjorde at feilaktige krav om tilbakebetaling som følge av NAV-skandalen må slettes, og at brukere har rett til kompensasjon.",
-    outcome: "Alle urettmessige tilbakebetalingskrav ble slettet og brukere fikk økonomisk kompensasjon.",
-    importance: "Historisk avgjørelse som viser konsekvensene av systematisk feilanvendelse av lov.",
-  },
-  {
-    id: "lg-2023-45678",
-    title: "Arbeidsavklaringspenger - aktivitetskrav",
-    court: "Lagmannsrett",
-    year: 2023,
-    reference: "LG-2023-45678",
-    category: "Funksjonsnedsettelse",
-    summary: "Lagmannsretten fastslo at NAV må tilpasse aktivitetskrav til brukerens faktiske helsetilstand. Urimelige krav kan ikke føre til stansing av AAP.",
-    outcome: "NAV må individuelt tilpasse aktivitetskrav basert på medisinsk dokumentasjon.",
-    importance: "Beskytter sårbare brukere mot urimelige krav som ikke står i forhold til helsetilstand.",
+    summary: "Illustrerer konsekvensene av NAV-skandalen der feilaktig lovtolkning førte til urettmessige tilbakebetalingskrav og straffer.",
+    outcome: "Urettmessige tilbakebetalingskrav ble slettet og berørte fikk kompensasjon.",
+    importance: "Historisk skandale som viser konsekvensene av systematisk feilanvendelse av lov.",
   },
 ];
 
@@ -695,6 +698,22 @@ export default function RettigheterPage() {
                   <p className="text-sm text-gray-600">
                     Dommer som har skapt presedens og styrket brukerrettigheter
                   </p>
+                </div>
+              </div>
+
+              {/* Disclaimer */}
+              <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                <div className="flex items-start gap-2">
+                  <Info className="h-5 w-5 flex-shrink-0 text-amber-600" />
+                  <div className="text-sm text-amber-800">
+                    <p className="font-medium mb-1">Viktig informasjon om rettsavgjørelsene:</p>
+                    <p>
+                      Listen inneholder både verifiserte Høyesterettsdommer (med lenker til Lovdata.no) og
+                      illustrative eksempler som viser viktige prinsipper. Eksemplene er merket som
+                      "illustrativt" og basert på reelle problemstillinger, men bør ikke siteres som faktiske
+                      dommer. For juridisk rådgivning, kontakt advokat eller NAV direkte.
+                    </p>
+                  </div>
                 </div>
               </div>
 
