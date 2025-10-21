@@ -113,15 +113,16 @@ export function DeviceFrame({ deviceType, iframeSrc }: DeviceFrameProps) {
             </div>
           )}
 
-          {/* Main iframe */}
+          {/* Main iframe - SANDBOX DISABLED FOR LOCALHOST DEVELOPMENT */}
+          {/* Re-enable sandbox for production deployment */}
           <iframe
             src={iframeSrc}
             className="w-full h-full border-0 bg-white"
             onLoad={handleIframeLoad}
             onError={handleIframeError}
             title="NAV-Losen Frontend"
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-top-navigation"
             allow="fullscreen"
+            referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
 
