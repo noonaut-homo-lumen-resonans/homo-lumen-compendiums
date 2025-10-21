@@ -152,10 +152,42 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
+        {/* Disclaimer Section */}
+        <div className="border-t border-gray-800 pt-8 mb-6">
+          <div className="bg-yellow-900/20 border border-yellow-700/30 rounded-lg p-6">
+            <h4 className="font-bold text-yellow-400 mb-3 flex items-center gap-2">
+              <span>⚠️</span>
+              <span>Viktig å huske</span>
+            </h4>
+            <div className="text-sm text-gray-300 space-y-3">
+              <p>
+                <strong>NAV-Losen er et hjelpemiddel</strong> for selvregulering og veiledning.
+                Den erstatter <strong>ikke</strong> profesjonell hjelp fra lege, psykolog, eller NAV-veileder.
+                Informasjonen her er ikke offisiell rådgivning fra NAV.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <a
+                  href="https://www.nav.no"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 transition-colors"
+                >
+                  <span>🔗</span>
+                  <span>Besøk nav.no for offisiell informasjon</span>
+                </a>
+                <span className="hidden sm:block text-gray-600">•</span>
+                <span className="text-gray-400">
+                  Søk alltid profesjonell hjelp hvis du trenger det
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Bottom Section */}
         <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
           <div>
-            © 2025 Homo Lumen Coalition. Alle rettigheter reservert.
+            © 2025 Homo Lumen Coalition • NAV-Losen v1.0
           </div>
           <div className="flex items-center gap-4">
             <span className="text-gray-600">Bygget med</span>

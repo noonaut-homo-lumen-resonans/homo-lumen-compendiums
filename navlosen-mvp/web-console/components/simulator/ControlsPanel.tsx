@@ -92,13 +92,16 @@ export function ControlsPanel({
           {/* Guided Tour Toggle */}
           <button
             onClick={onGuidedTourToggle}
-            disabled={true}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-500 rounded-lg cursor-not-allowed transition-colors"
-            title="Coming in Dag 3"
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              guidedTourActive
+                ? 'bg-teal-500 text-white hover:bg-teal-600'
+                : 'bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100'
+            }`}
+            title="Start Guided Tour - Choose from 3 tours"
           >
             <span className="text-lg">📖</span>
-            <span className="font-medium">Guided Tour</span>
-            <span className="text-xs bg-gray-300 px-2 py-0.5 rounded">Dag 3</span>
+            <span className="font-medium">Start Guided Tour</span>
+            <span className="text-xs bg-teal-600 text-white px-2 py-0.5 rounded">NEW!</span>
           </button>
 
           {/* Screen Recording Toggle */}
@@ -127,7 +130,7 @@ export function ControlsPanel({
           {/* Info Badge */}
           <div className="ml-auto flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg">
             <span className="text-sm text-blue-700 font-medium">
-              Dag 1/7: Setup & Device Frame ✅
+              Dag 3/7: Guided Tours ✅
             </span>
           </div>
         </div>
