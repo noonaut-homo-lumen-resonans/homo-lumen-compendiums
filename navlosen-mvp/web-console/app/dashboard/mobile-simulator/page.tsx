@@ -25,7 +25,7 @@ import type { Metadata } from 'next';
 
 export default function MobileSimulatorPage() {
   const [deviceType, setDeviceType] = useState<'iphone' | 'samsung' | 'ipad'>('iphone');
-  const [currentPage, setCurrentPage] = useState('/mestring');
+  const [currentPage, setCurrentPage] = useState('/');
   const [guidedTourActive, setGuidedTourActive] = useState(false);
   const [recordingActive, setRecordingActive] = useState(false);
 
@@ -35,8 +35,9 @@ export default function MobileSimulatorPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTourSelection, setShowTourSelection] = useState(false);
 
-  // Frontend URL - Netlify production (deployed by Manus 21.10.2025)
-  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://navlosen-frontend.netlify.app';
+  // Frontend URL - Local development (Netlify deployment has 404 errors)
+  // TODO: Update to Netlify URL when deployment is fixed
+  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3003';
   const iframeSrc = `${frontendBaseUrl}${currentPage}`;
 
   // Keyboard shortcuts (Triadic Ethics Port 1 - User Control)
