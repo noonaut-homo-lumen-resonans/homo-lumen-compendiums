@@ -5,10 +5,10 @@
  * Shows NAV-Losen frontend in realistic mobile frames with guided tours,
  * annotations, analytics, and screen recording.
  *
- * @version 1.0
+ * @version 1.1
  * @date 2025-10-21
  * @author Code (Agent #9) - Motor Cortex / Cerebellum
- * @timeline Dag 1/7 - Setup & Device Frame
+ * @timeline Dag 1/7 - Production URL Integration
  */
 
 'use client';
@@ -24,8 +24,8 @@ export default function MobileSimulatorPage() {
   const [guidedTourActive, setGuidedTourActive] = useState(false);
   const [recordingActive, setRecordingActive] = useState(false);
 
-  // Frontend URL - will be switched to Netlify URL when deployed
-  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3001';
+  // Frontend URL - Netlify production (deployed by Manus 21.10.2025)
+  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://navlosen-frontend.netlify.app';
   const iframeSrc = `${frontendBaseUrl}${currentPage}`;
 
   return (
