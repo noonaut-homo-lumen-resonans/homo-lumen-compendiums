@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # Git Server - Version control for all agent workspaces
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=postgres:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=${GITEA_DB_PASSWORD}
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./data/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3000:3000"
+      - "222:22"
+    depends_on:
+      - postgres
+
+  # PostgreSQL - Audit trail + metadata storage
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_DB: playground
+      POSTGRES_USER: playground_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Gitea database
+      GITEA_DB_NAME: gitea
+      GITEA_DB_USER: gitea
+      GITEA_DB_PASSWORD: ${GITEA_DB_PASSWORD}
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+
+  # Redis - Real-time pub/sub messaging for agent communication
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+
+  # FastAPI - API Gateway with RBAC for agent access
+  fastapi:
+    build: ./api
+    container_name: fastapi-gateway
+    environment:
+      - DATABASE_URL=postgresql://playground_user:${POSTGRES_PASSWORD}@postgres:5432/playground
+      - REDIS_URL=redis://redis:6379
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./workspace:/workspace
+      - ./api:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+
+  # ChromaDB - Vector database for semantic search (optional Phase 2)
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./data/chroma:/chroma/chroma
+    ports:
+      - "8001:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+
+  # Jupyter Lab - Interactive analysis environment (optional Phase 4)
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: jupyter-lab
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./workspace:/home/jovyan/workspace
+      - ./notebooks:/home/jovyan/notebooks
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
+
+networks:
+  playground-network:
+    driver: bridge
+
+volumes:
+  workspace:
+    driver: local

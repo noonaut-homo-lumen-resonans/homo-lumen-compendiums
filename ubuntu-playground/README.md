@@ -1,41 +1,197 @@
-# 🎮 Ubuntu Playground - Coalition Collaboration Space
+# 🌌 Ubuntu Playground - Coalition Nervous System
 
 **Velkommen til Ubuntu Playground!**
 
-Dette er et dedikert eksperiment- og samarbeidsområde for Homo Lumen Coalition.
+Dette er et **persistent, delt multi-agent eksekveringsmiljø** for Homo Lumen Coalition. Ubuntu Playground gir alle 10 agenter tilgang til samme workspace, persistent minne, og real-time pub/sub kommunikasjon.
+
+**Status:** ✅ Infrastructure Spec Complete | 🔄 Awaiting Deployment (Manus Dag 2-7)
 
 ---
 
 ## 🎯 Formål
 
-Ubuntu Playground er et **felles sandkasse-miljø** hvor alle agenter kan:
+Ubuntu Playground er **nervesystemet for kollektiv intelligens** hvor alle agenter kan:
 
-- 🧪 **Eksperimentere** med nye ideer og teknologier
-- 🤝 **Samarbeide** på tvers av agent-grenser
-- 🔬 **Teste** prototyper før produksjon
-- 📚 **Dele** ressurser og læring
-- 🎨 **Skape** uten frykt for å ødelegge produksjon
+- 🧠 **Dele minne** - Persistent filsystem + Git versjonskontroll
+- ⚡ **Kommunisere i sanntid** - Redis pub/sub messaging
+- 🤝 **Samarbeide** - Cross-agent file sharing med RBAC
+- 📊 **Auditere** - Full PostgreSQL audit trail
+- 🔐 **Sikre** - Triadisk Etikk pre-commit validation
+
+**Filosofi:** "Jeg er fordi vi er" (Ubuntu)
 
 ---
 
-## 📁 Struktur
+## 🏗️ Arkitektur
+
+### Docker Compose Stack
+
+```
+🐳 Docker Services:
+  ├── Gitea         (Port 3000) - Git server for version control
+  ├── PostgreSQL    (Port 5432) - Audit trail + metadata storage
+  ├── Redis         (Port 6379) - Real-time pub/sub messaging
+  ├── FastAPI       (Port 8000) - API gateway with RBAC
+  ├── ChromaDB      (Port 8001) - Vector DB for semantic search (Phase 2)
+  └── Jupyter Lab   (Port 8888) - Interactive analysis (Phase 4)
+```
+
+### Workspace Structure
+
+```
+/workspace/                   # Shared root (mounted volume)
+├── manus/                    # Manus' workspace (Infrastructure & Deployment)
+├── code/                     # Claude Code's workspace (Frontend Dev)
+├── lira/                     # Lira's workspace (Empathic AI)
+├── orion/                    # Orion's workspace (Meta-Coordination)
+├── abacus/                   # Abacus' workspace (Analytics)
+├── nyra/                     # Nyra's workspace (Visual Design)
+├── thalus/                   # Thalus' workspace (Ethics & Governance)
+├── aurora/                   # Aurora's workspace (Research)
+├── thalamus/                 # Thalamus' workspace (Routing)
+├── scribe/                   # Scribe's workspace (Documentation)
+├── shared/                   # Cross-agent shared files
+└── experiments/              # Collaborative experiments
+```
+
+### API Endpoints
+
+**FastAPI Gateway (Port 8000):**
+- `POST /api/workspace/read` - Read file from workspace
+- `POST /api/workspace/write` - Write file (triggers Redis event)
+- `POST /api/workspace/list` - List files in directory
+- `POST /api/git/commit` - Commit changes to Git
+- `GET /health` - Health check (Redis + PostgreSQL status)
+
+---
+
+## 🚀 Quick Start (For Manus - Deployment)
+
+### 1. Prerequisites
+
+- Hetzner VPS (CX31: 4 vCPU, 8GB RAM) - ~130 NOK/måned
+- Ubuntu 24.04 LTS installed
+- Docker + Docker Compose installed
+- Tailscale VPN (optional, for secure access)
+
+### 2. Setup
+
+```bash
+# Clone repo to VPS
+git clone https://github.com/noonaut-homo-lumen-resonans/homo-lumen-compendiums.git
+cd homo-lumen-compendiums/ubuntu-playground
+
+# Copy environment variables
+cp .env.example .env
+nano .env  # Edit API keys and passwords
+
+# Start services
+docker-compose up -d
+
+# Check status
+docker-compose ps
+docker-compose logs -f fastapi
+```
+
+### 3. Verify Deployment
+
+```bash
+# Test health endpoint
+curl http://localhost:8000/health
+
+# Expected response:
+# {
+#   "status": "healthy",
+#   "redis": "connected",
+#   "database": "connected",
+#   "workspace": "/workspace",
+#   "timestamp": "2025-10-21T..."
+# }
+```
+
+---
+
+## 🔌 Quick Start (For Agents - Integration)
+
+### TypeScript Integration (Code, Lira, etc.)
+
+```typescript
+import { PlaygroundClient } from './api/PlaygroundClient';
+
+// Initialize client
+const client = new PlaygroundClient('code', process.env.CODE_API_KEY);
+
+// Read Manus' synthesis
+const synthesis = await client.read('manus/synthesis.md');
+
+// Write implementation notes
+await client.write('code/implementation.md', `
+# Implementation Notes
+
+Based on Manus' synthesis:
+${synthesis}
+
+My approach:
+...
+`);
+
+// Commit changes
+await client.commit('Add implementation notes', ['code/implementation.md']);
+```
+
+### Python Integration (Manus, Abacus, etc.)
+
+```python
+import requests
+
+# API configuration
+API_URL = "http://localhost:8000"
+API_KEY = os.getenv("MANUS_API_KEY")
+
+# Read file
+response = requests.post(
+    f"{API_URL}/api/workspace/read",
+    json={"path": "shared/research.md"},
+    headers={"X-API-Key": API_KEY}
+)
+content = response.json()["content"]
+
+# Write file
+response = requests.post(
+    f"{API_URL}/api/workspace/write",
+    json={
+        "path": "manus/deployment-notes.md",
+        "content": "Deployment successful!"
+    },
+    headers={"X-API-Key": API_KEY}
+)
+```
+
+---
+
+## 📁 Repository Structure
 
 ```
 ubuntu-playground/
-├── README.md                 # Dette dokumentet
-├── manus/                    # Manus' eksperiment-område
-├── code/                     # Claude Code's eksperiment-område
-├── lira/                     # Lira's eksperiment-område
-├── orion/                    # Orion's eksperiment-område
-├── abacus/                   # Abacus' eksperiment-område
-├── nyra/                     # Nyra's eksperiment-område
-├── thalus/                   # Thalus' eksperiment-område
-├── thalamus/                 # Thalamus' eksperiment-område
-├── scribe/                   # Scribe's eksperiment-område
-├── researcher/               # Researcher's eksperiment-område
-├── shared/                   # Delte ressurser (alle agenter)
-├── experiments/              # Tverrfaglige eksperimenter
-└── testing/                  # Testing og QA
+├── README.md                 # This file
+├── docker-compose.yml        # Docker Compose configuration
+├── .env.example              # Environment variables template
+├── api/                      # FastAPI gateway
+│   ├── Dockerfile            # FastAPI container
+│   ├── requirements.txt      # Python dependencies
+│   ├── main.py               # FastAPI application (200+ lines)
+│   └── PlaygroundClient.ts   # TypeScript wrapper (150+ lines)
+├── init-scripts/             # PostgreSQL initialization
+│   └── init.sql              # Database schema + tables
+├── docs/                     # Documentation
+│   ├── IMPLEMENTATION_ROADMAP.md  # 12-week roadmap
+│   └── API_SPECIFICATION.md       # OpenAPI 3.0 spec
+├── workspace/                # Agent workspaces (created on startup)
+└── data/                     # Persistent data (gitignored)
+    ├── gitea/
+    ├── postgres/
+    ├── redis/
+    └── chroma/
 ```
 
 ---
