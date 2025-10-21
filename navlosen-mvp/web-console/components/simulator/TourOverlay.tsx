@@ -27,14 +27,7 @@ export function TourOverlay({ isActive, children, onExit }: TourOverlayProps) {
 
   return (
     <div className="tour-overlay">
-      {/* Semi-transparent backdrop */}
-      <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
-        onClick={onExit}
-        aria-label="Tour overlay - Click to exit"
-      />
-
-      {/* Tour content (tooltips, progress, controls) */}
+      {/* Tour content (tooltips, progress, controls) - NO backdrop, device stays visible! */}
       <div className="relative z-50">
         {children}
       </div>
@@ -43,7 +36,7 @@ export function TourOverlay({ isActive, children, onExit }: TourOverlayProps) {
       {onExit && (
         <button
           onClick={onExit}
-          className="fixed top-4 right-4 z-50 px-4 py-2 bg-white text-gray-800 rounded-lg shadow-lg hover:bg-gray-100 transition-colors font-medium flex items-center gap-2"
+          className="fixed top-4 right-4 z-50 px-4 py-2 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600 transition-colors font-medium flex items-center gap-2"
           aria-label="Exit tour"
         >
           <span className="text-xl">❌</span>
