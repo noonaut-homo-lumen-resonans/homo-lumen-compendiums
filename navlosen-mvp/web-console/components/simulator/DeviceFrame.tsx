@@ -120,7 +120,8 @@ export function DeviceFrame({ deviceType, iframeSrc }: DeviceFrameProps) {
             onLoad={handleIframeLoad}
             onError={handleIframeError}
             title="NAV-Losen Frontend"
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-top-navigation"
+            allow="fullscreen"
           />
         </div>
 
