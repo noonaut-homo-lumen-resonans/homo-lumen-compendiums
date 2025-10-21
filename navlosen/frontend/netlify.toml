@@ -1,15 +1,6 @@
-# Netlify configuration for NAV-Losen Frontend
-# Deployed for Mobile Simulator iframe integration
-
-[build]
-  command = "npm run build"
-  publish = ".next"
-
-# Use Netlify Next.js plugin for optimal deployment
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# CORS headers for iframe embedding in web-console
 [[headers]]
   for = "/*"
   [headers.values]
@@ -18,6 +9,4 @@
     Access-Control-Allow-Headers = "Content-Type"
     X-Frame-Options = "ALLOWALL"
     Content-Security-Policy = "frame-ancestors *"
-
-# No redirects needed - Next.js handles routing
 
