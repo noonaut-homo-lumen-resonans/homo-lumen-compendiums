@@ -24,8 +24,8 @@ export default function MobileSimulatorPage() {
   const [guidedTourActive, setGuidedTourActive] = useState(false);
   const [recordingActive, setRecordingActive] = useState(false);
 
-  // Frontend URL - Netlify production (deployed by Manus 21.10.2025)
-  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://navlosen-frontend.netlify.app';
+  // Frontend URL - Vercel production (deployed by Manus 21.10.2025)
+  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://navlosen-frontend.vercel.app';
   const iframeSrc = `${frontendBaseUrl}${currentPage}`;
 
   return (
@@ -65,7 +65,7 @@ export default function MobileSimulatorPage() {
             Powered by QDA v2.0 • 14+ Pages • Polyvagal-Adaptive Design
           </p>
           <p className="mt-2">
-            Timeline: Dag 1/7 • Status: Device Frame & Navigation ✅
+            Timeline: Dag 1/7 • Status: Vercel Integration ✅
           </p>
         </div>
       </div>
