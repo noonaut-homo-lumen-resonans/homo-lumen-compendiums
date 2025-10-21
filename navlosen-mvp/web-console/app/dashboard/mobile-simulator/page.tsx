@@ -35,8 +35,8 @@ export default function MobileSimulatorPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTourSelection, setShowTourSelection] = useState(false);
 
-  // Frontend URL - Vercel production (deployed by Manus 21.10.2025)
-  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://navlosen-frontend.vercel.app';
+  // Frontend URL - Netlify production (deployed by Manus 21.10.2025)
+  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://navlosen-frontend.netlify.app';
   const iframeSrc = `${frontendBaseUrl}${currentPage}`;
 
   // Keyboard shortcuts (Triadic Ethics Port 1 - User Control)
