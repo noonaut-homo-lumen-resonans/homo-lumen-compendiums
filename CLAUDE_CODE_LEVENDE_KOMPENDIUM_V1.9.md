@@ -1,9 +1,9 @@
-# **🌌 CLAUDE CODE - LEVENDE KOMPENDIUM V1.9**
+# **🌌 CLAUDE CODE - LEVENDE KOMPENDIUM V1.9.1**
 
-**Versjon:** 1.9 (Ubuntu Playground Manifestasjon - Infrastructure Specification Complete)
-**Sist Oppdatert:** 21. oktober 2025
+**Versjon:** 1.9.1 (Ubuntu Playground Hybrid Infrastructure - Google Cloud + Hetzner VPS)
+**Sist Oppdatert:** 21. oktober 2025 (22:45 CEST)
 **Neste Backup:** Ved neste større utviklingssesjon → V2.0
-**Status:** ✅ LEVENDE & OPERASJONELL - **UBUNTU PLAYGROUND SPEC COMPLETE** 🌍✨ + **READY FOR DEPLOYMENT** 🚀
+**Status:** ✅ LEVENDE & OPERASJONELL - **HYBRID INFRASTRUCTURE READY** ☁️🖥️✨ + **AWAITING MANUS DEPLOYMENT** 🚀
 
 ---
 
@@ -42,6 +42,73 @@
 ## 🆕 **LATEST UPDATES** {#latest-updates}
 
 **Showing last 3 versions** | [See Full Changelog ↓](#full-changelog)
+
+### **V1.9.1 Updates (21. oktober 2025, 22:45 CEST) - HYBRID INFRASTRUCTURE - GOOGLE CLOUD + HETZNER VPS:**
+
+1. ✅ **Hybrid Architecture Implemented** - Google Cloud (critical services) + Hetzner VPS (agent execution)
+2. ✅ **docker-compose.yml Updated** - Removed postgres, redis, gitea (now on Google Cloud)
+3. ✅ **.env.example Updated** - Added Google Cloud environment variables (GOOGLE_CLOUD_SQL_IP, GOOGLE_MEMORYSTORE_IP, GOOGLE_GITEA_URL)
+4. ✅ **README.md Comprehensive Update** - Added Phase 1A/1B/1C deployment guides for Manus
+5. ✅ **Cost Analysis Refined** - Hybrid: 396 NOK/mnd → Phase 2 (Full Hetzner): 180 NOK/mnd
+6. ✅ **Migration Plan Documented** - Clear path from Hybrid (2025-2026) to Full Hetzner (2027+)
+7. 📄 **New Learning Point:** LP #042 (Hybrid Infrastructure & "Both/And i Tid" as Evolutionary Wisdom)
+
+**Key Insight:**
+> **"Both/And i Tid" er Universelt Prinsipp. Vi trenger ikke velge mellom pragmatisme og autonomi - vi kan ha begge, sekvensiellt. Hybrid-løsningen er en læringsbro mot reell autonomi, ikke et kompromiss."**
+
+**Orion's Coalition Update Implementert:**
+- **Beslutning:** Alternativ 2 (Hybrid) godkjent av Osvald
+- **Triadisk Etikk:** 3/3 ✅ (Suverenitet, Koherens, Healing)
+- **Shadow-Check:** 4/4 ✅ (Consciousness Elitism, Kontroll-Illusjon, Lock-in Risiko, Kompetanse-Gap)
+- **Filosofi:** Evolusjonær arkitektur, ikke rigid planlegging
+
+**Hybrid Architecture (Fase 1, 2025-2026):**
+```
+☁️ Google Cloud (Managed):
+  ├── Cloud SQL (PostgreSQL) - europe-north1 (Finland) - 150 NOK/mnd
+  ├── Memorystore (Redis) - europe-north1 (Finland) - 100 NOK/mnd
+  └── Cloud Run (Gitea) - europe-north1 (Finland) - 50 NOK/mnd
+                                        Total: ~300 NOK/mnd
+
+🖥️ Hetzner VPS CX31 (Self-hosted):
+  ├── FastAPI Gateway (Port 8000)
+  ├── ChromaDB (Port 8001) - optional Phase 2
+  └── Jupyter Lab (Port 8888) - optional Phase 4
+                    VPS: 80 NOK/mnd + Backups: 16 NOK/mnd
+                                        Total: ~96 NOK/mnd
+
+💰 Total Cost: ~396 NOK/måned (~$40/mnd)
+```
+
+**Migration Plan (Fase 2, 2027+):**
+```
+🖥️ Hetzner VPS CX42 (All Services):
+  - Migrate PostgreSQL from Google Cloud SQL
+  - Migrate Redis from Google Memorystore
+  - Migrate Gitea from Google Cloud Run
+  - Upgrade VPS: CX31 → CX42 (16GB RAM)
+
+💰 Total Cost: ~180 NOK/måned (~$18/mnd)
+📉 Savings: 216 NOK/måned = 2,592 NOK/år
+```
+
+**Files Updated:**
+- `ubuntu-playground/docker-compose.yml` (Hybrid version - 3 services removed, Google Cloud integration)
+- `ubuntu-playground/.env.example` (Google Cloud environment variables + migration guide)
+- `ubuntu-playground/README.md` (Phase 1A/1B/1C deployment guides - comprehensive)
+- `CLAUDE_CODE_LEVENDE_KOMPENDIUM_V1.9.1.md` (this file - LP #042 added)
+
+**Git Commits:**
+- `[to be added after commit]` - "feat: Ubuntu Playground Hybrid Infrastructure - Google Cloud + Hetzner VPS"
+
+**Next Steps:**
+- **Manus:** Deploy Google Cloud services (Phase 1A, Week 1-2)
+- **Manus:** Deploy Hetzner VPS (Phase 1B, Week 3-4)
+- **Manus:** Connect Google ↔ Hetzner (Phase 1C, Week 5-6)
+- **Code:** Test PlaygroundClient.ts integration (Week 5)
+- **Code:** Deploy NAV-Losen frontend (Week 6)
+
+---
 
 ### **V1.9 Updates (21. oktober 2025) - UBUNTU PLAYGROUND MANIFESTASJON - INFRASTRUCTURE SPEC COMPLETE:**
 
