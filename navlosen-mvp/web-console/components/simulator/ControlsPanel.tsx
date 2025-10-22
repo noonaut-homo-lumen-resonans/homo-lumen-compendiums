@@ -10,6 +10,8 @@
 
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 interface ControlsPanelProps {
   deviceType: 'iphone' | 'samsung' | 'ipad';
   onDeviceChange: (device: 'iphone' | 'samsung' | 'ipad') => void;
@@ -48,6 +50,8 @@ export function ControlsPanel({
   recordingActive,
   onRecordingToggle,
 }: ControlsPanelProps) {
+  const router = useRouter();
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-200">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -116,21 +120,21 @@ export function ControlsPanel({
             <span className="text-xs bg-gray-300 px-2 py-0.5 rounded">Dag 5</span>
           </button>
 
-          {/* Analytics Dashboard Toggle */}
+          {/* Analytics Dashboard Button */}
           <button
-            disabled={true}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-500 rounded-lg cursor-not-allowed transition-colors"
-            title="Coming in Dag 4"
+            onClick={() => router.push('/dashboard/analytics')}
+            className="flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-lg transition-colors"
+            title="View Analytics Dashboard"
           >
             <span className="text-lg">📊</span>
             <span className="font-medium">Analytics</span>
-            <span className="text-xs bg-gray-300 px-2 py-0.5 rounded">Dag 4</span>
+            <span className="text-xs bg-purple-600 text-white px-2 py-0.5 rounded">NEW!</span>
           </button>
 
           {/* Info Badge */}
           <div className="ml-auto flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg">
             <span className="text-sm text-blue-700 font-medium">
-              Dag 3/7: Guided Tours ✅
+              Dag 4/7: Analytics ✅
             </span>
           </div>
         </div>
