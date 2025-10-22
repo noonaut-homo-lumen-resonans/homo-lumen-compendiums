@@ -37,7 +37,7 @@ export default function MobileSimulatorPage() {
 
   // Frontend URL - Local development (Netlify deployment has 404 errors)
   // TODO: Update to Netlify URL when deployment is fixed
-  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3003';
+  const frontendBaseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3005';
   const iframeSrc = `${frontendBaseUrl}${currentPage}`;
 
   // Keyboard shortcuts (Triadic Ethics Port 1 - User Control)
