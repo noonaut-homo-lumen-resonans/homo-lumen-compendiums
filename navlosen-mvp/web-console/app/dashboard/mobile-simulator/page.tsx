@@ -21,6 +21,7 @@ import { TourTooltip } from '@/components/simulator/TourTooltip';
 import { TourProgress } from '@/components/simulator/TourProgress';
 import { TourController } from '@/components/simulator/TourController';
 import { allTours, getTourById, type Tour } from '@/lib/tourScripts';
+import { startSession, endSession, trackPageVisit, trackDeviceChange, trackTourCompletion } from '@/lib/analytics';
 import type { Metadata } from 'next';
 
 export default function MobileSimulatorPage() {
@@ -28,12 +29,24 @@ export default function MobileSimulatorPage() {
   const [currentPage, setCurrentPage] = useState('/');
   const [guidedTourActive, setGuidedTourActive] = useState(false);
   const [recordingActive, setRecordingActive] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
 
   // Tour state
   const [activeTour, setActiveTour] = useState<Tour | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTourSelection, setShowTourSelection] = useState(false);
+
+  // Start analytics session on mount
+  useEffect(() => {
+    const id = startSession(deviceType);
+    setSessionId(id);
+    trackPageVisit('/');
+
+    return () => {
+      endSession();
+    };
+  }, []);
 
   // Frontend URL - Local development (Netlify deployment has 404 errors)
   // TODO: Update to Netlify URL when deployment is fixed
@@ -70,6 +83,23 @@ export default function MobileSimulatorPage() {
     }
   }, [activeTour, currentStep]);
 
+  // Track page changes
+  useEffect(() => {
+    trackPageVisit(currentPage);
+  }, [currentPage]);
+
+  // Track device changes
+  const handleDeviceChange = (device: 'iphone' | 'samsung' | 'ipad') => {
+    setDeviceType(device);
+    trackDeviceChange(device);
+  };
+
+  // Track page changes from dropdown
+  const handlePageChange = (page: string) => {
+    setCurrentPage(page);
+    trackPageVisit(page);
+  };
+
   // Tour control handlers
   const handleStartTour = (tourId: string) => {
     const tour = getTourById(tourId);
@@ -83,6 +113,11 @@ export default function MobileSimulatorPage() {
   };
 
   const handleExitTour = () => {
+    // Check if tour was completed
+    if (activeTour && currentStep === activeTour.steps.length) {
+      trackTourCompletion(activeTour.id);
+    }
+
     setActiveTour(null);
     setCurrentStep(1);
     setIsPlaying(false);
@@ -93,7 +128,8 @@ export default function MobileSimulatorPage() {
     if (activeTour && currentStep < activeTour.steps.length) {
       setCurrentStep(currentStep + 1);
     } else if (activeTour && currentStep === activeTour.steps.length) {
-      // Tour complete
+      // Tour complete - track before exiting
+      trackTourCompletion(activeTour.id);
       handleExitTour();
     }
   };
@@ -132,9 +168,9 @@ export default function MobileSimulatorPage() {
         {/* Controls Panel */}
         <ControlsPanel
           deviceType={deviceType}
-          onDeviceChange={setDeviceType}
+          onDeviceChange={handleDeviceChange}
           currentPage={currentPage}
-          onPageChange={setCurrentPage}
+          onPageChange={handlePageChange}
           guidedTourActive={guidedTourActive}
           onGuidedTourToggle={() => setShowTourSelection(!showTourSelection)}
           recordingActive={recordingActive}
