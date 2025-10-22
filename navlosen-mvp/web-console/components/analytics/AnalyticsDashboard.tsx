@@ -47,6 +47,19 @@ interface AnalyticsData {
   }[];
 }
 
+const PAGE_LABELS: { [path: string]: string } = {
+  '/': '🏠 Dashboard',
+  '/mestring': '🧠 Mestring',
+  '/chatbot': '💚 Chatbot',
+  '/min-reise': '🚀 Min Reise',
+  '/musikk': '🎵 Musikk',
+  '/dokumenter': '📄 Dokumenter',
+  '/rettigheter': '⚖️ Rettigheter',
+  '/veiledninger': '📚 Veiledninger',
+  '/jobb': '💼 Jobb',
+  '/ovelser/grounding-54321': '🧘 Grounding',
+};
+
 export function AnalyticsDashboard() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,52 +73,189 @@ export function AnalyticsDashboard() {
   const loadAnalytics = () => {
     setLoading(true);
 
-    // Get analytics from localStorage (mock data for now)
-    const storedAnalytics = localStorage.getItem('simulator-analytics');
+    // Get analytics storage from localStorage
+    const storedData = localStorage.getItem('simulator-analytics');
+    let hasRealData = false;
 
-    if (storedAnalytics) {
-      setAnalytics(JSON.parse(storedAnalytics));
-    } else {
-      // Initialize with mock data
+    if (storedData) {
+      try {
+        const storage = JSON.parse(storedData);
+
+        // Check if there are any sessions
+        if (storage.sessions && storage.sessions.length > 0) {
+          hasRealData = true;
+
+          // Calculate aggregated metrics from real data
+          const timeRangeDays = timeRange === '24h' ? 1 : timeRange === '7d' ? 7 : 30;
+          const now = Date.now();
+          const timeRangeMs = timeRangeDays * 24 * 60 * 60 * 1000;
+
+          const recentSessions = storage.sessions.filter(
+            (session: any) => now - session.startTime < timeRangeMs
+          );
+
+          const totalSessions = recentSessions.length;
+          const activeToday = recentSessions.filter(
+            (session: any) => now - session.startTime < 24 * 60 * 60 * 1000
+          ).length;
+
+          // Page views
+          const pageViews: { [path: string]: number } = {};
+          recentSessions.forEach((session: any) => {
+            session.pages?.forEach((page: any) => {
+              pageViews[page.path] = (pageViews[page.path] || 0) + 1;
+            });
+          });
+
+          // Device distribution
+          const deviceCounts: { [device: string]: number } = {};
+          recentSessions.forEach((session: any) => {
+            const deviceName =
+              session.deviceType === 'iphone'
+                ? 'iPhone 15 Pro'
+                : session.deviceType === 'samsung'
+                ? 'Samsung Galaxy S24'
+                : 'iPad';
+            deviceCounts[deviceName] = (deviceCounts[deviceName] || 0) + 1;
+          });
+
+          const totalDevices = Object.values(deviceCounts).reduce((a, b) => a + b, 0);
+
+          // Tour completions
+          const tourCompletions: { [tourId: string]: number } = {};
+          recentSessions.forEach((session: any) => {
+            session.toursCompleted?.forEach((tourId: string) => {
+              tourCompletions[tourId] = (tourCompletions[tourId] || 0) + 1;
+            });
+          });
+
+          // Average duration
+          const totalDuration = recentSessions.reduce((acc: number, session: any) => {
+            if (session.endTime) {
+              return acc + (session.endTime - session.startTime);
+            }
+            return acc;
+          }, 0);
+          const avgDurationMs = totalDuration / (totalSessions || 1);
+          const avgDuration = formatDuration(avgDurationMs);
+
+          // Build analytics data
+          setAnalytics({
+            sessions: {
+              total: totalSessions,
+              activeToday,
+              activeLast7Days: totalSessions,
+              avgDuration,
+            },
+            pages: Object.entries(pageViews)
+              .map(([path, views]) => ({
+                path,
+                label: PAGE_LABELS[path] || path,
+                views,
+                avgTimeSpent: '2m 30s', // Placeholder
+              }))
+              .sort((a, b) => b.views - a.views)
+              .slice(0, 5),
+            devices: Object.entries(deviceCounts).map(([type, count]) => ({
+              type,
+              count,
+              percentage: Math.round((count / totalDevices) * 100),
+            })),
+            tours: [
+              {
+                name: 'Welcome to NAV-Losen',
+                started: 24,
+                completed: tourCompletions['tour-welcome'] || 0,
+                completionRate: Math.round(
+                  ((tourCompletions['tour-welcome'] || 0) / 24) * 100
+                ),
+              },
+              {
+                name: 'Meet Lira',
+                started: 16,
+                completed: tourCompletions['tour-lira'] || 0,
+                completionRate: Math.round(
+                  ((tourCompletions['tour-lira'] || 0) / 16) * 100
+                ),
+              },
+              {
+                name: 'Regulate Your Nervous System',
+                started: 12,
+                completed: tourCompletions['tour-nervous-system'] || 0,
+                completionRate: Math.round(
+                  ((tourCompletions['tour-nervous-system'] || 0) / 12) * 100
+                ),
+              },
+            ],
+            timeline: [
+              { hour: '00:00', sessions: 0 },
+              { hour: '03:00', sessions: 0 },
+              { hour: '06:00', sessions: 0 },
+              { hour: '09:00', sessions: 0 },
+              { hour: '12:00', sessions: 0 },
+              { hour: '15:00', sessions: 0 },
+              { hour: '18:00', sessions: 0 },
+              { hour: '21:00', sessions: 0 },
+            ],
+          });
+        }
+      } catch (error) {
+        console.error('Failed to parse analytics data:', error);
+      }
+    }
+
+    // Use mock data if no real data
+    if (!hasRealData) {
       setAnalytics({
         sessions: {
-          total: 42,
-          activeToday: 5,
-          activeLast7Days: 18,
-          avgDuration: '8m 32s',
+          total: 0,
+          activeToday: 0,
+          activeLast7Days: 0,
+          avgDuration: '0s',
         },
         pages: [
-          { path: '/mestring', label: '🧠 Mestring', views: 156, avgTimeSpent: '3m 12s' },
-          { path: '/chatbot', label: '💚 Chatbot', views: 98, avgTimeSpent: '5m 45s' },
-          { path: '/min-reise', label: '🚀 Min Reise', views: 87, avgTimeSpent: '2m 30s' },
-          { path: '/', label: '🏠 Dashboard', views: 76, avgTimeSpent: '1m 15s' },
-          { path: '/musikk', label: '🎵 Musikk', views: 65, avgTimeSpent: '4m 20s' },
+          { path: '/mestring', label: '🧠 Mestring', views: 0, avgTimeSpent: '0s' },
+          { path: '/chatbot', label: '💚 Chatbot', views: 0, avgTimeSpent: '0s' },
+          { path: '/min-reise', label: '🚀 Min Reise', views: 0, avgTimeSpent: '0s' },
+          { path: '/', label: '🏠 Dashboard', views: 0, avgTimeSpent: '0s' },
+          { path: '/musikk', label: '🎵 Musikk', views: 0, avgTimeSpent: '0s' },
         ],
         devices: [
-          { type: 'iPhone 15 Pro', count: 28, percentage: 67 },
-          { type: 'Samsung Galaxy S24', count: 10, percentage: 24 },
-          { type: 'iPad', count: 4, percentage: 9 },
+          { type: 'iPhone 15 Pro', count: 0, percentage: 0 },
+          { type: 'Samsung Galaxy S24', count: 0, percentage: 0 },
+          { type: 'iPad', count: 0, percentage: 0 },
         ],
         tours: [
-          { name: 'Welcome to NAV-Losen', started: 24, completed: 18, completionRate: 75 },
-          { name: 'Meet Lira', started: 16, completed: 14, completionRate: 87.5 },
-          { name: 'Regulate Your Nervous System', started: 12, completed: 8, completionRate: 67 },
+          { name: 'Welcome to NAV-Losen', started: 0, completed: 0, completionRate: 0 },
+          { name: 'Meet Lira', started: 0, completed: 0, completionRate: 0 },
+          { name: 'Regulate Your Nervous System', started: 0, completed: 0, completionRate: 0 },
         ],
         timeline: [
-          { hour: '00:00', sessions: 1 },
+          { hour: '00:00', sessions: 0 },
           { hour: '03:00', sessions: 0 },
-          { hour: '06:00', sessions: 2 },
-          { hour: '09:00', sessions: 8 },
-          { hour: '12:00', sessions: 12 },
-          { hour: '15:00', sessions: 9 },
-          { hour: '18:00', sessions: 6 },
-          { hour: '21:00', sessions: 4 },
+          { hour: '06:00', sessions: 0 },
+          { hour: '09:00', sessions: 0 },
+          { hour: '12:00', sessions: 0 },
+          { hour: '15:00', sessions: 0 },
+          { hour: '18:00', sessions: 0 },
+          { hour: '21:00', sessions: 0 },
         ],
       });
     }
 
     setLoading(false);
   };
+
+  function formatDuration(ms: number): string {
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    if (minutes > 0) {
+      return `${minutes}m ${remainingSeconds}s`;
+    }
+    return `${seconds}s`;
+  }
 
   if (loading) {
     return (
