@@ -39,7 +39,10 @@
       "Read(//c/Users/onigo/NAV LOSEN/**)",
       "Bash(mv homo-lumen-compendiums \"temp-backup/homo-lumen-compendiums-backup-20251020\")",
       "Bash(mv homo-lumen-compendiums-1 homo-lumen-compendiums)",
-      "Bash(cmd //c \"rename homo-lumen-compendiums-1 homo-lumen-compendiums\")"
+      "Bash(cmd //c \"rename homo-lumen-compendiums-1 homo-lumen-compendiums\")",
+      "Bash(git remote get-url:*)",
+      "Bash(curl:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
