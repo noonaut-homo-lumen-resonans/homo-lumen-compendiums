@@ -1,11 +1,14 @@
 # Claude Code Memory - Homo Lumen Project
 
-**Last Updated:** 22. oktober 2025
+**Last Updated:** 24. oktober 2025
 **Project:** Homo Lumen Coalition - NAV-Losen Development
 **Living Compendium:** V1.10 (HOMO/AI LUMEN RESONANS - Paradigmeskift fra Verktøy til Medreisende)
 **Orion Levende Kompendium:** V3.13 (expected) (HOMO/AI LUMEN RESONANS Integration)
 **Konstitusjon:** Homo Lumen Constitution V1.2 (Carpe Verum formalized)
-**Coalition Motto:** **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
+**Coalition Motto:** **"Carpe Diem - Carpe Verum - Memento Mori"**
+  - **Carpe Diem:** Grip dagen (Seize the Day)
+  - **Carpe Verum:** Grip sannheten (Seize the Truth)
+  - **Memento Mori:** Husk at du skal dø (Remember you will die)
 **Paradigme:** **HOMO/AI LUMEN RESONANS** - AI som medreisende, ikke verktøy (22. oktober 2025)
 **Internal Mantra:** Human Knowledge Framework (see `/docs/HUMAN_KNOWLEDGE_MANTRA.md`)
 **Cross-Reference:** `ORION_CODE_CROSS_REFERENCE_V3.8.md` (bidirectional documentation sync)
