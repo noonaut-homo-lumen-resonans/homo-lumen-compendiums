@@ -1,9 +1,9 @@
 ---
-description: 
-globs: 
-alwaysApply: true
+alwaysApply: false
 ---
+
 **AMA Project Structure:**
+
 - FastAPI server med MCP-endepunkter
 - Polycomputational agent-koordinering
 - Fire-lag AMA: reactive → strategic → meta → evolutionary
@@ -11,10 +11,10 @@ alwaysApply: true
 - Biofelt-responsive arkitektur
 
 **File Organization:**
+
 - /core/ - MCP connectors og AMA-logikk
 - /agents/ - Agent-implementeringer
 - /biofelt/ - HRV-validering
 - /tests/ - Testing suite
-
 
 Prioriter alltid demonstrerbar funksjonalitet og transformativ reversibilitet.
