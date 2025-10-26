@@ -68,9 +68,9 @@ def parse_lk_file(filepath):
         if agent:
             metadata['agent'] = agent
             metadata['version'] = version
-            print(f"  ℹ️  No YAML frontmatter, extracted from filename")
+            print(f"  [INFO] No YAML frontmatter, extracted from filename")
         else:
-            print(f"  ⚠️  No YAML frontmatter and couldn't parse filename")
+            print(f"  [WARN] No YAML frontmatter and couldn't parse filename")
             return None
 
     # Extract title from content if not in YAML
