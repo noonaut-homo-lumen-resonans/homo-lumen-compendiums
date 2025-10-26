@@ -1,7 +1,10 @@
 ---
 smk_number: 20
+title: "Symbol System Implementation for Homo Lumen Coalition"
+date: 2025-10-14
+agent: Orion
 type: Strategic Macro-Coordination
-tags: [mcp, nav-losen]
+tags: [symbols, design, protocol, coordination]
 status: COMPLETE
 ---
 
