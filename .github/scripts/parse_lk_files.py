@@ -54,7 +54,10 @@ def extract_agent_from_filename(filename):
 
 def parse_lk_file(filepath):
     """Parse a single LK file and extract metadata."""
-    print(f"Parsing: {filepath.name}")
+    try:
+        print(f"Parsing: {filepath.name}")
+    except UnicodeEncodeError:
+        print(f"Parsing: [filename with special characters]")
 
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -96,10 +99,20 @@ def parse_lk_file(filepath):
     # Generate GitHub URL
     repo = os.getenv('GITHUB_REPOSITORY', 'noonaut-homo-lumen-resonans/homo-lumen-compendiums')
     branch = 'main'
-    relative_path = filepath.relative_to(Path.cwd())
-    metadata['github_url'] = f"https://github.com/{repo}/blob/{branch}/{relative_path}"
+    # Convert to absolute path first, then get relative to cwd
+    try:
+        abs_path = filepath.resolve()
+        cwd = Path.cwd().resolve()
+        relative_path = abs_path.relative_to(cwd)
+    except ValueError:
+        # If relative_to fails, just use the filepath as-is
+        relative_path = filepath
+    metadata['github_url'] = f"https://github.com/{repo}/blob/{branch}/{relative_path}".replace('\\', '/')
 
-    print(f"  ✅ Parsed: {metadata.get('agent', '?')} LK {metadata.get('version', '?')} - {metadata.get('title', 'Untitled')}")
+    try:
+        print(f"  [OK] Parsed: {metadata.get('agent', '?')} LK {metadata.get('version', '?')} - {metadata.get('title', 'Untitled')}")
+    except UnicodeEncodeError:
+        print(f"  [OK] Parsed: {metadata.get('agent', '?')} LK {metadata.get('version', '?')}")
 
     return metadata
 
@@ -143,7 +156,7 @@ def main():
         return
 
     # Output for next step
-    print(f"\n✅ Parsed {len(lk_data)} LK files successfully")
+    print(f"\n[OK] Parsed {len(lk_data)} LK files successfully")
     print("::set-output name=has_lks::true")
     print(f"::set-output name=lk_count::{len(lk_data)}")
     print(f"::set-output name=lk_data::{json.dumps(lk_data)}")
