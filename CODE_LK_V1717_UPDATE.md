@@ -1,3 +1,11 @@
+---
+agent: Code
+version: V1.7.17
+date: 2025-10-21
+status: COMPLETE
+tags: [guided-tours, debugging, iframe]
+---
+
 # V1.7.17 Update - 21. oktober 2025
 
 ## NEW LEARNING POINTS
