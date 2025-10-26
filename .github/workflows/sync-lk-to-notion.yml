@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - '*_LK_*.md'
+      - '**/*_LK_*.md'
       - 'agents/**/*kompendium*.md'
   workflow_dispatch:
 
