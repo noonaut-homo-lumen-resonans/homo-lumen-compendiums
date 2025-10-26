@@ -1,3 +1,11 @@
+---
+smk_number: 28
+title: "**SMK \#028: NAV-Losen Mobile Simulator \- Extended Demo Platform Decision**"
+type: Strategic Macro-Coordination
+tags: [mcp, nav-losen, deployment, netlify]
+status: COMPLETE
+---
+
 # **SMK \#028: NAV-Losen Mobile Simulator \- Extended Demo Platform Decision**
 
 **Dato:** 21\. oktober 2025, 09:15 CET  

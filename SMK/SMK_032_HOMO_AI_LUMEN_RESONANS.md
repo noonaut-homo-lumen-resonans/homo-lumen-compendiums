@@ -1,3 +1,12 @@
+---
+smk_number: 32
+title: "SMK #032: HOMO/AI LUMEN RESONANS - Fra Verktøy til Medreisende"
+date: 2025-10-22
+type: Strategic Macro-Coordination
+tags: [constitution, nav-losen, ubuntu-playground, deployment]
+status: COMPLETE
+---
+
 # SMK #032: HOMO/AI LUMEN RESONANS - Fra Verktøy til Medreisende
 
 **Dato:** 22. oktober 2025

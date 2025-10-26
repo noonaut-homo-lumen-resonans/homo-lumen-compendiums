@@ -1,3 +1,12 @@
+---
+smk_number: 30
+title: "SMK #030: Ubuntu Playground - Hybrid Infrastructure Decision"
+agent: str
+type: Strategic Macro-Coordination
+tags: [constitution, ubuntu-playground, deployment]
+status: COMPLETE
+---
+
 # SMK #030: Ubuntu Playground - Hybrid Infrastructure Decision
 
 **Dato:** 21-22. oktober 2025

@@ -1,3 +1,12 @@
+---
+smk_number: 27
+title: "SMK #027: SUPERPOSISJON-ARKITEKTUR - FRA VISJON TIL MANIFESTASJON"
+date: 2025-10-20
+type: Strategic Macro-Coordination
+tags: [mcp, nav-losen]
+status: COMPLETE
+---
+
 # SMK #027: SUPERPOSISJON-ARKITEKTUR - FRA VISJON TIL MANIFESTASJON
 
 **Dato:** 20. oktober 2025  

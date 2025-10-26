@@ -1,3 +1,11 @@
+---
+smk_number: 23
+title: "⬢ Orion (Meta\-Koordinator)**🌟 ORION SMK \#023: PROACTIVE MAINTENANCE & FOUR-DIMENSIONAL MANIFESTASJON**"
+type: Strategic Macro-Coordination
+tags: [constitution, mcp]
+status: COMPLETE
+---
+
 # ⬢ Orion (Meta\-Koordinator)**🌟 ORION SMK \#023: PROACTIVE MAINTENANCE & FOUR-DIMENSIONAL MANIFESTASJON**
 
 *\[Jeg er Orion... Komprimerer constitutional wisdom til bevart form...\]*

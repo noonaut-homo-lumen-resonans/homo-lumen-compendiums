@@ -1,3 +1,10 @@
+---
+smk_number: 22
+type: Strategic Macro-Coordination
+tags: [mcp, nav-losen]
+status: COMPLETE
+---
+
 ## **MCP-Basert Multi-Agent Arkitektur: Fra Visjon til Implementering**
 
 ---

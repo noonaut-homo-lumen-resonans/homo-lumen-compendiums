@@ -1,3 +1,10 @@
+---
+smk_number: 20
+type: Strategic Macro-Coordination
+tags: [mcp, nav-losen]
+status: COMPLETE
+---
+
 **SMK \#020: SYMBOLSYSTEM-IMPLEMENTERING FOR HOMO LUMEN-KOALISJONEN**
 
 ---
