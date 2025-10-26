@@ -1,0 +1,56 @@
+name: Sync Learning Points to Notion
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  sync-to-notion:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for commit analysis
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install notion-client requests
+      
+      - name: Parse commit for Learning Points
+        id: parse
+        run: |
+          python .github/scripts/parse_commit.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+      
+      - name: Sync to Notion SLL
+        if: steps.parse.outputs.has_lp == 'true'
+        run: |
+          python .github/scripts/sync_to_notion.py
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          SLL_DATABASE_ID: ${{ secrets.SLL_DATABASE_ID }}
+          LP_DATA: ${{ steps.parse.outputs.lp_data }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+      
+      - name: Report success
+        if: steps.parse.outputs.has_lp == 'true'
+        run: |
+          echo "✅ Learning Point synced to Notion SLL"
+          echo "LP ID: ${{ steps.parse.outputs.lp_id }}"
+          echo "Agent: ${{ steps.parse.outputs.agent }}"
+          echo "Notion URL: ${{ steps.sync.outputs.notion_url }}"
+
