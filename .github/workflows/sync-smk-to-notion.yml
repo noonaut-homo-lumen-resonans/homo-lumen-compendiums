@@ -1,0 +1,55 @@
+name: Sync SMKs to Notion
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'SMK/**/*.md'
+  workflow_dispatch:
+
+jobs:
+  sync-smk-to-notion:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install notion-client pyyaml requests
+
+      - name: Parse SMK files
+        id: parse
+        run: |
+          python .github/scripts/parse_smk_files.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+
+      - name: Sync to Notion SMK Database
+        if: steps.parse.outputs.has_smks == 'true'
+        run: |
+          python .github/scripts/sync_smk_to_notion.py
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          SMK_DATABASE_ID: ${{ secrets.SMK_DATABASE_ID }}
+          SMK_DATA: ${{ steps.parse.outputs.smk_data }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+
+      - name: Report success
+        if: steps.parse.outputs.has_smks == 'true'
+        run: |
+          echo "✅ SMKs synced to Notion Database"
+          echo "Count: ${{ steps.parse.outputs.smk_count }}"
+          echo "Database URL: https://www.notion.so/ba1d4a4407a5425fafd81d27dc02cc1c"
