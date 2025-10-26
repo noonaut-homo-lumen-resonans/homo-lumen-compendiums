@@ -1,9 +1,12 @@
 ---
+smk_number: 29
 title: "SMK: Vercel Deployment Success - Netlify to Vercel Migration"
 date: 2025-10-21
-agent: Manus (🔨)
+agent: Manus
+type: Strategic Macro-Coordination
 session_id: navlosen-frontend-deployment
 tags: [deployment, vercel, netlify, nextjs-15, troubleshooting, migration]
+status: COMPLETE
 ---
 
 # SMK #029: Vercel Deployment Success - Netlify to Vercel Migration

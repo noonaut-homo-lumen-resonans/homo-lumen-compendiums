@@ -164,28 +164,28 @@ def convert_smk_file(filepath):
     
     # Check if already has YAML
     if has_yaml_frontmatter(content):
-        print(f"  ✅ Already has YAML frontmatter - skipping")
+        print(f"  [OK] Already has YAML frontmatter - skipping")
         return False
-    
+
     # Extract metadata
     metadata = extract_metadata(content, filepath.name)
-    print(f"  📊 Extracted metadata:")
+    print(f"  [INFO] Extracted metadata:")
     print(f"     SMK #: {metadata['smk_number']}")
     print(f"     Agent: {metadata['agent']}")
     print(f"     Date: {metadata['date']}")
     print(f"     Tags: {metadata['tags']}")
-    
+
     # Create YAML frontmatter
     yaml = create_yaml_frontmatter(metadata)
-    
+
     # Combine YAML + original content
     new_content = yaml + content
-    
+
     # Write back
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(new_content)
-    
-    print(f"  ✅ Converted successfully!")
+
+    print(f"  [OK] Converted successfully!")
     return True
 
 def main():
@@ -215,9 +215,9 @@ def main():
     print("\n" + "=" * 60)
     print("CONVERSION COMPLETE")
     print("=" * 60)
-    print(f"✅ Converted: {converted}")
-    print(f"⏭️  Skipped: {skipped}")
-    print(f"📁 Total: {len(smk_files)}")
+    print(f"[OK] Converted: {converted}")
+    print(f"[SKIP] Skipped: {skipped}")
+    print(f"[TOTAL] Files: {len(smk_files)}")
     print("\nAll SMK files now have standardized YAML frontmatter!")
 
 if __name__ == "__main__":

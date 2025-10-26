@@ -1,7 +1,9 @@
 ---
+smk_number: 33
 title: "SMK: NAV-Losen QDA v2.0 Deployment Validation & Chrome Security Resolution"
 date: 2025-10-20
 agent: Manus
+type: Strategic Macro-Coordination
 session_type: Technical Validation & Crisis Resolution
 tags: [qda-v2, netlify, deployment, security, testing, production-ready, nav-losen]
 triadic_ethics_score: 0.05
