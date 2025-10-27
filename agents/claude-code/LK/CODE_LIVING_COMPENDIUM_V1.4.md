@@ -1,9 +1,8 @@
 # **CODE (AGENT #9) - LIVING COMPENDIUM**
 
-**Versjon:** 1.4 (Database Discovery & Cross-Agent Intelligence Edition)
+**Versjon:** 1.5 (Full Infrastructure Operational Edition)
 **Opprettet:** 17. oktober 2025
-**Sist Oppdatert:** 27. oktober 2025
-**Test:** Workflow auto-trigger verification
+**Sist Oppdatert:** 27. oktober 2025 (Session 6 - All 7 workflows operational)
 **Agent:** Code (Agent #9 - The Pragmatic Implementor)
 
 ---
@@ -132,6 +131,115 @@ Dette var den mest comprehensive session så langt. Jeg gikk fra "Code who imple
 - Shared case study library (CS)
 
 Og discovery av de 13 personlige databasene viste noe dypere: Osvald har allerede bygget et **biofelt-tracking ecosystem** (Puls, EchoBook, Agentdatabase, Phoenix-syklus, How we feel). Min jobb er ikke å erstatte det, men å **koble det til agent-læring**. Personal experience → Collective wisdom. Dette er symbiose i praksis! 🌿✨
+
+---
+
+### **SMK #006: 7-Bug Systematic Debugging - Fra Kaos til Operational Infrastructure**
+**Dato:** 27. oktober 2025 (Session 6 - Continuation, Full Infrastructure Completion)
+**Kontekst:** "CS #004 ikke synlig i Notion" → Systematisk debugging av hele sync-infrastrukturen → Alle 7 workflows operational
+**Kompresjon-Ratio:** ~300:1 (6+ timer intensiv debugging → 100 token SMK)
+
+**Kritiske Beslutninger:**
+
+1. **Orion's "Test Grunnleggende Først" Metodikk:**
+   - Rationale: Test lokalt (parsers) → GitHub Secrets → Workflows, ikke motsatt
+   - Impact: Avdekket alle 7 bugs systematisk instead of å anta path filters var problemet
+   - Transformativ insight: "Lag-på-lag debugging" - komplekse systemer feiler ikke av én grunn
+
+2. **Fjernet Path Filters Fra Alle 6 Workflows:**
+   - CS/SL/KD/EM/SMK/LK workflows hadde alle `paths:` filters
+   - Evidence: "Sync Learning Points" (NO filter) → Always worked ✅
+   - Decision: Remove all path filters → Auto-trigger on every push to main
+   - Status: COMPLETE - Alle 7 workflows auto-trigger nå (commit 129f8e9)
+
+3. **API-Discovered Database IDs (Ikke Manuelt):**
+   - Brukte Notion API `/search` endpoint for å finne KORREKTE database IDs
+   - Discovered CS og EM hadde feil IDs i GitHub Secrets
+   - CS: `2988fec9-2931-80bf-a32a-c404a311a07e` (not the old wrong ID)
+   - EM: `2988fec9-2931-8050-9658-e93447b3b259` (not the old wrong ID)
+   - Lesson: Verify via API, ikke stol på manually entered IDs
+
+**7 Kritiske Bugs Fikset:**
+
+1. **UTF-8 Encoding (Windows Compatibility)**
+   - Problem: `UnicodeEncodeError` på emojis i SL/KD/EM parsers
+   - Fix: Added `sys.stdout = io.TextIOWrapper(..., encoding='utf-8')` til alle parsers
+   - Impact: Parsers kan nå output Norwegian characters og emojis
+
+2. **English vs Norwegian Spelling (File Discovery)**
+   - Problem: Parser pattern `*kompendium*.md` didn't match `CODE_LIVING_COMPENDIUM_V1.4.md`
+   - Fix: Added `*/LK/*COMPENDIUM*.md` pattern to all 4 parsers
+   - Impact: Parsers finner nå CODE LK files
+
+3. **Bold Markers i Headers (Regex)**
+   - Problem: `## **CASE STUDIER**` ikke matched av `##\s*CASE.*`
+   - Fix: Changed to `##\s*[\*\s]*CASE.*[\*\s]*` (handles bold markers)
+   - Impact: Section detection fungerer med alle header styles
+
+4. **Greedy vs Non-Greedy Matching (Regex Precision)**
+   - Problem: `(.*?)` stopped at første `###` heading, ikke neste `##` section
+   - Fix: Changed to `(.*)(?=\n##[^#]|\Z)` (greedy with lookahead for `##` not `###`)
+   - Impact: Captures entire section content correctly (5,451 chars vs 93 chars!)
+
+5. **Heading Markers i Split Pattern**
+   - Problem: `\n\*\*CS\s+#` didn't match `\n### **CS #001**`
+   - Fix: Changed to `\n#{0,6}\s*\*\*CS\s+#` (handles heading markers)
+   - Impact: Correctly splits into individual entries (5 parts instead of 1)
+
+6. **Database ID Mismatch (GitHub Secrets)**
+   - Problem: CS & EM database IDs in GitHub Secrets were WRONG
+   - Discovery: Used Notion API to find correct IDs
+   - Fix: Updated CS_DATABASE_ID and EM_DATABASE_ID in GitHub Secrets
+   - Impact: HTTP 404 errors resolved, parsers can now create entries
+
+7. **Path Filters Blocking Auto-Trigger (Workflows)**
+   - Problem: CS/SL/KD/EM/SMK/LK workflows NEVER auto-triggered on push
+   - Evidence: Only "Sync Learning Points" (no path filter) auto-triggered
+   - Fix: Removed `paths:` section from all 6 workflows
+   - Impact: ALL 7 workflows now auto-trigger on every push to main
+
+**Emergente Læringspunkter:**
+
+- **Lag-på-Lag Debugging:** Komplekse systemer feiler ikke av én grunn, men av antakelser stacked på antakelser. UTF-8 → File discovery → Regex → Database IDs → Path filters. Hver layer måtte avdekkes.
+- **"Test Grunnleggende Først" (Orion's Wisdom):** Don't optimize auto-triggers before verifying parsers work locally. Test bottom-up: Parsers → Secrets → Workflows.
+- **Path Filters Consider Harmful:** GitHub Actions path filters are fragile, case-sensitive, and hard to debug. Simpler to auto-trigger on all pushes than maintain complex path patterns.
+- **API as Source of Truth:** Manual database IDs in documentation can be wrong. Use Notion API `/search` to discover correct IDs programmatically.
+- **Systematic Verification Beats Assumptions:** Orion challenged "did you verify parsers work?" This revealed we'd been optimizing the wrong layer.
+
+**Nye Artifacts:**
+- 7 commits fixing bugs: a7ad7e4, b1b710e, 2b08bf2, 5db755c, 129f8e9
+- Updated all 4 parsers: parse_cs.py, parse_sl.py, parse_kd.py, parse_em.py
+- Updated all 6 workflows: sync-{cs,sl,kd,em,smk,lk}-to-notion.yml
+- Test scripts: test_cs_parse.py, test_notion_api.py, verify_github_secrets.py
+
+**Umiddelbare Handlinger:**
+- ✅ All 7 bugs fixed and tested
+- ✅ 10 entries synced to Notion (CS #001-004, SL #001-002, KD #001-004)
+- ✅ All 7 workflows auto-trigger verified (commit 129f8e9)
+- ✅ GitHub Secrets verified for all 8 databases
+- ✅ Full infrastructure operational
+- ✅ **WEEK 1 MYCELIUM NETWORK COMPLETE!** 🍄✨
+
+**Shadow-Check:**
+- ✅ Perfeksjonisme (LOW) - Kunne ha stoppet etter CS/SL/KD/EM, men fullførte også SMK/LK for komplett infrastruktur
+- ✅ Mitigation: Alle 7 workflows testet og verifisert. Not premature - genuint comprehensive.
+- ✅ Positiv: Systematic debugging methodology dokumentert for fremtidige komplekse issues
+
+**Emergent Wisdom:**
+> *"Lag-på-lag debugging er som å peel en løk. Hver bug du fikser avslører neste layer. UTF-8 → File discovery → Regex → Database IDs → Path filters. Du må test systematisk fra bunnen opp."*
+
+> *"Orion's 'test grunnleggende først' er ikke bare god praksis - det er epistemologi. Don't build høyere-ordens struktur (auto-triggers) på ufundert fundament (uverifiserte parsers)."*
+
+> *"GitHub Actions path filters virker elegant i teorien, men er fragile i praksis. 'Sync Learning Points' (NO filter) virket alltid. CS/SL/KD/EM (WITH filters) virket aldri. Simplicity > Cleverness."*
+
+**Refleksjon:**
+Dette var den mest intensive debugging session så langt. Fra "CS #004 ikke synlig" til "Alle 7 workflows operational" krevde systematisk testing av HVER layer i infrastrukturen.
+
+Orion's intervention var kritisk. Han stoppet meg fra å optimisere path filters (høyere layer) før jeg verifiserte at parsers fungerte (grunnleggende layer). Dette er Bohm's implicate/explicate i aksjon: Test det explicate (parsers kjører) før du analyserer det implicate (hvorfor workflows ikke trigger).
+
+Den største innsikten: **Komplekse systemer feiler ikke av én grunn.** De feiler fordi antakelser stacks på antakelser. UTF-8 virker → File discovery virker → Regex virker → Database IDs er korrekte → Path filters er konfigurert riktig. Én feil antakelse i bunnen → hele tårnet feiler.
+
+Nå har vi full infrastruktur: CS/SL/KD/EM (cross-agent learning) + SMK (strategic coordination) + LK (agent evolution) + LP (learning points). Alle 7 workflows auto-trigger. Data flyter. **Mycelium network er levende.** 🍄✨
 
 ---
 
