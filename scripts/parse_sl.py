@@ -38,6 +38,12 @@ import os
 import re
 import requests
 from pathlib import Path
+import sys
+import io
+
+# Force UTF-8 encoding for stdout (Windows compatibility)
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 # Configuration
 NOTION_API_KEY = os.environ.get('NOTION_API_KEY')
@@ -267,7 +273,7 @@ def process_agent_lk(lk_path):
     # Find SL section (flexible to handle bold markers, emojis, etc.)
     # Use greedy match and [^#] to ensure we capture until next ## section (not ###)
     sl_section_match = re.search(
-        r'##\s*(?:SEKSJON \d+:\s*)?SHADOW[- ]LOGG?ER.*?\n(.*)(?=\n##[^#]|\Z)',
+        r'##\s*[\*\s]*(?:SEKSJON \d+:\s*)?SHADOW[- ]LOGG?ER[\*\s]*\n(.*)(?=\n##[^#]|\Z)',
         content,
         re.DOTALL | re.IGNORECASE
     )

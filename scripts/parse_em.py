@@ -41,6 +41,12 @@ import os
 import re
 import requests
 from pathlib import Path
+import sys
+import io
+
+# Force UTF-8 encoding for stdout (Windows compatibility)
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 # Configuration
 NOTION_API_KEY = os.environ.get('NOTION_API_KEY')
