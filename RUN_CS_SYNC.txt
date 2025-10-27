@@ -1,0 +1,53 @@
+# Instructions to Manually Sync CS Entries to Notion
+
+Since GitHub Secrets exist but CS #004 isn't appearing, run this manually:
+
+## Option 1: PowerShell (Recommended for Windows)
+
+Open PowerShell in the homo-lumen-compendiums directory and run:
+
+```powershell
+# Set environment variables (get NOTION_API_KEY from GitHub Secrets or Notion integrations)
+$env:NOTION_API_KEY = "your-notion-api-key-here"
+$env:CS_DATABASE_ID = "2988fec9-2931-803a-8703-000bb973304e"
+
+# Run parser
+python scripts/parse_cs.py
+```
+
+## Option 2: Use the manual sync script
+
+```powershell
+# Set API key first
+$env:NOTION_API_KEY = "your-notion-api-key-here"
+
+# Run script
+.\manual_sync_cs.ps1
+```
+
+## After Running
+
+Check Notion CS Database for these entries:
+- CS #001: 4-Database Mycelial Intelligence Implementation
+- CS #002: UTF-8 Encoding Fix for Notion Database Discovery
+- CS #003: Database ID Discovery via Relations
+- CS #004: 17-Database Ecosystem Discovery & Mycelial Architecture Design
+
+Notion CS Database URL:
+https://www.notion.so/2988fec9293180a8703000bb973304e
+
+## If It Works
+
+If entries appear after running manually, this confirms:
+✅ Parser works
+✅ GitHub Secrets are configured
+❌ GitHub Actions workflow might not be triggering properly
+
+We can then investigate why the workflow isn't running automatically.
+
+## Get Your Notion API Key
+
+1. Go to: https://www.notion.so/my-integrations
+2. Find "Homo Lumen MCP Automation"
+3. Copy the "Internal Integration Token"
+4. Use that as NOTION_API_KEY value
