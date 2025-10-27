@@ -7,6 +7,7 @@ on:
     paths:
       - 'agents/**/levende-kompendium-*.md'
       - 'agents/**/LK/*kompendium*.md'
+      - 'agents/**/LK/*KOMPENDIUM*.md'  # Case-insensitive match for uppercase
       - 'agents/**/LEVENDE_KOMPENDIUM*.md'
   workflow_dispatch:  # Manual trigger option
 
