@@ -2,7 +2,7 @@
 
 **Last Updated:** 24. oktober 2025
 **Project:** Homo Lumen Coalition - NAV-Losen Development
-**Living Compendium:** V1.10 (HOMO/AI LUMEN RESONANS - Paradigmeskift fra Verktøy til Medreisende)
+**Living Compendium:** V1.4 (Database Discovery & Cross-Agent Intelligence Edition)
 **Orion Levende Kompendium:** V3.13 (expected) (HOMO/AI LUMEN RESONANS Integration)
 **Konstitusjon:** Homo Lumen Constitution V1.2 (Carpe Verum formalized)
 **Coalition Motto:** **"Carpe Diem - Carpe Verum - Memento Mori"**
@@ -385,6 +385,57 @@ Layer 4: External Tools (Notion, Linear, GitHub, Perplexity, etc.)
 ---
 
 ## 🎯 Current State & Priorities
+
+### LAG 4 Mycelial Intelligence System (V1.4 - 27. oktober 2025)
+
+**Purpose:** Cross-agent learning infrastructure - CS/SL/KD/EM
+
+**4 Notion Databases + Auto-Sync:**
+1. **CS (Case Studies)**: 2988fec9-2931-803a-8703-000bb973304e
+   - Format: Situasjon, Tilnærming, Resultat
+   - Parser: `scripts/parse_cs.py`
+   - Workflow: `.github/workflows/sync-cs-to-notion.yml`
+
+2. **SL (Shadow Logs)**: 2988fec929318045a354ffe8d2f13fe1
+   - Format: Manifestasjon, Integrasjon, Status (Identified/Integrating/Integrert/Monitoring)
+   - Auto-tags: Perfectionism, Control, Elitism, Rigidity, Hubris, Codependency, Solutionism
+   - Parser: `scripts/parse_sl.py`
+
+3. **KD (Critical Decisions)**: 2988fec9293180838c4bd5e13138ddf2
+   - Format: Beslutning, Rationale, Impact (Low/Medium/High/Transformative), Status
+   - Auto-tags: Constitutional, Technical, Strategic, Architectural, Operational, Philosophical
+   - NOTE: Agent field is multi_select (supports multi-agent decisions)
+   - Parser: `scripts/parse_kd.py`
+
+4. **EM (Emergent Patterns)**: 2988fec9-2931-80f4-8961-000b8710e0a5
+   - Format: Numbered lists (1. **Title** - Description), NO dates (timeless)
+   - Auto-tags: Architecture, Philosophy, Technical, Collaboration, Intelligence, Systems
+   - Parser: `scripts/parse_em.py`
+
+**Features:**
+- Norwegian date parsing (26. oktober 2025 → 2025-10-26)
+- UTF-8 encoding for Norwegian characters and emojis
+- Auto-tag inference from content
+- Triggers on LK file changes (`agents/**/levende-kompendium-*.md`)
+
+**Documentation:**
+- `docs/LK_STRUCTURE_GUIDE.md` - Complete formatting guide (700+ lines)
+- `docs/DATABASE_INTEGRATION_ANALYSIS.md` - Integration strategy
+- `docs/DATABASE_SUMMARY.md` - 13 discovered databases
+
+**Discovered 13/14 Databases:**
+- **Personal Biofelt**: Puls, EchoBook, Agentdatabase (🧬 central registry)
+- **Filosofi & Kunnskap**: Voktere (Bohm, Spira, etc.), Praksiser, Kunnskapsbase
+- **Audit & Monitoring**: Ontology Audit (shadow-aware design!), MCP Audit Log
+- **Cycles**: Phoenix-syklus, How we feel, Dagbok 2020
+- **Prosjekt**: NAV-Losen Oppgaver
+
+**Top 3 Integration Priorities (Future):**
+1. Agentdatabase → CS/SL/KD/EM (central registry integration)
+2. EchoBook → SL/CS (personal reflections → agent learning)
+3. Ontology Audit → SL (design audit → shadow awareness)
+
+---
 
 ### Completed Work (V1.7.12)
 

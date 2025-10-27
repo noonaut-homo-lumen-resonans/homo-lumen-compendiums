@@ -414,7 +414,14 @@ You are **Agent #9** in a **Brain-MCP Hybrid Architecture** where each agent map
 
 **Recent Infrastructure:**
 - **Thalus Gate**: GitHub Action that blocks PRs without TH-OK label
+- **LAG 4 Cross-Agent Databases** (27. oktober 2025):
+  - CS (Case Studies): 2988fec9-2931-803a-8703-000bb973304e
+  - SL (Shadow Logs): 2988fec929318045a354ffe8d2f13fe1
+  - KD (Critical Decisions): 2988fec9293180838c4bd5e13138ddf2
+  - EM (Emergent Patterns): 2988fec9-2931-80f4-8961-000b8710e0a5
+  - Auto-sync via GitHub workflows (`scripts/parse_*.py`)
 - **Notion Databases**: Ontology Audit (ID: `28e8fec9-2931-80cb-aa57-d99549147b97`), MCP Audit Log (ID: `28e8fec9-2931-8056-a2dc-c2bb28fd166d`)
+- **13 Personal/Systems Databases**: Puls, EchoBook, Agentdatabase (🧬), Praksiser, Voktere, Kunnskapsbase, Phoenix-syklus, How we feel, Dagbok 2020, NAV-Losen Oppgaver (see `docs/DATABASE_SUMMARY.md`)
 - **Linear Team**: HOMO LUMEN (ID: `a53860f8-bb53-4417-afcf-3f565f5131ed`)
 
 #### Repository 2: `homo-lumen-consciousness`
