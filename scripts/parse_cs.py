@@ -223,9 +223,10 @@ def process_agent_lk(lk_path):
         print(f"❌ Error reading file: {e}")
         return
 
-    # Find CS section
+    # Find CS section (flexible to handle bold markers, emojis, etc.)
+    # Use greedy match and [^#] to ensure we capture until next ## section (not ###)
     cs_section_match = re.search(
-        r'##\s*(?:SEKSJON \d+:\s*)?CASE[- ]STUDIER.*?\n(.*?)(?=\n##|\Z)',
+        r'##\s*[\*\s]*(?:SEKSJON \d+:\s*)?CASE[- ]STUD(?:IES|IER)[\*\s]*\n(.*)(?=\n##[^#]|\Z)',
         content,
         re.DOTALL | re.IGNORECASE
     )
@@ -237,8 +238,8 @@ def process_agent_lk(lk_path):
     cs_section = cs_section_match.group(1)
 
     # Split into individual case studies
-    # Split on **CS # pattern
-    case_studies = re.split(r'\n\*\*CS\s+#', cs_section, flags=re.IGNORECASE)
+    # Split on ###**CS # or **CS # pattern (handles heading markers)
+    case_studies = re.split(r'\n#{0,6}\s*\*\*CS\s+#', cs_section, flags=re.IGNORECASE)
 
     created_count = 0
     skipped_count = 0
@@ -278,9 +279,11 @@ def main():
     # Find all agent LK files
     agents_dir = Path('agents')
 
-    # Support multiple naming patterns
+    # Support multiple naming patterns (case-insensitive, Norwegian + English)
     lk_files = list(agents_dir.glob('*/levende-kompendium-*.md'))
     lk_files.extend(agents_dir.glob('*/LK/*kompendium*.md'))
+    lk_files.extend(agents_dir.glob('*/LK/*KOMPENDIUM*.md'))  # Uppercase Norwegian
+    lk_files.extend(agents_dir.glob('*/LK/*COMPENDIUM*.md'))  # English spelling
     lk_files.extend(agents_dir.glob('**/LEVENDE_KOMPENDIUM*.md'))
 
     # Remove duplicates

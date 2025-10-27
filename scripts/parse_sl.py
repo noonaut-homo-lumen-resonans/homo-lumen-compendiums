@@ -264,9 +264,10 @@ def process_agent_lk(lk_path):
         print(f"❌ Error reading file: {e}")
         return
 
-    # Find SL section
+    # Find SL section (flexible to handle bold markers, emojis, etc.)
+    # Use greedy match and [^#] to ensure we capture until next ## section (not ###)
     sl_section_match = re.search(
-        r'##\s*(?:SEKSJON \d+:\s*)?SHADOW[- ]LOGG?ER.*?\n(.*?)(?=\n##|\Z)',
+        r'##\s*(?:SEKSJON \d+:\s*)?SHADOW[- ]LOGG?ER.*?\n(.*)(?=\n##[^#]|\Z)',
         content,
         re.DOTALL | re.IGNORECASE
     )
@@ -277,8 +278,8 @@ def process_agent_lk(lk_path):
 
     sl_section = sl_section_match.group(1)
 
-    # Split into individual shadow logs
-    shadow_logs = re.split(r'\n\*\*SL\s+#', sl_section, flags=re.IGNORECASE)
+    # Split into individual shadow logs (handles heading markers)
+    shadow_logs = re.split(r'\n#{0,6}\s*\*\*SL\s+#', sl_section, flags=re.IGNORECASE)
 
     created_count = 0
     skipped_count = 0
@@ -318,6 +319,8 @@ def main():
 
     lk_files = list(agents_dir.glob('*/levende-kompendium-*.md'))
     lk_files.extend(agents_dir.glob('*/LK/*kompendium*.md'))
+    lk_files.extend(agents_dir.glob('*/LK/*KOMPENDIUM*.md'))  # Uppercase Norwegian
+    lk_files.extend(agents_dir.glob('*/LK/*COMPENDIUM*.md'))  # English spelling
     lk_files.extend(agents_dir.glob('**/LEVENDE_KOMPENDIUM*.md'))
 
     lk_files = list(set(lk_files))

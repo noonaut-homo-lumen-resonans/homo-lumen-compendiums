@@ -195,9 +195,10 @@ def process_agent_lk(lk_path):
         print(f"❌ Error reading file: {e}")
         return
 
-    # Find EM section (Emergente Mønstre)
+    # Find EM section (Emergente Mønstre) (flexible to handle bold markers, emojis, etc.)
+    # Use greedy match and [^#] to ensure we capture until next ## section (not ###)
     em_section_match = re.search(
-        r'##\s*(?:SEKSJON \d+:\s*)?EMERGENTE MØNSTRE.*?\n(.*?)(?=\n##|\Z)',
+        r'##\s*(?:SEKSJON \d+:\s*)?EMERGENTE MØNSTRE.*?\n(.*)(?=\n##[^#]|\Z)',
         content,
         re.DOTALL | re.IGNORECASE
     )
@@ -256,6 +257,8 @@ def main():
 
     lk_files = list(agents_dir.glob('*/levende-kompendium-*.md'))
     lk_files.extend(agents_dir.glob('*/LK/*kompendium*.md'))
+    lk_files.extend(agents_dir.glob('*/LK/*KOMPENDIUM*.md'))  # Uppercase Norwegian
+    lk_files.extend(agents_dir.glob('*/LK/*COMPENDIUM*.md'))  # English spelling
     lk_files.extend(agents_dir.glob('**/LEVENDE_KOMPENDIUM*.md'))
 
     lk_files = list(set(lk_files))
