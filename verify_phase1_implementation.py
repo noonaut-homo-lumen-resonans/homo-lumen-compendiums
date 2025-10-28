@@ -30,6 +30,7 @@ EXPECTED_DBS = {
     'sll_primary': '84da6cbd09d640fb868e41444b941991',
     'arf': 'da4a5c2e7028492f91bfec7c88b7efce',
     'lk': '784556781fc14a14afc733f4eb51e0bc',
+    'smk': 'ba1d4a4407a5425fafd81d27dc02cc1c',
     'em_primary': '2988fec9293180509658e93447b3b259'
 }
 
@@ -60,6 +61,10 @@ class Phase1Verifier:
         # Check 1: Verify duplicates are deleted
         print("✓ Check 1: Verifying duplicate databases are deleted...")
         self.check_duplicates_deleted()
+
+        # Check 1.5: Verify SMK has no duplicates
+        print("\n✓ Check 1.5: Verifying SMK database has no duplicates...")
+        self.check_smk_duplicates()
 
         # Check 2: Verify ARF relations
         print("\n✓ Check 2: Verifying ARF has 8 new relations...")
@@ -108,6 +113,68 @@ class Phase1Verifier:
                 else:
                     print(f"  ⚠️  WARNING: Could not verify {db_name}: {e}")
                     self.results['warnings'].append(f"{db_name}: {e}")
+
+    def check_smk_duplicates(self):
+        """Verify SMK database has no duplicates."""
+        self.total_checks += 1
+
+        try:
+            # Query SMK database
+            smk_database_id = EXPECTED_DBS.get('smk', 'ba1d4a4407a5425fafd81d27dc02cc1c')
+
+            # Fetch all entries
+            has_more = True
+            start_cursor = None
+            entries = []
+
+            while has_more:
+                if start_cursor:
+                    response = notion.databases.query(
+                        database_id=smk_database_id,
+                        start_cursor=start_cursor
+                    )
+                else:
+                    response = notion.databases.query(database_id=smk_database_id)
+
+                entries.extend(response['results'])
+                has_more = response.get('has_more', False)
+                start_cursor = response.get('next_cursor')
+
+            # Group by SMK Number to find duplicates
+            smk_numbers = {}
+            for entry in entries:
+                props = entry['properties']
+
+                # Extract SMK Number
+                smk_number = None
+                if 'SMK Number' in props and props['SMK Number']['number'] is not None:
+                    smk_number = props['SMK Number']['number']
+
+                if smk_number is not None:
+                    if smk_number not in smk_numbers:
+                        smk_numbers[smk_number] = []
+                    smk_numbers[smk_number].append(entry)
+
+            # Find duplicates (SMK numbers with 2+ entries)
+            duplicates = {k: v for k, v in smk_numbers.items() if len(v) > 1}
+
+            if len(duplicates) == 0:
+                print(f"  ✅ PASS: SMK has no duplicates ({len(entries)} unique entries)")
+                self.passed_checks += 1
+                self.results['passed'].append(f"SMK clean: {len(entries)} entries")
+            else:
+                duplicate_count = sum(len(v) - 1 for v in duplicates.values())
+                print(f"  ❌ FAIL: SMK has {len(duplicates)} duplicate groups ({duplicate_count} duplicate entries)")
+                for smk_num, dupes in list(duplicates.items())[:3]:  # Show first 3
+                    print(f"     • SMK #{smk_num}: {len(dupes)} entries")
+                if len(duplicates) > 3:
+                    print(f"     ... and {len(duplicates) - 3} more")
+                print(f"     Run: python deduplicate_smk.py --auto")
+                self.results['failed'].append(f"SMK has {duplicate_count} duplicates")
+
+        except Exception as e:
+            print(f"  ❌ ERROR: Could not check SMK duplicates: {e}")
+            self.results['failed'].append(f"SMK duplicate check error: {e}")
 
     def check_arf_relations(self):
         """Verify ARF has all required relations."""

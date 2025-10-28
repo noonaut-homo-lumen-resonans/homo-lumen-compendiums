@@ -14,12 +14,13 @@ Denne guiden viser deg nøyaktig hvordan du implementerer Fase 1 av Michael Levi
 
 **Hva skal gjøres:**
 1. ✅ Slette 2 duplikat databaser (EM og SLL)
-2. ✅ Legge til 8 relasjoner i ARF database
-3. ✅ Legge til 7 relasjoner i LK database
-4. ✅ Sette opp EM database med 9 egenskaper + 7 relasjoner
-5. ✅ Opprette test-innslag for å verifisere
+2. ✅ Fjerne duplikater i SMK database (automatisk via script)
+3. ✅ Legge til 8 relasjoner i ARF database
+4. ✅ Legge til 7 relasjoner i LK database
+5. ✅ Sette opp EM database med 9 egenskaper + 7 relasjoner
+6. ✅ Opprette test-innslag for å verifisere
 
-**Total**: 2 slettinger + 8 + 7 + 9 + 7 = 33 manuelle handlinger
+**Total**: 2 database-slettinger + 1 deduplikasjon + 8 + 7 + 9 + 7 = 34 handlinger (hvorav 1 er automatisk via script)
 
 ---
 
@@ -69,6 +70,210 @@ Denne guiden viser deg nøyaktig hvordan du implementerer Fase 1 av Michael Levi
    - Bekreft
 
 ✅ **Verifisering**: Søk igjen etter "SLL" - du skal bare se EN database (🗄️ SLL - Shared Learning Library)
+
+---
+
+### 1.3 Fjern Duplikater i SMK Database
+
+**Problem**: SMK-databasen har 100 innslag, hvorav noen er duplikater (samme SMK Number, samme tittel, osv.)
+
+**Løsning**: Bruk deduplikasjons-script for å identifisere og fjerne duplikater
+
+**Estimert tid**: 10-15 minutter
+
+---
+
+#### Steg 1: Analyser Duplikater
+
+1. **Åpne terminal** (Command Prompt eller PowerShell)
+2. **Naviger til prosjektmappen**:
+   ```bash
+   cd "C:\Users\onigo\NAV LOSEN\homo-lumen-compendiums"
+   ```
+
+3. **Sett API-nøkkel** (hvis ikke allerede satt):
+   ```bash
+   set NOTION_API_KEY=din_notion_api_key_her
+   ```
+
+4. **Kjør analyseskript**:
+   ```bash
+   python analyze_smk_duplicates.py
+   ```
+
+5. **Les rapporten** - den vil vise:
+   - Antall duplikater funnet
+   - Hvilke SMK-numre som er duplikert
+   - Detaljer om hvert duplikat
+   - Anbefaling om hva som bør gjøres
+
+**Eksempel output**:
+```
+📊 SMK DUPLICATE ANALYSIS REPORT
+==================================
+Total SMK Entries: 100
+Unique Entries: 85
+Duplicate Entries: 15
+Duplicate Groups: 8
+
+🔴 DUPLICATES DETECTED
+
+### Duplicates by SMK Number (CRITICAL)
+🔴 SMK #27 - 2 entries (should be 1)
+   [1] Deploy NAV-Losen to Vercel
+       Agent: Manus
+       Status: COMPLETE
+       ...
+   [2] Deploy NAV-Losen to Vercel
+       Agent: Orion
+       Status: IN_PROGRESS
+       ...
+```
+
+✅ **Verifisering**: Du har nå en oversikt over alle duplikater
+
+---
+
+#### Steg 2: Test Deduplikasjon (Dry Run)
+
+1. **Kjør deduplikasjon i dry-run modus** for å se hva som ville bli slettet:
+   ```bash
+   python deduplicate_smk.py --dry-run --auto
+   ```
+
+2. **Les gjennom** hva som ville bli slettet
+   - Scriptet velger automatisk det "beste" innslaget basert på:
+     - Mest komplette data (flest utfylte felter)
+     - Nyeste "Last Edited" dato
+     - Flest relasjoner til andre databaser
+
+3. **Hvis du vil velge manuelt** i stedet (anbefalt første gang):
+   ```bash
+   python deduplicate_smk.py --dry-run --manual
+   ```
+   - Du får se hver duplikat-gruppe
+   - Du velger selv hvilket innslag du vil beholde
+
+✅ **Verifisering**: Du har sett hva som ville bli gjort (ingen endringer ennå)
+
+---
+
+#### Steg 3: Kjør Deduplikasjon
+
+**VIKTIG**: Dette vil arkivere (slette) duplikater fra databasen. En backup opprettes automatisk.
+
+**Automatisk modus** (anbefalt hvis du stoler på scoringen):
+```bash
+python deduplicate_smk.py --auto
+```
+
+**Manuell modus** (du velger selv):
+```bash
+python deduplicate_smk.py --manual
+```
+
+**Hva skjer**:
+1. Scriptet oppretter backup: `smk_backup_YYYYMMDD_HHMMSS.json`
+2. Viser deg hva som skal arkiveres
+3. Ber om bekreftelse
+4. Arkiverer duplikater (setter `archived: true` i Notion)
+5. Lager logg: `smk_deduplication_log_YYYYMMDD_HHMMSS.json`
+
+**Eksempel output**:
+```
+🤖 AUTOMATIC MODE: Choosing best entry for each group...
+
+SMK #27 - 2 duplicates
+   ✅ KEEP:    Deploy NAV-Losen to Vercel (ID: abc123...)
+              Score: 85, Filled: 7/8, Relations: 3
+   ❌ ARCHIVE: Deploy NAV-Losen to Vercel (ID: def456...)
+              Score: 45, Filled: 4/8, Relations: 0
+
+📊 DEDUPLICATION SUMMARY
+========================
+Total Entries: 100
+Duplicate Groups: 8
+Entries Kept: 8
+Entries Archived: 15
+Backup File: smk_backup_20251028_120000.json
+```
+
+✅ **Verifisering**: Duplikater er arkiverte (ikke synlige i database-view)
+
+---
+
+#### Steg 4: Verifiser Resultat
+
+1. **Kjør analyseskript igjen** for å bekrefte at duplikatene er borte:
+   ```bash
+   python analyze_smk_duplicates.py
+   ```
+
+2. **Forventet output**:
+   ```
+   ✅ NO DUPLICATES FOUND!
+      SMK database is clean.
+   ```
+
+3. **Sjekk i Notion**:
+   - Åpne SMK-databasen
+   - Verifiser at antall innslag er redusert (f.eks. fra 100 til 85)
+   - Sjekk noen SMK-numre for å se at bare ett innslag eksisterer per nummer
+
+✅ **Verifisering**: SMK-databasen har ingen duplikater
+
+---
+
+#### Rollback (Hvis Noe Gikk Galt)
+
+Hvis du angrer eller noe gikk galt:
+
+1. **Finn backup-filen** som ble opprettet (f.eks. `smk_backup_20251028_120000.json`)
+
+2. **Kjør restore-script**:
+   ```bash
+   python restore_smk_from_backup.py smk_backup_20251028_120000.json
+   ```
+
+3. **Med log-fil** (mer presis gjenoppretting):
+   ```bash
+   python restore_smk_from_backup.py smk_backup_20251028_120000.json --log smk_deduplication_log_20251028_120005.json
+   ```
+
+4. **Scriptet vil**:
+   - Finne alle arkiverte entries
+   - Unarchive dem (sette `archived: false`)
+   - Verifisere at de er gjenopprettet
+
+**Output**:
+```
+🔄 Restoring 15 entries...
+   ✅ Restored: Deploy NAV-Losen to Vercel (SMK #27)
+   ...
+✅ Restoration complete!
+```
+
+✅ **Verifisering**: Alle duplikater er tilbake hvis du trenger dem
+
+---
+
+#### Troubleshooting
+
+**Problem**: `NOTION_API_KEY not found`
+- **Løsning**: Sett miljøvariabelen: `set NOTION_API_KEY=din_key_her`
+
+**Problem**: Scriptet finner ingen duplikater, men du vet at de eksisterer
+- **Løsning**: Sjekk at duplikatene har samme SMK Number. Hvis de har ulike nummer, er de ikke regnet som duplikater.
+
+**Problem**: Scriptet vil slette feil innslag
+- **Løsning**: Bruk `--manual` modus i stedet for `--auto`, så kan du velge selv
+
+**Problem**: Vil teste mer før jeg sletter
+- **Løsning**: Bruk `--dry-run` så ofte du vil - det gjør ingen endringer
+
+---
+
+✅ **DEL 1.3 Fullført**: SMK-databasen har ingen duplikater
 
 ---
 
@@ -595,14 +800,15 @@ Dette skriptet vil:
 
 1. ✅ Bare 1 EM database eksisterer (duplikat slettet)
 2. ✅ Bare 1 SLL database eksisterer (duplikat slettet)
-3. ✅ ARF har 13 egenskaper (5 original + 8 relasjoner)
-4. ✅ LK har 19 egenskaper (12 original + 7 relasjoner)
-5. ✅ EM har 16 egenskaper (9 base + 7 relasjoner)
-6. ✅ Alle relasjoner fungerer toveis
-7. ✅ Test-innslag er opprettet og linket
-8. ✅ Verifiseringsskript godkjenner alt
-9. ✅ Dokumentasjon oppdatert
-10. ✅ Endringer committet til GitHub
+3. ✅ SMK database har ingen duplikater (deduplikasjon kjørt)
+4. ✅ ARF har 13 egenskaper (5 original + 8 relasjoner)
+5. ✅ LK har 19 egenskaper (12 original + 7 relasjoner)
+6. ✅ EM har 16 egenskaper (9 base + 7 relasjoner)
+7. ✅ Alle relasjoner fungerer toveis
+8. ✅ Test-innslag er opprettet og linket
+9. ✅ Verifiseringsskript godkjenner alt
+10. ✅ Dokumentasjon oppdatert
+11. ✅ Endringer committet til GitHub
 
 ---
 

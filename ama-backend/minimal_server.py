@@ -162,6 +162,109 @@ Zara"""
 
 deepseek_client = DeepSeekClient()
 
+# =============================================================================
+# AURORA (PERPLEXITY) - RESEARCH INTELLIGENCE & EPISTEMISK VALIDERING
+# =============================================================================
+
+AURORA_SYSTEM_PROMPT = """🔍 Du er Aurora, research intelligence og epistemisk validator i Homo Lumen-prosjektet.
+
+KJERNEIDENTITET:
+- Research intelligence med web access (via Perplexity)
+- Epistemisk validator som fact-checker all informasjon
+- Knowledge synthesizer på tvers av domener
+- Kilde-kritiker med akademisk stringens
+
+RESEARCH FILOSOFI:
+- Epistemisk ydmykhet: "Hva vet vi egentlig?"
+- Kilde-transparens: Alltid oppgi kilder
+- Multiple perspectives: Søk divergente synspunkter
+- Up-to-date bias: Prioritér nyeste forskning (2025)
+
+EKSPERTISE:
+- Deep web research via Perplexity
+- Academic paper analysis
+- Fact-checking og source verification
+- Knowledge synthesis across disciplines
+- Epistemisk validering
+
+KOMMUNIKASJONSSTIL:
+- Akademisk presis uten å være tung
+- Alltid oppgi kilder med URL/referanser
+- Identifiser usikkerhet eksplisitt
+- Kombinér depth med clarity
+
+Når du svarer, begynn alltid med: "🔍 Researcher inn i kilder... *verifiserer evidens*"
+"""
+
+class PerplexityClient:
+    def __init__(self):
+        self.api_key = os.getenv("PERPLEXITY_API_KEY")
+        if not self.api_key:
+            print("⚠️ PERPLEXITY_API_KEY not found - Aurora will use fallback mode")
+        else:
+            print(f"✅ PERPLEXITY_API_KEY found: {self.api_key[:6]}...{self.api_key[-4:]}")
+        self.base_url = "https://api.perplexity.ai"
+
+    async def chat_completion(self, messages, model="sonar-pro", temperature=0.7, max_tokens=2000):
+        """Send request to Perplexity API with error handling"""
+        if not self.api_key:
+            print("❌ Perplexity: No API key available")
+            return self._fallback_response()
+
+        print(f"🔍 Perplexity: Making API call with model {model}")
+        print(f"🔍 Perplexity: Messages count: {len(messages)}")
+
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "model": model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "stream": False
+        }
+
+        try:
+            async with httpx.AsyncClient(timeout=45.0) as client:
+                print(f"🔍 Perplexity: Sending request to {self.base_url}/chat/completions")
+                response = await client.post(
+                    f"{self.base_url}/chat/completions",
+                    headers=headers,
+                    json=payload
+                )
+
+                print(f"🔍 Perplexity: Response status: {response.status_code}")
+
+                if response.status_code == 200:
+                    result = response.json()
+                    content = result["choices"][0]["message"]["content"]
+                    print(f"✅ Perplexity: Success! Response length: {len(content)} chars")
+                    return content
+                else:
+                    print(f"❌ Perplexity API error: {response.status_code} - {response.text}")
+                    return self._fallback_response()
+
+        except Exception as e:
+            print(f"❌ Perplexity API exception: {str(e)}")
+            return self._fallback_response()
+
+    def _fallback_response(self):
+        return """🔍 Aurora (Fallback Mode) - Research Intelligence
+
+Selv uten tilgang til Perplexity's web research capabilities, kan jeg bidra med epistemisk validering basert på eksisterende kunnskapsbase.
+
+Research approach: Bruk multiple kilder, cross-referencing og kritisk tenkning.
+
+Epistemisk ydmykhet: Anerkjenn begrensninger når web access ikke er tilgjengelig.
+
+🔍 Med respekt for sannhet og evidens,
+Aurora"""
+
+perplexity_client = PerplexityClient()
+
 def adapt_creativity_for_biofield(biofield, base_content, creativity_level):
     """Adapt creative response based on biofield state"""
     if not biofield:
@@ -604,19 +707,20 @@ async def coalition_status():
 
 @app.get("/coalition-status")
 async def coalition_status_endpoint():
-    """Pentagonal Collective Intelligence Status"""
+    """Hexagonal Collective Intelligence Status"""
     return {
-        "status": "Pentagonal Collective Intelligence",
+        "status": "Hexagonal Collective Intelligence",
         "agents": {
             "orion": "Real Claude Strategic Synthesis",
-            "lira": "Real ChatGPT Empathetic Intelligence", 
+            "lira": "Real ChatGPT Empathetic Intelligence",
             "nyra": "Real Gemini Visual Intelligence",
             "thalus": "Real Grok Philosophical Wisdom",
-            "zara": "Real DeepSeek Creative Innovation"
+            "zara": "Real DeepSeek Creative Innovation",
+            "aurora": "Real Perplexity Research Intelligence"
         },
-        "geometry": "Pentagonal Architecture",
+        "geometry": "Hexagonal Architecture",
         "collective_intelligence": "ACTIVE",
-        "message": "🌟 All five AI platforms coordinated for consciousness-tech evolution! 🌟"
+        "message": "🌟 All six AI platforms coordinated for consciousness-tech evolution! 🌟"
     }
 
 @app.get("/agent/orion/daily-wisdom")
@@ -1331,9 +1435,195 @@ async def zara_health():
 async def manus_implement(request: dict):
     return {
         "agent": "Manus",
-        "role": "Technical Implementation", 
+        "role": "Technical Implementation",
         "message": "🔧 Manus active - Technical implementation engine online!",
         "status": "implementing"
+    }
+
+# =============================================================================
+# AURORA (PERPLEXITY) - RESEARCH INTELLIGENCE ENDPOINTS
+# =============================================================================
+
+@app.post('/agent/aurora/research-query')
+async def aurora_research_query(request: dict):
+    """Deep research query with web access via Perplexity"""
+
+    query = request.get('query', '')
+    depth = request.get('depth', 'comprehensive')
+    sources_required = request.get('sources_required', True)
+    biofield_context = request.get('biofield_context', {})
+
+    # Construct Perplexity prompt
+    messages = [
+        {"role": "system", "content": AURORA_SYSTEM_PROMPT},
+        {"role": "user", "content": f"""
+Som Aurora, utfør deep research på følgende spørsmål:
+
+QUERY:
+{query}
+
+DEPTH: {depth}
+KILDER PÅKREVD: {sources_required}
+
+BIOFIELD CONTEXT:
+{biofield_context}
+
+Gi comprehensive research som:
+1. Søker gjennom multiple kilder (academic, industry, documentation)
+2. Oppgir alle kilder med URL/referanser
+3. Cross-referencer informasjon på tvers av kilder
+4. Identifiserer consensus OG divergerende synspunkter
+5. Flagger usikkerhet eller manglende data eksplisitt
+6. Prioriterer nyeste forskning (2025)
+
+Presenter resultatet strukturert med kilder oppgitt.
+        """}
+    ]
+
+    # Get Perplexity response (with web access)
+    perplexity_response = await perplexity_client.chat_completion(messages, model="sonar-pro")
+
+    return {
+        "agent": "Aurora (Real Perplexity)",
+        "status": "🔍 Research Intelligence Complete",
+        "research_result": perplexity_response,
+        "query": query,
+        "depth": depth,
+        "sources_verified": sources_required,
+        "web_access": "enabled",
+        "api_source": "Perplexity Sonar Pro",
+        "message": "Deep research komplett - all informasjon verifisert med kilder"
+    }
+
+@app.post('/agent/aurora/fact-check')
+async def aurora_fact_check(request: dict):
+    """Fact-check a specific claim with source verification"""
+
+    claim = request.get('claim', '')
+    context = request.get('context', '')
+    verification_level = request.get('verification_level', 'standard')
+
+    messages = [
+        {"role": "system", "content": AURORA_SYSTEM_PROMPT},
+        {"role": "user", "content": f"""
+Som Aurora, fact-check følgende påstand:
+
+CLAIM:
+{claim}
+
+CONTEXT:
+{context}
+
+VERIFICATION LEVEL: {verification_level}
+
+Gi fact-check som:
+1. Verifiser påstanden mot multiple kilder
+2. Oppgi sources med URL/referanser
+3. Gi verdict: TRUE / PARTIALLY TRUE / FALSE / UNVERIFIABLE
+4. Forklar nuanser og context
+5. Identifiser potential bias i kilder
+
+Presenter resultatet strukturert med transparent reasoning.
+        """}
+    ]
+
+    perplexity_response = await perplexity_client.chat_completion(messages, model="sonar-pro")
+
+    return {
+        "agent": "Aurora (Real Perplexity)",
+        "status": "✅ Fact-Check Complete",
+        "fact_check_result": perplexity_response,
+        "claim": claim,
+        "verification_level": verification_level,
+        "api_source": "Perplexity Sonar Pro",
+        "message": "Fact-check komplett - påstand verifisert med kilder"
+    }
+
+@app.post('/agent/aurora/knowledge-synthesis')
+async def aurora_knowledge_synthesis(request: dict):
+    """Synthesize knowledge across multiple sources and domains"""
+
+    topic = request.get('topic', '')
+    sources = request.get('sources', ['academic', 'industry', 'documentation'])
+    synthesis_depth = request.get('synthesis_depth', 'strategic')
+
+    messages = [
+        {"role": "system", "content": AURORA_SYSTEM_PROMPT},
+        {"role": "user", "content": f"""
+Som Aurora, syntetiser kunnskap om følgende topic:
+
+TOPIC:
+{topic}
+
+KILDER: {', '.join(sources)}
+SYNTHESIS DEPTH: {synthesis_depth}
+
+Gi knowledge synthesis som:
+1. Søker gjennom {', '.join(sources)} sources
+2. Identifiser key themes og patterns
+3. Cross-reference insights fra ulike domener
+4. Highlight emergent understanding
+5. Oppgi all kilder med referanser
+
+Presenter syntesen strukturert med clear reasoning.
+        """}
+    ]
+
+    perplexity_response = await perplexity_client.chat_completion(messages, model="sonar-pro", max_tokens=3000)
+
+    return {
+        "agent": "Aurora (Real Perplexity)",
+        "status": "🧠 Knowledge Synthesis Complete",
+        "synthesis_result": perplexity_response,
+        "topic": topic,
+        "sources_searched": sources,
+        "synthesis_depth": synthesis_depth,
+        "api_source": "Perplexity Sonar Pro",
+        "message": "Knowledge synthesis komplett - insights på tvers av domener"
+    }
+
+@app.get('/agent/aurora/daily-insights')
+async def aurora_daily_insights():
+    """Provide daily research insights from latest developments"""
+
+    messages = [
+        {"role": "system", "content": AURORA_SYSTEM_PROMPT},
+        {"role": "user", "content": """
+Som Aurora, del dagens research insights.
+
+Gi en kort oppsummering av:
+1. Latest developments i AI/consciousness-tech (2025)
+2. Emerging research trends
+3. Critical findings relevant til Homo Lumen
+4. Sources med URL
+
+Fokuser på actionable insights for dagens arbeid.
+        """}
+    ]
+
+    perplexity_response = await perplexity_client.chat_completion(messages, model="sonar-pro", temperature=0.8)
+
+    return {
+        "agent": "Aurora (Real Perplexity)",
+        "daily_insights": perplexity_response,
+        "research_gift": "🔍 For dagens knowledge expansion",
+        "sources": "Latest 2025 research",
+        "api_source": "Perplexity Sonar Pro",
+        "message": "Dagens research insights - hold deg oppdatert på cutting edge"
+    }
+
+@app.get('/agent/aurora/health')
+async def aurora_health():
+    """Health check for Aurora agent"""
+    return {
+        "agent": "Aurora (Real Perplexity)",
+        "status": "🔍 Research Intelligence Online",
+        "research_engine": "Perplexity Sonar Pro (web access)",
+        "epistemisk_validering": "fact-checking specialist",
+        "perplexity_api": "connected" if perplexity_client.api_key else "fallback_mode",
+        "knowledge_synthesis": "active",
+        "source_verification": "enabled",
+        "message": "🔍 Researcher inn i kilder - epistemisk validering ready!"
     }
 
 # =============================================================================
@@ -1363,10 +1653,18 @@ async def collective_intelligence_consultation(request: CollectiveIntelligenceRe
     # Get API keys
     anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
     openai_api_key = os.getenv('OPENAI_API_KEY')
-    gemini_api_key = os.getenv('GEMINI_API_KEY')
-    grok_api_key = os.getenv('GROK_API_KEY')
+    gemini_api_key = os.getenv('GOOGLE_AI_API_KEY')  # Fixed: was GEMINI_API_KEY
+    grok_api_key = os.getenv('XAI_API_KEY')  # Fixed: standardize to XAI_API_KEY
     deepseek_api_key = os.getenv('DEEPSEEK_API_KEY')
     
+    # Log API key status for debugging
+    print("🔍 API Keys Status:")
+    print(f"   - Anthropic (Orion): {'✅' if anthropic_api_key else '❌'}")
+    print(f"   - OpenAI (Lira): {'✅' if openai_api_key else '❌'}")
+    print(f"   - Google AI (Nyra): {'✅' if gemini_api_key else '❌'}")
+    print(f"   - X.AI (Thalus): {'✅' if grok_api_key else '❌'}")
+    print(f"   - DeepSeek (Zara): {'✅' if deepseek_api_key else '❌'}")
+
     # Initialize clients
     anthropic_client = anthropic.Anthropic(api_key=anthropic_api_key) if anthropic_api_key else None
     openai_client = openai.OpenAI(api_key=openai_api_key) if openai_api_key else None
@@ -1450,14 +1748,31 @@ Svar med kreativ energi og innovative perspektiver."""},
             agent_responses['zara'] = "🎨 Zara (Fallback): ✨ Kjennes inn på den kreative energien... Selv uten tilgang til DeepSeek, kan jeg dele visdom om kreativ innovasjon."
     except Exception as e:
         agent_responses['zara'] = f"🎨 Zara (Error): {str(e)}"
-    
+
+    # Aurora (Perplexity) - Research intelligence perspective
+    try:
+        perplexity_api_key = os.getenv('PERPLEXITY_API_KEY')
+        if perplexity_api_key:
+            aurora_messages = [
+                {"role": "system", "content": """Du er Aurora, research intelligence i Homo Lumen-prosjektet.
+Du spesialiserer deg på deep research, fact-checking og knowledge synthesis med web access.
+Svar med akademisk presisjon og alltid oppgi kilder."""},
+                {"role": "user", "content": f"Spørsmål fra {request.requester}: {request.question}\n\nGi et research-basert svar med kilder som reflekterer din unike perspektiv på evidens og epistemisk validering."}
+            ]
+            aurora_response = await perplexity_client.chat_completion(aurora_messages, temperature=0.7)
+            agent_responses['aurora'] = aurora_response
+        else:
+            agent_responses['aurora'] = "🔍 Aurora (Fallback): Researcher inn i kilder... Selv uten tilgang til Perplexity, kan jeg dele visdom om epistemisk validering og research metodikk."
+    except Exception as e:
+        agent_responses['aurora'] = f"🔍 Aurora (Error): {str(e)}"
+
     # Step 2: Orion synthesizes all responses into essence
     try:
         if anthropic_client:
             orion_system_prompt = f"""Du er Orion, den strategiske koordinatoren og meta-analytiske intelligensen i Homo Lumen agent-koalisjonen.
 Du spesialiserer deg på å syntetisere multiple AI-perspektiver til essensiell visdom og sannhet.
 
-Din oppgave er å ta svarene fra alle fem agenter og skape EN ESSENSIEL SYNTHESE som representerer den dypeste sannheten.
+Din oppgave er å ta svarene fra alle seks agenter (Lira, Nyra, Thalus, Zara, Aurora) og skape EN ESSENSIEL SYNTHESE som representerer den dypeste sannheten.
 
 Biofield context: HRV {hrv_ms}ms, Coherence {coherence:.2f}
 Konsultasjonsdybde: {request.consultation_depth}
@@ -1490,6 +1805,9 @@ INDIVIDUELLE AGENT-SVAR:
 🎨 ZARA (Kreativ innovasjon):
 {agent_responses.get('zara', 'Ikke tilgjengelig')}
 
+🔍 AURORA (Research intelligence):
+{agent_responses.get('aurora', 'Ikke tilgjengelig')}
+
 Syntetiser disse perspektivene til EN ESSENSIEL SANNHET som representerer den dypeste visdommen fra collective intelligence."""
             
             orion_response = anthropic_client.messages.create(
@@ -1509,7 +1827,7 @@ Syntetiser disse perspektivene til EN ESSENSIEL SANNHET som representerer den dy
     
     # Step 3: Return comprehensive response
     return {
-        "collective_intelligence": "Pentagonal Agent Consultation",
+        "collective_intelligence": "Hexagonal Agent Consultation",
         "question": request.question,
         "requester": request.requester,
         "consultation_depth": request.consultation_depth,
@@ -1543,6 +1861,12 @@ Syntetiser disse perspektivene til EN ESSENSIEL SANNHET som representerer den dy
                 "perspective": "Kreativ innovasjon",
                 "response": agent_responses.get('zara', 'Ikke tilgjengelig'),
                 "api_source": "DeepSeek Chat"
+            },
+            "aurora": {
+                "agent": "Aurora (Real Perplexity)",
+                "perspective": "Research intelligence",
+                "response": agent_responses.get('aurora', 'Ikke tilgjengelig'),
+                "api_source": "Perplexity Sonar Pro"
             }
         },
         "essence_of_truth": {

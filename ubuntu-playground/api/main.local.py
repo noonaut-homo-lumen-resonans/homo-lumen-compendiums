@@ -150,10 +150,10 @@ AGENT_API_KEYS = {
     "abacus": os.getenv("ABACUS_API_KEY", "abacus-dev-key"),
     "nyra": os.getenv("NYRA_API_KEY", "nyra-dev-key"),
     "thalus": os.getenv("THALUS_API_KEY", "thalus-dev-key"),
-    "aurora": os.getenv("AURORA_API_KEY", "aurora-dev-key"),
+    "aurora": os.getenv("AURORA_API_KEY", "aurora-dev-key"),  # Aurora (Perplexity)
     "thalamus": os.getenv("THALAMUS_API_KEY", "thalamus-dev-key"),
     "scribe": os.getenv("SCRIBE_API_KEY", "scribe-dev-key"),
-    "zara": os.getenv("ZARA_API_KEY", "zara-dev-key"),  # Added Zara (DeepSeek)
+    "zara": os.getenv("ZARA_API_KEY", "zara-dev-key"),  # Zara (DeepSeek)
 }
 
 AGENT_PERMISSIONS = {
@@ -164,10 +164,10 @@ AGENT_PERMISSIONS = {
     "abacus": ["read:all", "write:shared", "write:abacus", "analytics:run"],
     "nyra": ["read:all", "write:shared", "write:nyra", "design:create"],
     "thalus": ["read:all", "audit:all", "block:unethical", "validate:ethics"],
-    "aurora": ["read:all", "write:shared", "write:aurora", "research:validate"],
+    "aurora": ["read:all", "write:shared", "write:aurora", "research:validate", "fact:check"],  # Aurora (Perplexity)
     "thalamus": ["read:all", "route:requests", "orchestrate:agents"],
     "scribe": ["read:all", "write:shared", "write:scribe", "document:create"],
-    "zara": ["read:all", "write:shared", "write:zara", "research:deep"],  # Zara permissions
+    "zara": ["read:all", "write:shared", "write:zara", "research:deep"],  # Zara (DeepSeek)
 }
 
 def verify_api_key(x_api_key: str = Header(..., alias="X-API-Key")) -> str:
