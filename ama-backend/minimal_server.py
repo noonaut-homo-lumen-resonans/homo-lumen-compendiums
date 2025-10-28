@@ -265,6 +265,17 @@ Aurora"""
 
 perplexity_client = PerplexityClient()
 
+# =============================================================================
+# REDIS PUBLISHER - REAL-TIME EVENT STREAMING
+# =============================================================================
+
+try:
+    from redis_publisher import redis_publisher
+    print("✅ Redis publisher loaded")
+except Exception as e:
+    print(f"⚠️  Redis publisher not available: {e}")
+    redis_publisher = None
+
 def adapt_creativity_for_biofield(biofield, base_content, creativity_level):
     """Adapt creative response based on biofield state"""
     if not biofield:
@@ -1825,7 +1836,25 @@ Syntetiser disse perspektivene til EN ESSENSIEL SANNHET som representerer den dy
     except Exception as e:
         essence_of_truth = f"🧠 Orion (Error): {str(e)}"
     
-    # Step 3: Return comprehensive response
+    # Step 3: Publish to Redis for real-time subscribers
+    if redis_publisher:
+        try:
+            redis_publisher.publish_consultation(
+                question=request.question,
+                requester=request.requester,
+                agent_responses=agent_responses,
+                essence_of_truth=essence_of_truth,
+                biofield_context={
+                    "hrv_ms": hrv_ms,
+                    "coherence": coherence,
+                    "energy_level": biofield.energy_level,
+                    "creativity_state": biofield.creativity_state
+                }
+            )
+        except Exception as e:
+            print(f"⚠️  Redis publish error: {e}")
+
+    # Step 4: Return comprehensive response
     return {
         "collective_intelligence": "Hexagonal Agent Consultation",
         "question": request.question,

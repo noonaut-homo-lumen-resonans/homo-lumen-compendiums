@@ -477,6 +477,21 @@ async def startup_event():
 
     logger.info(f"✅ Created {len(agent_dirs)} agent directories")
 
+    # Start Redis subscriber in background thread
+    try:
+        from redis_subscriber import ubuntu_subscriber
+        import threading
+
+        subscriber_thread = threading.Thread(
+            target=ubuntu_subscriber.start_polling,
+            kwargs={"poll_interval": 5},
+            daemon=True
+        )
+        subscriber_thread.start()
+        logger.info("✅ Redis subscriber started in background")
+    except Exception as e:
+        logger.warning(f"⚠️  Redis subscriber not started: {e}")
+
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup on shutdown"""
