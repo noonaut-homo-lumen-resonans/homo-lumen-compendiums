@@ -62,3 +62,11 @@ smk_duplicates_*.json
 
 # Cleanup scripts
 sanitize_keys.sh
+
+# Case Studies analysis scripts (may contain API keys)
+analyze_cs_duplicates.py
+deduplicate_cs.py
+restore_cs_from_backup.py
+cs_backup_*.json
+cs_duplicates_analysis_*.json
+run_cs_*.bat

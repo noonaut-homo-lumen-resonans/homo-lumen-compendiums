@@ -141,9 +141,88 @@ def parse_case_study(cs_text, agent_name):
         'result': result
     }
 
-def create_notion_page(cs_data):
+def find_existing_cs(cs_number):
     """
-    Create a page in the Notion CS Database.
+    Search for existing CS entry by CS Number (including archived pages).
+
+    Args:
+        cs_number: CS identifier (e.g., "CS #001")
+
+    Returns:
+        Existing page dict if found, None otherwise
+    """
+    url = f'https://api.notion.com/v1/databases/{CS_DATABASE_ID}/query'
+
+    # First, try to find active (non-archived) pages with title filter
+    try:
+        payload = {
+            'filter': {
+                'property': 'Name',
+                'title': {
+                    'equals': cs_number
+                }
+            }
+        }
+        response = requests.post(url, headers=HEADERS, json=payload, timeout=10)
+
+        if response.status_code == 200:
+            results = response.json().get('results', [])
+            if results:
+                page = results[0]
+                print(f"  Found existing page: {page['id']}")
+                return page
+    except Exception as e:
+        print(f"  Error searching for {cs_number}: {e}")
+
+    # If no active page found, search ALL pages (including archived)
+    try:
+        # Fetch all pages without filter
+        all_pages = []
+        has_more = True
+        start_cursor = None
+
+        while has_more:
+            query_params = {}
+            if start_cursor:
+                query_params['start_cursor'] = start_cursor
+
+            response = requests.post(url, headers=HEADERS, json=query_params, timeout=10)
+
+            if response.status_code == 200:
+                data = response.json()
+                all_pages.extend(data.get('results', []))
+                has_more = data.get('has_more', False)
+                start_cursor = data.get('next_cursor')
+            else:
+                break
+
+        # Check all pages (including archived) for matching CS number
+        for page in all_pages:
+            try:
+                props = page.get('properties', {})
+                name_prop = props.get('Name', {})
+                if name_prop.get('title'):
+                    page_cs_number = name_prop['title'][0].get('text', {}).get('content', '')
+                    if page_cs_number == cs_number:
+                        if page.get('archived'):
+                            print(f"  Found ARCHIVED page: {page['id']} - will unarchive")
+                        else:
+                            print(f"  Found existing page: {page['id']}")
+                        return page
+            except:
+                continue
+
+    except Exception as e:
+        print(f"  Error in full page search: {e}")
+
+    return None
+
+def create_or_update_notion_page(cs_data):
+    """
+    Create or update a page in the Notion CS Database.
+
+    First checks if a page with the same CS Number exists (including archived pages).
+    If found, unarchives (if needed) and updates it. Otherwise creates a new page.
 
     Args:
         cs_data: Dictionary with CS data
@@ -151,8 +230,6 @@ def create_notion_page(cs_data):
     Returns:
         True if successful, False otherwise
     """
-    url = 'https://api.notion.com/v1/pages'
-
     # Build properties
     properties = {
         'Name': {
@@ -181,23 +258,57 @@ def create_notion_page(cs_data):
             'date': {'start': cs_data['date']}
         }
 
-    payload = {
-        'parent': {'database_id': CS_DATABASE_ID},
-        'properties': properties
-    }
+    # Search for existing page
+    existing_page = find_existing_cs(cs_data['id'])
 
     try:
-        response = requests.post(url, headers=HEADERS, json=payload, timeout=10)
+        if existing_page:
+            # Update existing page
+            page_id = existing_page['id']
 
-        if response.status_code == 200:
-            print(f"✅ Created: {cs_data['id']} - {cs_data['title']}")
-            return True
+            # If page is archived, unarchive it first
+            if existing_page.get('archived'):
+                print(f"  Unarchiving page...")
+                unarchive_url = f'https://api.notion.com/v1/pages/{page_id}'
+                unarchive_payload = {'archived': False}
+                unarchive_response = requests.patch(unarchive_url, headers=HEADERS, json=unarchive_payload, timeout=10)
+
+                if unarchive_response.status_code == 200:
+                    print(f"  [OK] Unarchived page")
+                else:
+                    print(f"  [WARNING] Failed to unarchive: {unarchive_response.status_code}")
+
+            # Update the page
+            update_url = f'https://api.notion.com/v1/pages/{page_id}'
+            update_payload = {'properties': properties}
+            response = requests.patch(update_url, headers=HEADERS, json=update_payload, timeout=10)
+
+            if response.status_code == 200:
+                print(f"✅ Updated: {cs_data['id']} - {cs_data['title']}")
+                return True
+            else:
+                print(f"❌ Failed to update: {cs_data['id']} - Status {response.status_code}")
+                print(f"   Response: {response.text[:200]}")
+                return False
         else:
-            print(f"❌ Failed: {cs_data['id']} - Status {response.status_code}")
-            print(f"   Response: {response.text[:200]}")
-            return False
+            # Create new page
+            create_url = 'https://api.notion.com/v1/pages'
+            create_payload = {
+                'parent': {'database_id': CS_DATABASE_ID},
+                'properties': properties
+            }
+            response = requests.post(create_url, headers=HEADERS, json=create_payload, timeout=10)
+
+            if response.status_code == 200:
+                print(f"✅ Created: {cs_data['id']} - {cs_data['title']}")
+                return True
+            else:
+                print(f"❌ Failed to create: {cs_data['id']} - Status {response.status_code}")
+                print(f"   Response: {response.text[:200]}")
+                return False
+
     except Exception as e:
-        print(f"❌ Error creating {cs_data['id']}: {e}")
+        print(f"❌ Error processing {cs_data['id']}: {e}")
         return False
 
 def process_agent_lk(lk_path):
@@ -255,7 +366,7 @@ def process_agent_lk(lk_path):
         cs_data = parse_case_study(cs_text, agent_name)
 
         if cs_data:
-            if create_notion_page(cs_data):
+            if create_or_update_notion_page(cs_data):
                 created_count += 1
             else:
                 skipped_count += 1
