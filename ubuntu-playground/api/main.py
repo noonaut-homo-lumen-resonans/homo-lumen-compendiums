@@ -150,6 +150,25 @@ def init_database():
         )
     """)
 
+    # Agent Learning table (GENOMOS Phase 5)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS agent_learning (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            learning_id TEXT UNIQUE NOT NULL,
+            agent_name TEXT NOT NULL,
+            learning_event_type TEXT NOT NULL,
+            context TEXT NOT NULL,
+            before_state TEXT,
+            after_state TEXT,
+            trigger TEXT NOT NULL,
+            metrics TEXT,
+            related_smk TEXT,
+            related_consultations TEXT,
+            blockchain_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )
+    """)
+
     conn.commit()
     conn.close()
     logger.info("✅ SQLite database initialized")
@@ -204,6 +223,20 @@ class ConsultationRequest(BaseModel):
     synthesis: Dict  # {summary, key_insights, related_smk}
     biofelt_context: Optional[BiofeltContext] = None
     thalos_context: Optional[ThalosContext] = None
+    timestamp: Optional[str] = None
+
+class AgentLearningRequest(BaseModel):
+    """Request model for storing agent learning events in GENOMOS blockchain."""
+    learning_id: str
+    agent_name: str
+    learning_event_type: str  # "feedback_correction", "pattern_discovery", "skill_improvement", "error_correction"
+    context: str  # Description of what triggered the learning
+    before_state: Optional[Dict] = None  # State/approach before learning
+    after_state: Optional[Dict] = None   # State/approach after learning
+    trigger: Dict  # {type: "consultation"|"feedback"|"self_reflection", consultation_id: "...", description: "..."}
+    metrics: Optional[Dict] = None  # {confidence_delta: +0.17, response_time_improvement_ms: -300, ...}
+    related_smk: Optional[List[str]] = None
+    related_consultations: Optional[List[str]] = None
     timestamp: Optional[str] = None
 
 # ===========================
@@ -798,6 +831,109 @@ def store_consultation(request: ConsultationRequest):
 
     except Exception as e:
         logger.error(f"❌ Consultation storage error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================================================
+# AGENT LEARNING STORAGE (GENOMOS Phase 5)
+# ============================================================================
+
+@app.post("/api/store-agent-learning")
+def store_agent_learning(request: AgentLearningRequest):
+    """
+    Store an agent learning event in both SQLite and GENOMOS blockchain.
+
+    GENOMOS Phase 5: Agent Learning & Adaptation
+    """
+    try:
+        learning_timestamp = request.timestamp or datetime.now().isoformat()
+
+        # Prepare learning gene data
+        learning_gene = {
+            "type": "agent_learning",
+            "learning_id": request.learning_id,
+            "agent_name": request.agent_name,
+            "learning_event_type": request.learning_event_type,
+            "timestamp": learning_timestamp,
+            "context": request.context,
+            "trigger": request.trigger,
+        }
+
+        # Add optional fields if present
+        if request.before_state:
+            learning_gene["before_state"] = request.before_state
+        if request.after_state:
+            learning_gene["after_state"] = request.after_state
+        if request.metrics:
+            learning_gene["metrics"] = request.metrics
+        if request.related_smk:
+            learning_gene["related_smk"] = request.related_smk
+        if request.related_consultations:
+            learning_gene["related_consultations"] = request.related_consultations
+
+        # Store in GENOMOS blockchain
+        blockchain = AgentDNAChain(db_path="./data/genomos.db")
+
+        # Extract tags
+        tags = ["agent-learning", request.agent_name, request.learning_event_type]
+        if request.related_smk:
+            for smk in request.related_smk:
+                tags.append(f"ref-{smk.lower().replace('#', '')}")
+
+        block = blockchain.add_gene(
+            gene_type=GeneType.AGENT_LEARNING,
+            data=learning_gene,
+            agent=request.agent_name,
+            tags=tags
+        )
+
+        logger.info(f"🧠 Agent learning stored in GENOMOS: {request.agent_name} - {request.learning_event_type}")
+        logger.info(f"   Block #{block.index} | Hash: {block.hash[:16]}...")
+
+        # Also store in SQLite
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO agent_learning (
+                learning_id, agent_name, learning_event_type, context,
+                before_state, after_state, trigger, metrics,
+                related_smk, related_consultations, blockchain_hash, created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            request.learning_id,
+            request.agent_name,
+            request.learning_event_type,
+            request.context,
+            json.dumps(request.before_state) if request.before_state else None,
+            json.dumps(request.after_state) if request.after_state else None,
+            json.dumps(request.trigger),
+            json.dumps(request.metrics) if request.metrics else None,
+            json.dumps(request.related_smk) if request.related_smk else None,
+            json.dumps(request.related_consultations) if request.related_consultations else None,
+            block.hash,
+            learning_timestamp
+        ))
+
+        learning_db_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+
+        logger.info(f"💾 Agent learning also stored in SQLite (ID: {learning_db_id})")
+
+        return {
+            "success": True,
+            "learning_id": request.learning_id,
+            "agent_name": request.agent_name,
+            "blockchain_block_index": block.index,
+            "blockchain_hash": block.hash,
+            "database_id": learning_db_id,
+            "message": f"Agent learning stored in GENOMOS blockchain and SQLite"
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Agent learning storage error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

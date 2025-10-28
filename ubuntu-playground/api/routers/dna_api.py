@@ -116,6 +116,22 @@ class ConsultationResponse(BaseModel):
     hash: str
 
 
+class AgentLearningResponse(BaseModel):
+    """Response model for Agent Learning gene"""
+    learning_id: str
+    block_index: int
+    agent_name: str
+    learning_event_type: str
+    context: str
+    has_before_state: bool
+    has_after_state: bool
+    has_metrics: bool
+    related_smk: List[str]
+    related_consultations: List[str]
+    timestamp: str
+    hash: str
+
+
 class BlockchainInfoResponse(BaseModel):
     """Response model for blockchain metadata"""
     total_genes: int
@@ -625,4 +641,168 @@ async def get_consultations_by_smk(
         "smk_number": smk_number,
         "consultations": related_consultations,
         "total_references": len(related_consultations)
+    }
+
+
+# ============================================================================
+# AGENT LEARNING ENDPOINTS (GENOMOS Phase 5)
+# ============================================================================
+
+@router.get("/learning", response_model=List[AgentLearningResponse])
+async def get_agent_learning(
+    agent_name: Optional[str] = Query(None, description="Filter by agent name"),
+    learning_type: Optional[str] = Query(None, description="Filter by learning event type"),
+    from_date: Optional[str] = Query(None, description="Filter learning events after this ISO date"),
+    limit: int = Query(50, description="Maximum number of learning events to return")
+):
+    """
+    Get all agent learning events from the blockchain.
+
+    Query parameters:
+    - agent_name: Filter by specific agent
+    - learning_type: Filter by event type (feedback_correction, pattern_discovery, etc.)
+    - from_date: Only show events after this date (ISO format)
+    - limit: Maximum results to return (default 50)
+    """
+    chain = get_blockchain()
+
+    # Filter learning blocks
+    learning_blocks = [
+        block for block in chain.chain
+        if block.gene_type == GeneType.AGENT_LEARNING
+    ]
+
+    # Apply agent filter
+    if agent_name:
+        learning_blocks = [
+            b for b in learning_blocks
+            if b.data.get("agent_name", "").lower() == agent_name.lower()
+        ]
+
+    # Apply learning type filter
+    if learning_type:
+        learning_blocks = [
+            b for b in learning_blocks
+            if b.data.get("learning_event_type", "").lower() == learning_type.lower()
+        ]
+
+    # Apply date filter
+    if from_date:
+        learning_blocks = [
+            b for b in learning_blocks
+            if b.timestamp >= from_date
+        ]
+
+    # Apply limit
+    learning_blocks = learning_blocks[-limit:]  # Get most recent
+
+    # Build responses
+    results = []
+    for block in learning_blocks:
+        data = block.data
+        results.append(AgentLearningResponse(
+            learning_id=data.get("learning_id", "unknown"),
+            block_index=block.index,
+            agent_name=data.get("agent_name", "unknown"),
+            learning_event_type=data.get("learning_event_type", "unknown"),
+            context=data.get("context", ""),
+            has_before_state="before_state" in data,
+            has_after_state="after_state" in data,
+            has_metrics="metrics" in data,
+            related_smk=data.get("related_smk", []),
+            related_consultations=data.get("related_consultations", []),
+            timestamp=block.timestamp,
+            hash=block.hash
+        ))
+
+    return results
+
+
+@router.get("/learning/{learning_id}")
+async def get_learning_event(learning_id: str):
+    """
+    Get a specific learning event by ID.
+
+    Returns the full learning data including before/after states and metrics.
+    """
+    chain = get_blockchain()
+
+    # Find learning block
+    for block in chain.chain:
+        if block.gene_type == GeneType.AGENT_LEARNING:
+            if block.data.get("learning_id") == learning_id:
+                return {
+                    "learning_id": learning_id,
+                    "block_index": block.index,
+                    "timestamp": block.timestamp,
+                    "agent_name": block.data.get("agent_name"),
+                    "learning_event_type": block.data.get("learning_event_type"),
+                    "context": block.data.get("context"),
+                    "before_state": block.data.get("before_state"),
+                    "after_state": block.data.get("after_state"),
+                    "trigger": block.data.get("trigger"),
+                    "metrics": block.data.get("metrics"),
+                    "related_smk": block.data.get("related_smk", []),
+                    "related_consultations": block.data.get("related_consultations", []),
+                    "hash": block.hash,
+                    "previous_hash": block.previous_hash
+                }
+
+    raise HTTPException(
+        status_code=404,
+        detail=f"Learning event {learning_id} not found"
+    )
+
+
+@router.get("/learning/agent/{agent_name}/evolution")
+async def get_agent_evolution(
+    agent_name: str,
+    limit: int = Query(100, description="Maximum learning events to return")
+):
+    """
+    Get the learning evolution timeline for a specific agent.
+
+    Returns all learning events for the agent in chronological order,
+    showing how the agent has adapted and improved over time.
+    """
+    chain = get_blockchain()
+
+    # Find all learning events for this agent
+    agent_learning = []
+    for block in chain.chain:
+        if block.gene_type == GeneType.AGENT_LEARNING:
+            if block.data.get("agent_name", "").lower() == agent_name.lower():
+                agent_learning.append({
+                    "learning_id": block.data.get("learning_id"),
+                    "learning_event_type": block.data.get("learning_event_type"),
+                    "context": block.data.get("context"),
+                    "metrics": block.data.get("metrics"),
+                    "timestamp": block.timestamp,
+                    "block_index": block.index,
+                    "hash": block.hash[:16] + "..."
+                })
+
+    if not agent_learning:
+        return {
+            "agent_name": agent_name,
+            "learning_events": [],
+            "total_events": 0,
+            "evolution_summary": f"No learning events found for agent '{agent_name}'"
+        }
+
+    # Apply limit (most recent)
+    agent_learning = agent_learning[-limit:]
+
+    # Calculate evolution summary
+    event_types = {}
+    for event in agent_learning:
+        event_type = event.get("learning_event_type", "unknown")
+        event_types[event_type] = event_types.get(event_type, 0) + 1
+
+    return {
+        "agent_name": agent_name,
+        "learning_events": agent_learning,
+        "total_events": len(agent_learning),
+        "event_type_distribution": event_types,
+        "evolution_summary": f"{agent_name} has {len(agent_learning)} recorded learning events"
     }

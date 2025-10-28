@@ -52,6 +52,7 @@ class GeneType(str, Enum):
     SMK = "smk"                           # Strategic Macro-Coordination docs
     MUTATION = "mutation"                 # MutationLog operations
     CONSULTATION = "consultation"         # Pentagonal consultations
+    AGENT_LEARNING = "agent_learning"     # Agent learning & adaptation events
     BIOFELT = "biofelt"                   # BiofeltContext states
     PATTERN = "pattern"                   # Evolutionary memory patterns
     AGENT = "agent"                       # Agent birth/death
