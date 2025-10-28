@@ -24,9 +24,10 @@ def sync_smk_to_notion(smk_metadata, notion, database_id, commit_sha, commit_url
 
     print(f"\nSyncing SMK #{smk_number}: {title}")
 
-    # Search for existing page by SMK number
+    # Search for existing page by SMK number (including archived pages)
     existing_page = None
     try:
+        # First, try to find active (non-archived) pages
         results = notion.databases.query(
             database_id=database_id,
             filter={
@@ -39,6 +40,38 @@ def sync_smk_to_notion(smk_metadata, notion, database_id, commit_sha, commit_url
         if results['results']:
             existing_page = results['results'][0]
             print(f"  Found existing page: {existing_page['id']}")
+        else:
+            # If no active page found, search for archived pages
+            # Note: Notion API returns only non-archived by default
+            # We need to search all pages to find archived ones
+            all_pages = []
+            start_cursor = None
+            while True:
+                query_params = {"database_id": database_id}
+                if start_cursor:
+                    query_params["start_cursor"] = start_cursor
+
+                page_results = notion.databases.query(**query_params)
+                all_pages.extend(page_results['results'])
+
+                if not page_results.get('has_more'):
+                    break
+                start_cursor = page_results.get('next_cursor')
+
+            # Check all pages (including archived) for matching SMK number
+            for page in all_pages:
+                try:
+                    props = page.get('properties', {})
+                    page_smk_num = props.get('SMK Number', {}).get('number')
+                    if page_smk_num == smk_number:
+                        existing_page = page
+                        if page.get('archived'):
+                            print(f"  Found ARCHIVED page: {page['id']} - will unarchive")
+                        else:
+                            print(f"  Found existing page: {page['id']}")
+                        break
+                except:
+                    continue
     except Exception as e:
         print(f"  Error searching for existing page: {e}")
 
@@ -105,6 +138,15 @@ def sync_smk_to_notion(smk_metadata, notion, database_id, commit_sha, commit_url
     # Create or update page
     try:
         if existing_page:
+            # If page is archived, unarchive it first
+            if existing_page.get('archived'):
+                print(f"  Unarchiving page...")
+                notion.pages.update(
+                    page_id=existing_page['id'],
+                    archived=False
+                )
+                print(f"  [OK] Unarchived page")
+
             # Update existing page
             notion.pages.update(
                 page_id=existing_page['id'],
