@@ -4,20 +4,11 @@ from pydantic import BaseModel
 from typing import Optional, List, Dict
 import os
 import redis
-import sqlite3
+import psycopg2
 from pathlib import Path
 import json
 from datetime import datetime
 import logging
-import sys
-from dotenv import load_dotenv
-
-# Load .env.local FIRST
-load_dotenv(dotenv_path="../.env.local")
-
-# Fix Windows console encoding for emoji
-if sys.platform == 'win32':
-    sys.stdout.reconfigure(encoding='utf-8')
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -25,15 +16,15 @@ logger = logging.getLogger(__name__)
 
 # Initialize FastAPI
 app = FastAPI(
-    title="Ubuntu Playground API (Local MVP)",
-    description="Shared workspace API for Homo Lumen Agent Coalition - Local Development",
-    version="1.0.0-local"
+    title="Ubuntu Playground API",
+    description="Shared workspace API for Homo Lumen Agent Coalition",
+    version="1.0.0"
 )
 
-# CORS - Allow all origins for development
+# CORS - Allow all origins for development (restrict in production)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # TODO: Restrict to specific origins in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,7 +33,7 @@ app.add_middleware(
 # Redis connection
 try:
     REDIS_CLIENT = redis.Redis.from_url(
-        os.getenv("REDIS_URL", "redis://localhost:6379"),
+        os.getenv("REDIS_URL", "redis://redis:6379"),
         decode_responses=True
     )
     REDIS_CLIENT.ping()
@@ -51,61 +42,18 @@ except Exception as e:
     logger.error(f"❌ Redis connection failed: {e}")
     REDIS_CLIENT = None
 
-# SQLite database helper
-DATABASE_PATH = Path(os.getenv("DATABASE_PATH", "./data/ubuntu-playground.db"))
-DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
-
+# PostgreSQL connection helper
 def get_db_connection():
-    """Get SQLite database connection"""
     try:
-        conn = sqlite3.connect(str(DATABASE_PATH))
-        conn.row_factory = sqlite3.Row
+        conn = psycopg2.connect(os.getenv("DATABASE_URL"))
         return conn
     except Exception as e:
-        logger.error(f"❌ SQLite connection failed: {e}")
+        logger.error(f"❌ PostgreSQL connection failed: {e}")
         raise HTTPException(status_code=500, detail="Database connection failed")
 
-def init_database():
-    """Initialize SQLite database schema"""
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    # Events table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS events (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            agent TEXT NOT NULL,
-            action TEXT NOT NULL,
-            path TEXT,
-            timestamp TEXT NOT NULL,
-            metadata TEXT
-        )
-    """)
-
-    # Actions table (for CSN Server integration)
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS actions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            agent TEXT NOT NULL,
-            action_type TEXT NOT NULL,
-            payload TEXT NOT NULL,
-            status TEXT DEFAULT 'pending',
-            result TEXT,
-            created_at TEXT NOT NULL,
-            completed_at TEXT
-        )
-    """)
-
-    conn.commit()
-    conn.close()
-    logger.info("✅ SQLite database initialized")
-
 # Workspace root
-WORKSPACE_ROOT = Path("/workspace" if os.path.exists("/workspace") else "./workspace")
+WORKSPACE_ROOT = Path("/workspace")
 WORKSPACE_ROOT.mkdir(parents=True, exist_ok=True)
-
-# CSN Server URL
-CSN_SERVER_URL = os.getenv("CSN_SERVER_URL", "http://localhost:8001")
 
 # ===========================
 # MODELS (Pydantic)
@@ -133,15 +81,11 @@ class AgentEvent(BaseModel):
     timestamp: str
     metadata: Optional[Dict] = None
 
-class ExecuteActionRequest(BaseModel):
-    agent: str
-    action_type: str
-    payload: Dict
-
 # ===========================
 # AUTHENTICATION & RBAC
 # ===========================
 
+# Simple API key authentication (TODO: Move to environment variables in production)
 AGENT_API_KEYS = {
     "manus": os.getenv("MANUS_API_KEY", "manus-dev-key"),
     "code": os.getenv("CODE_API_KEY", "code-dev-key"),
@@ -153,9 +97,9 @@ AGENT_API_KEYS = {
     "aurora": os.getenv("AURORA_API_KEY", "aurora-dev-key"),
     "thalamus": os.getenv("THALAMUS_API_KEY", "thalamus-dev-key"),
     "scribe": os.getenv("SCRIBE_API_KEY", "scribe-dev-key"),
-    "zara": os.getenv("ZARA_API_KEY", "zara-dev-key"),  # Added Zara (DeepSeek)
 }
 
+# RBAC permissions per agent
 AGENT_PERMISSIONS = {
     "manus": ["read:all", "write:shared", "write:manus", "commit:all", "deploy:all"],
     "code": ["read:all", "write:shared", "write:code", "commit:code"],
@@ -167,7 +111,6 @@ AGENT_PERMISSIONS = {
     "aurora": ["read:all", "write:shared", "write:aurora", "research:validate"],
     "thalamus": ["read:all", "route:requests", "orchestrate:agents"],
     "scribe": ["read:all", "write:shared", "write:scribe", "document:create"],
-    "zara": ["read:all", "write:shared", "write:zara", "research:deep"],  # Zara permissions
 }
 
 def verify_api_key(x_api_key: str = Header(..., alias="X-API-Key")) -> str:
@@ -184,10 +127,11 @@ def check_permission(agent_name: str, required_permission: str) -> bool:
     """Check if agent has required permission"""
     permissions = AGENT_PERMISSIONS.get(agent_name, [])
 
+    # Check for exact permission or wildcard
     if required_permission in permissions:
         return True
 
-    # Check for wildcard permissions
+    # Check for wildcard permissions (e.g., "write:all" includes "write:shared")
     permission_type, permission_target = required_permission.split(":")
     wildcard = f"{permission_type}:all"
     if wildcard in permissions:
@@ -203,17 +147,14 @@ def check_permission(agent_name: str, required_permission: str) -> bool:
 def root():
     """Root endpoint - API info"""
     return {
-        "message": "Ubuntu Playground API (Local MVP)",
-        "version": "1.0.0-local",
-        "mode": "local-development",
+        "message": "Ubuntu Playground API",
+        "version": "1.0.0",
         "status": "operational",
-        "csn_server": CSN_SERVER_URL,
         "endpoints": [
             "/api/workspace/read",
             "/api/workspace/write",
             "/api/workspace/list",
             "/api/git/commit",
-            "/api/execute-action",
             "/health"
         ]
     }
@@ -233,9 +174,8 @@ def health():
     return {
         "status": "healthy" if redis_status == "connected" and db_status == "connected" else "degraded",
         "redis": redis_status,
-        "database": f"sqlite ({db_status})",
+        "database": db_status,
         "workspace": str(WORKSPACE_ROOT),
-        "csn_server": CSN_SERVER_URL,
         "timestamp": datetime.now().isoformat()
     }
 
@@ -243,6 +183,7 @@ def health():
 def read_file(request: ReadRequest, agent_name: str = Depends(verify_api_key)):
     """Read a file from the shared workspace"""
 
+    # Permission check
     if not check_permission(agent_name, "read:all"):
         raise HTTPException(status_code=403, detail="Permission denied: read:all required")
 
@@ -261,7 +202,7 @@ def read_file(request: ReadRequest, agent_name: str = Depends(verify_api_key)):
     try:
         content = file_path.read_text(encoding="utf-8")
 
-        # Log read event
+        # Log read event to Redis
         if REDIS_CLIENT:
             event = AgentEvent(
                 agent=agent_name,
@@ -282,6 +223,7 @@ def read_file(request: ReadRequest, agent_name: str = Depends(verify_api_key)):
 def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key)):
     """Write a file to the shared workspace"""
 
+    # Permission check
     workspace_area = request.path.split("/")[0] if "/" in request.path else request.path
     required_perm = f"write:{workspace_area}"
 
@@ -297,12 +239,13 @@ def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key))
     if not file_path.resolve().is_relative_to(WORKSPACE_ROOT.resolve()):
         raise HTTPException(status_code=403, detail="Path traversal attempt detected")
 
+    # Create parent directories if they don't exist
     file_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:
         file_path.write_text(request.content, encoding="utf-8")
 
-        # Publish write event
+        # Publish write event to Redis
         if REDIS_CLIENT:
             event = AgentEvent(
                 agent=agent_name,
@@ -358,7 +301,7 @@ def list_files(request: ListRequest, agent_name: str = Depends(verify_api_key)):
 
 @app.post("/api/git/commit")
 def git_commit(request: CommitRequest, agent_name: str = Depends(verify_api_key)):
-    """Commit changes to Git (simplified logging for MVP)"""
+    """Commit changes to Git (simplified logging for now)"""
 
     if not check_permission(agent_name, f"commit:{agent_name}") and not check_permission(agent_name, "commit:all"):
         raise HTTPException(
@@ -367,25 +310,9 @@ def git_commit(request: CommitRequest, agent_name: str = Depends(verify_api_key)
         )
 
     try:
-        # Log commit intent to SQLite
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        # TODO: Implement actual Git integration with GitPython
+        # For now, just log the commit intent to Redis
 
-        cursor.execute("""
-            INSERT INTO events (agent, action, path, timestamp, metadata)
-            VALUES (?, ?, ?, ?, ?)
-        """, (
-            request.agent_name,
-            "git_commit",
-            None,
-            datetime.now().isoformat(),
-            json.dumps({"message": request.message, "files": request.files})
-        ))
-
-        conn.commit()
-        conn.close()
-
-        # Publish to Redis
         if REDIS_CLIENT:
             commit_event = {
                 "agent": request.agent_name,
@@ -407,54 +334,6 @@ def git_commit(request: CommitRequest, agent_name: str = Depends(verify_api_key)
         logger.error(f"❌ Commit error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/execute-action")
-def execute_action(request: ExecuteActionRequest, agent_name: str = Depends(verify_api_key)):
-    """Execute an action from CSN Server (integration endpoint)"""
-
-    try:
-        # Store action in database
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute("""
-            INSERT INTO actions (agent, action_type, payload, status, created_at)
-            VALUES (?, ?, ?, ?, ?)
-        """, (
-            request.agent,
-            request.action_type,
-            json.dumps(request.payload),
-            "pending",
-            datetime.now().isoformat()
-        ))
-
-        action_id = cursor.lastrowid
-        conn.commit()
-        conn.close()
-
-        # Publish to Redis
-        if REDIS_CLIENT:
-            action_event = {
-                "action_id": action_id,
-                "agent": request.agent,
-                "action_type": request.action_type,
-                "payload": request.payload,
-                "timestamp": datetime.now().isoformat()
-            }
-            REDIS_CLIENT.publish("ubuntu:actions", json.dumps(action_event))
-
-        logger.info(f"🎯 Action queued: {request.action_type} by {request.agent} (ID: {action_id})")
-
-        return {
-            "success": True,
-            "action_id": action_id,
-            "status": "pending",
-            "message": f"Action {request.action_type} queued for execution"
-        }
-
-    except Exception as e:
-        logger.error(f"❌ Action execution error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
 # ===========================
 # STARTUP/SHUTDOWN
 # ===========================
@@ -462,16 +341,11 @@ def execute_action(request: ExecuteActionRequest, agent_name: str = Depends(veri
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on startup"""
-    logger.info("🚀 Ubuntu Playground API (Local MVP) starting...")
+    logger.info("🚀 Ubuntu Playground API starting...")
     logger.info(f"📁 Workspace root: {WORKSPACE_ROOT}")
-    logger.info(f"🗄️ Database: {DATABASE_PATH}")
-    logger.info(f"🔗 CSN Server: {CSN_SERVER_URL}")
-
-    # Initialize SQLite database
-    init_database()
 
     # Create agent-specific directories
-    agent_dirs = ["manus", "code", "lira", "orion", "abacus", "nyra", "thalus", "aurora", "thalamus", "scribe", "zara", "shared", "experiments"]
+    agent_dirs = ["manus", "code", "lira", "orion", "abacus", "nyra", "thalus", "aurora", "thalamus", "scribe", "shared", "experiments"]
     for agent_dir in agent_dirs:
         (WORKSPACE_ROOT / agent_dir).mkdir(parents=True, exist_ok=True)
 

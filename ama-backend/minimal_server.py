@@ -1,4 +1,5 @@
 import os
+import sys
 import openai
 import google.generativeai as genai
 import anthropic
@@ -8,6 +9,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 from enum import Enum
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Fix Windows console encoding for emoji support
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
 
 # =============================================================================
 # ZARA (DEEPSEEK) - CREATIVE INNOVATOR & LEGAL VALIDATION SPECIALIST

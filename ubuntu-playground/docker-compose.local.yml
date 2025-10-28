@@ -1,0 +1,92 @@
+version: '3.8'
+
+# ===========================
+# UBUNTU PLAYGROUND - LOCAL MVP
+# ===========================
+#
+# **Purpose:** Local development & CSN Server integration testing
+# **No Cloud:** Runs entirely on localhost (0 NOK cost)
+# **Integration:** Connects with CSN Server (port 8001)
+#
+# Architecture:
+#   - Port 8000: Living Compendia
+#   - Port 8001: CSN Server (5 LLM agents)
+#   - Port 8002: Ubuntu Playground (this service)
+#   - Port 6379: Redis (local)
+#
+# Database: SQLite (no PostgreSQL needed for MVP)
+# Git: Local git (no Gitea needed for MVP)
+# Redis: Local container (no Google Memorystore)
+#
+# Start: docker-compose -f docker-compose.local.yml up -d
+# Stop:  docker-compose -f docker-compose.local.yml down
+#
+# ===========================
+
+services:
+  # FastAPI Gateway - Ubuntu Playground API
+  playground-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.local
+    container_name: ubuntu-playground-api
+    environment:
+      # Local SQLite database (no Cloud SQL)
+      - DATABASE_URL=sqlite:///./data/ubuntu-playground.db
+
+      # Local Redis (no Memorystore)
+      - REDIS_URL=redis://redis:6379
+
+      # CSN Server URL for integration
+      - CSN_SERVER_URL=http://host.docker.internal:8001
+
+      # API Configuration
+      - API_HOST=0.0.0.0
+      - API_PORT=8002
+
+      # MVP Mode (simplified)
+      - MVP_MODE=true
+      - SKIP_GIT_INTEGRATION=true
+
+      # Agent API Keys (loaded from .env.local)
+      - LIRA_API_KEY=${LIRA_API_KEY:-lira-local-dev-key}
+      - NYRA_API_KEY=${NYRA_API_KEY:-nyra-local-dev-key}
+      - ORION_API_KEY=${ORION_API_KEY:-orion-local-dev-key}
+      - THALUS_API_KEY=${THALUS_API_KEY:-thalus-local-dev-key}
+      - ZARA_API_KEY=${ZARA_API_KEY:-zara-local-dev-key}
+      - CODE_API_KEY=${CODE_API_KEY:-code-local-dev-key}
+
+    restart: unless-stopped
+    networks:
+      - playground-network
+    volumes:
+      - ./workspace:/workspace
+      - ./data:/app/data
+      - ./api:/app
+    ports:
+      - "8002:8002"
+    depends_on:
+      - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Redis - Local pub/sub & caching
+  redis:
+    image: redis:7-alpine
+    container_name: ubuntu-playground-redis
+    restart: unless-stopped
+    networks:
+      - playground-network
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+
+networks:
+  playground-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local

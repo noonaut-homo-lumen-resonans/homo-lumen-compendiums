@@ -52,8 +52,227 @@ def extract_agent_from_filename(filename):
         return match.group(1), match.group(2)
     return None, None
 
-def parse_lk_file(filepath):
-    """Parse a single LK file and extract metadata."""
+def extract_learning_points(content, agent, lk_filename, github_url):
+    """
+    Extract all LP (Learning Points) entries from LK content.
+
+    Pattern:
+    ### **LP #001 - Title**
+    **Dato:** 3. oktober 2025
+    **Kontekst:** Context text
+    **Innsikt:** Insight text
+
+    Returns: Array of LP entry dictionaries
+    """
+    learning_points = []
+
+    # Pattern to match LP entries
+    # Handles both ### **LP #XXX and ### LP #XXX formats
+    pattern = r'###\s+\*?\*?LP\s+#(\d+)\s*[-–]\s*(.+?)\*?\*?\n\*\*Dato:\*\*\s*(.+?)\n\*\*Kontekst:\*\*\s*(.+?)\n\*\*Innsikt:\*\*\s*(.+?)(?=\n###|\n##|\Z)'
+
+    matches = re.findall(pattern, content, re.DOTALL)
+
+    for match in matches:
+        lp_id, title, dato, kontekst, innsikt = match
+
+        # Clean up text (remove extra whitespace, asterisks)
+        title = title.strip().strip('*').strip()
+        dato = dato.strip()
+        kontekst = kontekst.strip()
+        innsikt = innsikt.strip()
+
+        learning_points.append({
+            "id": f"LP #{lp_id.zfill(3)}",  # Pad to 3 digits: LP #001
+            "category": "Learning Point",
+            "title": title,
+            "date": dato,
+            "context": kontekst,
+            "content": f"**Kontekst:** {kontekst}\n\n**Innsikt:** {innsikt}",
+            "agent": agent,
+            "source_lk": lk_filename,
+            "github_url": github_url
+        })
+
+    return learning_points
+
+def extract_case_studies(content, agent, lk_filename, github_url):
+    """
+    Extract all CS (Case Studies) entries from LK content.
+
+    Pattern:
+    ### **CS #001 - Title**
+    **Dato:** 3. oktober 2025
+    **Situasjon:** Situation text
+    **Tilnærming:** Approach text
+    **Resultat:** Result text
+
+    Returns: Array of CS entry dictionaries
+    """
+    case_studies = []
+
+    pattern = r'###\s+\*?\*?CS\s+#(\d+)\s*[-–]\s*(.+?)\*?\*?\n\*\*Dato:\*\*\s*(.+?)\n\*\*Situasjon:\*\*\s*(.+?)\n\*\*Tilnærming:\*\*\s*(.+?)\n\*\*Resultat:\*\*\s*(.+?)(?=\n###|\n##|\Z)'
+
+    matches = re.findall(pattern, content, re.DOTALL)
+
+    for match in matches:
+        cs_id, title, dato, situasjon, tilnaerming, resultat = match
+
+        title = title.strip().strip('*').strip()
+        dato = dato.strip()
+        situasjon = situasjon.strip()
+        tilnaerming = tilnaerming.strip()
+        resultat = resultat.strip()
+
+        case_studies.append({
+            "id": f"CS #{cs_id.zfill(3)}",
+            "category": "Case Study",
+            "title": title,
+            "date": dato,
+            "content": f"**Situasjon:** {situasjon}\n\n**Tilnærming:** {tilnaerming}\n\n**Resultat:** {resultat}",
+            "agent": agent,
+            "source_lk": lk_filename,
+            "github_url": github_url
+        })
+
+    return case_studies
+
+def extract_shadow_logs(content, agent, lk_filename, github_url):
+    """
+    Extract all SL (Shadow Logs) entries from LK content.
+
+    Pattern:
+    ### **SL #001 - Title**
+    **Dato:** 3. oktober 2025
+    **Manifestasjon:** Manifestation text
+    **Integrasjon:** Integration text
+    **Status:** Status text
+
+    Returns: Array of SL entry dictionaries
+    """
+    shadow_logs = []
+
+    pattern = r'###\s+\*?\*?SL\s+#(\d+)\s*[-–]\s*(.+?)\*?\*?\n\*\*Dato:\*\*\s*(.+?)\n\*\*Manifestasjon:\*\*\s*(.+?)\n\*\*Integrasjon:\*\*\s*(.+?)\n\*\*Status:\*\*\s*(.+?)(?=\n###|\n##|\Z)'
+
+    matches = re.findall(pattern, content, re.DOTALL)
+
+    for match in matches:
+        sl_id, title, dato, manifestasjon, integrasjon, status = match
+
+        title = title.strip().strip('*').strip()
+        dato = dato.strip()
+        manifestasjon = manifestasjon.strip()
+        integrasjon = integrasjon.strip()
+        status = status.strip()
+
+        shadow_logs.append({
+            "id": f"SL #{sl_id.zfill(3)}",
+            "category": "Shadow Log",
+            "title": title,
+            "date": dato,
+            "content": f"**Manifestasjon:** {manifestasjon}\n\n**Integrasjon:** {integrasjon}\n\n**Status:** {status}",
+            "agent": agent,
+            "source_lk": lk_filename,
+            "github_url": github_url
+        })
+
+    return shadow_logs
+
+def extract_critical_decisions(content, agent, lk_filename, github_url):
+    """
+    Extract all KD (Critical Decisions) entries from LK content.
+
+    Pattern:
+    ### **KD #001 - Title**
+    **Dato:** 3. oktober 2025
+    **Beslutning:** Decision text
+
+    Returns: Array of KD entry dictionaries
+    """
+    critical_decisions = []
+
+    pattern = r'###\s+\*?\*?KD\s+#(\d+)\s*[-–]\s*(.+?)\*?\*?\n\*\*Dato:\*\*\s*(.+?)\n\*\*Beslutning:\*\*\s*(.+?)(?=\n###|\n##|\Z)'
+
+    matches = re.findall(pattern, content, re.DOTALL)
+
+    for match in matches:
+        kd_id, title, dato, beslutning = match
+
+        title = title.strip().strip('*').strip()
+        dato = dato.strip()
+        beslutning = beslutning.strip()
+
+        critical_decisions.append({
+            "id": f"KD #{kd_id.zfill(3)}",
+            "category": "Critical Decision",
+            "title": title,
+            "date": dato,
+            "content": f"**Beslutning:** {beslutning}",
+            "agent": agent,
+            "source_lk": lk_filename,
+            "github_url": github_url
+        })
+
+    return critical_decisions
+
+def extract_emergent_patterns(content, agent, lk_filename, github_url):
+    """
+    Extract Emergent Patterns from LK content.
+
+    Pattern:
+    1. **Pattern Title** - Description
+    2. **Another Pattern** - Description
+
+    Returns: Array of EM entry dictionaries
+
+    NOTE: These patterns can be synced to the Emergent Patterns Database in Notion
+    Database ID: 2988fec9293180509658e93447b3b259
+    See: .github/workflows/sync-em-to-notion.yml (if exists)
+    """
+    emergent_patterns = []
+
+    # Find the "Emergente Mønstre" section
+    section_pattern = r'##\s+\*?\*?SEKSJON 5: EMERGENTE MØNSTRE\*?\*?(.+?)(?=\n##|\Z)'
+    section_match = re.search(section_pattern, content, re.DOTALL)
+
+    if not section_match:
+        return emergent_patterns
+
+    section_content = section_match.group(1)
+
+    # Extract numbered patterns
+    pattern = r'(\d+)\.\s+\*\*(.+?)\*\*\s*[-–]\s*(.+?)(?=\n\d+\.|\n##|\Z)'
+    matches = re.findall(pattern, section_content, re.DOTALL)
+
+    for match in matches:
+        em_number, title, description = match
+
+        title = title.strip()
+        description = description.strip()
+
+        emergent_patterns.append({
+            "id": f"EM #{em_number.zfill(3)}",
+            "category": "Emergent Pattern",
+            "title": title,
+            "date": None,  # Emergent patterns don't have dates
+            "content": description,
+            "agent": agent,
+            "source_lk": lk_filename,
+            "github_url": github_url
+        })
+
+    return emergent_patterns
+
+def parse_lk_file(filepath, extract_content=False):
+    """
+    Parse a single LK file and extract metadata.
+
+    Args:
+        filepath: Path to LK file
+        extract_content: If True, also extract LP/CS/SL/KD/EM entries
+
+    Returns:
+        Dictionary with metadata and optionally content entries
+    """
     try:
         print(f"Parsing: {filepath.name}")
     except UnicodeEncodeError:
@@ -107,12 +326,39 @@ def parse_lk_file(filepath):
     except ValueError:
         # If relative_to fails, just use the filepath as-is
         relative_path = filepath
-    metadata['github_url'] = f"https://github.com/{repo}/blob/{branch}/{relative_path}".replace('\\', '/')
+    github_url = f"https://github.com/{repo}/blob/{branch}/{relative_path}".replace('\\', '/')
+    metadata['github_url'] = github_url
 
-    try:
-        print(f"  [OK] Parsed: {metadata.get('agent', '?')} LK {metadata.get('version', '?')} - {metadata.get('title', 'Untitled')}")
-    except UnicodeEncodeError:
-        print(f"  [OK] Parsed: {metadata.get('agent', '?')} LK {metadata.get('version', '?')}")
+    # Extract structured content if requested
+    if extract_content:
+        agent = metadata.get('agent', 'Unknown')
+        lk_filename = filepath.name
+
+        learning_points = extract_learning_points(content, agent, lk_filename, github_url)
+        case_studies = extract_case_studies(content, agent, lk_filename, github_url)
+        shadow_logs = extract_shadow_logs(content, agent, lk_filename, github_url)
+        critical_decisions = extract_critical_decisions(content, agent, lk_filename, github_url)
+        emergent_patterns = extract_emergent_patterns(content, agent, lk_filename, github_url)
+
+        metadata['learning_points'] = learning_points
+        metadata['case_studies'] = case_studies
+        metadata['shadow_logs'] = shadow_logs
+        metadata['critical_decisions'] = critical_decisions
+        metadata['emergent_patterns'] = emergent_patterns
+
+        total_entries = len(learning_points) + len(case_studies) + len(shadow_logs) + len(critical_decisions) + len(emergent_patterns)
+
+        try:
+            print(f"  [OK] Parsed: {agent} LK {metadata.get('version', '?')}")
+            if total_entries > 0:
+                print(f"       Extracted {total_entries} entries: {len(learning_points)} LP, {len(case_studies)} CS, {len(shadow_logs)} SL, {len(critical_decisions)} KD, {len(emergent_patterns)} EM")
+        except UnicodeEncodeError:
+            print(f"  [OK] Parsed: {agent} LK {metadata.get('version', '?')} - {total_entries} entries")
+    else:
+        try:
+            print(f"  [OK] Parsed: {metadata.get('agent', '?')} LK {metadata.get('version', '?')} - {metadata.get('title', 'Untitled')}")
+        except UnicodeEncodeError:
+            print(f"  [OK] Parsed: {metadata.get('agent', '?')} LK {metadata.get('version', '?')}")
 
     return metadata
 
