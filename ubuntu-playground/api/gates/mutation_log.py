@@ -20,8 +20,20 @@ from enum import Enum
 import logging
 import json
 import hashlib
+import os
 
 logger = logging.getLogger(__name__)
+
+# GENOMOS blockchain integration
+try:
+    from blockchain.agent_dna_chain import AgentDNAChain
+    from blockchain.dna_block import GeneType
+    BLOCKCHAIN_AVAILABLE = True
+except ImportError:
+    logger.warning("⚠️ GENOMOS blockchain not available - mutations will only be logged to JSONL")
+    BLOCKCHAIN_AVAILABLE = False
+    AgentDNAChain = None
+    GeneType = None
 
 
 class MutationLevel(str, Enum):
@@ -93,31 +105,52 @@ class MutationLog:
     3. COMPLETE: All kritisk informasjon må logges
     4. AUDITABLE: Full sporbarhet for compliance og debugging
     5. REGENERATIVE: Historie kan brukes til rollback og healing
+
+    GENOMOS Integration:
+    - All mutations are stored as MUTATION genes in the blockchain
+    - Dual persistence: JSONL (legacy) + Blockchain (DNA)
+    - Blockchain provides cryptographic verification and Merkle tree integrity
     """
 
     _log_entries: List[MutationEntry] = []
     _log_file_path: Optional[str] = None
+    _blockchain: Optional['AgentDNAChain'] = None
 
     @staticmethod
-    def initialize(log_file_path: str = "./data/mutation_log.jsonl"):
+    def initialize(log_file_path: str = "./data/mutation_log.jsonl", blockchain_db_path: Optional[str] = None):
         """
-        Initialize MutationLog with persistent storage.
+        Initialize MutationLog with dual persistent storage (JSONL + Blockchain).
 
         Args:
-            log_file_path: Path to JSONL file for append-only logging
+            log_file_path: Path to JSONL file for append-only logging (legacy)
+            blockchain_db_path: Path to SQLite blockchain database (GENOMOS)
         """
         MutationLog._log_file_path = log_file_path
 
         # Create directory if not exists
-        import os
         os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
 
-        # Create file if not exists
+        # Create JSONL file if not exists
         if not os.path.exists(log_file_path):
             with open(log_file_path, 'w', encoding='utf-8') as f:
                 pass  # Create empty file
 
         logger.info(f"📜 MutationLog initialized: {log_file_path}")
+
+        # Initialize GENOMOS blockchain if available
+        if BLOCKCHAIN_AVAILABLE and AgentDNAChain:
+            try:
+                if blockchain_db_path is None:
+                    blockchain_db_path = "./data/genomos.db"
+
+                MutationLog._blockchain = AgentDNAChain(db_path=blockchain_db_path)
+                logger.info(f"🧬 GENOMOS blockchain initialized: {blockchain_db_path}")
+                logger.info(f"🧬 Total genes in chain: {len(MutationLog._blockchain.chain)}")
+            except Exception as e:
+                logger.error(f"❌ Failed to initialize GENOMOS blockchain: {e}")
+                MutationLog._blockchain = None
+        else:
+            logger.info("📜 Running without GENOMOS blockchain (JSONL only)")
 
     @staticmethod
     def _generate_mutation_id(entry_data: Dict[str, Any]) -> str:
@@ -194,6 +227,44 @@ class MutationLog:
                     f.write(entry.json() + '\n')
             except Exception as e:
                 logger.error(f"❌ Failed to write to mutation log: {e}")
+
+        # Append to GENOMOS blockchain (DNA persistence)
+        if MutationLog._blockchain and GeneType:
+            try:
+                # Prepare mutation data for blockchain
+                mutation_gene_data = {
+                    "type": "mutation_log_entry",
+                    "mutation_id": mutation_id,
+                    "agent": agent,
+                    "operation_type": operation_type.value,
+                    "target": target,
+                    "action": action,
+                    "success": success,
+                    "validation_outcome": validation_outcome.value,
+                    "biofelt_resonance": biofelt_resonance,
+                    "thalos_severity": thalos_severity,
+                    "affected_agents": affected_agents or [],
+                    "reversible": reversible,
+                    "intent": intent,
+                    "justification": justification,
+                    "reviewed_by": reviewed_by,
+                    "error_message": error_message,
+                    "result_summary": result_summary,
+                    "timestamp": entry.timestamp
+                }
+
+                # Add to blockchain as MUTATION gene
+                block = MutationLog._blockchain.add_gene(
+                    gene_type=GeneType.MUTATION,
+                    data=mutation_gene_data,
+                    agent=agent.lower(),
+                    tags=["mutation", operation_type.value, validation_outcome.value]
+                )
+
+                logger.debug(f"🧬 Mutation added to blockchain: Block {block.index}")
+            except Exception as e:
+                logger.error(f"❌ Failed to write mutation to blockchain: {e}")
+                # Non-fatal: continue even if blockchain write fails
 
         # Log to console
         emoji = "✅" if success else "🛑"
@@ -365,6 +436,112 @@ class MutationLog:
             "log_file": MutationLog._log_file_path,
             "log_size_entries": total
         }
+
+    @staticmethod
+    def migrate_jsonl_to_blockchain(jsonl_file_path: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Migrate historical mutations from JSONL file to GENOMOS blockchain.
+
+        This is a one-time migration function to populate the blockchain with
+        existing mutation log entries.
+
+        Args:
+            jsonl_file_path: Path to JSONL file (defaults to _log_file_path)
+
+        Returns:
+            Dictionary with migration statistics
+        """
+        if not BLOCKCHAIN_AVAILABLE or not MutationLog._blockchain:
+            return {
+                "success": False,
+                "error": "GENOMOS blockchain not available",
+                "migrated": 0
+            }
+
+        if jsonl_file_path is None:
+            jsonl_file_path = MutationLog._log_file_path
+
+        if not jsonl_file_path or not os.path.exists(jsonl_file_path):
+            return {
+                "success": False,
+                "error": f"JSONL file not found: {jsonl_file_path}",
+                "migrated": 0
+            }
+
+        logger.info(f"🧬 Starting JSONL→Blockchain migration: {jsonl_file_path}")
+
+        migrated_count = 0
+        errors = []
+
+        try:
+            with open(jsonl_file_path, 'r', encoding='utf-8') as f:
+                for line_num, line in enumerate(f, 1):
+                    try:
+                        # Parse JSONL entry
+                        entry_dict = json.loads(line.strip())
+
+                        # Prepare mutation data for blockchain
+                        mutation_gene_data = {
+                            "type": "mutation_log_entry",
+                            "mutation_id": entry_dict.get("mutation_id"),
+                            "agent": entry_dict.get("agent"),
+                            "operation_type": entry_dict.get("operation_type"),
+                            "target": entry_dict.get("target"),
+                            "action": entry_dict.get("action"),
+                            "success": entry_dict.get("success"),
+                            "validation_outcome": entry_dict.get("validation_outcome"),
+                            "biofelt_resonance": entry_dict.get("biofelt_resonance"),
+                            "thalos_severity": entry_dict.get("thalos_severity"),
+                            "affected_agents": entry_dict.get("affected_agents", []),
+                            "reversible": entry_dict.get("reversible", True),
+                            "intent": entry_dict.get("intent"),
+                            "justification": entry_dict.get("justification"),
+                            "reviewed_by": entry_dict.get("reviewed_by"),
+                            "error_message": entry_dict.get("error_message"),
+                            "result_summary": entry_dict.get("result_summary"),
+                            "timestamp": entry_dict.get("timestamp")
+                        }
+
+                        # Add to blockchain
+                        block = MutationLog._blockchain.add_gene(
+                            gene_type=GeneType.MUTATION,
+                            data=mutation_gene_data,
+                            agent=entry_dict.get("agent", "unknown").lower(),
+                            tags=["mutation", "migrated", entry_dict.get("operation_type")]
+                        )
+
+                        migrated_count += 1
+
+                        if migrated_count % 10 == 0:
+                            logger.info(f"🧬 Migrated {migrated_count} mutations...")
+
+                    except Exception as e:
+                        error_msg = f"Line {line_num}: {str(e)}"
+                        errors.append(error_msg)
+                        logger.warning(f"⚠️ Migration error: {error_msg}")
+
+            logger.info(f"✅ Migration complete: {migrated_count} mutations migrated to blockchain")
+
+            # Validate blockchain after migration
+            is_valid = MutationLog._blockchain.validate_chain()
+
+            return {
+                "success": True,
+                "migrated": migrated_count,
+                "errors": errors,
+                "blockchain_valid": is_valid,
+                "total_genes": len(MutationLog._blockchain.chain),
+                "merkle_root": MutationLog._blockchain.get_merkle_root()
+            }
+
+        except Exception as e:
+            logger.error(f"❌ Migration failed: {e}")
+            return {
+                "success": False,
+                "error": str(e),
+                "migrated": migrated_count,
+                "errors": errors
+            }
 
     @staticmethod
     def validate_log_integrity() -> Dict[str, Any]:
