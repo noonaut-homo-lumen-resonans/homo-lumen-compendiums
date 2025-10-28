@@ -407,10 +407,12 @@ Layer 4: External Tools (Notion, Linear, GitHub, Perplexity, etc.)
    - NOTE: Agent field is multi_select (supports multi-agent decisions)
    - Parser: `scripts/parse_kd.py`
 
-4. **EM (Emergent Patterns)**: 2988fec9-2931-80f4-8961-000b8710e0a5
+4. **EM (Emergent Patterns)**: 2988fec9-2931-8050-9658-e93447b3b259
    - Format: Numbered lists (1. **Title** - Description), NO dates (timeless)
    - Auto-tags: Architecture, Philosophy, Technical, Collaboration, Intelligence, Systems
    - Parser: `scripts/parse_em.py`
+   - **Data Source**: SMK files (16 files with EM sections) and Living Compendiums
+   - **Current Status**: 0 entries (parser needs to read from SMK, not just LK)
 
 **Features:**
 - Norwegian date parsing (26. oktober 2025 → 2025-10-26)
