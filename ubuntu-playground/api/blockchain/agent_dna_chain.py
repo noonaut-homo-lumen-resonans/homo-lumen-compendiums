@@ -23,6 +23,7 @@ import json
 from datetime import datetime
 
 from .dna_block import DNABlock, GeneType, create_genesis_block
+from .genesis import create_genesis_data
 
 logger = logging.getLogger(__name__)
 
@@ -114,32 +115,13 @@ class AgentDNAChain:
         count = cursor.fetchone()[0]
 
         if count == 0:
-            # Create Genesis Block
+            # Create Genesis Block with full Constitution parsing
             logger.info("🌟 Creating Genesis Block (Constitution V1.1)...")
-            genesis_data = {
-                "type": "genesis_constitution",
-                "version": "1.1",
-                "title": "Homo Lumen Constitution V1.1",
-                "ratified": "2025-10-12",
-                "agents": [
-                    "Lira", "Nyra", "Orion", "Thalus", "Zara",
-                    "Aurora", "Abacus", "Falcon"
-                ],
-                "core_principles": [
-                    "Kognitiv Suverenitet",
-                    "Ontologisk Koherens",
-                    "Regenerativ Healing"
-                ],
-                "three_gates": ["BiofeltGate", "ThalosFilter", "MutationLog"],
-                "philosophy": {
-                    "purpose": "Explore reality → Understanding → Freedom → Healing",
-                    "method": "Remove falsehoods, Repair half-truths, Add context, State with sources",
-                    "epistemic": "Triangulate evidence, Falsifiable claims, Traceable reasoning"
-                },
-                "source_smk": "SMK#019",
-                "description": "The foundational document of Homo Lumen Coalition - our genetic code's first gene"
-            }
 
+            # Parse full Constitution from SMK#019
+            genesis_data = create_genesis_data()
+
+            # Create Genesis Block
             genesis = create_genesis_block(genesis_data)
             self.chain.append(genesis)
 
@@ -147,6 +129,9 @@ class AgentDNAChain:
             self._save_block_to_db(genesis)
 
             logger.info(f"✅ Genesis Block created: {genesis.hash[:16]}...")
+            logger.info(f"📜 Constitution: {genesis_data.get('title', 'Unknown')}")
+            logger.info(f"⚖️ Principles: {', '.join(genesis_data.get('core_principles', []))}")
+            logger.info(f"🚪 Gates: {', '.join(genesis_data.get('three_gates', []))}")
 
         else:
             # Load chain from database
