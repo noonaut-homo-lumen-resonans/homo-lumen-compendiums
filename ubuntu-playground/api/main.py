@@ -19,6 +19,9 @@ from gates import BiofeltGate, BiofeltContext, ResonanceLevel
 from gates import ThalosFilter, ThalosContext, EthicalSeverity
 from gates import MutationLog, MutationLevel, ValidationOutcome
 
+# GENOMOS DNA API Router
+from routers import dna_router, initialize_dna_blockchain
+
 # Redis Event Subscriber
 from redis_subscriber import ubuntu_subscriber
 
@@ -56,6 +59,13 @@ app.add_middleware(
 # This enables standardized agent-to-resource communication
 mcp = FastApiMCP(app)
 logger.info("SUCCESS: MCP (Model Context Protocol) initialized")
+
+# ===========================
+# GENOMOS DNA API Router
+# ===========================
+# Include DNA blockchain query endpoints
+app.include_router(dna_router)
+logger.info("SUCCESS: GENOMOS DNA API router included")
 
 # Redis connection (optional - only for binary protocol if needed)
 # Note: Upstash uses REST API via redis_subscriber.py, not binary protocol
@@ -680,8 +690,15 @@ async def startup_event():
     init_database()
 
     # Initialize MutationLog (Append-only Audit Trail)
-    MutationLog.initialize(log_file_path="./data/mutation_log.jsonl")
+    MutationLog.initialize(
+        log_file_path="./data/mutation_log.jsonl",
+        blockchain_db_path="./data/genomos.db"
+    )
     logger.info("📜 MutationLog initialized (Triadisk Portvokter #3)")
+
+    # Initialize GENOMOS DNA Blockchain
+    initialize_dna_blockchain(db_path="./data/genomos.db")
+    logger.info("🧬 GENOMOS DNA Blockchain initialized for API queries")
 
     # Create agent-specific directories
     agent_dirs = ["manus", "code", "lira", "orion", "abacus", "nyra", "thalus", "aurora", "thalamus", "scribe", "zara", "shared", "experiments"]
