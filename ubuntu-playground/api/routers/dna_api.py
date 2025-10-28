@@ -102,6 +102,20 @@ class MutationResponse(BaseModel):
     hash: str
 
 
+class ConsultationResponse(BaseModel):
+    """Response model for Consultation gene"""
+    consultation_id: str
+    block_index: int
+    human_query: str
+    agent_count: int  # Number of agents who responded
+    synthesis_summary: Optional[str]
+    related_smk: List[str]
+    has_biofelt_context: bool
+    has_thalos_validation: bool
+    timestamp: str
+    hash: str
+
+
 class BlockchainInfoResponse(BaseModel):
     """Response model for blockchain metadata"""
     total_genes: int
@@ -458,4 +472,157 @@ async def get_smk_lineage(smk_number: str):
         "references": references,
         "referenced_by": backlinks,
         "total_connections": len(references) + len(backlinks)
+    }
+
+
+# ============================================================================
+# CONSULTATION ENDPOINTS (GENOMOS Phase 7)
+# ============================================================================
+
+@router.get("/consultations", response_model=List[ConsultationResponse])
+async def get_consultations(
+    query: Optional[str] = Query(None, description="Search in human query text"),
+    agent: Optional[str] = Query(None, description="Filter by agent name"),
+    from_date: Optional[str] = Query(None, description="Filter consultations after this ISO date"),
+    limit: int = Query(50, description="Maximum number of consultations to return")
+):
+    """
+    Get all consultation genes from the blockchain.
+
+    Query parameters:
+    - query: Search term to filter by human query text
+    - agent: Filter consultations where this agent participated
+    - from_date: Only show consultations after this date (ISO format)
+    - limit: Maximum results to return (default 50)
+    """
+    chain = get_blockchain()
+
+    # Filter consultation blocks
+    consultation_blocks = [
+        block for block in chain.chain
+        if block.gene_type == GeneType.CONSULTATION
+    ]
+
+    # Apply query filter
+    if query:
+        consultation_blocks = [
+            b for b in consultation_blocks
+            if query.lower() in b.data.get("human_query", "").lower()
+        ]
+
+    # Apply agent filter
+    if agent:
+        consultation_blocks = [
+            b for b in consultation_blocks
+            if agent.lower() in b.data.get("agent_responses", {}).keys()
+        ]
+
+    # Apply date filter
+    if from_date:
+        consultation_blocks = [
+            b for b in consultation_blocks
+            if b.timestamp >= from_date
+        ]
+
+    # Apply limit
+    consultation_blocks = consultation_blocks[-limit:]  # Get most recent
+
+    # Build responses
+    results = []
+    for block in consultation_blocks:
+        data = block.data
+        agent_responses = data.get("agent_responses", {})
+        synthesis = data.get("synthesis", {})
+
+        results.append(ConsultationResponse(
+            consultation_id=data.get("consultation_id", "unknown"),
+            block_index=block.index,
+            human_query=data.get("human_query", ""),
+            agent_count=len(agent_responses),
+            synthesis_summary=synthesis.get("summary"),
+            related_smk=synthesis.get("related_smk", []),
+            has_biofelt_context="biofelt_context" in data,
+            has_thalos_validation="thalos_validation" in data,
+            timestamp=block.timestamp,
+            hash=block.hash
+        ))
+
+    return results
+
+
+@router.get("/consultations/{consultation_id}")
+async def get_consultation(consultation_id: str):
+    """
+    Get a specific consultation by ID.
+
+    Returns the full consultation data including all agent responses.
+    """
+    chain = get_blockchain()
+
+    # Find consultation block
+    for block in chain.chain:
+        if block.gene_type == GeneType.CONSULTATION:
+            if block.data.get("consultation_id") == consultation_id:
+                return {
+                    "consultation_id": consultation_id,
+                    "block_index": block.index,
+                    "timestamp": block.timestamp,
+                    "human_query": block.data.get("human_query"),
+                    "agent_responses": block.data.get("agent_responses", {}),
+                    "synthesis": block.data.get("synthesis", {}),
+                    "biofelt_context": block.data.get("biofelt_context"),
+                    "thalos_validation": block.data.get("thalos_validation"),
+                    "hash": block.hash,
+                    "previous_hash": block.previous_hash
+                }
+
+    raise HTTPException(
+        status_code=404,
+        detail=f"Consultation {consultation_id} not found"
+    )
+
+
+@router.get("/consultations/related-to-smk/{smk_number}")
+async def get_consultations_by_smk(
+    smk_number: str,
+    limit: int = Query(20, description="Maximum consultations to return")
+):
+    """
+    Get all consultations that reference a specific SMK.
+
+    Useful for seeing how a knowledge document has been used in conversations.
+    """
+    chain = get_blockchain()
+
+    # Find consultations that reference this SMK
+    related_consultations = []
+    for block in chain.chain:
+        if block.gene_type == GeneType.CONSULTATION:
+            synthesis = block.data.get("synthesis", {})
+            related_smk = synthesis.get("related_smk", [])
+
+            # Check if SMK is referenced
+            if f"SMK#{smk_number}" in related_smk or smk_number in related_smk:
+                related_consultations.append({
+                    "consultation_id": block.data.get("consultation_id"),
+                    "human_query": block.data.get("human_query"),
+                    "timestamp": block.timestamp,
+                    "block_index": block.index,
+                    "hash": block.hash[:16] + "..."
+                })
+
+    if not related_consultations:
+        return {
+            "smk_number": smk_number,
+            "consultations": [],
+            "total_references": 0
+        }
+
+    # Apply limit and return most recent first
+    related_consultations = related_consultations[-limit:]
+
+    return {
+        "smk_number": smk_number,
+        "consultations": related_consultations,
+        "total_references": len(related_consultations)
     }

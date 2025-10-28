@@ -21,6 +21,8 @@ from gates import MutationLog, MutationLevel, ValidationOutcome
 
 # GENOMOS DNA API Router
 from routers import dna_router, initialize_dna_blockchain
+from blockchain.agent_dna_chain import AgentDNAChain
+from blockchain.dna_block import GeneType
 
 # Redis Event Subscriber
 from redis_subscriber import ubuntu_subscriber
@@ -133,6 +135,21 @@ def init_database():
         )
     """)
 
+    # Consultations table (GENOMOS Phase 7)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS consultations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            consultation_id TEXT UNIQUE NOT NULL,
+            human_query TEXT NOT NULL,
+            agent_responses TEXT NOT NULL,
+            synthesis TEXT NOT NULL,
+            biofelt_context TEXT,
+            thalos_context TEXT,
+            blockchain_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )
+    """)
+
     conn.commit()
     conn.close()
     logger.info("✅ SQLite database initialized")
@@ -178,6 +195,16 @@ class ExecuteActionRequest(BaseModel):
     payload: Dict
     biofelt_context: Optional[BiofeltContext] = None  # REQUIRED for action execution
     thalos_context: Optional[ThalosContext] = None    # RECOMMENDED for ethical validation
+
+class ConsultationRequest(BaseModel):
+    """Request model for storing pentagonal consultations in GENOMOS blockchain."""
+    consultation_id: str
+    human_query: str
+    agent_responses: Dict[str, Dict]  # agent_name -> {response, confidence, processing_time_ms}
+    synthesis: Dict  # {summary, key_insights, related_smk}
+    biofelt_context: Optional[BiofeltContext] = None
+    thalos_context: Optional[ThalosContext] = None
+    timestamp: Optional[str] = None
 
 # ===========================
 # AUTHENTICATION & RBAC
@@ -673,6 +700,106 @@ def execute_action(request: ExecuteActionRequest, agent_name: str = Depends(veri
     except Exception as e:
         logger.error(f"❌ Action execution error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# ============================================================================
+# CONSULTATION STORAGE (GENOMOS Phase 7)
+# ============================================================================
+
+@app.post("/api/store-consultation")
+def store_consultation(request: ConsultationRequest):
+    """
+    Store a pentagonal consultation in both SQLite and GENOMOS blockchain.
+
+    GENOMOS Phase 7: Consultation Blockchain Storage
+    """
+    try:
+        consultation_timestamp = request.timestamp or datetime.now().isoformat()
+
+        # Prepare consultation gene data
+        consultation_gene = {
+            "type": "consultation",
+            "consultation_id": request.consultation_id,
+            "timestamp": consultation_timestamp,
+            "human_query": request.human_query,
+            "agent_responses": request.agent_responses,
+            "synthesis": request.synthesis,
+        }
+
+        # Add biofelt context if available
+        if request.biofelt_context:
+            consultation_gene["biofelt_context"] = {
+                "hrv_ms": request.biofelt_context.hrv_ms,
+                "coherence": request.biofelt_context.coherence,
+                "energy_level": request.biofelt_context.energy_level,
+                "stress_indicators": request.biofelt_context.stress_indicators
+            }
+
+        # Add thalos validation if available
+        if request.thalos_context:
+            consultation_gene["thalos_validation"] = {
+                "outcome": "APPROVED",
+                "principles_checked": request.thalos_context.dict() if request.thalos_context else {}
+            }
+
+        # Store in GENOMOS blockchain
+        blockchain = AgentDNAChain(db_path="./data/genomos.db")
+
+        # Extract tags from synthesis and query
+        tags = ["consultation", "pentagonal"]
+        if "related_smk" in request.synthesis:
+            for smk in request.synthesis["related_smk"]:
+                tags.append(f"ref-{smk.lower().replace('#', '')}")
+
+        block = blockchain.add_gene(
+            gene_type=GeneType.CONSULTATION,
+            data=consultation_gene,
+            agent="human-ai-collective",
+            tags=tags
+        )
+
+        logger.info(f"🧬 Consultation stored in GENOMOS: {request.consultation_id}")
+        logger.info(f"   Block #{block.index} | Hash: {block.hash[:16]}...")
+
+        # Also store in SQLite for backward compatibility
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO consultations (
+                consultation_id, human_query, agent_responses, synthesis,
+                biofelt_context, thalos_context, blockchain_hash, created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            request.consultation_id,
+            request.human_query,
+            json.dumps(request.agent_responses),
+            json.dumps(request.synthesis),
+            json.dumps(request.biofelt_context.dict()) if request.biofelt_context else None,
+            json.dumps(request.thalos_context.dict()) if request.thalos_context else None,
+            block.hash,
+            consultation_timestamp
+        ))
+
+        consultation_db_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+
+        logger.info(f"💾 Consultation also stored in SQLite (ID: {consultation_db_id})")
+
+        return {
+            "success": True,
+            "consultation_id": request.consultation_id,
+            "blockchain_block_index": block.index,
+            "blockchain_hash": block.hash,
+            "database_id": consultation_db_id,
+            "message": "Consultation stored in GENOMOS blockchain and SQLite"
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Consultation storage error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # ===========================
 # STARTUP/SHUTDOWN
