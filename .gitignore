@@ -5,6 +5,12 @@ node_modules/
 
 # Testing
 coverage/
+.coverage
+.pytest_cache/
+test-reports/
+__pycache__/
+*.pyc
+*.pyo
 
 # Next.js
 .next/
