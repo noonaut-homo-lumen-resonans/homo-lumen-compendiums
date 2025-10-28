@@ -1,0 +1,26 @@
+{
+  "name": "@homo-lumen/ubuntu-playground-sdk",
+  "version": "1.0.0",
+  "description": "TypeScript SDK for Ubuntu Playground API with Triadiske Portvokter support",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ubuntu-playground",
+    "triadiske-portvokter",
+    "biofelt-gate",
+    "thalos-filter",
+    "mutation-log",
+    "homo-lumen"
+  ],
+  "author": "Homo Lumen Coalition",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
