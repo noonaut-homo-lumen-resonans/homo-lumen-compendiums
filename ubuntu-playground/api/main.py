@@ -10,6 +10,7 @@ import json
 from datetime import datetime
 import logging
 import sys
+import threading
 from dotenv import load_dotenv
 from fastapi_mcp import FastApiMCP
 
@@ -17,6 +18,9 @@ from fastapi_mcp import FastApiMCP
 from gates import BiofeltGate, BiofeltContext, ResonanceLevel
 from gates import ThalosFilter, ThalosContext, EthicalSeverity
 from gates import MutationLog, MutationLevel, ValidationOutcome
+
+# Redis Event Subscriber
+from redis_subscriber import ubuntu_subscriber
 
 # Load .env.local FIRST
 load_dotenv(dotenv_path="../.env.local")
@@ -51,19 +55,28 @@ app.add_middleware(
 # Expose Ubuntu Playground workspace operations as MCP tools
 # This enables standardized agent-to-resource communication
 mcp = FastApiMCP(app)
-logger.info("🔌 MCP (Model Context Protocol) initialized")
+logger.info("SUCCESS: MCP (Model Context Protocol) initialized")
 
-# Redis connection
-try:
-    REDIS_CLIENT = redis.Redis.from_url(
-        os.getenv("REDIS_URL", "redis://localhost:6379"),
-        decode_responses=True
-    )
-    REDIS_CLIENT.ping()
-    logger.info("✅ Connected to Redis")
-except Exception as e:
-    logger.error(f"❌ Redis connection failed: {e}")
-    REDIS_CLIENT = None
+# Redis connection (optional - only for binary protocol if needed)
+# Note: Upstash uses REST API via redis_subscriber.py, not binary protocol
+REDIS_CLIENT = None
+redis_url = os.getenv("REDIS_URL", "")
+
+if redis_url.startswith("redis://"):
+    # Only try binary Redis if URL uses redis:// protocol (local Redis)
+    try:
+        REDIS_CLIENT = redis.Redis.from_url(redis_url, decode_responses=True)
+        REDIS_CLIENT.ping()
+        logger.info("SUCCESS: Connected to binary Redis")
+    except Exception as e:
+        logger.info(f"INFO: Binary Redis not available (using REST API): {e}")
+        REDIS_CLIENT = None
+else:
+    # Upstash Cloud uses HTTPS REST API (handled by redis_subscriber.py)
+    logger.info("INFO: Using Upstash REST API for Redis (no binary connection needed)")
+
+# Redis subscriber thread (will be started in startup event)
+subscriber_thread = None
 
 # SQLite database helper
 DATABASE_PATH = Path(os.getenv("DATABASE_PATH", "./data/ubuntu-playground.db"))
@@ -239,7 +252,17 @@ def root():
 @app.get("/health")
 def health():
     """Health check endpoint"""
-    redis_status = "connected" if REDIS_CLIENT and REDIS_CLIENT.ping() else "disconnected"
+    # Check Redis subscriber status (REST API via Upstash)
+    if ubuntu_subscriber.enabled and subscriber_thread and subscriber_thread.is_alive():
+        redis_status = "connected (subscriber)"
+    elif REDIS_CLIENT:
+        try:
+            REDIS_CLIENT.ping()
+            redis_status = "connected (binary)"
+        except:
+            redis_status = "disconnected"
+    else:
+        redis_status = "disconnected"
 
     try:
         conn = get_db_connection()
@@ -249,7 +272,7 @@ def health():
         db_status = "disconnected"
 
     return {
-        "status": "healthy" if redis_status == "connected" and db_status == "connected" else "degraded",
+        "status": "healthy" if "connected" in redis_status and db_status == "connected" else "degraded",
         "redis": redis_status,
         "database": f"sqlite ({db_status})",
         "workspace": str(WORKSPACE_ROOT),
@@ -673,10 +696,31 @@ async def startup_event():
     logger.info("🔌 MCP server mounted at /mcp")
     logger.info("✨ All workspace operations now available as MCP tools")
 
+    # Start Redis subscriber in background thread
+    global subscriber_thread
+    if ubuntu_subscriber.enabled:
+        subscriber_thread = threading.Thread(
+            target=ubuntu_subscriber.start_polling,
+            args=(5,),  # Poll every 5 seconds
+            daemon=True
+        )
+        subscriber_thread.start()
+        logger.info("🚀 Redis subscriber started in background thread")
+    else:
+        logger.info("⚠️  Redis subscriber not enabled (missing credentials)")
+
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup on shutdown"""
     logger.info("🛑 Ubuntu Playground API shutting down...")
+
+    # Stop Redis subscriber
+    if subscriber_thread and subscriber_thread.is_alive():
+        ubuntu_subscriber.stop()
+        subscriber_thread.join(timeout=5)
+        logger.info("✅ Redis subscriber stopped")
+
+    # Close binary Redis connection if exists
     if REDIS_CLIENT:
         REDIS_CLIENT.close()
         logger.info("✅ Redis connection closed")

@@ -39,17 +39,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Redis connection
-try:
-    REDIS_CLIENT = redis.Redis.from_url(
-        os.getenv("REDIS_URL", "redis://localhost:6379"),
-        decode_responses=True
-    )
-    REDIS_CLIENT.ping()
-    logger.info("✅ Connected to Redis")
-except Exception as e:
-    logger.error(f"❌ Redis connection failed: {e}")
-    REDIS_CLIENT = None
+# Redis connection (optional - only for binary protocol if needed)
+# Note: Upstash uses REST API via redis_subscriber.py, not binary protocol
+REDIS_CLIENT = None
+redis_url = os.getenv("REDIS_URL", "")
+
+if redis_url.startswith("redis://"):
+    # Only try binary Redis if URL uses redis:// protocol (local Redis)
+    try:
+        REDIS_CLIENT = redis.Redis.from_url(redis_url, decode_responses=True)
+        REDIS_CLIENT.ping()
+        logger.info("✅ Connected to binary Redis")
+    except Exception as e:
+        logger.info(f"ℹ️  Binary Redis not available (using REST API): {e}")
+        REDIS_CLIENT = None
+else:
+    # Upstash Cloud uses HTTPS REST API (handled by redis_subscriber.py)
+    logger.info("ℹ️  Using Upstash REST API for Redis (no binary connection needed)")
 
 # SQLite database helper
 DATABASE_PATH = Path(os.getenv("DATABASE_PATH", "./data/ubuntu-playground.db"))
