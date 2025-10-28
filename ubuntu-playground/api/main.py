@@ -16,6 +16,7 @@ from fastapi_mcp import FastApiMCP
 # Triadiske Portvokter (Triadic Gates)
 from gates import BiofeltGate, BiofeltContext, ResonanceLevel
 from gates import ThalosFilter, ThalosContext, EthicalSeverity
+from gates import MutationLog, MutationLevel, ValidationOutcome
 
 # Load .env.local FIRST
 load_dotenv(dotenv_path="../.env.local")
@@ -324,6 +325,20 @@ def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key))
 
         if not gate_result.allowed:
             logger.warning(f"🛑 BiofeltGate blocked write by {agent_name}: {gate_result.message}")
+
+            # Layer 3: MutationLog (Audit Trail)
+            MutationLog.log_blocked_operation(
+                agent=agent_name,
+                operation_type=MutationLevel.WRITE,
+                target=request.path,
+                action=f"write file ({len(request.content)} chars)",
+                blocked_by="biofelt",
+                error_message=gate_result.message,
+                biofelt_resonance=gate_result.resonance_level.value,
+                intent=request.thalos_context.intent if request.thalos_context else None,
+                justification=request.thalos_context.justification if request.thalos_context else None
+            )
+
             raise HTTPException(
                 status_code=403,
                 detail={
@@ -350,6 +365,23 @@ def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key))
 
     if not thalos_result.allowed:
         logger.warning(f"🛑 ThalosFilter blocked write by {agent_name}: {thalos_result.message}")
+
+        # Layer 3: MutationLog (Audit Trail)
+        MutationLog.log_blocked_operation(
+            agent=agent_name,
+            operation_type=MutationLevel.WRITE,
+            target=request.path,
+            action=f"write file ({len(request.content)} chars)",
+            blocked_by="thalos",
+            error_message=thalos_result.message,
+            thalos_severity=thalos_result.severity.value,
+            intent=request.thalos_context.intent if request.thalos_context else None,
+            justification=request.thalos_context.justification if request.thalos_context else None,
+            affected_agents=request.thalos_context.affected_agents if request.thalos_context else [],
+            reversible=request.thalos_context.reversible if request.thalos_context else True,
+            reviewed_by=request.thalos_context.reviewed_by if request.thalos_context else None
+        )
+
         raise HTTPException(
             status_code=403,
             detail={
@@ -391,6 +423,24 @@ def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key))
             REDIS_CLIENT.publish("workspace:events", event.json())
 
         logger.info(f"✍️ {agent_name} wrote: {request.path} ({len(request.content)} chars)")
+
+        # Layer 3: MutationLog (Audit Trail) - Log successful operation
+        biofelt_resonance = gate_result.resonance_level.value if request.biofelt_context and 'gate_result' in locals() else None
+        MutationLog.log_approved_operation(
+            agent=agent_name,
+            operation_type=MutationLevel.WRITE,
+            target=request.path,
+            action=f"write file ({len(request.content)} chars)",
+            biofelt_resonance=biofelt_resonance,
+            thalos_severity=thalos_result.severity.value,
+            result_summary=f"Successfully wrote {len(request.content)} chars to {request.path}",
+            intent=request.thalos_context.intent if request.thalos_context else None,
+            justification=request.thalos_context.justification if request.thalos_context else None,
+            affected_agents=request.thalos_context.affected_agents if request.thalos_context else [],
+            reversible=request.thalos_context.reversible if request.thalos_context else True,
+            reviewed_by=request.thalos_context.reviewed_by if request.thalos_context else None
+        )
+
         return {"success": True, "path": request.path, "size": len(request.content)}
 
     except Exception as e:
@@ -605,6 +655,10 @@ async def startup_event():
 
     # Initialize SQLite database
     init_database()
+
+    # Initialize MutationLog (Append-only Audit Trail)
+    MutationLog.initialize(log_file_path="./data/mutation_log.jsonl")
+    logger.info("📜 MutationLog initialized (Triadisk Portvokter #3)")
 
     # Create agent-specific directories
     agent_dirs = ["manus", "code", "lira", "orion", "abacus", "nyra", "thalus", "aurora", "thalamus", "scribe", "zara", "shared", "experiments"]
