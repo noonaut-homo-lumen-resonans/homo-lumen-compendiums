@@ -23,7 +23,7 @@ if sys.stdout.encoding != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # Get Notion API key
-NOTION_API_KEY = os.environ.get('NOTION_API_KEY')
+NOTION_API_KEY = os.environ.get('NOTION_API_KEY', '***REMOVED***')
 if not NOTION_API_KEY:
     print("❌ ERROR: NOTION_API_KEY not found in environment")
     print("Set it with: set NOTION_API_KEY=your_key_here (Windows)")
