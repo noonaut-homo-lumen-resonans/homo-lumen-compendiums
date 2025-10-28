@@ -11,6 +11,7 @@ from datetime import datetime
 import logging
 import sys
 from dotenv import load_dotenv
+from fastapi_mcp import FastApiMCP
 
 # Load .env.local FIRST
 load_dotenv(dotenv_path="../.env.local")
@@ -38,6 +39,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ===========================
+# MCP INTEGRATION (Model Context Protocol)
+# ===========================
+# Expose Ubuntu Playground workspace operations as MCP tools
+# This enables standardized agent-to-resource communication
+mcp = FastApiMCP(app)
+logger.info("🔌 MCP (Model Context Protocol) initialized")
 
 # Redis connection
 try:
@@ -476,6 +485,12 @@ async def startup_event():
         (WORKSPACE_ROOT / agent_dir).mkdir(parents=True, exist_ok=True)
 
     logger.info(f"✅ Created {len(agent_dirs)} agent directories")
+
+    # Mount MCP server - exposes all FastAPI endpoints as MCP tools
+    # This enables standardized agent-to-resource communication
+    mcp.mount()
+    logger.info("🔌 MCP server mounted at /mcp")
+    logger.info("✨ All workspace operations now available as MCP tools")
 
 @app.on_event("shutdown")
 async def shutdown_event():

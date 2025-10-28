@@ -1,6 +1,9 @@
 fastapi==0.115.0
-uvicorn[standard]==0.30.6
+uvicorn[standard]==0.38.0
 redis==5.0.8
 python-multipart==0.0.9
-pydantic==2.9.0
+pydantic==2.12.3
 python-dotenv==1.0.1
+fastapi-mcp==0.4.0
+mcp==1.19.0
+sse-starlette==3.0.2
