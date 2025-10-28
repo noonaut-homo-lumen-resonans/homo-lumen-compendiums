@@ -29,9 +29,17 @@ Output:
     - Integration (rich_text): Integrasjon field
     - Status (select): Status value (Identified/Integrating/Integrert/Monitoring)
     - Tags (multi_select): Auto-inferred shadow types
+    - Phoenix_Phase (select): Shadow transformation phase (NEW - Week 2)
+    - Integration_Practice (rich_text): Practice used for shadow work (NEW - Week 2)
+    - Transformation_Status (select): Shadow integration progress (NEW - Week 2)
+    - ARF_Response (checkbox): Response to Agent Reflection Request (NEW - Week 2)
+
+Shadow Taxonomy V1.0 Integration:
+    This parser now supports the conscious coupling mechanism defined in
+    docs/SHADOW_TAXONOMY.md for Phase 1: System Shadows ↔ Agent Shadows.
 
 Author: Code (Claude Code Agent)
-Date: 27. oktober 2025
+Date: 27. oktober 2025 (Updated: 28. oktober 2025 - Shadow Taxonomy integration)
 """
 
 import os
@@ -155,7 +163,7 @@ def parse_shadow_log(sl_text, agent_name):
     )
     integration = integration_match.group(1).strip() if integration_match else ""
 
-    # Extract Status
+    # Extract Status (Visibility Status - for backward compatibility)
     status_match = re.search(r'\*\*Status:\*\*\s*([^\n]+)', sl_text)
     status = status_match.group(1).strip() if status_match else "Identified"
 
@@ -171,6 +179,63 @@ def parse_shadow_log(sl_text, agent_name):
     }
     status = status_mapping.get(status.lower(), status)
 
+    # Extract NEW FIELDS (Shadow Taxonomy V1.0 - Week 2 Implementation)
+
+    # Phoenix_Phase (select)
+    phoenix_phase_match = re.search(r'\*\*Phoenix[_\s]?Phase:\*\*\s*([^\n]+)', sl_text, re.IGNORECASE)
+    phoenix_phase = None
+    if phoenix_phase_match:
+        phase_text = phoenix_phase_match.group(1).strip()
+        # Normalize to valid options
+        phase_mapping = {
+            'dissolution': 'Dissolution',
+            'death': 'Dissolution',
+            'incubation': 'Incubation',
+            'egg': 'Incubation',
+            'emergence': 'Emergence',
+            'rebirth': 'Emergence',
+            'flight': 'Flight',
+            'manifestation': 'Flight',
+            'return': 'Return',
+            'cycle complete': 'Return'
+        }
+        phoenix_phase = phase_mapping.get(phase_text.lower(), phase_text)
+
+    # Integration_Practice (rich_text)
+    integration_practice_match = re.search(
+        r'\*\*Integration[_\s]?Practice:\*\*\s*(.+?)(?=\n\s*\*\*|\n\n|$)',
+        sl_text,
+        re.DOTALL | re.IGNORECASE
+    )
+    integration_practice = integration_practice_match.group(1).strip() if integration_practice_match else None
+
+    # Transformation_Status (select)
+    transformation_status_match = re.search(
+        r'\*\*Transformation[_\s]?Status:\*\*\s*([^\n]+)',
+        sl_text,
+        re.IGNORECASE
+    )
+    transformation_status = None
+    if transformation_status_match:
+        ts_text = transformation_status_match.group(1).strip()
+        # Normalize to valid options
+        ts_mapping = {
+            'recognized': 'Recognized',
+            'under inquiry': 'Under Inquiry',
+            'inquiry': 'Under Inquiry',
+            'integrating': 'Integrating',
+            'integrated': 'Integrated',
+            'monitoring': 'Monitoring'
+        }
+        transformation_status = ts_mapping.get(ts_text.lower(), ts_text)
+
+    # ARF_Response (checkbox)
+    arf_response_match = re.search(r'\*\*ARF[_\s]?Response:\*\*\s*([^\n]+)', sl_text, re.IGNORECASE)
+    arf_response = False
+    if arf_response_match:
+        arf_text = arf_response_match.group(1).strip().lower()
+        arf_response = arf_text in ['yes', 'ja', 'true', '✅']
+
     # Infer tags
     tags = infer_shadow_tags(title, manifestation, integration)
 
@@ -182,7 +247,12 @@ def parse_shadow_log(sl_text, agent_name):
         'manifestation': manifestation,
         'integration': integration,
         'status': status,
-        'tags': tags
+        'tags': tags,
+        # New fields (Week 2 - Shadow Taxonomy)
+        'phoenix_phase': phoenix_phase,
+        'integration_practice': integration_practice,
+        'transformation_status': transformation_status,
+        'arf_response': arf_response
     }
 
 def create_notion_page(sl_data):
@@ -229,6 +299,28 @@ def create_notion_page(sl_data):
         properties['Tags'] = {
             'multi_select': [{'name': tag} for tag in sl_data['tags']]
         }
+
+    # Add NEW FIELDS (Week 2 - Shadow Taxonomy) if available
+
+    if sl_data.get('phoenix_phase'):
+        properties['Phoenix_Phase'] = {
+            'select': {'name': sl_data['phoenix_phase']}
+        }
+
+    if sl_data.get('integration_practice'):
+        properties['Integration_Practice'] = {
+            'rich_text': [{'text': {'content': sl_data['integration_practice'][:2000]}}]
+        }
+
+    if sl_data.get('transformation_status'):
+        properties['Transformation_Status'] = {
+            'select': {'name': sl_data['transformation_status']}
+        }
+
+    # ARF_Response is always included (defaults to False)
+    properties['ARF_Response'] = {
+        'checkbox': sl_data.get('arf_response', False)
+    }
 
     payload = {
         'parent': {'database_id': SL_DATABASE_ID},

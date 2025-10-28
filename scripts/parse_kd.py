@@ -30,9 +30,15 @@ Output:
     - Impact (select): Impact value (Low/Medium/High/Transformative)
     - Status (select): Status value (default: Implemented)
     - Tags (multi_select): Auto-inferred decision categories
+    - Vokter (rich_text): Philosophical grounding (NEW - Week 2)
+
+Philosophical Grounding (Week 2):
+    The Vokter field tracks which philosophical wisdom (Bohm, Spira, Eisenstein, etc.)
+    informed this decision. This supports Zara's principle of letting Vokter wisdom
+    INFORM (not dictate) strategic decisions. Per docs/SHADOW_TAXONOMY.md.
 
 Author: Code (Claude Code Agent)
-Date: 27. oktober 2025
+Date: 27. oktober 2025 (Updated: 28. oktober 2025 - Vokter field added)
 """
 
 import os
@@ -183,6 +189,20 @@ def parse_critical_decision(kd_text, agent_name):
     }
     status = status_mapping.get(status.lower(), status)
 
+    # Extract Vokter/Voktere (NEW - Week 2: Philosophical Grounding)
+    # This field tracks which Vokter (Bohm, Spira, Eisenstein, etc.) informs this decision
+    vokter_match = re.search(
+        r'\*\*Vokter(?:e)?:\*\*\s*(.+?)(?=\n\s*\*\*|\n\n|$)',
+        kd_text,
+        re.DOTALL | re.IGNORECASE
+    )
+    vokter = None
+    if vokter_match:
+        vokter = vokter_match.group(1).strip()
+        # Clean up common formats
+        vokter = re.sub(r'[•\-]\s*', '', vokter)  # Remove bullet points
+        vokter = vokter.strip()
+
     # Infer tags
     tags = infer_decision_tags(title, decision, rationale)
 
@@ -195,7 +215,8 @@ def parse_critical_decision(kd_text, agent_name):
         'rationale': rationale,
         'impact': impact,
         'status': status,
-        'tags': tags
+        'tags': tags,
+        'vokter': vokter  # NEW - Week 2
     }
 
 def create_notion_page(kd_data):
@@ -245,6 +266,12 @@ def create_notion_page(kd_data):
     if kd_data['tags']:
         properties['Tags'] = {
             'multi_select': [{'name': tag} for tag in kd_data['tags']]
+        }
+
+    # Add Vokter (NEW - Week 2: Philosophical Grounding) if available
+    if kd_data.get('vokter'):
+        properties['Vokter'] = {
+            'rich_text': [{'text': {'content': kd_data['vokter'][:2000]}}]
         }
 
     payload = {
