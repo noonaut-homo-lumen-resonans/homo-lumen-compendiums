@@ -80,8 +80,8 @@ class SMKResponse(BaseModel):
     title: str
     block_index: int
     author: Any  # Can be string or list
-    date: str
-    version: str
+    date: Optional[str] = "unknown"
+    version: str = "1.0"
     tags: List[str]
     references: List[str]
     hash: str
@@ -267,8 +267,8 @@ async def get_all_smks(
             title=data.get("title", "Untitled"),
             block_index=block.index,
             author=data.get("author", "Unknown"),
-            date=data.get("date", ""),
-            version=data.get("version", "1.0"),
+            date=data.get("date") or "unknown",
+            version=data.get("version") or "1.0",
             tags=block.tags or [],
             references=data.get("references", []),
             hash=block.hash,
