@@ -46,3 +46,19 @@ Thumbs.db
 *.log
 *.tmp
 nul
+
+# Claude Code settings
+.claude/settings.local.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup and analysis files
+smk_backup_*.json
+smk_deduplication_*.json
+smk_duplicates_*.json
+
+# Cleanup scripts
+sanitize_keys.sh
