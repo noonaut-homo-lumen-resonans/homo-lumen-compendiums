@@ -10,18 +10,13 @@ import os
 import json
 from notion_client import Client
 
-def sync_lk_to_notion(lk_metadata, notion, database_id, commit_sha, commit_url):
+def find_existing_lk_page(notion, database_id, agent, version):
     """
-    Create or update LK page in Notion database.
+    Search for existing LK page by Agent + Version (including archived pages).
+
+    This prevents duplicate creation when pages are archived.
     """
-    agent = lk_metadata.get('agent', 'Unknown')
-    version = lk_metadata.get('version', 'Unknown')
-    title = lk_metadata.get('title', f"{agent} Levende Kompendium {version}")
-
-    print(f"\nSyncing {agent} LK {version}: {title}")
-
-    # Search for existing page by Agent + Version
-    existing_page = None
+    # First, try to find active (non-archived) pages with filter
     try:
         results = notion.databases.query(
             database_id=database_id,
@@ -43,10 +38,75 @@ def sync_lk_to_notion(lk_metadata, notion, database_id, commit_sha, commit_url):
             }
         )
         if results['results']:
-            existing_page = results['results'][0]
-            print(f"  Found existing page: {existing_page['id']}")
+            page = results['results'][0]
+            print(f"  Found existing page: {page['id']}")
+            return page
     except Exception as e:
-        print(f"  Error searching for existing page: {e}")
+        print(f"  Error searching for active pages: {e}")
+
+    # If no active page found, search ALL pages (including archived)
+    print(f"  No active page found, searching archived pages...")
+    try:
+        all_pages = []
+        has_more = True
+        start_cursor = None
+
+        while has_more:
+            query_params = {}
+            if start_cursor:
+                query_params['start_cursor'] = start_cursor
+
+            response = notion.databases.query(
+                database_id=database_id,
+                **query_params
+            )
+            all_pages.extend(response['results'])
+            has_more = response.get('has_more', False)
+            start_cursor = response.get('next_cursor')
+
+        # Check all pages (including archived) for matching agent + version
+        for page in all_pages:
+            try:
+                props = page.get('properties', {})
+
+                # Get agent
+                page_agent = None
+                agent_prop = props.get('Agent', {})
+                if agent_prop.get('select'):
+                    page_agent = agent_prop['select'].get('name', '')
+
+                # Get version
+                page_version = None
+                version_prop = props.get('Version', {})
+                if version_prop.get('rich_text'):
+                    page_version = version_prop['rich_text'][0].get('text', {}).get('content', '')
+
+                # Check if match
+                if page_agent == agent and page_version == version:
+                    if page.get('archived'):
+                        print(f"  Found ARCHIVED page: {page['id']} - will unarchive")
+                    else:
+                        print(f"  Found existing page: {page['id']}")
+                    return page
+            except:
+                continue
+    except Exception as e:
+        print(f"  Error in full page search: {e}")
+
+    return None
+
+def sync_lk_to_notion(lk_metadata, notion, database_id, commit_sha, commit_url):
+    """
+    Create or update LK page in Notion database.
+    """
+    agent = lk_metadata.get('agent', 'Unknown')
+    version = lk_metadata.get('version', 'Unknown')
+    title = lk_metadata.get('title', f"{agent} Levende Kompendium {version}")
+
+    print(f"\nSyncing {agent} LK {version}: {title}")
+
+    # Search for existing page (including archived)
+    existing_page = find_existing_lk_page(notion, database_id, agent, version)
 
     # Prepare properties
     properties = {
@@ -161,15 +221,26 @@ def sync_lk_to_notion(lk_metadata, notion, database_id, commit_sha, commit_url):
     # Create or update page
     try:
         if existing_page:
+            page_id = existing_page['id']
+
+            # If page is archived, unarchive it first
+            if existing_page.get('archived'):
+                print(f"  Unarchiving page...")
+                notion.pages.update(
+                    page_id=page_id,
+                    archived=False
+                )
+                print(f"  [OK] Unarchived page")
+
             # Update existing page
             notion.pages.update(
-                page_id=existing_page['id'],
+                page_id=page_id,
                 properties=properties
             )
             print(f"  ✅ Updated existing page")
-            return existing_page['id']
+            return page_id
         else:
-            # Create new page
+            # Create new page (only if doesn't exist)
             new_page = notion.pages.create(
                 parent={"database_id": database_id},
                 properties=properties
