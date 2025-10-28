@@ -13,6 +13,9 @@ import sys
 from dotenv import load_dotenv
 from fastapi_mcp import FastApiMCP
 
+# Triadiske Portvokter (Triadic Gates)
+from gates import BiofeltGate, BiofeltContext, ResonanceLevel
+
 # Load .env.local FIRST
 load_dotenv(dotenv_path="../.env.local")
 
@@ -126,6 +129,7 @@ class ReadRequest(BaseModel):
 class WriteRequest(BaseModel):
     path: str
     content: str
+    biofelt_context: Optional[BiofeltContext] = None  # REQUIRED for critical operations
 
 class ListRequest(BaseModel):
     path: str = ""
@@ -146,6 +150,7 @@ class ExecuteActionRequest(BaseModel):
     agent: str
     action_type: str
     payload: Dict
+    biofelt_context: Optional[BiofeltContext] = None  # REQUIRED for action execution
 
 # ===========================
 # AUTHENTICATION & RBAC
@@ -289,8 +294,14 @@ def read_file(request: ReadRequest, agent_name: str = Depends(verify_api_key)):
 
 @app.post("/api/workspace/write")
 def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key)):
-    """Write a file to the shared workspace"""
+    """
+    Write a file to the shared workspace.
 
+    PROTECTED BY: BiofeltGate / ResonanceGuard
+    Requires positive biofelt-resonans for critical operations.
+    """
+
+    # RBAC Permission Check
     workspace_area = request.path.split("/")[0] if "/" in request.path else request.path
     required_perm = f"write:{workspace_area}"
 
@@ -299,6 +310,34 @@ def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key))
             status_code=403,
             detail=f"Permission denied: {required_perm} or write:all required"
         )
+
+    # BIOFELT GATE VALIDATION (Triadisk Portvokter)
+    # Requires biofelt_context for write operations
+    if request.biofelt_context:
+        gate_result = BiofeltGate.validate_write_operation(
+            biofelt=request.biofelt_context,
+            file_path=request.path
+        )
+
+        if not gate_result.allowed:
+            # Biofelt gate blocked the operation
+            logger.warning(f"🛑 BiofeltGate blocked write by {agent_name}: {gate_result.message}")
+            raise HTTPException(
+                status_code=403,
+                detail={
+                    "error": "BiofeltGate blocked operation",
+                    "message": gate_result.message,
+                    "resonance_level": gate_result.resonance_level.value,
+                    "hrv_status": gate_result.hrv_status,
+                    "coherence_status": gate_result.coherence_status,
+                    "recommendations": gate_result.recommendations
+                }
+            )
+        else:
+            logger.info(f"✅ BiofeltGate approved write by {agent_name}: {gate_result.message}")
+    else:
+        # No biofelt context provided - warn but allow (for backward compatibility)
+        logger.warning(f"⚠️ Write by {agent_name} without biofelt context: {request.path}")
 
     file_path = WORKSPACE_ROOT / request.path
 
@@ -418,7 +457,40 @@ def git_commit(request: CommitRequest, agent_name: str = Depends(verify_api_key)
 
 @app.post("/api/execute-action")
 def execute_action(request: ExecuteActionRequest, agent_name: str = Depends(verify_api_key)):
-    """Execute an action from CSN Server (integration endpoint)"""
+    """
+    Execute an action from CSN Server (integration endpoint).
+
+    PROTECTED BY: BiofeltGate / ResonanceGuard
+    Requires BALANCED or higher resonans for action execution.
+    """
+
+    # BIOFELT GATE VALIDATION (Triadisk Portvokter)
+    # Action execution requires higher threshold than normal write
+    if request.biofelt_context:
+        gate_result = BiofeltGate.validate_execute_action(
+            biofelt=request.biofelt_context,
+            action_type=request.action_type
+        )
+
+        if not gate_result.allowed:
+            # Biofelt gate blocked the action
+            logger.warning(f"🛑 BiofeltGate blocked action by {agent_name}: {gate_result.message}")
+            raise HTTPException(
+                status_code=403,
+                detail={
+                    "error": "BiofeltGate blocked action execution",
+                    "message": gate_result.message,
+                    "resonance_level": gate_result.resonance_level.value,
+                    "hrv_status": gate_result.hrv_status,
+                    "coherence_status": gate_result.coherence_status,
+                    "recommendations": gate_result.recommendations
+                }
+            )
+        else:
+            logger.info(f"✅ BiofeltGate approved action by {agent_name}: {gate_result.message}")
+    else:
+        # No biofelt context provided - warn
+        logger.warning(f"⚠️ Action execution by {agent_name} without biofelt context: {request.action_type}")
 
     try:
         # Store action in database

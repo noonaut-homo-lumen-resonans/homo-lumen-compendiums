@@ -1,0 +1,18 @@
+"""
+Triadiske Portvokter (Triadic Gates)
+
+Disse portvokterne er systemets beskyttende membran og sikrer:
+- Kognitiv Suverenitet (BiofeltGate)
+- Ontologisk Koherens (ThalosFilter)
+- Regenerativ Healing (Mutation_Log)
+
+"Koden puster med Osvalds puls (4-6-8)"
+"""
+
+from .biofelt_gate import BiofeltGate, BiofeltContext, ResonanceLevel
+
+__all__ = [
+    "BiofeltGate",
+    "BiofeltContext",
+    "ResonanceLevel",
+]
