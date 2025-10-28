@@ -22,10 +22,10 @@ class CSNRedisPublisher:
         self.redis_token = os.getenv("REDIS_TOKEN")
 
         if not self.redis_url or not self.redis_token:
-            print("⚠️  Redis credentials not found - publisher will run in mock mode")
+            print("WARNING: Redis credentials not found - publisher will run in mock mode")
             self.enabled = False
         else:
-            print(f"✅ Redis publisher initialized: {self.redis_url}")
+            print(f"SUCCESS: Redis publisher initialized: {self.redis_url}")
             self.enabled = True
 
         self.headers = {
@@ -34,7 +34,10 @@ class CSNRedisPublisher:
 
     def _publish(self, channel: str, message: Dict[str, Any]) -> bool:
         """
-        Publish message to Redis channel using Upstash REST API
+        Publish message to Redis queue using Upstash REST API
+
+        Uses RPUSH to add messages to a list that subscribers can poll with LPOP.
+        This creates a persistent message queue instead of ephemeral pub/sub.
 
         Args:
             channel: Redis channel name (e.g., "csn:consultations")
@@ -44,34 +47,35 @@ class CSNRedisPublisher:
             bool: True if successful, False otherwise
         """
         if not self.enabled:
-            print(f"🔇 Mock publish to {channel}: {json.dumps(message, indent=2)}")
+            print(f"MOCK: Mock publish to {channel}: {json.dumps(message, indent=2)}")
             return False
 
         try:
             message_json = json.dumps(message)
 
-            # Upstash REST API: POST /publish/{channel}/{message}
-            # URL encode the message
-            import urllib.parse
-            encoded_message = urllib.parse.quote(message_json)
+            # Use RPUSH to add message to a list (persistent queue)
+            # Subscriber will use LPOP to retrieve messages
+            queue_key = f"queue:{channel}"
 
+            # Upstash REST API: POST /rpush/{key} with JSON body
             response = requests.post(
-                f"{self.redis_url}/publish/{channel}/{encoded_message}",
+                f"{self.redis_url}/rpush/{queue_key}",
                 headers=self.headers,
+                json=[message_json],  # RPUSH accepts an array of values
                 timeout=5
             )
 
             if response.status_code == 200:
                 result = response.json()
-                subscribers = result.get("result", 0)
-                print(f"✅ Published to {channel} ({subscribers} subscribers)")
+                queue_length = result.get("result", 0)
+                print(f"SUCCESS: Published to {queue_key} (queue length: {queue_length})")
                 return True
             else:
-                print(f"❌ Publish failed: {response.status_code} - {response.text}")
+                print(f"ERROR: Publish failed: {response.status_code} - {response.text}")
                 return False
 
         except Exception as e:
-            print(f"❌ Publish error: {e}")
+            print(f"ERROR: Publish error: {e}")
             return False
 
     def publish_consultation(

@@ -26,10 +26,10 @@ class UbuntuRedisSubscriber:
         self.database_path = Path(database_path)
 
         if not self.redis_url or not self.redis_token:
-            print("⚠️  Redis credentials not found - subscriber will not run")
+            print("WARNING: Redis credentials not found - subscriber will not run")
             self.enabled = False
         else:
-            print(f"✅ Redis subscriber initialized: {self.redis_url}")
+            print(f"SUCCESS: Redis subscriber initialized: {self.redis_url}")
             self.enabled = True
 
         self.headers = {
@@ -73,7 +73,7 @@ class UbuntuRedisSubscriber:
 
         conn.commit()
         conn.close()
-        print("✅ Database initialized")
+        print("SUCCESS: Database initialized")
 
     def _poll_channel(self, channel: str) -> list:
         """
@@ -113,7 +113,7 @@ class UbuntuRedisSubscriber:
             return []
 
         except Exception as e:
-            print(f"❌ Poll error for {channel}: {e}")
+            print(f"ERROR: Poll error for {channel}: {e}")
             return []
 
     def handle_event(self, channel: str, message: str):
@@ -148,7 +148,7 @@ class UbuntuRedisSubscriber:
             conn.commit()
             conn.close()
 
-            print(f"✅ Event logged to database: {event_type}")
+            print(f"SUCCESS: Event logged to database: {event_type}")
 
             # Handle specific event types
             if event_type == "consultation":
@@ -159,13 +159,13 @@ class UbuntuRedisSubscriber:
                 self._handle_error_event(data)
 
         except Exception as e:
-            print(f"❌ Error handling event: {e}")
+            print(f"ERROR: Error handling event: {e}")
 
     def _handle_consultation_event(self, data: Dict[str, Any]):
         """Handle collective intelligence consultation event"""
-        print(f"🤔 Consultation: {data.get('question', '')[:50]}...")
-        print(f"👤 Requester: {data.get('requester')}")
-        print(f"🧠 Agents: {', '.join(data.get('agents', []))}")
+        print(f"CONSULTATION: {data.get('question', '')[:50]}...")
+        print(f"REQUESTER: {data.get('requester')}")
+        print(f"AGENTS: {', '.join(data.get('agents', []))}")
 
     def _handle_agent_response_event(self, data: Dict[str, Any]):
         """Handle individual agent response event"""
@@ -176,7 +176,7 @@ class UbuntuRedisSubscriber:
         """Handle error event"""
         error_type = data.get("error_type", "unknown")
         error_message = data.get("error_message", "")
-        print(f"⚠️  Error: {error_type} - {error_message}")
+        print(f"WARNING: Error: {error_type} - {error_message}")
 
     def start_polling(self, poll_interval: int = 5):
         """
@@ -186,7 +186,7 @@ class UbuntuRedisSubscriber:
             poll_interval: Seconds between polls (default: 5)
         """
         if not self.enabled:
-            print("⚠️  Redis subscriber not enabled (missing credentials)")
+            print("WARNING: Redis subscriber not enabled (missing credentials)")
             return
 
         self.running = True
@@ -205,10 +205,10 @@ class UbuntuRedisSubscriber:
                 time.sleep(poll_interval)
 
         except KeyboardInterrupt:
-            print("\n⛔ Subscriber stopped by user")
+            print("\nSTOP: Subscriber stopped by user")
             self.running = False
         except Exception as e:
-            print(f"❌ Subscriber error: {e}")
+            print(f"ERROR: Subscriber error: {e}")
             self.running = False
 
     def stop(self):
