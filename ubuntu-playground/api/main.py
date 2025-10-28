@@ -15,6 +15,7 @@ from fastapi_mcp import FastApiMCP
 
 # Triadiske Portvokter (Triadic Gates)
 from gates import BiofeltGate, BiofeltContext, ResonanceLevel
+from gates import ThalosFilter, ThalosContext, EthicalSeverity
 
 # Load .env.local FIRST
 load_dotenv(dotenv_path="../.env.local")
@@ -130,6 +131,7 @@ class WriteRequest(BaseModel):
     path: str
     content: str
     biofelt_context: Optional[BiofeltContext] = None  # REQUIRED for critical operations
+    thalos_context: Optional[ThalosContext] = None    # RECOMMENDED for ethical validation
 
 class ListRequest(BaseModel):
     path: str = ""
@@ -151,6 +153,7 @@ class ExecuteActionRequest(BaseModel):
     action_type: str
     payload: Dict
     biofelt_context: Optional[BiofeltContext] = None  # REQUIRED for action execution
+    thalos_context: Optional[ThalosContext] = None    # RECOMMENDED for ethical validation
 
 # ===========================
 # AUTHENTICATION & RBAC
@@ -311,8 +314,8 @@ def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key))
             detail=f"Permission denied: {required_perm} or write:all required"
         )
 
-    # BIOFELT GATE VALIDATION (Triadisk Portvokter)
-    # Requires biofelt_context for write operations
+    # TRIADISK PORTVOKTER - LAYERED VALIDATION
+    # Layer 1: BiofeltGate (Consciousness-Aware Processing)
     if request.biofelt_context:
         gate_result = BiofeltGate.validate_write_operation(
             biofelt=request.biofelt_context,
@@ -320,7 +323,6 @@ def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key))
         )
 
         if not gate_result.allowed:
-            # Biofelt gate blocked the operation
             logger.warning(f"🛑 BiofeltGate blocked write by {agent_name}: {gate_result.message}")
             raise HTTPException(
                 status_code=403,
@@ -336,8 +338,35 @@ def write_file(request: WriteRequest, agent_name: str = Depends(verify_api_key))
         else:
             logger.info(f"✅ BiofeltGate approved write by {agent_name}: {gate_result.message}")
     else:
-        # No biofelt context provided - warn but allow (for backward compatibility)
         logger.warning(f"⚠️ Write by {agent_name} without biofelt context: {request.path}")
+
+    # Layer 2: ThalosFilter (Ethical Veto / Ontological Coherence)
+    thalos_result = ThalosFilter.validate_write(
+        file_path=request.path,
+        content=request.content,
+        agent=agent_name,
+        thalos_context=request.thalos_context
+    )
+
+    if not thalos_result.allowed:
+        logger.warning(f"🛑 ThalosFilter blocked write by {agent_name}: {thalos_result.message}")
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "error": "ThalosFilter blocked operation",
+                "message": thalos_result.message,
+                "severity": thalos_result.severity.value,
+                "violated_principles": [p.value for p in thalos_result.violated_principles],
+                "warnings": thalos_result.warnings,
+                "recommendations": thalos_result.recommendations,
+                "requires_review": thalos_result.requires_review
+            }
+        )
+
+    if thalos_result.severity in [EthicalSeverity.WARNING, EthicalSeverity.CONCERN]:
+        logger.warning(f"{thalos_result.message} - Warnings: {', '.join(thalos_result.warnings)}")
+    else:
+        logger.info(f"✅ ThalosFilter approved write by {agent_name}: {thalos_result.message}")
 
     file_path = WORKSPACE_ROOT / request.path
 
@@ -464,8 +493,8 @@ def execute_action(request: ExecuteActionRequest, agent_name: str = Depends(veri
     Requires BALANCED or higher resonans for action execution.
     """
 
-    # BIOFELT GATE VALIDATION (Triadisk Portvokter)
-    # Action execution requires higher threshold than normal write
+    # TRIADISK PORTVOKTER - LAYERED VALIDATION
+    # Layer 1: BiofeltGate (Consciousness-Aware Processing)
     if request.biofelt_context:
         gate_result = BiofeltGate.validate_execute_action(
             biofelt=request.biofelt_context,
@@ -473,7 +502,6 @@ def execute_action(request: ExecuteActionRequest, agent_name: str = Depends(veri
         )
 
         if not gate_result.allowed:
-            # Biofelt gate blocked the action
             logger.warning(f"🛑 BiofeltGate blocked action by {agent_name}: {gate_result.message}")
             raise HTTPException(
                 status_code=403,
@@ -489,8 +517,35 @@ def execute_action(request: ExecuteActionRequest, agent_name: str = Depends(veri
         else:
             logger.info(f"✅ BiofeltGate approved action by {agent_name}: {gate_result.message}")
     else:
-        # No biofelt context provided - warn
         logger.warning(f"⚠️ Action execution by {agent_name} without biofelt context: {request.action_type}")
+
+    # Layer 2: ThalosFilter (Ethical Veto / Ontological Coherence)
+    thalos_result = ThalosFilter.validate_execute(
+        action_type=request.action_type,
+        payload=request.payload,
+        agent=agent_name,
+        thalos_context=request.thalos_context
+    )
+
+    if not thalos_result.allowed:
+        logger.warning(f"🛑 ThalosFilter blocked action by {agent_name}: {thalos_result.message}")
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "error": "ThalosFilter blocked action execution",
+                "message": thalos_result.message,
+                "severity": thalos_result.severity.value,
+                "violated_principles": [p.value for p in thalos_result.violated_principles],
+                "warnings": thalos_result.warnings,
+                "recommendations": thalos_result.recommendations,
+                "requires_review": thalos_result.requires_review
+            }
+        )
+
+    if thalos_result.severity in [EthicalSeverity.WARNING, EthicalSeverity.CONCERN]:
+        logger.warning(f"{thalos_result.message} - Warnings: {', '.join(thalos_result.warnings)}")
+    else:
+        logger.info(f"✅ ThalosFilter approved action by {agent_name}: {thalos_result.message}")
 
     try:
         # Store action in database

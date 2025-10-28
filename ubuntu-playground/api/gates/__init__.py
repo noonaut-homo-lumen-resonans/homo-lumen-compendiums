@@ -10,9 +10,14 @@ Disse portvokterne er systemets beskyttende membran og sikrer:
 """
 
 from .biofelt_gate import BiofeltGate, BiofeltContext, ResonanceLevel
+from .thalos_filter import ThalosFilter, ThalosContext, EthicalSeverity, EthicalPrinciple
 
 __all__ = [
     "BiofeltGate",
     "BiofeltContext",
     "ResonanceLevel",
+    "ThalosFilter",
+    "ThalosContext",
+    "EthicalSeverity",
+    "EthicalPrinciple",
 ]
