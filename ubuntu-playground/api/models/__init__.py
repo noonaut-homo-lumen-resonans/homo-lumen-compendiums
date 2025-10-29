@@ -9,7 +9,10 @@ from .knowledge_graph import (
     GraphEdge,
     KnowledgeGraph,
     ConsultationSimilarity,
-    GraphAnalytics
+    GraphAnalytics,
+    BlockchainAnalytics,
+    TimelineDataPoint,
+    TimelineAnalytics
 )
 
 __all__ = [
@@ -17,5 +20,8 @@ __all__ = [
     "GraphEdge",
     "KnowledgeGraph",
     "ConsultationSimilarity",
-    "GraphAnalytics"
+    "GraphAnalytics",
+    "BlockchainAnalytics",
+    "TimelineDataPoint",
+    "TimelineAnalytics"
 ]

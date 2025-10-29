@@ -15,7 +15,10 @@ import logging
 
 from blockchain.agent_dna_chain import AgentDNAChain
 from blockchain.dna_block import GeneType, DNABlock
-from models.knowledge_graph import KnowledgeGraph, GraphNode, GraphEdge, ConsultationSimilarity
+from models.knowledge_graph import (
+    KnowledgeGraph, GraphNode, GraphEdge, ConsultationSimilarity,
+    BlockchainAnalytics, TimelineDataPoint, TimelineAnalytics
+)
 from blockchain.consultation_recommender import find_related_consultations
 
 logger = logging.getLogger(__name__)
@@ -1041,3 +1044,167 @@ async def get_related_consultations(
     except Exception as e:
         logger.error(f"Error finding related consultations: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to find related consultations: {str(e)}")
+
+
+# ============================================================================
+# ANALYTICS ENDPOINTS (GENOMOS Phase 8)
+# ============================================================================
+
+@router.get("/analytics/overview", response_model=BlockchainAnalytics)
+async def get_blockchain_analytics():
+    """
+    Get comprehensive blockchain analytics and statistics.
+
+    Returns overview of blockchain health, growth metrics, gene distribution,
+    and agent activity.
+
+    **GENOMOS Phase 8: Visualization & Analytics**
+    """
+    chain = get_blockchain()
+    now = datetime.now()
+
+    # Calculate basic stats
+    total_blocks = len(chain.chain)
+    total_genes = total_blocks - 1  # Excluding genesis
+
+    # Get dates
+    genesis_block = chain.chain[0]
+    latest_block = chain.chain[-1]
+    genesis_date = genesis_block.timestamp
+    latest_date = latest_block.timestamp
+
+    # Calculate chain age
+    genesis_dt = datetime.fromisoformat(genesis_date.replace('Z', '+00:00'))
+    latest_dt = datetime.fromisoformat(latest_date.replace('Z', '+00:00'))
+    chain_age_days = (latest_dt - genesis_dt).total_seconds() / 86400
+
+    # Gene distribution
+    gene_distribution = {}
+    agent_activity = {}
+
+    for block in chain.chain[1:]:  # Skip genesis
+        gene_type = block.gene_type.value if hasattr(block.gene_type, 'value') else str(block.gene_type)
+        gene_distribution[gene_type] = gene_distribution.get(gene_type, 0) + 1
+
+        agent = block.agent if hasattr(block, 'agent') else "unknown"
+        agent_activity[agent] = agent_activity.get(agent, 0) + 1
+
+    # Calculate growth metrics
+    avg_blocks_per_day = total_genes / max(chain_age_days, 1)
+
+    # Count recent blocks
+    blocks_last_24h = 0
+    blocks_last_7d = 0
+    cutoff_24h = now.timestamp() - 86400
+    cutoff_7d = now.timestamp() - (86400 * 7)
+
+    for block in chain.chain[1:]:
+        try:
+            block_dt = datetime.fromisoformat(block.timestamp.replace('Z', '+00:00'))
+            block_ts = block_dt.timestamp()
+            if block_ts >= cutoff_24h:
+                blocks_last_24h += 1
+            if block_ts >= cutoff_7d:
+                blocks_last_7d += 1
+        except:
+            pass
+
+    # Top agents
+    top_agents = [
+        {"agent": agent, "blocks": count}
+        for agent, count in sorted(agent_activity.items(), key=lambda x: x[1], reverse=True)[:10]
+    ]
+
+    # Blockchain health assessment
+    if chain.is_valid():
+        blockchain_health = "healthy"
+    else:
+        blockchain_health = "corrupted"
+
+    return BlockchainAnalytics(
+        total_blocks=total_blocks,
+        total_genes=total_genes,
+        genesis_date=genesis_date,
+        latest_block_date=latest_date,
+        chain_age_days=round(chain_age_days, 2),
+        gene_distribution=gene_distribution,
+        agent_activity=agent_activity,
+        avg_blocks_per_day=round(avg_blocks_per_day, 2),
+        blocks_last_24h=blocks_last_24h,
+        blocks_last_7d=blocks_last_7d,
+        top_agents=top_agents,
+        blockchain_health=blockchain_health,
+        generated_at=now.isoformat()
+    )
+
+
+@router.get("/analytics/timeline", response_model=TimelineAnalytics)
+async def get_blockchain_timeline():
+    """
+    Get blockchain growth timeline showing daily activity.
+
+    Returns daily data points with cumulative and new block counts,
+    plus gene type distribution per day.
+
+    **GENOMOS Phase 8: Visualization & Analytics**
+    """
+    chain = get_blockchain()
+
+    # Group blocks by date
+    daily_data = {}
+
+    for idx, block in enumerate(chain.chain):
+        try:
+            block_dt = datetime.fromisoformat(block.timestamp.replace('Z', '+00:00'))
+            date_key = block_dt.date().isoformat()
+
+            if date_key not in daily_data:
+                daily_data[date_key] = {
+                    "new_blocks": 0,
+                    "gene_types": {}
+                }
+
+            daily_data[date_key]["new_blocks"] += 1
+
+            # Track gene types (skip genesis)
+            if idx > 0:
+                gene_type = block.gene_type.value if hasattr(block.gene_type, 'value') else str(block.gene_type)
+                daily_data[date_key]["gene_types"][gene_type] = daily_data[date_key]["gene_types"].get(gene_type, 0) + 1
+
+        except Exception as e:
+            logger.warning(f"Failed to parse timestamp for block {idx}: {e}")
+            continue
+
+    # Build timeline with cumulative counts
+    sorted_dates = sorted(daily_data.keys())
+    timeline = []
+    cumulative = 0
+
+    for date in sorted_dates:
+        data = daily_data[date]
+        cumulative += data["new_blocks"]
+
+        timeline.append(TimelineDataPoint(
+            date=date,
+            cumulative_blocks=cumulative,
+            new_blocks=data["new_blocks"],
+            gene_types=data["gene_types"]
+        ))
+
+    # Find peak activity
+    peak_date = None
+    peak_count = 0
+    for date, data in daily_data.items():
+        if data["new_blocks"] > peak_count:
+            peak_count = data["new_blocks"]
+            peak_date = date
+
+    return TimelineAnalytics(
+        timeline=timeline,
+        total_days=len(sorted_dates),
+        start_date=sorted_dates[0] if sorted_dates else "",
+        end_date=sorted_dates[-1] if sorted_dates else "",
+        peak_activity_date=peak_date,
+        peak_activity_count=peak_count,
+        generated_at=datetime.now().isoformat()
+    )

@@ -203,3 +203,79 @@ class GraphAnalytics(BaseModel):
         default_factory=list,
         description="How the graph has evolved over time"
     )
+
+
+class BlockchainAnalytics(BaseModel):
+    """
+    Comprehensive blockchain analytics and statistics.
+
+    GENOMOS Phase 8: Visualization & Analytics
+    """
+    # Overview stats
+    total_blocks: int = Field(..., description="Total number of blocks in chain")
+    total_genes: int = Field(..., description="Total genes (excluding genesis)")
+    genesis_date: str = Field(..., description="When blockchain was initialized")
+    latest_block_date: str = Field(..., description="Most recent block timestamp")
+    chain_age_days: float = Field(..., description="Age of blockchain in days")
+
+    # Gene distribution
+    gene_distribution: Dict[str, int] = Field(
+        ...,
+        description="Count of each gene type"
+    )
+
+    # Agent activity
+    agent_activity: Dict[str, int] = Field(
+        ...,
+        description="Number of genes created by each agent"
+    )
+
+    # Growth metrics
+    avg_blocks_per_day: float = Field(..., description="Average growth rate")
+    blocks_last_24h: int = Field(0, description="Blocks added in last 24 hours")
+    blocks_last_7d: int = Field(0, description="Blocks added in last 7 days")
+
+    # Top contributors
+    top_agents: List[Dict[str, Any]] = Field(
+        default_factory=list,
+        description="Most active agents"
+    )
+
+    # Metadata
+    blockchain_health: str = Field("healthy", description="Overall blockchain status")
+    generated_at: str = Field(..., description="When analytics were generated")
+
+
+class TimelineDataPoint(BaseModel):
+    """
+    A single data point in the blockchain timeline.
+    """
+    date: str = Field(..., description="ISO date (YYYY-MM-DD)")
+    cumulative_blocks: int = Field(..., description="Total blocks up to this date")
+    new_blocks: int = Field(0, description="Blocks added on this date")
+    gene_types: Dict[str, int] = Field(
+        default_factory=dict,
+        description="Gene types added on this date"
+    )
+
+
+class TimelineAnalytics(BaseModel):
+    """
+    Timeline showing blockchain growth over time.
+
+    GENOMOS Phase 8: Visualization & Analytics
+    """
+    timeline: List[TimelineDataPoint] = Field(
+        ...,
+        description="Daily data points showing growth"
+    )
+
+    total_days: int = Field(..., description="Number of days covered")
+    start_date: str = Field(..., description="First block date")
+    end_date: str = Field(..., description="Last block date")
+
+    # Growth trends
+    peak_activity_date: Optional[str] = Field(None, description="Date with most blocks added")
+    peak_activity_count: int = Field(0, description="Blocks added on peak day")
+
+    generated_at: str = Field(..., description="When timeline was generated")
