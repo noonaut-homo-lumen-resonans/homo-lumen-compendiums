@@ -24,8 +24,11 @@ import io
 
 logger = logging.getLogger(__name__)
 
-# Google Drive API scopes
-SCOPES = ['https://www.googleapis.com/auth/drive.file']
+# Google Drive API scopes (includes Sheets for GENOMOS integration)
+SCOPES = [
+    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/spreadsheets'
+]
 
 
 class GoogleDriveManager:
@@ -124,14 +127,17 @@ class GoogleDriveManager:
 
     def verify_connection(self) -> Dict[str, Any]:
         """
-        Verify connection to Google Drive.
+        Verify connection to Google Drive (supports Shared Drives).
 
         Returns:
             Status dict with connection info
         """
         try:
-            # Try to get folder metadata
-            folder = self.service.files().get(fileId=self.folder_id).execute()
+            # Try to get folder metadata (supports Shared Drives)
+            folder = self.service.files().get(
+                fileId=self.folder_id,
+                supportsAllDrives=True
+            ).execute()
 
             return {
                 "connected": True,
@@ -184,12 +190,13 @@ class GoogleDriveManager:
                 resumable=True
             )
 
-            # Upload file
+            # Upload file (supports Shared Drives)
             logger.info(f"📤 Uploading {filename} to Google Drive...")
             file = self.service.files().create(
                 body=file_metadata,
                 media_body=media,
-                fields='id, name, size, webViewLink, createdTime'
+                fields='id, name, size, webViewLink, createdTime',
+                supportsAllDrives=True
             ).execute()
 
             logger.info(f"✅ Upload complete: {file.get('name')} (ID: {file.get('id')})")
@@ -228,13 +235,19 @@ class GoogleDriveManager:
             Status dict
         """
         try:
-            # Get file metadata
-            file_metadata = self.service.files().get(fileId=file_id).execute()
+            # Get file metadata (supports Shared Drives)
+            file_metadata = self.service.files().get(
+                fileId=file_id,
+                supportsAllDrives=True
+            ).execute()
 
             logger.info(f"📥 Downloading {file_metadata.get('name')} from Google Drive...")
 
-            # Download file
-            request = self.service.files().get_media(fileId=file_id)
+            # Download file (supports Shared Drives)
+            request = self.service.files().get_media(
+                fileId=file_id,
+                supportsAllDrives=True
+            )
 
             # Create output directory if needed
             Path(output_path).parent.mkdir(parents=True, exist_ok=True)
@@ -281,14 +294,16 @@ class GoogleDriveManager:
             Dict with list of backup files
         """
         try:
-            # Query for files in backup folder
+            # Query for files in backup folder (supports Shared Drives)
             query = f"'{self.folder_id}' in parents and trashed=false"
 
             results = self.service.files().list(
                 q=query,
                 pageSize=limit,
                 fields="files(id, name, size, createdTime, modifiedTime, webViewLink)",
-                orderBy="createdTime desc"
+                orderBy="createdTime desc",
+                supportsAllDrives=True,
+                includeItemsFromAllDrives=True
             ).execute()
 
             files = results.get('files', [])
@@ -330,12 +345,18 @@ class GoogleDriveManager:
             Status dict
         """
         try:
-            # Get file name before deleting
-            file_metadata = self.service.files().get(fileId=file_id).execute()
+            # Get file name before deleting (supports Shared Drives)
+            file_metadata = self.service.files().get(
+                fileId=file_id,
+                supportsAllDrives=True
+            ).execute()
             filename = file_metadata.get('name')
 
-            # Delete file
-            self.service.files().delete(fileId=file_id).execute()
+            # Delete file (supports Shared Drives)
+            self.service.files().delete(
+                fileId=file_id,
+                supportsAllDrives=True
+            ).execute()
 
             logger.info(f"✅ Deleted backup: {filename}")
 
