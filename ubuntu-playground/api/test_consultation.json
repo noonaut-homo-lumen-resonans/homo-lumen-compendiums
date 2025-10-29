@@ -1,0 +1,26 @@
+{
+  "consultation_id": "test-genomos-phase7-001",
+  "human_query": "Hvordan kan vi bruke GENOMOS til å lagre konsultasjoner permanent i blockchain?",
+  "agent_responses": {
+    "lira": {
+      "response": "GENOMOS blockchain gir kryptografisk verifisering av alle konsultasjoner, som sikrer at historiske samtaler ikke kan endres.",
+      "confidence": 0.92,
+      "processing_time_ms": 1250
+    },
+    "orion": {
+      "response": "Blockchain-lagring sikrer permanent, verifierbar kollektiv hukommelse og gjør det mulig å spore utviklingen av kunnskap over tid.",
+      "confidence": 0.95,
+      "processing_time_ms": 1580
+    },
+    "nyra": {
+      "response": "Dette skaper en uforanderlig logg som kan brukes til å analysere mønstre i hvordan systemet lærer og utvikler seg.",
+      "confidence": 0.90,
+      "processing_time_ms": 1120
+    }
+  },
+  "synthesis": {
+    "summary": "Consultation storage in GENOMOS enables permanent, cryptographically verifiable collective memory",
+    "key_insights": ["permanent record", "cryptographic integrity", "collective intelligence", "pattern analysis"],
+    "related_smk": ["SMK#043", "SMK#040", "SMK#019"]
+  }
+}

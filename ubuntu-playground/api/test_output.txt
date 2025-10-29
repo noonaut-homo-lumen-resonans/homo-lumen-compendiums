@@ -1,0 +1,24 @@
+
+################################################################################
+#  TEST 2: TRIADISKE PORTVOKTER VALIDATION
+#  Testing 3-layer ethical validation system
+################################################################################
+
+================================================================================
+TEST 2.1: BiofeltGate - CRITICAL Low HRV (skal blokkere)
+================================================================================
+Status Code: 401
+Response: {
+  "detail": "Invalid API key"
+}
+Traceback (most recent call last):
+  File "C:\Users\onigo\NAV LOSEN\homo-lumen-compendiums\ubuntu-playground\api\test_portvokter.py", line 190, in <module>
+    results.append(("TEST 2.1: BiofeltGate (CRITICAL HRV)", test_biofelt_gate_critical_hrv()))
+                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\onigo\NAV LOSEN\homo-lumen-compendiums\ubuntu-playground\api\test_portvokter.py", line 46, in test_biofelt_gate_critical_hrv
+    print("\n\u274c TEST 2.1 FAILED: BiofeltGate did NOT block operation")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 2: character maps to <undefined>
