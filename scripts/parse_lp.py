@@ -40,7 +40,9 @@ if sys.stdout.encoding != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 # Configuration
-NOTION_API_KEY = os.environ.get('NOTION_API_KEY', '***REMOVED***')
+NOTION_API_KEY = os.environ.get('NOTION_API_KEY')
+if not NOTION_API_KEY:
+    raise ValueError("NOTION_API_KEY environment variable not set")
 SLL_DATABASE_ID = os.environ.get('SLL_DATABASE_ID', '84da6cbd09d640fb868e41444b941991')
 NOTION_API_VERSION = '2022-06-28'
 
