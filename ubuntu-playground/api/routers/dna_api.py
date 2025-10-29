@@ -1153,7 +1153,7 @@ async def get_blockchain_analytics():
     ]
 
     # Blockchain health assessment
-    if chain.is_valid():
+    if chain.validate_chain():
         blockchain_health = "healthy"
     else:
         blockchain_health = "corrupted"
