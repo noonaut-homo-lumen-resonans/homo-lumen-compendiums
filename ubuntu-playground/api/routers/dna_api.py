@@ -22,6 +22,7 @@ from models.knowledge_graph import (
 from blockchain.consultation_recommender import find_related_consultations
 from blockchain.backup_manager import BackupManager
 from blockchain.cache_manager import get_cache_manager, invalidate_lru_caches
+from blockchain.advanced_query import AdvancedQueryBuilder
 from fastapi.responses import Response
 
 logger = logging.getLogger(__name__)
@@ -35,17 +36,23 @@ _blockchain: Optional[AgentDNAChain] = None
 # Global cache manager instance (Phase 10: Performance Optimization)
 _cache_manager = get_cache_manager(ttl_seconds=300)  # 5 minute default TTL
 
+# Global query builder instance (Phase 11: Comprehensive Query API)
+_query_builder: Optional[AdvancedQueryBuilder] = None
+
 
 def initialize_dna_blockchain(db_path: str = "./data/genomos.db"):
     """Initialize the GENOMOS blockchain for API access"""
-    global _blockchain
+    global _blockchain, _query_builder
     try:
         _blockchain = AgentDNAChain(db_path=db_path)
+        _query_builder = AdvancedQueryBuilder(_blockchain)
         logger.info(f"🧬 GENOMOS DNA API initialized: {len(_blockchain.chain)} genes")
+        logger.info(f"🔍 Advanced Query Builder initialized (Phase 11)")
         return _blockchain
     except Exception as e:
         logger.error(f"❌ Failed to initialize GENOMOS blockchain: {e}")
         _blockchain = None
+        _query_builder = None
         return None
 
 
@@ -1547,3 +1554,276 @@ async def invalidate_cache_pattern(pattern: str):
     except Exception as e:
         logger.error(f"Error invalidating cache pattern: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to invalidate pattern: {str(e)}")
+
+
+# ============================================================================
+# PHASE 11: Comprehensive Query API - Advanced Search & Queries
+# ============================================================================
+
+class FullTextSearchRequest(BaseModel):
+    """Request model for full-text search"""
+    query: str
+    gene_types: Optional[List[str]] = None
+    case_sensitive: bool = False
+    limit: int = 100
+
+
+class ComplexQueryRequest(BaseModel):
+    """Request model for complex queries"""
+    filters: Dict[str, Any]
+    sort_by: str = "timestamp"
+    sort_order: str = "desc"
+    limit: int = 100
+    offset: int = 0
+
+
+class AggregateQueryRequest(BaseModel):
+    """Request model for aggregations"""
+    group_by: str
+    filters: Optional[Dict[str, Any]] = None
+    agg_functions: Optional[List[str]] = None
+
+
+class BatchQueryRequest(BaseModel):
+    """Request model for batch queries"""
+    queries: List[Dict[str, Any]]
+
+
+@router.post("/search")
+async def full_text_search(request: FullTextSearchRequest):
+    """
+    Perform full-text search across all gene data.
+
+    GENOMOS Phase 11: Comprehensive Query API
+
+    Search Capabilities:
+    - Case-sensitive or insensitive search
+    - Filter by gene types
+    - Relevance scoring (match count)
+    - Result preview with context
+
+    Returns:
+    - Matching blocks with relevance scores
+    - Match count and preview snippets
+    """
+    try:
+        if _query_builder is None:
+            raise HTTPException(status_code=503, detail="Query builder not initialized")
+
+        results = _query_builder.full_text_search(
+            query=request.query,
+            gene_types=request.gene_types,
+            case_sensitive=request.case_sensitive,
+            limit=request.limit
+        )
+
+        return {
+            "success": True,
+            "query": request.query,
+            "total_results": len(results),
+            "results": results
+        }
+
+    except Exception as e:
+        logger.error(f"Full-text search failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
+
+
+@router.post("/query")
+async def complex_query(request: ComplexQueryRequest):
+    """
+    Execute complex query with multiple filters.
+
+    GENOMOS Phase 11: Comprehensive Query API
+
+    Supported Filters:
+    - gene_types: List[str] - Filter by gene types
+    - agents: List[str] - Filter by agents
+    - tags: List[str] - Filter by tags (any match)
+    - date_from: str - ISO date string (inclusive)
+    - date_to: str - ISO date string (inclusive)
+    - has_field: str - Check if data contains field
+    - field_equals: Dict[str, Any] - Field exact match
+
+    Sorting:
+    - sort_by: "timestamp", "index", "gene_type"
+    - sort_order: "asc" or "desc"
+
+    Pagination:
+    - limit: Maximum results per page
+    - offset: Skip first N results
+
+    Returns:
+    - Matching blocks with pagination metadata
+    """
+    try:
+        if _query_builder is None:
+            raise HTTPException(status_code=503, detail="Query builder not initialized")
+
+        blocks, total_count = _query_builder.complex_query(
+            filters=request.filters,
+            sort_by=request.sort_by,
+            sort_order=request.sort_order,
+            limit=request.limit,
+            offset=request.offset
+        )
+
+        # Convert blocks to dicts
+        block_dicts = [
+            {
+                "index": b.index,
+                "timestamp": b.timestamp,
+                "gene_type": b.gene_type,
+                "agent": b.agent,
+                "tags": b.tags,
+                "hash": b.hash,
+                "previous_hash": b.previous_hash,
+                "data": b.data
+            }
+            for b in blocks
+        ]
+
+        total_pages = (total_count + request.limit - 1) // request.limit
+        current_page = (request.offset // request.limit) + 1
+
+        return {
+            "success": True,
+            "blocks": block_dicts,
+            "pagination": {
+                "total": total_count,
+                "page": current_page,
+                "page_size": request.limit,
+                "total_pages": total_pages,
+                "has_next": request.offset + request.limit < total_count,
+                "has_previous": request.offset > 0
+            }
+        }
+
+    except Exception as e:
+        logger.error(f"Complex query failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Query failed: {str(e)}")
+
+
+@router.post("/aggregate")
+async def aggregate_query(request: AggregateQueryRequest):
+    """
+    Aggregate blockchain data by specified field.
+
+    GENOMOS Phase 11: Comprehensive Query API
+
+    Group By Options:
+    - gene_type: Group by gene type
+    - agent: Group by agent name
+    - date: Group by date (YYYY-MM-DD)
+    - year: Group by year
+    - month: Group by year-month
+
+    Aggregation Functions:
+    - count: Count blocks in each group
+    - first_date: First occurrence date
+    - last_date: Last occurrence date
+
+    Returns:
+    - Grouped results with aggregation values
+    """
+    try:
+        if _query_builder is None:
+            raise HTTPException(status_code=503, detail="Query builder not initialized")
+
+        results = _query_builder.aggregate(
+            group_by=request.group_by,
+            filters=request.filters,
+            agg_functions=request.agg_functions
+        )
+
+        return {
+            "success": True,
+            "aggregation": results
+        }
+
+    except Exception as e:
+        logger.error(f"Aggregation query failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Aggregation failed: {str(e)}")
+
+
+@router.post("/batch")
+async def batch_query(request: BatchQueryRequest):
+    """
+    Execute multiple queries in a single request.
+
+    GENOMOS Phase 11: Comprehensive Query API
+
+    Query Types:
+    - "search": Full-text search
+    - "complex": Complex filtered query
+    - "aggregate": Aggregation query
+
+    Each query should have:
+    - type: Query type
+    - params: Query parameters
+
+    Returns:
+    - Array of query results
+    - Success/error status for each query
+    """
+    try:
+        if _query_builder is None:
+            raise HTTPException(status_code=503, detail="Query builder not initialized")
+
+        results = _query_builder.batch_query(request.queries)
+
+        return {
+            "success": True,
+            "total_queries": len(request.queries),
+            "results": results
+        }
+
+    except Exception as e:
+        logger.error(f"Batch query failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Batch query failed: {str(e)}")
+
+
+@router.get("/blocks/range")
+async def get_block_range(
+    start_index: int = Query(..., description="Starting block index (inclusive)"),
+    end_index: int = Query(..., description="Ending block index (inclusive)"),
+    include_data: bool = Query(True, description="Include full block data")
+):
+    """
+    Get a range of blocks by index.
+
+    GENOMOS Phase 11: Comprehensive Query API
+
+    Efficient bulk retrieval of consecutive blocks.
+
+    Query Parameters:
+    - start_index: Starting block index (0-based, inclusive)
+    - end_index: Ending block index (inclusive)
+    - include_data: Whether to include full block data (default: True)
+
+    Returns:
+    - List of blocks in specified range
+    """
+    try:
+        if _query_builder is None:
+            raise HTTPException(status_code=503, detail="Query builder not initialized")
+
+        blocks = _query_builder.get_block_range(
+            start_index=start_index,
+            end_index=end_index,
+            include_data=include_data
+        )
+
+        return {
+            "success": True,
+            "start_index": start_index,
+            "end_index": end_index,
+            "count": len(blocks),
+            "blocks": blocks
+        }
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Block range query failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Range query failed: {str(e)}")
