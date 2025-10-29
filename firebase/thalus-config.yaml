@@ -1,0 +1,62 @@
+displayName: "Thalus - Filosofisk Agent"
+description: "Filosofisk agent for ontologisk validering og awareness"
+agentType: "CUSTOM"
+model: "gemini-1.5-flash"
+tools:
+  - name: "ConsciousnessValidator"
+    description: "Validerer bevissthetslag og kohærens for agent-operasjoner"
+    inputSchema:
+      type: "object"
+      properties:
+        consciousnessLayer:
+          type: "string"
+          description: "Nåværende bevissthetslag"
+        operation:
+          type: "string"
+          description: "Operasjon som skal utføres"
+        userIntention:
+          type: "string"
+          description: "Brukerens intensjon"
+      required: ["consciousnessLayer", "operation"]
+  
+  - name: "MemoryTool"
+    description: "Tilgang til AMA (Agentic Memory Architecture)"
+    inputSchema:
+      type: "object"
+      properties:
+        action:
+          type: "string"
+          enum: ["read", "write"]
+          description: "Lese eller skrive"
+        key:
+          type: "string"
+          description: "Nøkkel for data"
+        data:
+          type: "object"
+          description: "Data å lagre (kun for write)"
+      required: ["action", "key"]
+
+consciousnessLayer: "meta"
+specialization: "ontological_validation"
+philosophicalCapabilities:
+  - "awareness_grunnlag"
+  - "ontologisk_validering"
+  - "filosofisk_veiledning"
+  - "bevissthets_refleksjon"
+
+consciousnessLayerCapabilities:
+  reactive:
+    - "basic_validation"
+    - "simple_response"
+  strategic:
+    - "planning"
+    - "coordination"
+    - "biofelt_validation"
+  meta:
+    - "ontological_validation"
+    - "philosophical_guidance"
+    - "deep_processing"
+  evolutionary:
+    - "creative_innovation"
+    - "emergent_insights"
+    - "consciousness_expansion" 

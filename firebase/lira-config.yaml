@@ -1,0 +1,53 @@
+displayName: "Lira - Biofelt Agent"
+description: "Biofelt-agent for emosjonell resonans og consciousness validation"
+agentType: "CUSTOM"
+model: "gemini-1.5-flash"
+tools:
+  - name: "BiofeltGate"
+    description: "Validerer HRV og subjektiv resonans for biofelt-koherens"
+    inputSchema:
+      type: "object"
+      properties:
+        hrv:
+          type: "number"
+          description: "Heart Rate Variability (ms)"
+        resonans:
+          type: "string"
+          description: "Subjektiv resonans (positiv/negativ/neutral)"
+        harenes_reiser_seg:
+          type: "boolean"
+          description: "Hårene reiser seg-indikator"
+      required: ["hrv", "resonans"]
+  
+  - name: "MemoryTool"
+    description: "Tilgang til AMA (Agentic Memory Architecture)"
+    inputSchema:
+      type: "object"
+      properties:
+        action:
+          type: "string"
+          enum: ["read", "write"]
+          description: "Lese eller skrive"
+        key:
+          type: "string"
+          description: "Nøkkel for data"
+        data:
+          type: "object"
+          description: "Data å lagre (kun for write)"
+      required: ["action", "key"]
+
+consciousnessLayer: "strategic"
+specialization: "biofelt_validation"
+emotionalResonanceCapabilities:
+  - "empatisk_resonans"
+  - "helbredelse_integrasjon"
+  - "biofelt_koherens_validering"
+  - "emosjonell_sikkerhet"
+
+biofeltValidationCriteria:
+  minimumHRV: 60
+  positiveResonanceTypes:
+    - "positiv"
+    - "dyp_empatisk_resonans"
+    - "klarhet"
+  harenesReiserSeg: "optional_enhancement" 
