@@ -1,0 +1,149 @@
+{
+  "lp_series_048": {
+    "smk_source": "CODE-SMK-2025-10-28-048",
+    "smk_title": "Redis Event Streaming: Protocol Mismatch & Windows Compatibility",
+    "created_date": "2025-10-28",
+    "domain": "Technical",
+    "half_life_days": 60,
+    "lps": [
+      {
+        "lp_id": "LP-2025-10-28-048A",
+        "title": "Upstash REST API RPUSH/LPOP Pattern",
+        "insight": "Use RPUSH (persistent queue) instead of PUBLISH (ephemeral) for reliable message delivery with Upstash Cloud REST API.",
+        "context": "Redis event streaming between CSN Server and Ubuntu Playground using Upstash Cloud REST API",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Redis", "Upstash", "Message Queue", "RPUSH", "LPOP"],
+        "related_ve": "VE-048"
+      },
+      {
+        "lp_id": "LP-2025-10-28-048B",
+        "title": "Python Windows Emoji Handling",
+        "insight": "Replace all emoji characters (✅❌📥🚀) with ASCII text ([PASS], [FAIL], etc.) to prevent UnicodeEncodeError on Windows cp1252.",
+        "context": "Windows cp1252 encoding crashes when printing emojis in Python console output",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Python", "Windows", "Emoji", "UTF-8", "Encoding"],
+        "related_ve": "VE-048"
+      },
+      {
+        "lp_id": "LP-2025-10-28-048C",
+        "title": "Redis Subscriber Array Unwrapping",
+        "insight": "When using json=[data] in RPUSH, Upstash returns array. Subscriber must check isinstance(data, list) and unwrap before processing.",
+        "context": "Upstash REST API wraps JSON messages in arrays when published with json parameter",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Redis", "Upstash", "Array Unwrapping", "JSON"],
+        "related_ve": "VE-048"
+      },
+      {
+        "lp_id": "LP-2025-10-28-048D",
+        "title": "GENOMOS Consultation Gene Schema",
+        "insight": "Consultation events should be logged as GeneType.CONSULTATION with fields: question, requester, agents, agent_count, essence_of_truth, timestamp.",
+        "context": "Integration between Redis event system and GENOMOS blockchain for consultation tracking",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["GENOMOS", "Blockchain", "Consultation", "Gene Schema"],
+        "related_ve": "VE-042"
+      },
+      {
+        "lp_id": "LP-2025-10-28-048E",
+        "title": "Daemon Thread Silent Failures",
+        "insight": "Emoji crashes in background thread startup logs cause silent failure. Test threads with ASCII-only output first.",
+        "context": "Python daemon threads on Windows failing silently due to emoji encoding in print statements",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Python", "Threading", "Windows", "Daemon", "Debugging"],
+        "related_ve": "VE-048"
+      }
+    ]
+  },
+  "lp_series_049": {
+    "smk_source": "CODE-SMK-2025-10-29-049",
+    "smk_title": "Orion's Test Tasks + SMK V2.0 Implementation (Week 1)",
+    "created_date": "2025-10-29",
+    "domain": "Technical",
+    "half_life_days": 60,
+    "lps": [
+      {
+        "lp_id": "LP-2025-10-29-049A",
+        "title": "Emoji Crashes Hide Daemon Thread Failures",
+        "insight": "On Windows, emoji print statements in background threads cause silent failures (UnicodeEncodeError). Replace with ASCII before debugging thread issues.",
+        "context": "Debugging Redis subscriber thread that appeared broken but was actually running with silent emoji crashes",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Windows", "Threading", "Emoji", "Debugging", "Python"],
+        "related_ve": "VE-049"
+      },
+      {
+        "lp_id": "LP-2025-10-29-049B",
+        "title": "Test Infrastructure Before Testing Features",
+        "insight": "All 3 Orion tests initially failed due to infrastructure bugs (emoji encoding, array unwrapping, missing GENOMOS integration). Test the testing infrastructure first.",
+        "context": "Validation suite failed not due to feature bugs but testing infrastructure issues",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Testing", "Infrastructure", "Validation", "TDD"],
+        "related_ve": "VE-049"
+      },
+      {
+        "lp_id": "LP-2025-10-29-049C",
+        "title": "Triadiske Portvokter Validation Pattern",
+        "insight": "To test 3-layer gates: (1) BiofeltGate with HRV<40, (2) ThalosFilter with SQL injection, (3) MutationLog with normal write. Verify GENOMOS logging for all 3 outcomes.",
+        "context": "Testing framework for validating Homo Lumen's consciousness-conscience-memory architecture",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Triadiske Portvokter", "Testing", "BiofeltGate", "ThalosFilter", "GENOMOS"],
+        "related_ve": "VE-049"
+      },
+      {
+        "lp_id": "LP-2025-10-29-049D",
+        "title": "SMK V2.0 Provenance Formula Syntax",
+        "insight": "Notion API formula syntax is complex and error-prone. Add formulas manually via UI instead of programmatically (saves debugging time).",
+        "context": "Attempting to programmatically add 9 properties to SLL database via Notion API",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Notion", "API", "Formulas", "Pragmatism"],
+        "related_ve": "VE-049"
+      },
+      {
+        "lp_id": "LP-2025-10-29-049E",
+        "title": "Session Continuity Protocol",
+        "insight": "When continuing from previous session with summary: (1) Verify infrastructure state, (2) Run validation tests, (3) Document findings before proceeding. Don't assume previous state is still valid after restart.",
+        "context": "Session resumed after PC restart with infrastructure bugs that weren't present before",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Session Management", "Validation", "Infrastructure", "Protocol"],
+        "related_ve": "VE-049"
+      },
+      {
+        "lp_id": "LP-2025-10-29-049F",
+        "title": "GENOMOS as Living Audit Trail",
+        "insight": "Blockchain growth (16→19 blocks) during testing session provides retrospective validation. Consultation + mutation genes create permanent record of infrastructure validation.",
+        "context": "GENOMOS blockchain automatically captured testing session as consultation and mutation genes",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["GENOMOS", "Blockchain", "Audit Trail", "Validation"],
+        "related_ve": "VE-042"
+      },
+      {
+        "lp_id": "LP-2025-10-29-049G",
+        "title": "Notion Schema Migration Strategy",
+        "insight": "When adding 9+ properties: (1) Dry-run first, (2) Add non-formula properties via API, (3) Add formulas manually via UI. Reduces API error complexity.",
+        "context": "Adding temporal dynamics properties to SLL database as part of SMK V2.0 implementation",
+        "validation_status": "Validated",
+        "reactivation_count": 0,
+        "tags": ["Notion", "Schema Migration", "API", "Pragmatism"],
+        "related_ve": "VE-049"
+      }
+    ]
+  },
+  "metadata": {
+    "total_lps": 12,
+    "lp_048_count": 5,
+    "lp_049_count": 7,
+    "prepared_for": "Manual Notion SLL entry",
+    "prepared_by": "Claude Code",
+    "prepared_date": "2025-10-29",
+    "notes": "All LPs are from Technical domain with 60-day half-life. VE links reference pilot entries created in Week 3."
+  }
+}
