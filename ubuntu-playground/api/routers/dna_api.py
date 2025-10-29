@@ -20,6 +20,8 @@ from models.knowledge_graph import (
     BlockchainAnalytics, TimelineDataPoint, TimelineAnalytics
 )
 from blockchain.consultation_recommender import find_related_consultations
+from blockchain.backup_manager import BackupManager
+from fastapi.responses import Response
 
 logger = logging.getLogger(__name__)
 
@@ -1208,3 +1210,200 @@ async def get_blockchain_timeline():
         peak_activity_count=peak_count,
         generated_at=datetime.now().isoformat()
     )
+
+
+# ============================================================================
+# PHASE 9: Export & Backup Systems
+# ============================================================================
+
+@router.get("/export/json")
+async def export_blockchain_json(
+    include_genesis: bool = Query(True, description="Include genesis block"),
+    gene_types: Optional[str] = Query(None, description="Comma-separated gene types to filter (e.g., 'smk,consultation')"),
+    pretty: bool = Query(True, description="Pretty-print JSON output")
+):
+    """
+    Export blockchain to JSON format.
+
+    GENOMOS Phase 9: Export & Backup Systems
+
+    Query Parameters:
+    - include_genesis: Whether to include the genesis block (default: True)
+    - gene_types: Filter by specific gene types (None = all types)
+    - pretty: Pretty-print JSON vs compact format (default: True)
+
+    Returns:
+    - JSON object with blockchain data, metadata, and blockchain info
+    """
+    try:
+        # Parse gene types filter
+        gene_type_list = None
+        if gene_types:
+            gene_type_list = [gt.strip() for gt in gene_types.split(",")]
+
+        # Get blockchain instance and create backup manager
+        blockchain = get_blockchain()
+        backup_mgr = BackupManager(blockchain=blockchain)
+        export_data = backup_mgr.export_to_json(
+            include_genesis=include_genesis,
+            gene_types=gene_type_list,
+            pretty=pretty
+        )
+
+        return export_data
+
+    except Exception as e:
+        logger.error(f"Error exporting blockchain to JSON: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Export failed: {str(e)}")
+
+
+@router.get("/export/csv")
+async def export_blockchain_csv(
+    include_genesis: bool = Query(True, description="Include genesis block"),
+    gene_types: Optional[str] = Query(None, description="Comma-separated gene types to filter")
+):
+    """
+    Export blockchain to CSV format.
+
+    GENOMOS Phase 9: Export & Backup Systems
+
+    Query Parameters:
+    - include_genesis: Whether to include the genesis block (default: True)
+    - gene_types: Filter by specific gene types (None = all types)
+
+    Returns:
+    - CSV file as text/csv download
+    """
+    try:
+        # Parse gene types filter
+        gene_type_list = None
+        if gene_types:
+            gene_type_list = [gt.strip() for gt in gene_types.split(",")]
+
+        # Get blockchain instance and create backup manager
+        blockchain = get_blockchain()
+        backup_mgr = BackupManager(blockchain=blockchain)
+        csv_content = backup_mgr.export_to_csv(
+            output_path=None,  # Return string, don't save to file
+            include_genesis=include_genesis,
+            gene_types=gene_type_list
+        )
+
+        # Return as downloadable CSV
+        return Response(
+            content=csv_content,
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": f"attachment; filename=genomos_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            }
+        )
+
+    except Exception as e:
+        logger.error(f"Error exporting blockchain to CSV: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"CSV export failed: {str(e)}")
+
+
+@router.post("/backup/create")
+async def create_blockchain_backup(
+    backup_dir: str = Query("./backups", description="Directory to store backup files"),
+    include_metadata: bool = Query(True, description="Include blockchain metadata")
+):
+    """
+    Create a complete blockchain backup with cryptographic verification.
+
+    GENOMOS Phase 9: Export & Backup Systems
+
+    Creates:
+    - Timestamped JSON backup file (genomos_backup_YYYYMMDD_HHMMSS.json)
+    - SHA-256 verification file (.sha256)
+
+    Query Parameters:
+    - backup_dir: Directory to store backup files (default: ./backups)
+    - include_metadata: Include blockchain metadata (default: True)
+
+    Returns:
+    - Backup information including file paths, hash, and statistics
+    """
+    try:
+        # Get blockchain instance and create backup manager
+        blockchain = get_blockchain()
+        backup_mgr = BackupManager(blockchain=blockchain)
+        backup_info = backup_mgr.create_backup(
+            backup_dir=backup_dir,
+            include_metadata=include_metadata
+        )
+
+        logger.info(f"✅ Backup created: {backup_info['backup_file']}")
+        logger.info(f"🔒 SHA-256: {backup_info['backup_hash'][:16]}...")
+
+        return backup_info
+
+    except Exception as e:
+        logger.error(f"Error creating backup: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Backup creation failed: {str(e)}")
+
+
+@router.post("/backup/verify")
+async def verify_blockchain_backup(
+    backup_filepath: str = Query(..., description="Path to backup JSON file to verify")
+):
+    """
+    Verify backup integrity using SHA-256 checksum.
+
+    GENOMOS Phase 9: Export & Backup Systems
+
+    Verifies:
+    - Backup file exists
+    - SHA-256 hash matches verification file
+    - File integrity is intact
+
+    Query Parameters:
+    - backup_filepath: Path to the backup JSON file
+
+    Returns:
+    - Verification results with hash comparison
+    """
+    try:
+        # Get blockchain instance and create backup manager
+        blockchain = get_blockchain()
+        backup_mgr = BackupManager(blockchain=blockchain)
+        verification_result = backup_mgr.verify_backup(backup_filepath)
+
+        if verification_result.get("valid") is True:
+            logger.info(f"✅ Backup verification passed: {backup_filepath}")
+        elif verification_result.get("valid") is False:
+            logger.warning(f"❌ Backup verification FAILED: {backup_filepath}")
+        else:
+            logger.warning(f"⚠️ Backup verification inconclusive (no .sha256 file): {backup_filepath}")
+
+        return verification_result
+
+    except Exception as e:
+        logger.error(f"Error verifying backup: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Backup verification failed: {str(e)}")
+
+
+@router.get("/backup/statistics")
+async def get_backup_statistics():
+    """
+    Get statistics about blockchain for backup planning.
+
+    GENOMOS Phase 9: Export & Backup Systems
+
+    Returns:
+    - Total blocks and gene distribution
+    - Estimated backup size (bytes, KB, MB)
+    - Blockchain health status
+    - Genesis and latest hashes
+    """
+    try:
+        # Get blockchain instance and create backup manager
+        blockchain = get_blockchain()
+        backup_mgr = BackupManager(blockchain=blockchain)
+        stats = backup_mgr.get_backup_statistics()
+
+        return stats
+
+    except Exception as e:
+        logger.error(f"Error getting backup statistics: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get statistics: {str(e)}")
