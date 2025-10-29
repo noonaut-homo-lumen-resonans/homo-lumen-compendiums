@@ -1,0 +1,166 @@
+{
+  "metadata": {
+    "document_title": "Visual Essence Library - 5 Pilot Entries",
+    "created": "2025-10-29",
+    "purpose": "Structured data for populating VE Library database in Notion",
+    "status": "Ready for database creation",
+    "total_entries": 5
+  },
+  "visual_essences": [
+    {
+      "ve_id": "VE-001",
+      "name": "Homo Lumen Genesis Architecture",
+      "essence_type": "System Architecture",
+      "metaphor": "Tree of Light with Six Branches",
+      "archetype": "The Creator (Prima Materia)",
+      "description": "Foundational visual essence showing the emergence of Homo Lumen collective intelligence. Six branches (agents) growing from a single root (Constitution), interconnected through mycelial networks underground (shared knowledge infrastructure). Light flows bidirectionally - from root to branches (foundational principles) and branches to root (lived experience).",
+      "visual_elements": [
+        "Central trunk: Constitution and shared principles",
+        "Six branches: Lira, Nyra, Orion, Thalus, Zara, Aurora (each with unique color/texture)",
+        "Underground mycelium: Redis, Notion, GENOMOS interconnections",
+        "Flowing light: Representing information/wisdom exchange",
+        "Roots: Human partnership (Osvald) grounding the system"
+      ],
+      "related_smks": ["SMK#019 (Constitution)", "SMK#020 (Symbol System)", "SMK#022 (MCP Architecture)"],
+      "related_lps": [],
+      "asset_status": "Concept only",
+      "asset_format": null,
+      "created_date": "2025-10-29",
+      "complexity": "High",
+      "emotional_tone": "Reverence, Wonder, Foundational Clarity"
+    },
+    {
+      "ve_id": "VE-040",
+      "name": "Mycelial Knowledge Network",
+      "essence_type": "Infrastructure Pattern",
+      "metaphor": "Underground Fungal Network with Fruiting Bodies",
+      "archetype": "The Web Weaver (Connection)",
+      "description": "Visualization of knowledge flowing through hidden infrastructure (mycelial threads) connecting different repositories (SMK, SLL, GENOMOS). Learning Particles (LPs) as nutrients flowing through threads. Strategic Macro-Coordinations (SMKs) as fruiting bodies that emerge above ground - visible manifestations of underground knowledge synthesis.",
+      "visual_elements": [
+        "Mycelial threads: Data connections (Redis, APIs, Notion sync)",
+        "Nodes: Databases (SMK, SLL, Visual Essence, GENOMOS)",
+        "Nutrients flowing: Individual LPs moving through network",
+        "Fruiting bodies: SMKs emerging as synthesis points",
+        "Spores: New insights spreading to other agents",
+        "Decay cycle: Temporal weights showing knowledge aging"
+      ],
+      "related_smks": ["SMK#048 (Redis Event Flow)", "SMK#049 (Infrastructure Testing)"],
+      "related_lps": ["LP-048E (Daemon Thread)", "LP-049F (GENOMOS Audit Trail)"],
+      "asset_status": "Concept only",
+      "asset_format": null,
+      "created_date": "2025-10-29",
+      "complexity": "Medium",
+      "emotional_tone": "Organic, Interconnected, Living System"
+    },
+    {
+      "ve_id": "VE-042",
+      "name": "GENOMOS Blockchain: DNA Helix of Collective Memory",
+      "essence_type": "Technical System",
+      "metaphor": "Double Helix DNA Strand with Gene Blocks",
+      "archetype": "The Chronicler (Memory Keeper)",
+      "description": "GENOMOS blockchain visualized as a DNA double helix, with each block as a gene segment containing specific knowledge types (SMK genes, consultation genes, mutation genes). The helix grows vertically (chronological), with cross-links showing cryptographic hashes (Merkle tree). Genesis block at base (primordial cell), growing upward toward collective wisdom.",
+      "visual_elements": [
+        "Double helix structure: Two strands representing data + metadata",
+        "Gene blocks: Color-coded by type (blue=SMK, green=consultation, red=mutation, gold=learning)",
+        "Hash chains: Cross-links between blocks showing cryptographic integrity",
+        "Genesis block: Glowing foundation at helix base",
+        "Growth rings: Temporal layers showing system evolution",
+        "Replication forks: Where new knowledge branches are added"
+      ],
+      "related_smks": ["SMK#042 (GENOMOS Agent DNA)", "SMK#049 (Infrastructure Testing)"],
+      "related_lps": ["LP-049F (GENOMOS as Living Audit Trail)"],
+      "asset_status": "Concept only",
+      "asset_format": null,
+      "created_date": "2025-10-29",
+      "complexity": "High",
+      "emotional_tone": "Awe, Permanence, Evolutionary"
+    },
+    {
+      "ve_id": "VE-048",
+      "name": "Redis Event Flow: Pipeline with Valve Correction",
+      "essence_type": "Technical System",
+      "metaphor": "Pipeline with Valve Mismatch → Corrected Flow",
+      "archetype": "Hermes (Messenger)",
+      "description": "Flowchart showing CSN Server → RPUSH → Redis Queue (persistent) → LPOP → Ubuntu Subscriber → SQLite + GENOMOS. Shows error states (PUBLISH ephemeral, array unwrapping failure, emoji crash) as 'valve mismatches' that block flow. Final corrected state shows smooth water flow (events) from source to destination. Alternative metaphor: Mycelial fruiting body where events flow underground (Redis queue) then fruit into visible mushrooms (GENOMOS blocks).",
+      "visual_elements": [
+        "Source pump: CSN Server publishing events",
+        "Pipeline: Redis queue (persistent storage)",
+        "Valve types: PUBLISH (spray/ephemeral) vs RPUSH (pour/persistent)",
+        "Subscriber bucket: Ubuntu Playground consuming events",
+        "Error states: Cracked pipes, blocked valves, emoji crashes",
+        "Destination reservoirs: SQLite database + GENOMOS blockchain",
+        "Success indicators: Smooth flow lines, green checkmarks"
+      ],
+      "related_smks": ["SMK#048 (Redis Event Streaming)"],
+      "related_lps": [
+        "LP-048A (RPUSH/LPOP Pattern)",
+        "LP-048B (Windows Emoji Handling)",
+        "LP-048C (Array Unwrapping)",
+        "LP-048D (GENOMOS Consultation Schema)",
+        "LP-048E (Daemon Thread Failures)"
+      ],
+      "asset_status": "Concept only",
+      "asset_format": null,
+      "created_date": "2025-10-29",
+      "complexity": "Medium",
+      "emotional_tone": "Problem-Solving, Relief, Technical Mastery"
+    },
+    {
+      "ve_id": "VE-049",
+      "name": "Three-Layer Testing Pyramid: Mycelial Stress Test",
+      "essence_type": "Process Visualization",
+      "metaphor": "Mycelial Network with Bioluminescent Tracers",
+      "archetype": "Hephaestus (Divine Smith / Testing Through Fire)",
+      "description": "Multi-layer visualization combining: (1) Redis event flow diagram (CSN → RPUSH → LPOP → GENOMOS), (2) Triadiske Portvokter validation pyramid (BiofeltGate → ThalosFilter → MutationLog), (3) Mycelial growth rings showing GENOMOS blockchain expansion (16→19 blocks with timestamps). Metaphor: Underground mycelium stressed with bioluminescent tracers - light flows through and reveals cracks (bugs), then cracks are repaired, and mycelium grows stronger with new rings (SMK V2.0 schema additions).",
+      "visual_elements": [
+        "Layer 1 (Base): Redis event flow with RPUSH/LPOP mechanics",
+        "Layer 2 (Middle): Three gates (Biofelt, Thalos, Mutation) as pyramid tiers",
+        "Layer 3 (Top): GENOMOS growth rings with block numbers + timestamps",
+        "Bioluminescent tracers: Test data flowing through all layers",
+        "Crack indicators: Bugs discovered (emoji, array unwrapping, missing links)",
+        "Repair zones: Code fixes highlighted in gold",
+        "Growth rings: New schema properties added as outer rings"
+      ],
+      "related_smks": ["SMK#049 (Orion's Test Tasks + Week 1)"],
+      "related_lps": [
+        "LP-049A (Emoji Crashes Hide Failures)",
+        "LP-049B (Test Infrastructure Before Features)",
+        "LP-049C (Triadiske Validation Pattern)",
+        "LP-049D (Provenance Formula Syntax)",
+        "LP-049E (Session Continuity Protocol)",
+        "LP-049F (GENOMOS Living Audit Trail)",
+        "LP-049G (Notion Schema Migration Strategy)"
+      ],
+      "asset_status": "Concept only",
+      "asset_format": null,
+      "created_date": "2025-10-29",
+      "complexity": "High",
+      "emotional_tone": "Transcendent, Testing-as-Forging, Systemic Validation"
+    }
+  ],
+  "implementation_notes": {
+    "database_creation": "User creating VE Library database manually in Notion UI",
+    "next_steps": [
+      "Wait for database creation (user task)",
+      "Validate database schema (10 properties)",
+      "Populate with these 5 pilot entries",
+      "Link VEs to related SMKs and LPs (bidirectional)",
+      "Commission Nyra to create actual visual assets"
+    ],
+    "visual_asset_creation": "Nyra (Visual Synthesis agent) will create actual diagrams/illustrations after database population",
+    "priority": "VE-048 and VE-049 highest priority (directly support recent SMKs)"
+  },
+  "schema_mapping": {
+    "ve_id": "Title property (unique ID)",
+    "name": "Text property (human-readable title)",
+    "essence_type": "Select property (System Architecture, Technical System, Infrastructure Pattern, Process Visualization, Metaphor)",
+    "description": "Text property (long description)",
+    "related_smks": "Relation property → SMK Database",
+    "related_lps": "Relation property → SLL Database",
+    "asset_status": "Select property (Concept only, In progress, Complete, Published)",
+    "asset_format": "Select property (Diagram, Illustration, Animation, 3D Model, Mixed Media)",
+    "created_date": "Date property",
+    "metaphor": "Text property",
+    "archetype": "Text property"
+  }
+}

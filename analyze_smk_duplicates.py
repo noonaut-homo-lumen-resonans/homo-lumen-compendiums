@@ -23,11 +23,24 @@ if sys.stdout.encoding != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # Get Notion API key
-NOTION_API_KEY = os.environ.get('NOTION_API_KEY', '***REMOVED***')
+# Try environment variable first
+NOTION_API_KEY = os.environ.get('NOTION_API_KEY')
+
+# If not in environment, try reading from .env file
 if not NOTION_API_KEY:
-    print("❌ ERROR: NOTION_API_KEY not found in environment")
+    env_file = os.path.join(os.path.dirname(__file__), 'ama-backend', '.env')
+    if os.path.exists(env_file):
+        with open(env_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                if line.startswith('NOTION_API_KEY='):
+                    NOTION_API_KEY = line.split('=', 1)[1].strip()
+                    break
+
+if not NOTION_API_KEY:
+    print("❌ ERROR: NOTION_API_KEY not found in environment or .env file")
     print("Set it with: set NOTION_API_KEY=your_key_here (Windows)")
     print("Or: export NOTION_API_KEY='your_key_here' (Linux/Mac)")
+    print("Or: Add it to ama-backend/.env file")
     sys.exit(1)
 
 notion = Client(auth=NOTION_API_KEY)

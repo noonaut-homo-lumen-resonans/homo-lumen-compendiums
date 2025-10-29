@@ -1,72 +1,33 @@
-# Dependencies
-node_modules/
-.pnp
-.pnp.js
-
-# Testing
-coverage/
-.coverage
-.pytest_cache/
-test-reports/
-__pycache__/
-*.pyc
-*.pyo
-
-# Next.js
-.next/
-out/
-build/
-dist/
-
-# Production
-build/
-
-# Misc
-.DS_Store
-*.pem
+# Credentials and secrets
+credentials/
+*.json.secret
+*.env
 .env
-.env*.local
 
-# Debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info/
 
-# IDE
+# Node
+node_modules/
+.npm
+
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
 # OS
+.DS_Store
 Thumbs.db
 
 # Temporary files
-*.log
 *.tmp
-nul
-
-# Claude Code settings
-.claude/settings.local.json
-
-# Database files
-*.db
-*.sqlite
-*.sqlite3
-
-# Backup and analysis files
-smk_backup_*.json
-smk_deduplication_*.json
-smk_duplicates_*.json
-
-# Cleanup scripts
-sanitize_keys.sh
-
-# Case Studies analysis scripts (may contain API keys)
-analyze_cs_duplicates.py
-deduplicate_cs.py
-restore_cs_from_backup.py
-cs_backup_*.json
-cs_duplicates_analysis_*.json
-run_cs_*.bat
+*.log

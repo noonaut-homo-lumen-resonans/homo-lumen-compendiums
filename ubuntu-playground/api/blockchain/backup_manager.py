@@ -295,3 +295,52 @@ class BackupManager:
             "genesis_hash": self.blockchain.chain[0].hash,
             "latest_hash": self.blockchain.chain[-1].hash
         }
+
+    def create_backup_with_drive(
+        self,
+        drive_manager,
+        backup_dir: str = "./backups"
+    ) -> Dict[str, Any]:
+        """
+        Create backup and upload to Google Drive.
+
+        Args:
+            drive_manager: GoogleDriveManager instance
+            backup_dir: Local backup directory
+
+        Returns:
+            Dict with backup info including Drive file ID
+        """
+        # Create local backup first
+        backup_result = self.create_backup(backup_dir)
+
+        if not backup_result.get("success"):
+            return backup_result
+
+        # Upload to Google Drive
+        backup_file = backup_result["backup_file"]
+        drive_result = drive_manager.upload_backup(backup_file)
+
+        if drive_result.get("success"):
+            # Store Drive file ID as IPFS_BACKUP gene (repurposed for Drive)
+            try:
+                drive_backup_gene = self.blockchain.add_gene(
+                    gene_type=GeneType.IPFS_BACKUP,  # Repurposed for Drive
+                    data={
+                        "drive_file_id": drive_result["file_id"],
+                        "drive_file_name": drive_result["name"],
+                        "backup_timestamp": backup_result["timestamp"],
+                        "local_backup_path": backup_file,
+                        "backup_hash": backup_result["backup_hash"],
+                        "web_view_link": drive_result.get("web_view_link", "")
+                    },
+                    agent="genomos-backup-system",
+                    tags=["backup", "google-drive", "automated"]
+                )
+
+                backup_result["drive_upload"] = drive_result
+                backup_result["drive_gene_block"] = drive_backup_gene.index
+            except Exception as e:
+                backup_result["drive_gene_error"] = str(e)
+
+        return backup_result

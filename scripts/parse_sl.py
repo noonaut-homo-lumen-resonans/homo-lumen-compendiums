@@ -301,26 +301,28 @@ def create_notion_page(sl_data):
         }
 
     # Add NEW FIELDS (Week 2 - Shadow Taxonomy) if available
+    # TEMPORARILY DISABLED: These properties don't exist in SL database yet
+    # TODO: Add these properties to SL database, then re-enable
 
-    if sl_data.get('phoenix_phase'):
-        properties['Phoenix_Phase'] = {
-            'select': {'name': sl_data['phoenix_phase']}
-        }
+    # if sl_data.get('phoenix_phase'):
+    #     properties['Phoenix_Phase'] = {
+    #         'select': {'name': sl_data['phoenix_phase']}
+    #     }
 
-    if sl_data.get('integration_practice'):
-        properties['Integration_Practice'] = {
-            'rich_text': [{'text': {'content': sl_data['integration_practice'][:2000]}}]
-        }
+    # if sl_data.get('integration_practice'):
+    #     properties['Integration_Practice'] = {
+    #         'rich_text': [{'text': {'content': sl_data['integration_practice'][:2000]}}]
+    #     }
 
-    if sl_data.get('transformation_status'):
-        properties['Transformation_Status'] = {
-            'select': {'name': sl_data['transformation_status']}
-        }
+    # if sl_data.get('transformation_status'):
+    #     properties['Transformation_Status'] = {
+    #         'select': {'name': sl_data['transformation_status']}
+    #     }
 
-    # ARF_Response is always included (defaults to False)
-    properties['ARF_Response'] = {
-        'checkbox': sl_data.get('arf_response', False)
-    }
+    # # ARF_Response is always included (defaults to False)
+    # properties['ARF_Response'] = {
+    #     'checkbox': sl_data.get('arf_response', False)
+    # }
 
     payload = {
         'parent': {'database_id': SL_DATABASE_ID},
