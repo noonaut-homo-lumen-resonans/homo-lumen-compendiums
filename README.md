@@ -167,6 +167,7 @@ See [diagrams/README.md](diagrams/README.md) for detailed documentation.
 ### Notion
 - **Spektral Dimensjoner Database:** https://www.notion.so/1d48fec9293180ba8aa5d6b099021ccd
 - **Genesis Hub:** https://www.notion.so/1d48fec929318040b675f7c9cbb64713
+- **Emergent Patterns Database:** https://www.notion.so/2988fec9293180509658e93447b3b259
 
 ### Linear
 - **Project:** NAV-Losen Innovation Norge Søknad

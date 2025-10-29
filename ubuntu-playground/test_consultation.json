@@ -1,0 +1,29 @@
+{
+  "consultation_id": "CONS-2025-10-29-001",
+  "timestamp": "2025-10-29T21:51:00Z",
+  "human_query": "Hvordan fikser vi Google Workspace OAuth-integrering for GENOMOS når vi får 404-feil på Shared Drive?",
+  "agent_responses": {
+    "code": {
+      "response": "Problemet er OAuth scope mismatch. drive.file gir kun tilgang til filer APPEN opprettet, ikke eksisterende shared folders. Vi må endre til drive scope (full access) og oppdatere OAuth Consent Screen. Shared Drives krever også supportsAllDrives=True parameter i alle API-kall.",
+      "confidence": 0.95
+    },
+    "orion": {
+      "response": "Arkitektonisk sett må vi skille mellom OAuth autentisering (token generering) og API autorisasjon (ressurs-tilgang). 4 lag må alignes: code scopes, OAuth Consent Screen, token scopes, og user permissions. Consent Screen er source of truth.",
+      "confidence": 0.92
+    },
+    "thalus": {
+      "response": "Etisk perspektiv: OAuth flow må være transparent for brukeren. Timeout-problemer (localhost callback) frustrerer. Vi bør vurdere service account for automatisering, men OAuth med user consent er riktig for initial setup - respekterer brukerens kontroll over data.",
+      "confidence": 0.88
+    }
+  },
+  "synthesis": {
+    "conclusion": "OAuth-problemet hadde tre lag: (1) Feil scope (drive.file -> drive), (2) OAuth Consent Screen manglet scopes, (3) Shared Drive krever eksplisitt API-parameter. Løsning krevde 5 re-autentiseringer, scope-oppdatering i både code OG Cloud Console, og eksplisitt folder-tilgang for OAuth-bruker. Triple-redundant storage (Blockchain + SQLite + Google Workspace) nå fully operational.",
+    "related_smk": ["SMK#045", "SMK#046"],
+    "key_insights": [
+      "OAuth success != API success - Consent Screen er source of truth",
+      "drive.file scope kun for app-created files, drive scope for existing folders",
+      "Shared Drives != My Drive - require supportsAllDrives=True",
+      "Token invalidation manual - delete token.json when scopes change"
+    ]
+  }
+}

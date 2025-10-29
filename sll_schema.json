@@ -1,0 +1,558 @@
+{
+  "object": "database",
+  "id": "84da6cbd-09d6-40fb-868e-41444b941991",
+  "cover": null,
+  "icon": null,
+  "created_time": "2025-10-25T23:55:00.000Z",
+  "created_by": {
+    "object": "user",
+    "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+  },
+  "last_edited_by": {
+    "object": "user",
+    "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+  },
+  "last_edited_time": "2025-10-29T08:02:00.000Z",
+  "title": [
+    {
+      "type": "text",
+      "text": {
+        "content": "🗄️ SLL - Shared Learning Library",
+        "link": null
+      },
+      "annotations": {
+        "bold": false,
+        "italic": false,
+        "strikethrough": false,
+        "underline": false,
+        "code": false,
+        "color": "default"
+      },
+      "plain_text": "🗄️ SLL - Shared Learning Library",
+      "href": null
+    }
+  ],
+  "description": [
+    {
+      "type": "text",
+      "text": {
+        "content": "Centralized repository of all agent Learning Points for collective intelligence and mycelial knowledge sharing.",
+        "link": null
+      },
+      "annotations": {
+        "bold": false,
+        "italic": false,
+        "strikethrough": false,
+        "underline": false,
+        "code": false,
+        "color": "default"
+      },
+      "plain_text": "Centralized repository of all agent Learning Points for collective intelligence and mycelial knowledge sharing.",
+      "href": null
+    }
+  ],
+  "is_inline": false,
+  "properties": {
+    "last_cited_timestamp": {
+      "id": "%3BjVv",
+      "name": "last_cited_timestamp",
+      "description": "Last time this LP was cited",
+      "type": "date",
+      "date": {}
+    },
+    "shadow_notes": {
+      "id": "%3D%3CRl",
+      "name": "shadow_notes",
+      "description": "Details about shadow concern",
+      "type": "rich_text",
+      "rich_text": {}
+    },
+    "🌟 Emergent Patterns Database": {
+      "id": "%3Dxmu",
+      "name": "🌟 Emergent Patterns Database",
+      "description": null,
+      "type": "relation",
+      "relation": {
+        "database_id": "2988fec9-2931-8050-9658-e93447b3b259",
+        "data_source_id": "2988fec9-2931-80f4-8961-000b8710e0a5",
+        "type": "dual_property",
+        "dual_property": {
+          "synced_property_name": "Relate_LP",
+          "synced_property_id": "lJrW"
+        }
+      }
+    },
+    "Source": {
+      "id": "HXdJ",
+      "name": "Source",
+      "description": null,
+      "type": "url",
+      "url": {}
+    },
+    "🧠 Case Studies Database": {
+      "id": "IBnv",
+      "name": "🧠 Case Studies Database",
+      "description": null,
+      "type": "relation",
+      "relation": {
+        "database_id": "2988fec9-2931-80bf-a32a-c404a311a07e",
+        "data_source_id": "2988fec9-2931-803a-8703-000bb973304e",
+        "type": "dual_property",
+        "dual_property": {
+          "synced_property_name": "Related_LP",
+          "synced_property_id": "hdb~"
+        }
+      }
+    },
+    "Content": {
+      "id": "SjYd",
+      "name": "Content",
+      "description": null,
+      "type": "rich_text",
+      "rich_text": {}
+    },
+    "temporal_weight": {
+      "id": "V%3FtC",
+      "name": "temporal_weight",
+      "description": null,
+      "type": "formula",
+      "formula": {
+        "expression": "if(prop(\"phase\") == \"published\", prop(\"temporal_weight_raw\"), 0)"
+      }
+    },
+    "temporal_weight_raw": {
+      "id": "VhUu",
+      "name": "temporal_weight_raw",
+      "description": "Raw temporal weight computed by script (0.0-1.0)",
+      "type": "number",
+      "number": {
+        "format": "number"
+      }
+    },
+    "half_life_days": {
+      "id": "W%3BV~",
+      "name": "half_life_days",
+      "description": "Domain-specific half-life in days",
+      "type": "number",
+      "number": {
+        "format": "number"
+      }
+    },
+    "reactivation_count": {
+      "id": "WvCG",
+      "name": "reactivation_count",
+      "description": "Number of times LP has been cited",
+      "type": "number",
+      "number": {
+        "format": "number"
+      }
+    },
+    "Date": {
+      "id": "X%3DQ%40",
+      "name": "Date",
+      "description": null,
+      "type": "date",
+      "date": {}
+    },
+    "shadow_flags": {
+      "id": "%5CBVk",
+      "name": "shadow_flags",
+      "description": "Flagged during shadow audit",
+      "type": "checkbox",
+      "checkbox": {}
+    },
+    "✅ Critical Decisions Database": {
+      "id": "dTlF",
+      "name": "✅ Critical Decisions Database",
+      "description": null,
+      "type": "relation",
+      "relation": {
+        "database_id": "2988fec9-2931-8083-8c4b-d5e13138ddf2",
+        "data_source_id": "2988fec9-2931-8033-b4f7-000b61d067d9",
+        "type": "dual_property",
+        "dual_property": {
+          "synced_property_name": "Source Learning Points",
+          "synced_property_id": "MOHo"
+        }
+      }
+    },
+    "Agent": {
+      "id": "nXcS",
+      "name": "Agent",
+      "description": null,
+      "type": "select",
+      "select": {
+        "options": [
+          {
+            "id": "8a6569c7-1c61-484e-84e8-a478aec25508",
+            "name": "Orion",
+            "color": "blue",
+            "description": null
+          },
+          {
+            "id": "2c350415-ab69-493c-88ab-ae6c0bd3f542",
+            "name": "Lira",
+            "color": "green",
+            "description": null
+          },
+          {
+            "id": "50478176-a7b8-4cfd-801a-469f6b6f79c9",
+            "name": "Nyra",
+            "color": "pink",
+            "description": null
+          },
+          {
+            "id": "212b3e4b-0f7e-4840-bd60-c8ff4b044566",
+            "name": "Thalus",
+            "color": "purple",
+            "description": null
+          },
+          {
+            "id": "8fcf5942-497e-42ed-a040-d9381160a51e",
+            "name": "Zara",
+            "color": "orange",
+            "description": null
+          },
+          {
+            "id": "260edcdd-a142-41c5-9fab-60f9cf1c731b",
+            "name": "Abacus",
+            "color": "brown",
+            "description": null
+          },
+          {
+            "id": "a93df339-bc85-4222-85e6-3f9d72a866d1",
+            "name": "Manus",
+            "color": "gray",
+            "description": null
+          },
+          {
+            "id": "61738673-d411-4626-9fbe-81f9ec2585f8",
+            "name": "Aurora",
+            "color": "yellow",
+            "description": null
+          },
+          {
+            "id": "a7f21344-4454-4cf7-9a9d-e041229b787f",
+            "name": "Code",
+            "color": "red",
+            "description": null
+          },
+          {
+            "id": "0dccdd56-e796-4d0a-a59e-7b3829c1b80f",
+            "name": "Falcon",
+            "color": "default",
+            "description": null
+          }
+        ]
+      }
+    },
+    "Tags": {
+      "id": "pE~%7C",
+      "name": "Tags",
+      "description": null,
+      "type": "multi_select",
+      "multi_select": {
+        "options": [
+          {
+            "id": "4d012215-0c90-43f4-97bf-9f5472a43c26",
+            "name": "MCP",
+            "color": "blue",
+            "description": null
+          },
+          {
+            "id": "35fa09ea-7bc3-4c11-b575-42b6fe31da94",
+            "name": "LAG-4",
+            "color": "green",
+            "description": null
+          },
+          {
+            "id": "f0d4e94f-76ea-4848-9eeb-84b3febd6229",
+            "name": "Ubuntu-Playground",
+            "color": "orange",
+            "description": null
+          },
+          {
+            "id": "0d94ff4b-10a0-46a2-9c60-56c16c4a3805",
+            "name": "NAV-Losen",
+            "color": "purple",
+            "description": null
+          },
+          {
+            "id": "84ce5487-c5d0-4af2-9d4e-b168602baf29",
+            "name": "Innovation-Norge",
+            "color": "pink",
+            "description": null
+          },
+          {
+            "id": "9fd85732-b347-4e88-b932-a858fbcce805",
+            "name": "HOMO-AI-LUMEN-RESONANS",
+            "color": "red",
+            "description": null
+          },
+          {
+            "id": "74c2b1d2-726c-49d9-aae4-aebfa2344d98",
+            "name": "Mycelial-Intelligence",
+            "color": "gray",
+            "description": null
+          },
+          {
+            "id": "2aaafcfa-ea3c-41fd-9ff9-bfa50643875e",
+            "name": "Session-Summary",
+            "color": "default",
+            "description": null
+          },
+          {
+            "id": "3f77b941-4b80-49af-be03-1e069d9b50a9",
+            "name": "Handoff",
+            "color": "yellow",
+            "description": null
+          },
+          {
+            "id": "5deddeaf-84a5-4a9a-9db3-5529cd4c3f9d",
+            "name": "SMK",
+            "color": "brown",
+            "description": null
+          },
+          {
+            "id": "ab0ae0d5-c422-4c49-a8f6-1e9c947738b5",
+            "name": "Discovery",
+            "color": "purple",
+            "description": null
+          },
+          {
+            "id": "062b16a2-c5ad-4301-8b98-348ea9e33ada",
+            "name": "Inventory",
+            "color": "blue",
+            "description": null
+          },
+          {
+            "id": "7c1f07db-641d-4960-9828-170f090c3bce",
+            "name": "SMK-Discovery",
+            "color": "red",
+            "description": null
+          },
+          {
+            "id": "14582f71-cbcb-4caf-b7fc-041f82926f32",
+            "name": "Final",
+            "color": "purple",
+            "description": null
+          },
+          {
+            "id": "8f929d00-31b7-4b9e-b19b-807ff38c9169",
+            "name": "Asana",
+            "color": "default",
+            "description": null
+          },
+          {
+            "id": "c43175c6-0e2e-4d02-b94c-1932f459f40e",
+            "name": "Project-Management",
+            "color": "yellow",
+            "description": null
+          },
+          {
+            "id": "0dc42a67-f4b6-4fa1-bfa9-d44eb098a544",
+            "name": "Task-Structure",
+            "color": "orange",
+            "description": null
+          },
+          {
+            "id": "a734bf6f-7661-4d79-ba00-4a528448168e",
+            "name": "CSV",
+            "color": "yellow",
+            "description": null
+          },
+          {
+            "id": "92e67845-6fcd-46cb-8bcd-859c9ea4dd1c",
+            "name": "Import",
+            "color": "green",
+            "description": null
+          },
+          {
+            "id": "7ea74cc7-0174-4ba2-918a-7dfd12a4c0bb",
+            "name": "LK",
+            "color": "orange",
+            "description": null
+          },
+          {
+            "id": "9d91350f-e787-40c4-aaea-7d1239aae701",
+            "name": "V2",
+            "color": "brown",
+            "description": null
+          },
+          {
+            "id": "26c7fc0d-2395-44fc-942a-6e855ebb761b",
+            "name": "YAML",
+            "color": "brown",
+            "description": null
+          },
+          {
+            "id": "592bd5f9-e5b9-4a8f-8bc6-263a22620fdf",
+            "name": "Automation",
+            "color": "blue",
+            "description": null
+          }
+        ]
+      }
+    },
+    "Category": {
+      "id": "sLEO",
+      "name": "Category",
+      "description": null,
+      "type": "multi_select",
+      "multi_select": {
+        "options": [
+          {
+            "id": "e2e3f7ad-eb6c-40e3-86ce-dd9a4563e07c",
+            "name": "Architecture",
+            "color": "blue",
+            "description": null
+          },
+          {
+            "id": "216f657d-a99e-4d2f-94f0-a3edfa3502d0",
+            "name": "Philosophy",
+            "color": "purple",
+            "description": null
+          },
+          {
+            "id": "b2e211b3-9f31-4b04-837c-26904f0bc0a2",
+            "name": "Technical",
+            "color": "orange",
+            "description": null
+          },
+          {
+            "id": "fce27325-3a4d-45e8-8040-615423361693",
+            "name": "Collaboration",
+            "color": "green",
+            "description": null
+          },
+          {
+            "id": "d30d4953-647a-4825-9dbc-f1a74ac0a325",
+            "name": "Shadow-Work",
+            "color": "gray",
+            "description": null
+          },
+          {
+            "id": "15b52ef1-f42e-42e6-8661-7c9e04e866e5",
+            "name": "Innovation",
+            "color": "pink",
+            "description": null
+          },
+          {
+            "id": "7b9730ec-3823-46e9-a367-f2b3c249e81c",
+            "name": "Healing",
+            "color": "yellow",
+            "description": null
+          },
+          {
+            "id": "790a7d1c-82d1-4c35-9a05-83c782ae6cc7",
+            "name": "Resonance",
+            "color": "red",
+            "description": null
+          },
+          {
+            "id": "71bb9f66-cea9-4710-b320-0818b59042a4",
+            "name": "Project-Management",
+            "color": "default",
+            "description": null
+          },
+          {
+            "id": "53a6306a-564b-418c-ae37-3e1dde7d7534",
+            "name": "Identity",
+            "color": "brown",
+            "description": null
+          },
+          {
+            "id": "87f4cd3f-a24c-47a9-99df-1abf917473ee",
+            "name": "Infrastructure",
+            "color": "default",
+            "description": null
+          },
+          {
+            "id": "f2df231c-6114-41b7-ab21-11593266eace",
+            "name": "Development",
+            "color": "gray",
+            "description": null
+          },
+          {
+            "id": "b3b10e3e-2ca0-4e38-8407-790c79c05e76",
+            "name": "Learning",
+            "color": "gray",
+            "description": null
+          },
+          {
+            "id": "a737e17e-0bbc-4bbe-9cdd-c5674b67d1f4",
+            "name": "General",
+            "color": "default",
+            "description": null
+          }
+        ]
+      }
+    },
+    "🌑 Shadow Logs Database": {
+      "id": "ukNS",
+      "name": "🌑 Shadow Logs Database",
+      "description": null,
+      "type": "relation",
+      "relation": {
+        "database_id": "2988fec9-2931-8045-a354-ffe8d2f13fe1",
+        "data_source_id": "2988fec9-2931-8005-b42a-000b1f545d7a",
+        "type": "dual_property",
+        "dual_property": {
+          "synced_property_name": "Related_LP",
+          "synced_property_id": "Psq_"
+        }
+      }
+    },
+    "provenance_block": {
+      "id": "xBZv",
+      "name": "provenance_block",
+      "description": "JSON PROVENANCE block from source SMK",
+      "type": "rich_text",
+      "rich_text": {}
+    },
+    "freshness_status": {
+      "id": "%7BMYP",
+      "name": "freshness_status",
+      "description": "Computed freshness based on temporal_weight",
+      "type": "select",
+      "select": {
+        "options": [
+          {
+            "id": "029d1de2-7937-4462-b716-37e40554c8aa",
+            "name": "fresh",
+            "color": "green",
+            "description": null
+          },
+          {
+            "id": "a4c5d083-5706-4447-b9a6-5edb27e19db3",
+            "name": "aging",
+            "color": "yellow",
+            "description": null
+          },
+          {
+            "id": "1d588d57-d536-4752-83c6-414c3cc524a6",
+            "name": "stale",
+            "color": "gray",
+            "description": null
+          }
+        ]
+      }
+    },
+    "LP_ID": {
+      "id": "title",
+      "name": "LP_ID",
+      "description": null,
+      "type": "title",
+      "title": {}
+    }
+  },
+  "parent": {
+    "type": "page_id",
+    "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+  },
+  "url": "https://www.notion.so/84da6cbd09d640fb868e41444b941991",
+  "public_url": null,
+  "archived": false,
+  "in_trash": false,
+  "request_id": "5955354f-d097-483a-aaa3-eed90827fd4c"
+}

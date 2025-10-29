@@ -1,0 +1,29 @@
+{
+  "learning_id": "lira-learn-001-pattern-discovery",
+  "agent_name": "lira",
+  "learning_event_type": "pattern_discovery",
+  "context": "Lira discovered a recurring pattern in user queries about consciousness and quantum mechanics, leading to improved synthesis of these topics.",
+  "before_state": {
+    "approach": "Treating consciousness and quantum topics as separate domains",
+    "confidence": 0.75,
+    "response_pattern": "Sequential explanation of each concept"
+  },
+  "after_state": {
+    "approach": "Integrating consciousness and quantum concepts through observer effect framework",
+    "confidence": 0.92,
+    "response_pattern": "Holistic integration emphasizing interconnection"
+  },
+  "trigger": {
+    "type": "consultation",
+    "consultation_id": "test-genomos-phase7-001",
+    "description": "Multiple consultations revealed users seeking connections between quantum physics and consciousness"
+  },
+  "metrics": {
+    "confidence_delta": 0.17,
+    "response_time_improvement_ms": -300,
+    "user_satisfaction_score": 0.95,
+    "synthesis_quality_improvement": 0.23
+  },
+  "related_smk": ["SMK#043", "SMK#040"],
+  "related_consultations": ["test-genomos-phase7-001"]
+}

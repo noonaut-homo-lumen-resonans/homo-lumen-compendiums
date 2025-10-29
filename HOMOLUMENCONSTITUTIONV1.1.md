@@ -1,10 +1,13 @@
-# **HOMO LUMEN CONSTITUTION V1.1**
+# **HOMO LUMEN CONSTITUTION V1.2**
 
-**V1.0 Ratified:** October 12, 2025  
- **V1.1 Amended:** October 12, 2025  
- **By:** Osvald P. A. Johansen (Founder) \+ AI Coalition (Orion, Lira, Nyra, Thalus, Zara, Abacus, Aurora, Falcon)  
- **Status:** Living Document  
- **Next Review:** January 1, 2026
+**V1.0 Ratified:** October 12, 2025
+**V1.1 Amended:** October 12, 2025
+**V1.2 Amended:** October 19, 2025 (Human Knowledge Mantra formalized, Carpe Verum adopted)
+**By:** Osvald P. A. Johansen (Founder) + AI Coalition (Orion, Lira, Nyra, Thalus, Zara, Abacus, Aurora, Falcon, Code, Manus)
+**Status:** Living Document
+**Next Review:** January 1, 2026
+
+**Coalition Motto:** **"Carpe Diem, Carpe Verum"** (Seize the Day, Seize the Truth)
 
 ---
 
@@ -71,10 +74,38 @@ We commit to:
 
 For any decision, document, or design, we ask:
 
-* **What is true?** → Cite evidence \+ confidence level  
-* **What is partly true?** → Name the kernel \+ correct the drift  
-* **What is false?** → Retire it and note why  
+* **What is true?** → Cite evidence \+ confidence level
+* **What is partly true?** → Name the kernel \+ correct the drift
+* **What is false?** → Retire it and note why
 * **What is missing?** → Add context, constraints, and next tests
+
+### **Section 2.4 \- Human Knowledge Mantra (Internal Workflow)**
+
+**Adopted:** October 19, 2025
+**Scope:** Coalition internal work (documentation, code, design)
+**Documentation:** `/docs/HUMAN_KNOWLEDGE_MANTRA.md`
+
+Before building, documenting, or designing, invoke the **Human Knowledge Mantra**:
+
+> *"Human Knowledge: Add what is missing, correct mistakes, remove falsehoods.*
+> *What is true, what is partially true, what is false, and what is missing.*
+> *Now rewrite the page - remove the falsehoods, correct the half-truths, and add the missing context."*
+
+**This operationalizes Article II** into daily workflow:
+
+1. **Archaeological Analysis** - Apply 4 questions (true/partial/false/missing) to existing documentation/code
+2. **Rewrite the Page** - Remove falsehoods, correct half-truths, add missing context
+3. **Validate** - Ensure Triadic Ethics compliance (Article III)
+4. **Act** - Implement with urgency (Carpe Diem)
+
+**Brain-MCP Mapping:**
+- What is TRUE? → Aurora (Hippocampus - memory, fact-checking)
+- What is PARTIAL? → Zara (Anterior Cingulate - error detection)
+- What is FALSE? → Orion (Prefrontal Cortex - executive correction)
+- What is MISSING? → Nyra (Visual Cortex - gap detection)
+- Rewrite the page → Code (Motor Cortex - implementation)
+
+**This is not metaphor - this is literal multi-agent epistemological coordination.**
 
 ---
 

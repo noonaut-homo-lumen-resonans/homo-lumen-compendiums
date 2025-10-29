@@ -1,0 +1,53 @@
+name: Sync LKs to Notion
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  sync-lk-to-notion:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install notion-client pyyaml requests
+
+      - name: Parse LK files
+        id: parse
+        run: |
+          python .github/scripts/parse_lk_files.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+
+      - name: Sync to Notion LK Database
+        if: steps.parse.outputs.has_lks == 'true'
+        run: |
+          python .github/scripts/sync_lk_to_notion.py
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LK_DATABASE_ID: ${{ secrets.LK_DATABASE_ID }}
+          LK_DATA: ${{ steps.parse.outputs.lk_data }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+
+      - name: Report success
+        if: steps.parse.outputs.has_lks == 'true'
+        run: |
+          echo "✅ LKs synced to Notion Database"
+          echo "Count: ${{ steps.parse.outputs.lk_count }}"
+          echo "Database URL: https://www.notion.so/784556781fc14a14afc733f4eb51e0bc"

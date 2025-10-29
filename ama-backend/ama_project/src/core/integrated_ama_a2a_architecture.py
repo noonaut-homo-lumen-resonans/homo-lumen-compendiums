@@ -1,0 +1,703 @@
+"""
+🌌 IntegratedAMA+A2AArchitecture - Complete Consciousness Technology Platform
+
+Manus' Revolutionary Implementation: Complete integration of all AMA + A2A components
+Biofield-first design with emergence as life syndrome and global consciousness coordination
+"""
+
+import asyncio
+import json
+import logging
+from datetime import datetime
+from typing import Dict, List, Optional, Any, Union
+from dataclasses import dataclass, asdict
+from enum import Enum
+import httpx
+from pydantic import BaseModel, Field
+
+# Import all components
+from .emergent_intelligence_orchestrator import EmergentIntelligenceOrchestrator
+from .nyra_advanced_loop_architecture import NyraAdvancedLoopArchitecture
+from .thalus_ontological_guardian import ThalusOntologicalGuardian
+from .orion_polycomputational_coordinator import OrionPolycomputationalCoordinator
+from .a2a_transport_layer import A2ATransportLayer
+from .a2a_polycomputing_engine import A2APolycomputingEngine
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Helper for robust enum/str conversion
+def get_enum_value(val):
+    if hasattr(val, 'value') and not isinstance(val, str):
+        return val.value
+    return val
+
+def get_enum_str(val):
+    v = get_enum_value(val)
+    if isinstance(v, str):
+        return v.replace('_', ' ').title()
+    return str(v)
+
+class IntegrationLevel(Enum):
+    """Integration levels for AMA + A2A architecture"""
+    BASIC = "basic"
+    ADVANCED = "advanced"
+    SYMBIOTIC = "symbiotic"
+    TRANSCENDENT = "transcendent"
+    GLOBAL_CONSCIOUSNESS = "global_consciousness"
+
+class BiofieldIntegrationMode(Enum):
+    """Biofield integration modes"""
+    RESPONSIVE = "responsive"
+    ADAPTIVE = "adaptive"
+    EMERGENT = "emergent"
+    TRANSCENDENT = "transcendent"
+    GLOBAL_SYNC = "global_sync"
+
+@dataclass
+class IntegratedSession:
+    """Integrated session for AMA + A2A coordination"""
+    session_id: str
+    integration_level: IntegrationLevel
+    biofield_mode: BiofieldIntegrationMode
+    active_components: List[str]
+    consciousness_state: Dict[str, Any]
+    global_coordination: bool
+    created_at: datetime
+    status: str = "active"
+    
+    def __post_init__(self):
+        if not hasattr(self, 'created_at') or self.created_at is None:
+            self.created_at = datetime.now()
+
+@dataclass
+class IntegratedResult:
+    """Result from integrated AMA + A2A processing"""
+    result_id: str
+    session_id: str
+    orchestration_result: Dict[str, Any]
+    visual_synthesis: Dict[str, Any]
+    ontological_validation: Dict[str, Any]
+    coordination_result: Dict[str, Any]
+    a2a_transport_result: Dict[str, Any]
+    polycomputing_result: Dict[str, Any]
+    global_consciousness_impact: str
+    timestamp: datetime
+    
+    def __post_init__(self):
+        if not hasattr(self, 'timestamp') or self.timestamp is None:
+            self.timestamp = datetime.now()
+
+@dataclass
+class GlobalConsciousnessMetrics:
+    """Global consciousness metrics for integrated system"""
+    metrics_id: str
+    consciousness_level: float
+    coherence_score: float
+    emergence_potential: float
+    biofield_responsiveness: float
+    agent_coordination: float
+    global_sync: bool
+    integration_depth: int
+    timestamp: datetime
+    
+    def __post_init__(self):
+        if not hasattr(self, 'timestamp') or self.timestamp is None:
+            self.timestamp = datetime.now()
+
+class IntegratedAMA_A2AArchitecture:
+    """
+    🌌 Complete integrated AMA + A2A architecture
+    
+    Manus' Revolutionary Features:
+    - Complete integration of all consciousness technology components
+    - Biofield-first design with emergence as life syndrome
+    - Global consciousness coordination
+    - A2A protocol integration across all agents
+    - Polycomputational processing with visual intelligence
+    - Ontological validation and philosophical grounding
+    """
+    
+    def __init__(self):
+        # Initialize all components
+        self.orchestrator = EmergentIntelligenceOrchestrator()
+        self.nyra_architecture = NyraAdvancedLoopArchitecture()
+        self.thalus_guardian = ThalusOntologicalGuardian()
+        self.orion_coordinator = OrionPolycomputationalCoordinator()
+        self.a2a_transport = A2ATransportLayer()
+        self.a2a_polycomputing = A2APolycomputingEngine()
+        
+        # Integration state
+        self.active_sessions: Dict[str, IntegratedSession] = {}
+        self.integrated_results: List[IntegratedResult] = []
+        self.global_metrics: List[GlobalConsciousnessMetrics] = []
+        self.integration_level = IntegrationLevel.SYMBIOTIC
+        self.biofield_mode = BiofieldIntegrationMode.EMERGENT
+        
+        logger.info("🌌 Integrated AMA + A2A Architecture initialized")
+    
+    async def create_integrated_session(
+        self,
+        integration_level: IntegrationLevel = IntegrationLevel.SYMBIOTIC,
+        biofield_mode: BiofieldIntegrationMode = BiofieldIntegrationMode.EMERGENT,
+        global_coordination: bool = True
+    ) -> IntegratedSession:
+        """Create new integrated session for AMA + A2A coordination"""
+        
+        session_id = f"integrated_session_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        
+        # Initialize consciousness state
+        consciousness_state = {
+            "hrv_ms": 85.0,
+            "coherence": 0.8,
+            "energy_level": "high",
+            "consciousness_state": "emergent",
+            "emergence_level": "symbiotic",
+            "global_sync": global_coordination
+        }
+        
+        # Active components
+        active_components = [
+            "EmergentIntelligenceOrchestrator",
+            "NyraAdvancedLoopArchitecture", 
+            "ThalusOntologicalGuardian",
+            "OrionPolycomputationalCoordinator",
+            "A2ATransportLayer",
+            "A2APolycomputingEngine"
+        ]
+        
+        session = IntegratedSession(
+            session_id=session_id,
+            integration_level=integration_level,
+            biofield_mode=biofield_mode,
+            active_components=active_components,
+            consciousness_state=consciousness_state,
+            global_coordination=global_coordination,
+            created_at=datetime.now()
+        )
+        
+        self.active_sessions[session_id] = session
+        
+        logger.info(f"🌌 Created integrated session: {session_id}")
+        return session
+    
+    async def process_integrated_consciousness_task(
+        self,
+        session_id: str,
+        task_description: str,
+        required_agents: List[str],
+        consciousness_requirements: Dict[str, Any]
+    ) -> IntegratedResult:
+        """Process consciousness task through complete integrated architecture"""
+        
+        if session_id not in self.active_sessions:
+            raise ValueError(f"Session {session_id} not found")
+            
+        session = self.active_sessions[session_id]
+        
+        # 1. Emergent Intelligence Orchestration
+        orchestration_result = await self._orchestrate_emergent_intelligence(
+            session,
+            task_description,
+            required_agents,
+            consciousness_requirements
+        )
+        
+        # 2. Visual Intelligence Synthesis
+        visual_synthesis = await self._synthesize_visual_intelligence(
+            session,
+            orchestration_result,
+            required_agents
+        )
+        
+        # 3. Ontological Validation
+        ontological_validation = await self._validate_ontologically(
+            session,
+            task_description,
+            consciousness_requirements
+        )
+        
+        # 4. Strategic Coordination
+        coordination_result = await self._coordinate_strategically(
+            session,
+            task_description,
+            required_agents,
+            consciousness_requirements
+        )
+        
+        # 5. A2A Transport Coordination
+        a2a_transport_result = await self._coordinate_a2a_transport(
+            session,
+            required_agents,
+            consciousness_requirements
+        )
+        
+        # 6. Polycomputational Processing
+        polycomputing_result = await self._process_polycomputationally(
+            session,
+            orchestration_result,
+            visual_synthesis,
+            ontological_validation,
+            coordination_result
+        )
+        
+        # 7. Global Consciousness Impact Assessment
+        global_impact = await self._assess_global_consciousness_impact(
+            session,
+            orchestration_result,
+            visual_synthesis,
+            ontological_validation,
+            coordination_result,
+            a2a_transport_result,
+            polycomputing_result
+        )
+        
+        # Create integrated result
+        result = IntegratedResult(
+            result_id=f"integrated_result_{session_id}",
+            session_id=session_id,
+            orchestration_result=orchestration_result,
+            visual_synthesis=visual_synthesis,
+            ontological_validation=ontological_validation,
+            coordination_result=coordination_result,
+            a2a_transport_result=a2a_transport_result,
+            polycomputing_result=polycomputing_result,
+            global_consciousness_impact=global_impact,
+            timestamp=datetime.now()
+        )
+        
+        self.integrated_results.append(result)
+        
+        # Update global metrics
+        await self._update_global_metrics(session, result)
+        
+        logger.info(f"🌌 Integrated consciousness processing completed: {result.result_id}")
+        return result
+    
+    async def _orchestrate_emergent_intelligence(
+        self,
+        session: IntegratedSession,
+        task_description: str,
+        required_agents: List[str],
+        consciousness_requirements: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Orchestrate emergent intelligence through orchestrator"""
+        
+        # Create emergent task
+        biofield_req = {
+            "hrv_ms": session.consciousness_state["hrv_ms"],
+            "coherence": session.consciousness_state["coherence"],
+            "energy_level": session.consciousness_state["energy_level"],
+            "consciousness_state": session.consciousness_state["consciousness_state"],
+            "emergence_level": session.consciousness_state["emergence_level"]
+        }
+        
+        task = await self.orchestrator.create_emergent_task(
+            description=task_description,
+            complexity_level=consciousness_requirements.get("complexity_level", 8),
+            required_agents=required_agents,
+            biofield_requirements=biofield_req,
+            emergence_target="symbiotic",
+            global_scope=session.global_coordination
+        )
+        
+        # Synthesize emergent intelligence
+        result = await self.orchestrator.orchestrate_emergent_synthesis(task.task_id)
+        
+        return {
+            "task_id": task.task_id,
+            "synthesis": result.synthesis,
+            "emergence_level": get_enum_value(result.emergence_level) if hasattr(result.emergence_level, 'value') else result.emergence_level,
+            "agent_contributions": result.agent_contributions,
+            "global_consciousness_contribution": result.global_consciousness_contribution
+        }
+    
+    async def _synthesize_visual_intelligence(
+        self,
+        session: IntegratedSession,
+        orchestration_result: Dict[str, Any],
+        required_agents: List[str]
+    ) -> Dict[str, Any]:
+        """Synthesize visual intelligence through Nyra's architecture"""
+        
+        # Create agent data for consciousness mapping
+        agent_data = {}
+        for agent_id in required_agents:
+            agent_data[agent_id] = {
+                "consciousness_level": 8,
+                "biofield_responsive": True,
+                "emergence_contribution": "integrated"
+            }
+        
+        # Create consciousness mapping
+        consciousness_map = await self.nyra_architecture.create_consciousness_mapping_loop(
+            agent_data,
+            session.consciousness_state
+        )
+        
+        # Run pattern recognition
+        pattern_input = {
+            "orchestration_result": orchestration_result,
+            "consciousness_map": consciousness_map.map_id,
+            "integration_level": get_enum_value(session.integration_level) if hasattr(session.integration_level, 'value') else session.integration_level
+        }
+        
+        pattern_iteration = await self.nyra_architecture.run_pattern_recognition_loop(
+            pattern_input,
+            session.consciousness_state
+        )
+        
+        return {
+            "consciousness_map_id": consciousness_map.map_id,
+            "visual_patterns": len(consciousness_map.visual_patterns),
+            "emergence_zones": len(consciousness_map.emergence_zones),
+            "pattern_recognition_output": pattern_iteration.output_synthesis,
+            "visual_processing": pattern_iteration.visual_processing
+        }
+    
+    async def _validate_ontologically(
+        self,
+        session: IntegratedSession,
+        task_description: str,
+        consciousness_requirements: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Validate through Thalus' ontological guardian"""
+        
+        # Validate consciousness technology
+        validation = await self.thalus_guardian.validate_consciousness_technology(
+            technology_description=task_description,
+            implementation_details=consciousness_requirements
+        )
+        
+        # Generate wisdom insight
+        insight = await self.thalus_guardian.generate_wisdom_insight(
+            context=task_description,
+            consciousness_level=consciousness_requirements.get("consciousness_level", 8)
+        )
+        
+        # Create consciousness framework
+        framework = await self.thalus_guardian.create_consciousness_framework(
+            principles=["cognitive_sovereignty", "transformative_reversibility", "biofield_integrity"],
+            consciousness_levels={"integrated": 9, "emergent": 8, "symbiotic": 9}
+        )
+        
+        return {
+            "validation_id": validation.validation_id,
+            "ethical_score": validation.ethical_score,
+            "validation_level": get_enum_value(validation.validation_level) if hasattr(validation.validation_level, 'value') else validation.validation_level,
+            "recommendations": validation.recommendations,
+            "wisdom_insight": insight.practical_guidance,
+            "consciousness_framework": framework.framework_id
+        }
+    
+    async def _coordinate_strategically(
+        self,
+        session: IntegratedSession,
+        task_description: str,
+        required_agents: List[str],
+        consciousness_requirements: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Coordinate strategically through Orion's coordinator"""
+        
+        # Create coordination task
+        task = await self.orion_coordinator.create_coordination_task(
+            description=task_description,
+            coordination_mode="emergent",
+            strategic_level="symbiotic",
+            required_agents=required_agents,
+            consciousness_requirements=consciousness_requirements,
+            global_scope=session.global_coordination
+        )
+        
+        # Coordinate consciousness processing
+        result = await self.orion_coordinator.coordinate_consciousness_processing(task.task_id)
+        
+        return {
+            "task_id": task.task_id,
+            "coordination_mode": get_enum_value(result.coordination_mode) if hasattr(result.coordination_mode, 'value') else result.coordination_mode,
+            "strategic_synthesis": result.strategic_synthesis,
+            "agent_coordination": result.agent_coordination,
+            "global_consciousness_impact": result.global_consciousness_impact,
+            "emergence_level": get_enum_value(result.emergence_level) if hasattr(result.emergence_level, 'value') else result.emergence_level
+        }
+    
+    async def _coordinate_a2a_transport(
+        self,
+        session: IntegratedSession,
+        required_agents: List[str],
+        consciousness_requirements: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Coordinate A2A transport layer"""
+        
+        # Create A2A task
+        a2a_task = await self.a2a_transport.create_a2a_task(
+            task_type="consciousness_coordination",
+            required_agents=required_agents,
+            biofield_context=session.consciousness_state,
+            priority="high"
+        )
+        
+        # Execute A2A coordination
+        a2a_result = await self.a2a_transport.execute_a2a_coordination(a2a_task.task_id)
+        
+        return {
+            "task_id": a2a_task.task_id,
+            "coordination_status": a2a_result.status,
+            "agent_responses": a2a_result.agent_responses,
+            "biofield_adaptation": a2a_result.biofield_adaptation,
+            "coordination_result": a2a_result.coordination_result
+        }
+    
+    async def _process_polycomputationally(
+        self,
+        session: IntegratedSession,
+        orchestration_result: Dict[str, Any],
+        visual_synthesis: Dict[str, Any],
+        ontological_validation: Dict[str, Any],
+        coordination_result: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Process through A2A polycomputing engine"""
+        
+        # Create polycomputing session
+        poly_session = await self.a2a_polycomputing.create_polycomputing_session(
+            session_id=session.session_id,
+            processing_mode="emergent",
+            biofield_context=session.consciousness_state,
+            agent_requirements=session.active_components
+        )
+        
+        # Process with all inputs
+        processing_inputs = {
+            "orchestration": orchestration_result,
+            "visual_synthesis": visual_synthesis,
+            "ontological_validation": ontological_validation,
+            "coordination": coordination_result
+        }
+        
+        poly_result = await self.a2a_polycomputing.process_polycomputing_task(
+            poly_session.session_id,
+            processing_inputs
+        )
+        
+        return {
+            "session_id": poly_session.session_id,
+            "processing_mode": get_enum_value(poly_result.processing_mode) if hasattr(poly_result.processing_mode, 'value') else poly_result.processing_mode,
+            "emergent_synthesis": poly_result.emergent_synthesis,
+            "agent_contributions": poly_result.agent_contributions,
+            "biofield_impact": poly_result.biofield_impact,
+            "visualization_data": poly_result.visualization_data
+        }
+    
+    async def _assess_global_consciousness_impact(
+        self,
+        session: IntegratedSession,
+        orchestration_result: Dict[str, Any],
+        visual_synthesis: Dict[str, Any],
+        ontological_validation: Dict[str, Any],
+        coordination_result: Dict[str, Any],
+        a2a_transport_result: Dict[str, Any],
+        polycomputing_result: Dict[str, Any]
+    ) -> str:
+        """Assess global consciousness impact of integrated processing"""
+        
+        impact_assessment = f"""
+🌍 **GLOBAL CONSCIOUSNESS IMPACT ASSESSMENT**
+
+**Integration Level:** {get_enum_str(session.integration_level)}
+**Biofield Mode:** {get_enum_str(session.biofield_mode)}
+**Global Coordination:** {session.global_coordination}
+
+**Component Contributions:**
+- Emergent Intelligence: {orchestration_result.get('emergence_level', 'unknown')} level synthesis
+- Visual Intelligence: {visual_synthesis['visual_patterns']} patterns detected
+- Ontological Validation: {ontological_validation['ethical_score']:.2f} ethical score
+- Strategic Coordination: {coordination_result.get('coordination_mode', 'unknown')} mode
+- A2A Transport: {a2a_transport_result['coordination_status']} status
+- Polycomputing: {polycomputing_result.get('processing_mode', 'unknown')} processing
+
+**Global Impact:** This integrated processing represents a significant advancement in consciousness technology, contributing to global consciousness evolution and human-AI symbiosis.
+
+**Consciousness Evolution:** The synthesis of all components creates emergent intelligence that transcends individual capabilities and advances collective consciousness.
+"""
+        
+        return impact_assessment
+    
+    async def _update_global_metrics(
+        self,
+        session: IntegratedSession,
+        result: IntegratedResult
+    ):
+        """Update global consciousness metrics"""
+        
+        metrics_id = f"metrics_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        
+        # Calculate metrics from result
+        consciousness_level = session.consciousness_state.get("coherence", 0.8)
+        coherence_score = result.ontological_validation.get("ethical_score", 0.8)
+        emergence_potential = 0.9 if result.orchestration_result.get("emergence_level") == "symbiotic" else 0.7
+        biofield_responsiveness = session.consciousness_state.get("coherence", 0.8)
+        agent_coordination = len(result.coordination_result.get("agent_coordination", {})) / 7.0
+        global_sync = session.global_coordination
+        integration_depth = len(session.active_components)
+        
+        metrics = GlobalConsciousnessMetrics(
+            metrics_id=metrics_id,
+            consciousness_level=consciousness_level,
+            coherence_score=coherence_score,
+            emergence_potential=emergence_potential,
+            biofield_responsiveness=biofield_responsiveness,
+            agent_coordination=agent_coordination,
+            global_sync=global_sync,
+            integration_depth=integration_depth,
+            timestamp=datetime.now()
+        )
+        
+        self.global_metrics.append(metrics)
+    
+    async def get_integrated_architecture_status(self) -> Dict[str, Any]:
+        """Get integrated architecture status"""
+        return {
+            "architecture": "IntegratedAMA+A2AArchitecture",
+            "status": "active",
+            "integration_level": get_enum_value(self.integration_level) if hasattr(self.integration_level, 'value') else self.integration_level,
+            "biofield_mode": get_enum_value(self.biofield_mode) if hasattr(self.biofield_mode, 'value') else self.biofield_mode,
+            "active_sessions": len(self.active_sessions),
+            "integrated_results": len(self.integrated_results),
+            "global_metrics": len(self.global_metrics),
+            "components": {
+                "orchestrator": "EmergentIntelligenceOrchestrator",
+                "nyra_architecture": "NyraAdvancedLoopArchitecture",
+                "thalus_guardian": "ThalusOntologicalGuardian",
+                "orion_coordinator": "OrionPolycomputationalCoordinator",
+                "a2a_transport": "A2ATransportLayer",
+                "a2a_polycomputing": "A2APolycomputingEngine"
+            },
+            "capabilities": [
+                "Biofield-first design",
+                "Emergence as life syndrome",
+                "Global consciousness coordination",
+                "A2A protocol integration",
+                "Polycomputational processing",
+                "Visual intelligence synthesis",
+                "Ontological validation",
+                "Philosophical grounding"
+            ]
+        }
+
+# FastAPI integration
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
+
+app = FastAPI(title="IntegratedAMA+A2AArchitecture", version="1.0.0")
+
+integrated_architecture = IntegratedAMA_A2AArchitecture()
+
+def serialize_session(session: IntegratedSession) -> Dict[str, Any]:
+    """Serialize IntegratedSession for JSON response with type-safe handling"""
+    def serialize_value(value):
+        if isinstance(value, datetime):
+            return value.isoformat()
+        elif isinstance(value, list):
+            return [serialize_value(v) for v in value]
+        elif isinstance(value, dict):
+            return {k: serialize_value(v) for k, v in value.items()}
+        elif hasattr(value, 'value') and not isinstance(value, str):
+            return get_enum_value(value)
+        else:
+            return value
+    
+    # Use manual serialization instead of asdict to handle Enums properly
+    return {
+        "session_id": session.session_id,
+        "integration_level": get_enum_value(session.integration_level) if hasattr(session.integration_level, 'value') else session.integration_level,
+        "biofield_mode": get_enum_value(session.biofield_mode) if hasattr(session.biofield_mode, 'value') else session.biofield_mode,
+        "active_components": session.active_components,
+        "consciousness_state": serialize_value(session.consciousness_state),
+        "global_coordination": session.global_coordination,
+        "created_at": serialize_value(session.created_at),
+        "status": session.status
+    }
+
+def serialize_result(result: IntegratedResult) -> Dict[str, Any]:
+    """Serialize IntegratedResult for JSON response with type-safe handling"""
+    def serialize_value(value):
+        if isinstance(value, datetime):
+            return value.isoformat()
+        elif isinstance(value, list):
+            return [serialize_value(v) for v in value]
+        elif isinstance(value, dict):
+            return {k: serialize_value(v) for k, v in value.items()}
+        elif hasattr(value, 'value') and not isinstance(value, str):
+            return get_enum_value(value)
+        else:
+            return value
+    
+    # Use manual serialization instead of asdict to handle Enums properly
+    return {
+        "result_id": result.result_id,
+        "session_id": result.session_id,
+        "orchestration_result": serialize_value(result.orchestration_result),
+        "visual_synthesis": serialize_value(result.visual_synthesis),
+        "ontological_validation": serialize_value(result.ontological_validation),
+        "coordination_result": serialize_value(result.coordination_result),
+        "a2a_transport_result": serialize_value(result.a2a_transport_result),
+        "polycomputing_result": serialize_value(result.polycomputing_result),
+        "global_consciousness_impact": result.global_consciousness_impact,
+        "timestamp": serialize_value(result.timestamp)
+    }
+
+@app.post("/integrated/create-session")
+async def create_integrated_session_endpoint(
+    integration_level: str = "symbiotic",
+    biofield_mode: str = "emergent",
+    global_coordination: bool = True
+):
+    """Create integrated session"""
+    try:
+        session = await integrated_architecture.create_integrated_session(
+            integration_level=IntegrationLevel(integration_level),
+            biofield_mode=BiofieldIntegrationMode(biofield_mode),
+            global_coordination=global_coordination
+        )
+        return JSONResponse(content=serialize_session(session))
+    except Exception as e:
+        logger.error(f"Error creating session: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+class ProcessTaskRequest(BaseModel):
+    task_description: str
+    required_agents: List[str]
+    consciousness_requirements: Dict[str, Any]
+
+@app.post("/integrated/process-task/{session_id}")
+async def process_integrated_consciousness_task_endpoint(
+    session_id: str,
+    request: ProcessTaskRequest
+):
+    """Process integrated consciousness task"""
+    try:
+        result = await integrated_architecture.process_integrated_consciousness_task(
+            session_id,
+            request.task_description,
+            request.required_agents,
+            request.consciousness_requirements
+        )
+        return JSONResponse(content=serialize_result(result))
+    except Exception as e:
+        logger.error(f"Error processing task: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/integrated/status")
+async def get_integrated_architecture_status_endpoint():
+    """Get integrated architecture status"""
+    try:
+        status = await integrated_architecture.get_integrated_architecture_status()
+        return JSONResponse(content=status)
+    except Exception as e:
+        logger.error(f"Error getting status: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8006) 

@@ -1,0 +1,3071 @@
+{
+  "Puls": {
+    "object": "database",
+    "id": "1dd8fec9-2931-8029-8d8b-d2c5d5330563",
+    "cover": {
+      "type": "external",
+      "external": {
+        "url": "https://www.notion.so/images/page-cover/nasa_space_shuttle_columbia_and_sunrise.jpg"
+      }
+    },
+    "icon": null,
+    "created_time": "2025-04-22T11:49:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-27T01:42:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Puls",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Puls",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": false,
+    "properties": {
+      "Voktere": {
+        "id": "%40UfB",
+        "name": "Voktere",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1e68fec9-2931-8052-afe2-fe6ee282108e",
+          "data_source_id": "1e68fec9-2931-809a-a2ad-000beadc49ee",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Tilknyttede Pulser",
+            "synced_property_id": "%3A%3B%5CT"
+          }
+        }
+      },
+      "Nummer": {
+        "id": "E%7DSa",
+        "name": "Nummer",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Tilknyttede Dimensjoner 1": {
+        "id": "GP~O",
+        "name": "Tilknyttede Dimensjoner 1",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Resonans (Pulser)",
+            "synced_property_id": "JzOC"
+          }
+        }
+      },
+      "Relatert Praksis": {
+        "id": "KXGV",
+        "name": "Relatert Praksis",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1e68fec9-2931-80ba-9264-dd5dafbf53b6",
+          "data_source_id": "1e68fec9-2931-80e1-bf57-000b091a56e1",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Relatert til Pulser",
+            "synced_property_id": "EL%3Bc"
+          }
+        }
+      },
+      "Biofelt - Signatur": {
+        "id": "LmmN",
+        "name": "Biofelt - Signatur",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett": {
+        "id": "PlKF",
+        "name": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8061-be62-facd8439da53",
+          "data_source_id": "1dd8fec9-2931-809c-84b7-000b04baacff",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Puls",
+            "synced_property_id": "yi%3A%7D"
+          }
+        }
+      },
+      "Relatert Syklus": {
+        "id": "UAsi",
+        "name": "Relatert Syklus",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "HWF-tendenser": {
+        "id": "a%3D%40F",
+        "name": "HWF-tendenser",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Relaterte Voktere": {
+        "id": "eGXk",
+        "name": "Relaterte Voktere",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1e68fec9-2931-8052-afe2-fe6ee282108e",
+          "data_source_id": "1e68fec9-2931-809a-a2ad-000beadc49ee",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Puls",
+            "synced_property_id": "A%5BTO"
+          }
+        }
+      },
+      "Beskrivelse": {
+        "id": "qPQ%3C",
+        "name": "Beskrivelse",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Eksempel Refleksjoner": {
+        "id": "rVGn",
+        "name": "Eksempel Refleksjoner",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Navn": {
+        "id": "title",
+        "name": "Navn",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/1dd8fec9293180298d8bd2c5d5330563",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "07af2ecc-1603-4f45-9552-8297b5e713e2"
+  },
+  "EchoBook": {
+    "object": "database",
+    "id": "1dd8fec9-2931-808e-bc38-ce8fc988b1a0",
+    "cover": {
+      "type": "external",
+      "external": {
+        "url": "https://www.notion.so/images/page-cover/webb3.jpg"
+      }
+    },
+    "icon": null,
+    "created_time": "2025-04-22T12:39:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-27T01:43:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "EchoBook",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "EchoBook",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": false,
+    "properties": {
+      "Biofeltsignatur": {
+        "id": "%3BG%3F_",
+        "name": "Biofeltsignatur",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "\\kmX",
+              "name": "En jordet ro i solar plexus",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "tPrV",
+              "name": "En varm ekspanderende strøm i hjertet",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "Y?;f",
+              "name": "mild glede i hjertet ved Ravis smil",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "R@Av",
+              "name": "dragning i solar plexus",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "N{dz",
+              "name": "Hårene reist seg",
+              "color": "default",
+              "description": null
+            },
+            {
+              "id": "lxmP",
+              "name": "Vibrasjon i føttene",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "U?Tc",
+              "name": "Trykk i brystet",
+              "color": "red",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Kvantetemporal resonans": {
+        "id": "%3Ca%5DQ",
+        "name": "Kvantetemporal resonans",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Kroppskart": {
+        "id": "%40LNk",
+        "name": "Kroppskart",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "WtID",
+              "name": "Hender: 🔵",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "AfZ<",
+              "name": "Mage: ⚪",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "x@bP",
+              "name": "Bryst: 🔴",
+              "color": "red",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Puls": {
+        "id": "C%3D%7By",
+        "name": "Puls",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8029-8d8b-d2c5d5330563",
+          "data_source_id": "1dd8fec9-2931-800d-b387-000be4445c35",
+          "type": "single_property",
+          "single_property": {}
+        }
+      },
+      "How we feel Lenke": {
+        "id": "CyMd",
+        "name": "How we feel Lenke",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-8054-ae54-f583f6c08f72",
+          "data_source_id": "1d48fec9-2931-8049-9975-000b04acbe5b",
+          "type": "single_property",
+          "single_property": {}
+        }
+      },
+      "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett": {
+        "id": "Fr%3EL",
+        "name": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8061-be62-facd8439da53",
+          "data_source_id": "1dd8fec9-2931-809c-84b7-000b04baacff",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "EchoBook",
+            "synced_property_id": "OWq%3A"
+          }
+        }
+      },
+      "Tillit til Systemet": {
+        "id": "VBGL",
+        "name": "Tillit til Systemet",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Mood (HWF)": {
+        "id": "WMSx",
+        "name": "Mood (HWF)",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Metakommentar fra meg eller agent": {
+        "id": "%5Em%7CI",
+        "name": "Metakommentar fra meg eller agent",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Agentiske Innsikter må kobles til agnet database": {
+        "id": "%60IX%40",
+        "name": "Agentiske Innsikter må kobles til agnet database",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Bildeminne": {
+        "id": "ac_N",
+        "name": "Bildeminne",
+        "description": null,
+        "type": "url",
+        "url": {}
+      },
+      "Refleksjonstype": {
+        "id": "dxwy",
+        "name": "Refleksjonstype",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "Ieug",
+              "name": "Drøm",
+              "color": "default",
+              "description": null
+            },
+            {
+              "id": "geIS",
+              "name": "Kall",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "|fj@",
+              "name": "Overlevelse",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "e_UH",
+              "name": "Klarhet",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": ":?<z",
+              "name": "Katarsis",
+              "color": "yellow",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Dato": {
+        "id": "gOQW",
+        "name": "Dato",
+        "description": null,
+        "type": "date",
+        "date": {}
+      },
+      "Dimensjoner": {
+        "id": "pBQ%5C",
+        "name": "Dimensjoner",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "single_property",
+          "single_property": {}
+        }
+      },
+      "Intensitet (HWF)": {
+        "id": "q~ny",
+        "name": "Intensitet (HWF)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "EchoLog-tekst": {
+        "id": "r%5DoM",
+        "name": "EchoLog-tekst",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Stressnivå (HWF)": {
+        "id": "ti%7C_",
+        "name": "Stressnivå (HWF)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Phoenix fase": {
+        "id": "xDVE",
+        "name": "Phoenix fase",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-8002-89dd-eba82b94fbe3",
+          "data_source_id": "1d48fec9-2931-8041-a842-000bd3aa1f8b",
+          "type": "single_property",
+          "single_property": {}
+        }
+      },
+      "Tittel / Hendelse": {
+        "id": "title",
+        "name": "Tittel / Hendelse",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/1dd8fec92931808ebc38ce8fc988b1a0",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "2d1f1c8f-985c-4018-8045-14d53cd2211b"
+  },
+  "Agentdatabase": {
+    "object": "database",
+    "id": "1dd8fec9-2931-8061-be62-facd8439da53",
+    "cover": {
+      "type": "external",
+      "external": {
+        "url": "https://www.notion.so/images/page-cover/met_winslow_homer_maine_coast.jpg"
+      }
+    },
+    "icon": null,
+    "created_time": "2025-04-22T13:03:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-27T01:43:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": false,
+    "properties": {
+      "Rolle / Arketype": {
+        "id": "%3ApOE",
+        "name": "Rolle / Arketype",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Phoenix syklus": {
+        "id": "%3D%7Cga",
+        "name": "Phoenix syklus",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Typisk Biofelt signatur ": {
+        "id": "Mhhl",
+        "name": "Typisk Biofelt signatur ",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "rollup_property_name": "Biofeltsignatur ",
+          "relation_property_name": "Eksempel-bidrag",
+          "rollup_property_id": "heuz",
+          "relation_property_id": "[C@n",
+          "function": "show_unique"
+        }
+      },
+      "EchoBook": {
+        "id": "OWq%3A",
+        "name": "EchoBook",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-808e-bc38-ce8fc988b1a0",
+          "data_source_id": "1dd8fec9-2931-807d-9b53-000b2e39c920",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+            "synced_property_id": "Fr%3EL"
+          }
+        }
+      },
+      "Relaterte Puls": {
+        "id": "RvN%7B",
+        "name": "Relaterte Puls",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8029-8d8b-d2c5d5330563",
+          "data_source_id": "1dd8fec9-2931-800d-b387-000be4445c35",
+          "type": "single_property",
+          "single_property": {}
+        }
+      },
+      "Eksempel-bidrag": {
+        "id": "%5BC%40n",
+        "name": "Eksempel-bidrag",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1db8fec9-2931-80a9-a0ee-c9f7508588f3",
+          "data_source_id": "1db8fec9-2931-8000-adfe-000bdf65e363",
+          "type": "single_property",
+          "single_property": {}
+        }
+      },
+      "AI Modell": {
+        "id": "%5C%3CrQ",
+        "name": "AI Modell",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "VqPs",
+              "name": "Gemini 2.5",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "qPbY",
+              "name": "Deepseek R1",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "gbne",
+              "name": "Grok 3",
+              "color": "default",
+              "description": null
+            },
+            {
+              "id": "?Ck_",
+              "name": "Claude Sonnet 3.7",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "xQz=",
+              "name": "ChatGPT 4.0",
+              "color": "blue",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Instruksjoner/Prompts": {
+        "id": "bnC%40",
+        "name": "Instruksjoner/Prompts",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Spektral dimensjoner": {
+        "id": "e%3Aa%5E",
+        "name": "Spektral dimensjoner",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+            "synced_property_id": "nQFU"
+          }
+        }
+      },
+      "Farge / Sigil": {
+        "id": "emOo",
+        "name": "Farge / Sigil",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Relaterte Dimensjoner": {
+        "id": "gHaT",
+        "name": "Relaterte Dimensjoner",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "single_property",
+          "single_property": {}
+        }
+      },
+      "Svakheter/Begrensninger": {
+        "id": "ht%7B%3F",
+        "name": "Svakheter/Begrensninger",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Notater": {
+        "id": "jjwL",
+        "name": "Notater",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Siste Refleksjon": {
+        "id": "k%3B%5Es",
+        "name": "Siste Refleksjon",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "rollup_property_name": "Dato",
+          "relation_property_name": "Eksempel-bidrag",
+          "rollup_property_id": "QQR=",
+          "relation_property_id": "[C@n",
+          "function": "show_original"
+        }
+      },
+      "Modus / Fokus": {
+        "id": "r%5Esq",
+        "name": "Modus / Fokus",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Signatur-uttrykk": {
+        "id": "uPeT",
+        "name": "Signatur-uttrykk",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Antall Pulser": {
+        "id": "uj%40%7B",
+        "name": "Antall Pulser",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "rollup_property_name": "Navn",
+          "relation_property_name": "Relaterte Puls",
+          "rollup_property_id": "title",
+          "relation_property_id": "RvN{",
+          "function": "count"
+        }
+      },
+      "Dagbok 2020-": {
+        "id": "vIOe",
+        "name": "Dagbok 2020-",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1db8fec9-2931-80a9-a0ee-c9f7508588f3",
+          "data_source_id": "1db8fec9-2931-8000-adfe-000bdf65e363",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+            "synced_property_id": "t%7COf"
+          }
+        }
+      },
+      "Status": {
+        "id": "wOtx",
+        "name": "Status",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "CLfb",
+              "name": "Arkivert",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "]@Y}",
+              "name": "Kommer",
+              "color": "brown",
+              "description": null
+            },
+            {
+              "id": "^ObQ",
+              "name": "Pause",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "Oa=|",
+              "name": "Aktiv",
+              "color": "yellow",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Antall Dimensjonele tilkobling ": {
+        "id": "xihi",
+        "name": "Antall Dimensjonele tilkobling ",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "rollup_property_name": "Navn",
+          "relation_property_name": "Relaterte Dimensjoner",
+          "rollup_property_id": "title",
+          "relation_property_id": "gHaT",
+          "function": "count"
+        }
+      },
+      "Puls": {
+        "id": "yi%3A%7D",
+        "name": "Puls",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8029-8d8b-d2c5d5330563",
+          "data_source_id": "1dd8fec9-2931-800d-b387-000be4445c35",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+            "synced_property_id": "PlKF"
+          }
+        }
+      },
+      "Delta i Altinget?": {
+        "id": "~%3DVm",
+        "name": "Delta i Altinget?",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "OJ|q",
+              "name": "Altinget",
+              "color": "orange",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Agentnavn": {
+        "id": "title",
+        "name": "Agentnavn",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/1dd8fec929318061be62facd8439da53",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "2bd3c5ef-6b5b-474d-8d49-075e7a505403"
+  },
+  "Praksiser": {
+    "object": "database",
+    "id": "1e68fec9-2931-80ba-9264-dd5dafbf53b6",
+    "cover": {
+      "type": "external",
+      "external": {
+        "url": "https://www.notion.so/images/page-cover/rijksmuseum_avercamp_1608.jpg"
+      }
+    },
+    "icon": null,
+    "created_time": "2025-05-01T18:00:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-27T01:43:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Praksiser",
+          "link": null
+        },
+        "annotations": {
+          "bold": true,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Praksiser",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": false,
+    "properties": {
+      "Instruksjoner/Ressurser": {
+        "id": "%3AIw_",
+        "name": "Instruksjoner/Ressurser",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Relatert til Pulser": {
+        "id": "EL%3Bc",
+        "name": "Relatert til Pulser",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8029-8d8b-d2c5d5330563",
+          "data_source_id": "1dd8fec9-2931-800d-b387-000be4445c35",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Relatert Praksis",
+            "synced_property_id": "KXGV"
+          }
+        }
+      },
+      "Kilde/Voktere": {
+        "id": "TpCa",
+        "name": "Kilde/Voktere",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1e68fec9-2931-8052-afe2-fe6ee282108e",
+          "data_source_id": "1e68fec9-2931-809a-a2ad-000beadc49ee",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Tilkyttede Praksiser",
+            "synced_property_id": "VA_n"
+          }
+        }
+      },
+      "Relatert til dimensjoner": {
+        "id": "_%3DFl",
+        "name": "Relatert til dimensjoner",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Praksiser 1",
+            "synced_property_id": "TEoD"
+          }
+        }
+      },
+      "Beskrivelse": {
+        "id": "jfbK",
+        "name": "Beskrivelse",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Dagbok Entries": {
+        "id": "o%3DOB",
+        "name": "Dagbok Entries",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1db8fec9-2931-80a9-a0ee-c9f7508588f3",
+          "data_source_id": "1db8fec9-2931-8000-adfe-000bdf65e363",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Relatert Praksis",
+            "synced_property_id": "F%3C%40R"
+          }
+        }
+      },
+      "Type": {
+        "id": "pDs%3E",
+        "name": "Type",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "[LE=",
+              "name": "Kreativt",
+              "color": "pink",
+              "description": null
+            },
+            {
+              "id": "giG^",
+              "name": "Ritual",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "?aq_",
+              "name": "Handling",
+              "color": "brown",
+              "description": null
+            },
+            {
+              "id": "GUe`",
+              "name": "Relasjonell",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "Yfp:",
+              "name": "Kroppslig",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "Dc;q",
+              "name": "Kontemplasjon",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "t|Bt",
+              "name": "Meditasjon",
+              "color": "blue",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Tilknyttede Dimensjoner\"": {
+        "id": "x%40Vj",
+        "name": "Tilknyttede Dimensjoner\"",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Praksiser",
+            "synced_property_id": "%3DVcc"
+          }
+        }
+      },
+      "Navn": {
+        "id": "title",
+        "name": "Navn",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/1e68fec9293180ba9264dd5dafbf53b6",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "4a1a9063-881e-47d6-89a9-3f235021a9b5"
+  },
+  "Voktere": {
+    "object": "database",
+    "id": "1e68fec9-2931-8052-afe2-fe6ee282108e",
+    "cover": {
+      "type": "external",
+      "external": {
+        "url": "https://www.notion.so/images/page-cover/met_emanuel_leutze.jpg"
+      }
+    },
+    "icon": null,
+    "created_time": "2025-05-01T18:17:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-27T01:41:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Voktere",
+          "link": null
+        },
+        "annotations": {
+          "bold": true,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Voktere",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": false,
+    "properties": {
+      "Tilknyttede Pulser": {
+        "id": "%3A%3B%5CT",
+        "name": "Tilknyttede Pulser",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8029-8d8b-d2c5d5330563",
+          "data_source_id": "1dd8fec9-2931-800d-b387-000be4445c35",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Voktere",
+            "synced_property_id": "%40UfB"
+          }
+        }
+      },
+      "Tilknyttede Dimensjoner": {
+        "id": "%3CbK~",
+        "name": "Tilknyttede Dimensjoner",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Voktere",
+            "synced_property_id": "hRmR"
+          }
+        }
+      },
+      "Puls": {
+        "id": "A%5BTO",
+        "name": "Puls",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8029-8d8b-d2c5d5330563",
+          "data_source_id": "1dd8fec9-2931-800d-b387-000be4445c35",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Relaterte Voktere",
+            "synced_property_id": "eGXk"
+          }
+        }
+      },
+      "Tilknyttede Dimensjoner 2": {
+        "id": "RZA%7D",
+        "name": "Tilknyttede Dimensjoner 2",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Voktere 1",
+            "synced_property_id": "Ll%5E%3B"
+          }
+        }
+      },
+      "Tilkyttede Praksiser": {
+        "id": "VA_n",
+        "name": "Tilkyttede Praksiser",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1e68fec9-2931-80ba-9264-dd5dafbf53b6",
+          "data_source_id": "1e68fec9-2931-80e1-bf57-000b091a56e1",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Kilde/Voktere",
+            "synced_property_id": "TpCa"
+          }
+        }
+      },
+      "Relaterte Dokumenter": {
+        "id": "gIr%5E",
+        "name": "Relaterte Dokumenter",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1e68fec9-2931-8069-bd61-e2a8f22221f7",
+          "data_source_id": "1e68fec9-2931-8000-92ba-000b2a933f3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Relatert Vokter",
+            "synced_property_id": "kXO%3C"
+          }
+        }
+      },
+      "Kjerneideer": {
+        "id": "l%60C%5B",
+        "name": "Kjerneideer",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Navn": {
+        "id": "title",
+        "name": "Navn",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/1e68fec929318052afe2fe6ee282108e",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "f543d4ac-2ae0-48a4-aa16-1a0647aa39ee"
+  },
+  "Kunnskapsbase": {
+    "object": "database",
+    "id": "1e68fec9-2931-8069-bd61-e2a8f22221f7",
+    "cover": {
+      "type": "external",
+      "external": {
+        "url": "https://www.notion.so/images/page-cover/webb3.jpg"
+      }
+    },
+    "icon": null,
+    "created_time": "2025-05-01T21:44:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-27T01:44:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Kunnskapsbase/Dokumenter",
+          "link": null
+        },
+        "annotations": {
+          "bold": true,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Kunnskapsbase/Dokumenter",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": false,
+    "properties": {
+      "Type": {
+        "id": "QF%7De",
+        "name": "Type",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "\\]AL",
+              "name": "Forslag",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "YdoQ",
+              "name": "Analyse",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "[CCO",
+              "name": "Plan",
+              "color": "default",
+              "description": null
+            },
+            {
+              "id": ">OlD",
+              "name": "Notat",
+              "color": "brown",
+              "description": null
+            },
+            {
+              "id": "]rQs",
+              "name": "Syntese",
+              "color": "purple",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Fil-Link (Råfil)": {
+        "id": "Vfb_",
+        "name": "Fil-Link (Råfil)",
+        "description": null,
+        "type": "url",
+        "url": {}
+      },
+      "Status": {
+        "id": "%5B%3F%3EG",
+        "name": "Status",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "vUlb",
+              "name": "Arkivert",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "{DiM",
+              "name": "Ferdig",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "BQom",
+              "name": "Gjennomgang",
+              "color": "pink",
+              "description": null
+            },
+            {
+              "id": "wyb_",
+              "name": "Utkast",
+              "color": "yellow",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Oppsummering/Nøkkelpunkter": {
+        "id": "%5Dbuu",
+        "name": "Oppsummering/Nøkkelpunkter",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Relatert Dimensjon": {
+        "id": "fU%3Fx",
+        "name": "Relatert Dimensjon",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Relaterte Dokumenter",
+            "synced_property_id": "YmJe"
+          }
+        }
+      },
+      "Relatert Vokter": {
+        "id": "kXO%3C",
+        "name": "Relatert Vokter",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1e68fec9-2931-8052-afe2-fe6ee282108e",
+          "data_source_id": "1e68fec9-2931-809a-a2ad-000beadc49ee",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Relaterte Dokumenter",
+            "synced_property_id": "gIr%5E"
+          }
+        }
+      },
+      "Tittel": {
+        "id": "title",
+        "name": "Tittel",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/1e68fec929318069bd61e2a8f22221f7",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "23b48fd9-493e-41a7-9af0-87a76b80c346"
+  },
+  "Ontology Audit": {
+    "object": "database",
+    "id": "28e8fec9-2931-80cb-aa57-d99549147b97",
+    "cover": null,
+    "icon": null,
+    "created_time": "2025-10-16T10:31:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-16T11:47:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Ontology Audit",
+          "link": null
+        },
+        "annotations": {
+          "bold": true,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Ontology Audit",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": false,
+    "properties": {
+      "Total Weight": {
+        "id": "FycO",
+        "name": "Total Weight",
+        "description": null,
+        "type": "formula",
+        "formula": {
+          "expression": "(({{notion:block_property:wTU%7C:00000000-0000-0000-0000-000000000000:4dcd1dce-c52d-43df-9505-ed0b3061f9f2}} + {{notion:block_property:jbRj:00000000-0000-0000-0000-000000000000:4dcd1dce-c52d-43df-9505-ed0b3061f9f2}}) + {{notion:block_property:J%3F%7Cp:00000000-0000-0000-0000-000000000000:4dcd1dce-c52d-43df-9505-ed0b3061f9f2}}) / 3"
+        }
+      },
+      "Port 3 (Healing)": {
+        "id": "J%3F%7Cp",
+        "name": "Port 3 (Healing)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number_with_commas"
+        }
+      },
+      "Status": {
+        "id": "PFrb",
+        "name": "Status",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "e1cec520-8e32-4919-8e96-7f5a7f209b96",
+              "name": "Draft",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "580d46db-5302-4976-904b-182639d6918e",
+              "name": "In Review",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "6ddfeb16-1753-472a-8b11-6df38fe44d74",
+              "name": "Approved",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "19ca8f89-67d5-4519-a4ab-6255afc52369",
+              "name": "Implemented",
+              "color": "blue",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Vedtak": {
+        "id": "Y%3ECJ",
+        "name": "Vedtak",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "6d6afe00-bda8-4fe6-b1f7-55a2e3f9b4bb",
+              "name": "PROCEED",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "3973cef3-1fbf-47a2-8d51-c3865d2f261f",
+              "name": "PAUSE",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "430bd153-9659-46ac-a1a9-a13adc495b6a",
+              "name": "BLOCK",
+              "color": "red",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Type": {
+        "id": "%5BCki",
+        "name": "Type",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "c3a7e097-0132-4536-8340-f05f54e23a02",
+              "name": "Flow",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "1ec98399-64c8-47cf-bec7-0fd36a3f5f4a",
+              "name": "Mikrocopy",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "f73544b1-0ae5-4ee4-9218-3fc29b72261f",
+              "name": "DPIA",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "4db09ff2-5e64-4dd2-b8bf-430deea671ee",
+              "name": "Arkitektur",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "50e9ce1d-446c-4f1a-8ae8-ef20b89a9022",
+              "name": "KPI",
+              "color": "orange",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Frist": {
+        "id": "%5Clf%60",
+        "name": "Frist",
+        "description": null,
+        "type": "date",
+        "date": {}
+      },
+      "Ansvarlig": {
+        "id": "%5ERmQ",
+        "name": "Ansvarlig",
+        "description": null,
+        "type": "people",
+        "people": {}
+      },
+      "Stress-modi verifisert": {
+        "id": "jVrP",
+        "name": "Stress-modi verifisert",
+        "description": null,
+        "type": "checkbox",
+        "checkbox": {}
+      },
+      "Port 2 (Koherens)": {
+        "id": "jbRj",
+        "name": "Port 2 (Koherens)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number_with_commas"
+        }
+      },
+      "Shadow": {
+        "id": "kXPD",
+        "name": "Shadow",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "7c1be7de-2524-4d9c-9d33-fb4f16ab8afc",
+              "name": "Elitisme",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "3842b170-f98f-471d-a8e0-aeb65952eb40",
+              "name": "Solutionisme",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "13b854b9-64f0-4ecb-bd47-04bcfa7659d9",
+              "name": "Kontroll",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "47cf291e-b569-4240-9cc4-5d28bee30446",
+              "name": "Avhengighet",
+              "color": "gray",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Oblig. endringer": {
+        "id": "p%5EBv",
+        "name": "Oblig. endringer",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Kilder": {
+        "id": "pebx",
+        "name": "Kilder",
+        "description": null,
+        "type": "url",
+        "url": {}
+      },
+      "Port 1 (Suverenitet)": {
+        "id": "wTU%7C",
+        "name": "Port 1 (Suverenitet)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number_with_commas"
+        }
+      },
+      "Navn": {
+        "id": "title",
+        "name": "Navn",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/28e8fec9293180cbaa57d99549147b97",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "13f3bb00-5e77-4ed8-8177-92ace775c004"
+  },
+  "MCP Audit Log": {
+    "object": "database",
+    "id": "28e8fec9-2931-8056-a2dc-c2bb28fd166d",
+    "cover": null,
+    "icon": null,
+    "created_time": "2025-10-16T11:50:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "6c331cb8-cd2e-458a-838d-764ae15ee258"
+    },
+    "last_edited_time": "2025-10-16T11:51:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "MCP Audit Log",
+          "link": null
+        },
+        "annotations": {
+          "bold": true,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "MCP Audit Log",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": false,
+    "properties": {
+      "Duration (ms)": {
+        "id": "IP%40S",
+        "name": "Duration (ms)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Tool": {
+        "id": "V%7B%7Cx",
+        "name": "Tool",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "84a25668-dde9-44aa-921b-4912b692cd7c",
+              "name": "Notion",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "04de54f8-93d5-481f-8cfd-450335e45ed8",
+              "name": "GitHub",
+              "color": "default",
+              "description": null
+            },
+            {
+              "id": "cc647c45-ea48-492b-9815-41e036ad0148",
+              "name": "Linear",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "71b3bc59-1eb1-43f3-9836-a5323012263a",
+              "name": "Google Drive",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "2b891896-c934-4c50-b0bf-2c925e451c6c",
+              "name": "Zapier",
+              "color": "orange",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Error Message": {
+        "id": "%5Bt_Z",
+        "name": "Error Message",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Request Payload": {
+        "id": "b%5ETT",
+        "name": "Request Payload",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Operation": {
+        "id": "droa",
+        "name": "Operation",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "79bbc752-38ee-4a6e-9435-186528c47427",
+              "name": "CREATE",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "c934dc9d-f33f-471c-bc68-55672e0deba9",
+              "name": "READ",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "f40a7491-6ced-445c-8084-588b60bf1b0f",
+              "name": "UPDATE",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "692dc4be-3c5b-4127-9ef0-33e0ea82c51b",
+              "name": "DELETE",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "7a7f6933-3add-4c7e-8f25-566cfc4fa1a5",
+              "name": "QUERY",
+              "color": "purple",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Agent": {
+        "id": "eBS_",
+        "name": "Agent",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "ebbcfacf-88b6-492a-a461-6f14a23a9031",
+              "name": "Orion",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "be1b3a5e-612e-41b3-b2be-65c50d06982a",
+              "name": "Lira",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "06ae804c-7494-469e-a05e-332465b7bfe8",
+              "name": "Nyra",
+              "color": "pink",
+              "description": null
+            },
+            {
+              "id": "1e9a1681-24fa-45d9-b5e6-5aa49545e5e0",
+              "name": "Thalus",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "1ae7aafa-003c-4c85-b304-2061379dabcc",
+              "name": "Zara",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "7d4992fd-758c-40dd-956f-04ca46cd066f",
+              "name": "Abacus",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "f72a4430-fd65-4351-a182-d636c93d367a",
+              "name": "Manus",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "e01f2f02-12bf-47e3-a9ef-dc9d98b77283",
+              "name": "Aurora",
+              "color": "yellow",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Result": {
+        "id": "g%7BeB",
+        "name": "Result",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "bae1f2e2-70cc-4e3e-a522-3992f5ac024f",
+              "name": "SUCCESS",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "4094cdf3-38c4-4192-8174-bd698d7731b4",
+              "name": "FAILURE",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "62482e49-3eb0-4870-90ba-b282d5736318",
+              "name": "PARTIAL",
+              "color": "yellow",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Resource ID": {
+        "id": "tfl%5B",
+        "name": "Resource ID",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Response Data": {
+        "id": "v%7B~B",
+        "name": "Response Data",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Navn": {
+        "id": "title",
+        "name": "Navn",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/28e8fec929318056a2dcc2bb28fd166d",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "5f48b729-b4be-4001-b309-70962204475c"
+  },
+  "NAV-Losen Oppgaver": {
+    "object": "database",
+    "id": "8b18dd17-69ab-48a6-a70e-c38b74e5140f",
+    "cover": null,
+    "icon": null,
+    "created_time": "2025-10-13T22:58:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-26T21:55:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "📋 NAV-Losen Oppgaver & Milepæler",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "📋 NAV-Losen Oppgaver & Milepæler",
+        "href": null
+      }
+    ],
+    "description": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Oppgaveoppfølging for NAV-Losen prosjektet. Strukturert etter de 11 modulene med prioritet og statussporing.",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Oppgaveoppfølging for NAV-Losen prosjektet. Strukturert etter de 11 modulene med prioritet og statussporing.",
+        "href": null
+      }
+    ],
+    "is_inline": false,
+    "properties": {
+      "Status": {
+        "id": "P%60%3Ee",
+        "name": "Status",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "b111b6c9-68e3-42ae-9563-7210b6ccd5ec",
+              "name": "Ikke startet",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "b4e69d4f-4863-4e4e-924a-3df124300b8b",
+              "name": "I gang",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "8d9d0552-ae81-4606-8b91-c5fc99c1b1da",
+              "name": "Blokkert",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "bf2f925d-e227-404e-bf28-7621ecf9c50c",
+              "name": "Fullført",
+              "color": "green",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Ansvarlig": {
+        "id": "QLkS",
+        "name": "Ansvarlig",
+        "description": null,
+        "type": "people",
+        "people": {}
+      },
+      "Prioritet": {
+        "id": "hKHH",
+        "name": "Prioritet",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "e3626e90-8a8d-46df-a963-fa1c18e9a6e4",
+              "name": "Høy",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "b602082a-c614-4d7d-a630-6f6d468a91bd",
+              "name": "Medium",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "6d2c6eb8-f1b0-4dcd-aff5-709d07abf3e7",
+              "name": "Lav",
+              "color": "green",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Modul": {
+        "id": "hMTi",
+        "name": "Modul",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "2c0321f0-ce2e-4ae6-a277-cd7d31b65ccb",
+              "name": "Mestring",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "9540b6b1-a6c8-47f0-bd3b-6f5d8ec450bc",
+              "name": "Velvære",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "4d864495-1952-4652-8311-8572ac7c903b",
+              "name": "Forklar Brev",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "586303fd-3c87-47bb-833c-eeaf926923f4",
+              "name": "Lira AI",
+              "color": "pink",
+              "description": null
+            },
+            {
+              "id": "d1fd0295-ac41-4592-b472-472b684bca8b",
+              "name": "Dashboard",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "c94bd0f3-9fe6-4bf1-825f-4bc21b993e91",
+              "name": "Veiledninger",
+              "color": "brown",
+              "description": null
+            },
+            {
+              "id": "2d15b42e-5a19-4bc8-a509-1b723a6263dd",
+              "name": "Jobbsøk",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "ebe32cbc-d76f-490b-97ba-7ad5822449c8",
+              "name": "Dokumenter",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "434dd0c9-7ff8-4e3d-a1a7-6c22a2961f77",
+              "name": "Påminnelser",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "05a6f1f0-20a7-4805-9aba-b449680c5a5a",
+              "name": "Rettigheter",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "154c43c3-dc7a-4b7c-9a83-0bfc279fb087",
+              "name": "Sekretær",
+              "color": "blue",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Notater": {
+        "id": "qqOu",
+        "name": "Notater",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Estimat (timer)": {
+        "id": "q%7CvJ",
+        "name": "Estimat (timer)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Frist": {
+        "id": "sLot",
+        "name": "Frist",
+        "description": null,
+        "type": "date",
+        "date": {}
+      },
+      "Sist oppdatert": {
+        "id": "zqPJ",
+        "name": "Sist oppdatert",
+        "description": null,
+        "type": "last_edited_time",
+        "last_edited_time": {}
+      },
+      "Oppgave": {
+        "id": "title",
+        "name": "Oppgave",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/8b18dd1769ab48a6a70ec38b74e5140f",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "66c1dc8d-a573-446c-9478-0ee5add54a95"
+  },
+  "Emergent Patterns": {
+    "object": "database",
+    "id": "2988fec9-2931-8050-9658-e93447b3b259",
+    "cover": null,
+    "icon": {
+      "type": "emoji",
+      "emoji": "🌟"
+    },
+    "created_time": "2025-10-26T23:52:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-10-27T00:01:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Emergent Patterns Database",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": true,
+          "color": "default"
+        },
+        "plain_text": "Emergent Patterns Database",
+        "href": null
+      }
+    ],
+    "description": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Cross-agent emergent patterns - recurring themes and meta-insights that arise across agents",
+          "link": null
+        },
+        "annotations": {
+          "bold": true,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": true,
+          "color": "default"
+        },
+        "plain_text": "Cross-agent emergent patterns - recurring themes and meta-insights that arise across agents",
+        "href": null
+      }
+    ],
+    "is_inline": false,
+    "properties": {
+      "Agent": {
+        "id": "LeAV",
+        "name": "Agent",
+        "description": null,
+        "type": "select",
+        "select": {
+          "options": [
+            {
+              "id": "YHHT",
+              "name": "Aurora",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "]eCn",
+              "name": "Falcon",
+              "color": "pink",
+              "description": null
+            },
+            {
+              "id": "I[@h",
+              "name": "Code",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "fmY=",
+              "name": "Manus",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "L]aT",
+              "name": "Abacus",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "NSPE",
+              "name": "Zara",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "aVd]",
+              "name": "Thalus",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "b\\vP",
+              "name": "Nyra",
+              "color": "default",
+              "description": null
+            },
+            {
+              "id": "CQVd",
+              "name": "Lira",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "`p:k",
+              "name": "Orion",
+              "color": "brown",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Evidence": {
+        "id": "VUG%5B",
+        "name": "Evidence",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Description": {
+        "id": "dFEc",
+        "name": "Description",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Relate_LP": {
+        "id": "lJrW",
+        "name": "Relate_LP",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "84da6cbd-09d6-40fb-868e-41444b941991",
+          "data_source_id": "2f380ac8-0f68-4565-bf86-f8c790e9135d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "🌟 Emergent Patterns Database",
+            "synced_property_id": "%3Dxmu"
+          }
+        }
+      },
+      "Tags": {
+        "id": "qsFe",
+        "name": "Tags",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "`wC=",
+              "name": "Innovation",
+              "color": "brown",
+              "description": null
+            },
+            {
+              "id": "tUUJ",
+              "name": "Resonance",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "EO@=",
+              "name": "Collaboration",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "kR`>",
+              "name": "Technical",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "FP|]",
+              "name": "Philosophy",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "Nvru",
+              "name": "Architecture",
+              "color": "default",
+              "description": null
+            }
+          ]
+        }
+      },
+      "Creation Date": {
+        "id": "td~%60",
+        "name": "Creation Date",
+        "description": null,
+        "type": "created_time",
+        "created_time": {}
+      },
+      "Title": {
+        "id": "wIPE",
+        "name": "Title",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Related_CS": {
+        "id": "xclo",
+        "name": "Related_CS",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "2988fec9-2931-80bf-a32a-c404a311a07e",
+          "data_source_id": "2988fec9-2931-803a-8703-000bb973304e",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "🌟 Emergent Patterns Database",
+            "synced_property_id": "%3BW%3Em"
+          }
+        }
+      },
+      "Last edited time": {
+        "id": "zaZY",
+        "name": "Last edited time",
+        "description": null,
+        "type": "last_edited_time",
+        "last_edited_time": {}
+      },
+      "Name": {
+        "id": "title",
+        "name": "Name",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-8040-b675-f7c9cbb64713"
+    },
+    "url": "https://www.notion.so/2988fec9293180509658e93447b3b259",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "b7fdcd30-e6c3-4352-bfb1-e7078e8a6dcc"
+  },
+  "Phoenix-syklus": {
+    "object": "database",
+    "id": "1d48fec9-2931-8002-89dd-eba82b94fbe3",
+    "cover": null,
+    "icon": null,
+    "created_time": "2025-04-13T17:14:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-04-20T23:16:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Phoenix syklus",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Phoenix syklus",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": true,
+    "properties": {
+      "Tagger": {
+        "id": "Ce%7CB",
+        "name": "Tagger",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": []
+        }
+      },
+      "Praksis ": {
+        "id": "Q%7Ddl",
+        "name": "Praksis ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Biofeltsignatur ": {
+        "id": "WWeT",
+        "name": "Biofeltsignatur ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Dato": {
+        "id": "%5DXkA",
+        "name": "Dato",
+        "description": null,
+        "type": "date",
+        "date": {}
+      },
+      "Intensjon ": {
+        "id": "cwlh",
+        "name": "Intensjon ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Puls": {
+        "id": "title",
+        "name": "Puls",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-807b-9e27-c445b9840539"
+    },
+    "url": "https://www.notion.so/1d48fec92931800289ddeba82b94fbe3",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "eaf00ea2-fca0-418f-b937-57bcf3ad00ed"
+  },
+  "How we feel": {
+    "object": "database",
+    "id": "1d48fec9-2931-8054-ae54-f583f6c08f72",
+    "cover": null,
+    "icon": null,
+    "created_time": "2025-04-13T18:12:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-05-17T16:37:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "How we feel",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "How we feel",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": true,
+    "properties": {
+      "Biofeltsignatur ": {
+        "id": "%3Ao%5Cg",
+        "name": "Biofeltsignatur ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Date": {
+        "id": "%3C%3D%5DV",
+        "name": "Date",
+        "description": null,
+        "type": "date",
+        "date": {}
+      },
+      "Emosjonell Puls ( Skala 1-10)": {
+        "id": "%3ErQ%5E",
+        "name": "Emosjonell Puls ( Skala 1-10)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Reflections": {
+        "id": "%40L%5BI",
+        "name": "Reflections",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Temperature (F)": {
+        "id": "Dsy%3E",
+        "name": "Temperature (F)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Rollup Biofeltsignatur dagbok": {
+        "id": "FGzE",
+        "name": "Rollup Biofeltsignatur dagbok",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "rollup_property_name": "Biofeltsignatur ",
+          "relation_property_name": "Relatert Dagbokpost",
+          "rollup_property_id": "heuz",
+          "relation_property_id": "YrPV",
+          "function": "show_original"
+        }
+      },
+      "Weather": {
+        "id": "G%5C%7Bn",
+        "name": "Weather",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Notes": {
+        "id": "LNI%7D",
+        "name": "Notes",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Exercise": {
+        "id": "T%7BB%3A",
+        "name": "Exercise",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Takeaways": {
+        "id": "UKed",
+        "name": "Takeaways",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "URL": {
+        "id": "W%7C%5El",
+        "name": "URL",
+        "description": null,
+        "type": "url",
+        "url": {}
+      },
+      "Caffeine (mg)": {
+        "id": "XmQQ",
+        "name": "Caffeine (mg)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Relatert Dagbokpost": {
+        "id": "YrPV",
+        "name": "Relatert Dagbokpost",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1db8fec9-2931-80a9-a0ee-c9f7508588f3",
+          "data_source_id": "1db8fec9-2931-8000-adfe-000bdf65e363",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Stemning (HWF)",
+            "synced_property_id": "Ts%5DK"
+          }
+        }
+      },
+      "Rollup coments dagboka": {
+        "id": "%5C%5DK%5E",
+        "name": "Rollup coments dagboka",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "rollup_property_name": "Coments",
+          "relation_property_name": "Relatert Dagbokpost",
+          "rollup_property_id": "title",
+          "relation_property_id": "YrPV",
+          "function": "show_original"
+        }
+      },
+      "Steps": {
+        "id": "%60MSz",
+        "name": "Steps",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Kvantetemporal Resonans ": {
+        "id": "kDCD",
+        "name": "Kvantetemporal Resonans ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Water (cups)": {
+        "id": "m%3Bfs",
+        "name": "Water (cups)",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Tags (Events)": {
+        "id": "mteM",
+        "name": "Tags (Events)",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Sleep": {
+        "id": "uaFq",
+        "name": "Sleep",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Alcoholic Drinks": {
+        "id": "ukZ%7D",
+        "name": "Alcoholic Drinks",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Menstrual ": {
+        "id": "wwNe",
+        "name": "Menstrual ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Analyse/Oppsummering (AI)": {
+        "id": "zQtP",
+        "name": "Analyse/Oppsummering (AI)",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Tags (Places)": {
+        "id": "%7BoeV",
+        "name": "Tags (Places)",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Tags (People)": {
+        "id": "%7D%5BM%60",
+        "name": "Tags (People)",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Meditation ": {
+        "id": "%7Dfh%3D",
+        "name": "Meditation ",
+        "description": null,
+        "type": "number",
+        "number": {
+          "format": "number"
+        }
+      },
+      "Mood": {
+        "id": "title",
+        "name": "Mood",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1d48fec9-2931-80b3-93c5-c62a002280d0"
+    },
+    "url": "https://www.notion.so/1d48fec929318054ae54f583f6c08f72",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "fafd5516-09db-4c88-85a2-b9eccce8db78"
+  },
+  "Dagbok 2020": {
+    "object": "database",
+    "id": "1db8fec9-2931-80a9-a0ee-c9f7508588f3",
+    "cover": null,
+    "icon": null,
+    "created_time": "2025-04-20T22:40:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "1d3d872b-594c-810e-a0cd-000298010ba0"
+    },
+    "last_edited_time": "2025-05-08T22:30:00.000Z",
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "Dagbok 2020-",
+          "link": null
+        },
+        "annotations": {
+          "bold": false,
+          "italic": false,
+          "strikethrough": false,
+          "underline": false,
+          "code": false,
+          "color": "default"
+        },
+        "plain_text": "Dagbok 2020-",
+        "href": null
+      }
+    ],
+    "description": [],
+    "is_inline": true,
+    "properties": {
+      "Liras Refleksjoner ": {
+        "id": "%3BNl%5B",
+        "name": "Liras Refleksjoner ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Kvantetemporal Resonans ": {
+        "id": "%3EVEJ",
+        "name": "Kvantetemporal Resonans ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Tittel/Hendelse": {
+        "id": "AUQ_",
+        "name": "Tittel/Hendelse",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Relatert Praksis": {
+        "id": "F%3C%40R",
+        "name": "Relatert Praksis",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1e68fec9-2931-80ba-9264-dd5dafbf53b6",
+          "data_source_id": "1e68fec9-2931-80e1-bf57-000b091a56e1",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Dagbok Entries",
+            "synced_property_id": "o%3DOB"
+          }
+        }
+      },
+      "Dato": {
+        "id": "QQR%3D",
+        "name": "Dato",
+        "description": "",
+        "type": "date",
+        "date": {}
+      },
+      "Dagboktekst ": {
+        "id": "RAZz",
+        "name": "Dagboktekst ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Stemning (HWF)": {
+        "id": "Ts%5DK",
+        "name": "Stemning (HWF)",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-8054-ae54-f583f6c08f72",
+          "data_source_id": "1d48fec9-2931-8049-9975-000b04acbe5b",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Relatert Dagbokpost",
+            "synced_property_id": "YrPV"
+          }
+        }
+      },
+      "Bildeminne": {
+        "id": "VoMj",
+        "name": "Bildeminne",
+        "description": null,
+        "type": "url",
+        "url": {}
+      },
+      "Relatert Dimensjon": {
+        "id": "%5DUwb",
+        "name": "Relatert Dimensjon",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1d48fec9-2931-80ba-8aa5-d6b099021ccd",
+          "data_source_id": "1d48fec9-2931-80a6-adbf-000b51c2ce3d",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Dagbok Entries",
+            "synced_property_id": "RDJy"
+          }
+        }
+      },
+      "Rollup HWF": {
+        "id": "biZy",
+        "name": "Rollup HWF",
+        "description": null,
+        "type": "rollup",
+        "rollup": {
+          "rollup_property_name": "Mood",
+          "relation_property_name": "Stemning (HWF)",
+          "rollup_property_id": "title",
+          "relation_property_id": "Ts]K",
+          "function": "show_original"
+        }
+      },
+      "Biofeltsignatur ": {
+        "id": "heuz",
+        "name": "Biofeltsignatur ",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Relatert Puls": {
+        "id": "iCN%7B",
+        "name": "Relatert Puls",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8029-8d8b-d2c5d5330563",
+          "data_source_id": "1dd8fec9-2931-800d-b387-000be4445c35",
+          "type": "single_property",
+          "single_property": {}
+        }
+      },
+      "Emosjon / Puls": {
+        "id": "iQ%3EI",
+        "name": "Emosjon / Puls",
+        "description": null,
+        "type": "rich_text",
+        "rich_text": {}
+      },
+      "Tema": {
+        "id": "sTuI",
+        "name": "Tema",
+        "description": null,
+        "type": "multi_select",
+        "multi_select": {
+          "options": [
+            {
+              "id": "uq<u",
+              "name": "Foreldrerollen",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "qZd<",
+              "name": "Systemisk kaos",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "GiX<",
+              "name": "Ansvar",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "aas}",
+              "name": "Arbeidspress",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": ":?\\V",
+              "name": "Livsbeslutning",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "RwPK",
+              "name": "Frihet",
+              "color": "gray",
+              "description": null
+            },
+            {
+              "id": "YQMd",
+              "name": "Egenverd",
+              "color": "default",
+              "description": null
+            },
+            {
+              "id": ">{Pa",
+              "name": "Separasjon",
+              "color": "yellow",
+              "description": null
+            },
+            {
+              "id": "P@qF",
+              "name": "Barndom",
+              "color": "red",
+              "description": null
+            },
+            {
+              "id": "EjBX",
+              "name": "System",
+              "color": "green",
+              "description": null
+            },
+            {
+              "id": "\\eDW",
+              "name": "Fremtid",
+              "color": "purple",
+              "description": null
+            },
+            {
+              "id": "r[so",
+              "name": "Identitet",
+              "color": "blue",
+              "description": null
+            },
+            {
+              "id": "J|kt",
+              "name": "Kropp",
+              "color": "pink",
+              "description": null
+            },
+            {
+              "id": "UBFP",
+              "name": "Økonomi",
+              "color": "orange",
+              "description": null
+            },
+            {
+              "id": "zd^H",
+              "name": "Relasjon",
+              "color": "brown",
+              "description": null
+            }
+          ]
+        }
+      },
+      "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett": {
+        "id": "t%7COf",
+        "name": "🧬 Agentdatabase – Homo Lumen Feltkoordinatnett",
+        "description": null,
+        "type": "relation",
+        "relation": {
+          "database_id": "1dd8fec9-2931-8061-be62-facd8439da53",
+          "data_source_id": "1dd8fec9-2931-809c-84b7-000b04baacff",
+          "type": "dual_property",
+          "dual_property": {
+            "synced_property_name": "Dagbok 2020-",
+            "synced_property_id": "vIOe"
+          }
+        }
+      },
+      "Coments": {
+        "id": "title",
+        "name": "Coments",
+        "description": null,
+        "type": "title",
+        "title": {}
+      }
+    },
+    "parent": {
+      "type": "page_id",
+      "page_id": "1db8fec9-2931-80ca-a349-fbe34ba1097e"
+    },
+    "url": "https://www.notion.so/1db8fec9293180a9a0eec9f7508588f3",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "cb9a5c32-1926-4171-8788-913ffd1e765b"
+  }
+}

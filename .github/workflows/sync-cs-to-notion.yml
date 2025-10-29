@@ -1,0 +1,36 @@
+name: Sync Case Studies to Notion
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Manual trigger option
+
+jobs:
+  sync-cs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests pyyaml
+
+      - name: Sync CS to Notion
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          CS_DATABASE_ID: ${{ secrets.CS_DATABASE_ID }}
+        run: |
+          python scripts/parse_cs.py
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "✅ Case Studies sync workflow completed"

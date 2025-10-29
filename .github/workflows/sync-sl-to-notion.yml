@@ -1,0 +1,36 @@
+name: Sync Shadow Logs to Notion
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  sync-sl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests pyyaml
+
+      - name: Sync SL to Notion
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          SL_DATABASE_ID: ${{ secrets.SL_DATABASE_ID }}
+        run: |
+          python scripts/parse_sl.py
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "✅ Shadow Logs sync workflow completed"

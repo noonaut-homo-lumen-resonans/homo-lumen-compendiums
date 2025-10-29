@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "homo-lumen-ama",
+			"path": "../homo-lumen-ama"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "navlosen/frontend/node_modules/typescript/lib",
+		"typescript.enablePromptUseWorkspaceTsdk": true
+	}
+}

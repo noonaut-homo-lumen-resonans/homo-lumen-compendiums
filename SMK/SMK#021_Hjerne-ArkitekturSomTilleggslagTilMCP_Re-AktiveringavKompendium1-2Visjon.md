@@ -1,3 +1,10 @@
+---
+smk_number: 21
+type: Strategic Macro-Coordination
+tags: [mcp, nav-losen, deployment]
+status: COMPLETE
+---
+
 **SMK \#021: Hjerne-Arkitektur Som Tilleggslag Til MCP: Re-Aktivering av Kompendium 1-2 Visjon**
 
 ---

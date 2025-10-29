@@ -1,0 +1,27 @@
+# Testing Dependencies for Homo Lumen Collective Intelligence System
+# Install with: pip install -r requirements-test.txt
+
+# Core testing framework
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+pytest-timeout==2.2.0
+
+# HTTP testing
+httpx==0.25.2
+requests==2.31.0
+
+# Mocking and fixtures
+pytest-mock==3.12.0
+faker==20.1.0
+
+# Code quality (optional - removed non-existent packages)
+
+# Already installed (from main requirements)
+# fastapi
+# uvicorn
+# python-dotenv
+# pydantic
+
+# Redis testing (mock mode)
+fakeredis==2.20.1

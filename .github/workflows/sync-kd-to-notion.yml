@@ -1,0 +1,36 @@
+name: Sync Critical Decisions to Notion
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  sync-kd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests pyyaml
+
+      - name: Sync KD to Notion
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          KD_DATABASE_ID: ${{ secrets.KD_DATABASE_ID }}
+        run: |
+          python scripts/parse_kd.py
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "✅ Critical Decisions sync workflow completed"

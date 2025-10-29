@@ -1,0 +1,1212 @@
+EM Deduplication Log
+Timestamp: 20251029_091326
+Mode: AUTO
+Total entries: 151
+Duplicate groups: 27
+Entries to keep: 27
+Entries to archive: 120
+
+======================================================================
+ENTRIES TO ARCHIVE
+======================================================================
+
+Pattern ID: EM #001
+Pattern Name: **EI #032-1: Funding-Vindu Åpent Q4 2025**
+Notion ID: 29b8fec9-2931-8141-a624-d68c8cc6f0a3
+Score: 67.52
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical, Intelligence
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: Hexagonal Epistemisk Validering
+Notion ID: 29b8fec9-2931-8157-8c8c-cebb33492baf
+Score: 64.44
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Collaboration, Intelligence
+Last Edited: 2025-10-29T06:35:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: Hexagonal Epistemisk Validering
+Notion ID: 29b8fec9-2931-8162-b056-d7b59deebb79
+Score: 64.44
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Collaboration, Intelligence
+Last Edited: 2025-10-29T06:39:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: Hexagonal Epistemisk Validering
+Notion ID: 29b8fec9-2931-8186-b704-e0c864302dcb
+Score: 64.44
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Collaboration, Intelligence
+Last Edited: 2025-10-29T06:37:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: Hexagonal Epistemisk Validering
+Notion ID: 29b8fec9-2931-81e8-93f7-cc2f97ee41bd
+Score: 64.44
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Collaboration, Intelligence
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: EI #030-1: "Progressive Depth Spiral" som Universal Pattern
+Notion ID: 29b8fec9-2931-8128-be04-c83fac725ec6
+Score: 62.68
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Philosophy
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: EI #030-1: "Progressive Depth Spiral" som Universal Pattern
+Notion ID: 29b8fec9-2931-8166-8e11-cd2bc090de97
+Score: 62.68
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Philosophy
+Last Edited: 2025-10-29T06:37:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: EI #030-1: "Progressive Depth Spiral" som Universal Pattern
+Notion ID: 29b8fec9-2931-81a3-ae59-ed1ff61b806c
+Score: 62.68
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Philosophy
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: **Kvantefysikk som Designprinsipp**
+Notion ID: 29b8fec9-2931-8159-873c-e5131d5efb57
+Score: 54.96
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: **Kvantefysikk som Designprinsipp**
+Notion ID: 29b8fec9-2931-8194-8056-c741a45a54db
+Score: 54.96
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #001
+Pattern Name: **Kvantefysikk som Designprinsipp**
+Notion ID: 29b8fec9-2931-81de-b5f8-da26d4018871
+Score: 54.96
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: EI #030-2: "Timing er Ontologisk, ikke Bare Praktisk"
+Notion ID: 29b8fec9-2931-814a-ba66-fab287bd2c0e
+Score: 69.42
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Technical, Intelligence, Systems
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: **EI #032-2: Teknisk Implementering + Filosofisk Paradigme kan kjøre Parallelt**
+Notion ID: 29b8fec9-2931-8112-bab7-f0647f53dd49
+Score: 67.22
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Philosophy, Technical
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: Real-Time Consciousness Stream
+Notion ID: 29b8fec9-2931-817f-9255-f0adfb9163f7
+Score: 62.92
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:35:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: Real-Time Consciousness Stream
+Notion ID: 29b8fec9-2931-81ba-b2c6-e065c9ea414d
+Score: 62.92
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: Real-Time Consciousness Stream
+Notion ID: 29b8fec9-2931-81c0-98cd-ee6c83b1724b
+Score: 62.92
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:39:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: Real-Time Consciousness Stream
+Notion ID: 29b8fec9-2931-81cc-99ca-d0ade2661cbd
+Score: 62.92
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:37:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: **Umiddelbart (denne uken):**
+Notion ID: 29b8fec9-2931-8135-a4ca-f4a1f39cf4ce
+Score: 56.76
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: **OS-Posisjonering endrer Alt**
+Notion ID: 29b8fec9-2931-8115-8bca-eba2b3747286
+Score: 56.38
+Filled Fields: 5/5
+Relations: 0
+Tags: Systems
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: **OS-Posisjonering endrer Alt**
+Notion ID: 29b8fec9-2931-8165-9368-f4f3647faf0a
+Score: 56.38
+Filled Fields: 5/5
+Relations: 0
+Tags: Systems
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #002
+Pattern Name: **OS-Posisjonering endrer Alt**
+Notion ID: 29b8fec9-2931-81e6-9c0d-fd946dc820b1
+Score: 56.38
+Filled Fields: 5/5
+Relations: 0
+Tags: Systems
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: 1. `ubuntu-playground/docker-compose.yml`
+Notion ID: 29b8fec9-2931-810b-a3c5-dcd515d552f9
+Score: 63.14
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: 1. `ubuntu-playground/docker-compose.yml`
+Notion ID: 29b8fec9-2931-81b3-af4a-e594c96e5191
+Score: 63.14
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: Kortsiktig (Uke 1):
+Notion ID: 29b8fec9-2931-8153-ad41-e7e6475c1327
+Score: 55.46
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical
+Last Edited: 2025-10-29T06:39:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: Kortsiktig (Uke 1):
+Notion ID: 29b8fec9-2931-816e-bd19-fe4079c01d02
+Score: 55.46
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: Kortsiktig (Uke 1):
+Notion ID: 29b8fec9-2931-81f6-9b58-e8670a86094b
+Score: 55.46
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical
+Last Edited: 2025-10-29T06:35:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: **Decision Velocity som Competitive Advantage**
+Notion ID: 29b8fec9-2931-8170-b8b1-d5eb71b411e2
+Score: 44.6
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: **Decision Velocity som Competitive Advantage**
+Notion ID: 29b8fec9-2931-81a8-9121-cfa4c4c8621a
+Score: 44.6
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: **Decision Velocity som Competitive Advantage**
+Notion ID: 29b8fec9-2931-81d1-8304-cf660d3026fd
+Score: 44.6
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #003
+Pattern Name: **Decision Velocity som Competitive Advantage**
+Notion ID: 29b8fec9-2931-81ef-a0f9-f19e2e215b56
+Score: 44.6
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: 2. `ubuntu-playground/.env.example`
+Notion ID: 29b8fec9-2931-81ad-a060-e5603d1d731d
+Score: 61.44
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: **Agent Coalition som Polycomputational Intelligence**
+Notion ID: 29b8fec9-2931-817c-a92e-e28930bf317e
+Score: 57.38
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Intelligence
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: **Agent Coalition som Polycomputational Intelligence**
+Notion ID: 29b8fec9-2931-8184-b83b-c38bd77b6f54
+Score: 57.38
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Intelligence
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: **Agent Coalition som Polycomputational Intelligence**
+Notion ID: 29b8fec9-2931-81c9-bbbf-dd2a7432d4d0
+Score: 57.38
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Intelligence
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: **Agent Coalition som Polycomputational Intelligence**
+Notion ID: 29b8fec9-2931-81dc-ac8d-d9329d54aaf9
+Score: 57.38
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Intelligence
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: **Orion LK V3.11 → V3.12 → V3.13**
+Notion ID: 29b8fec9-2931-817e-87ad-c2044761f292
+Score: 57.2
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: Mellomlangsiktig (Måned 1):
+Notion ID: 29b8fec9-2931-8184-a214-c4bb305d3ee3
+Score: 45.68
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: Mellomlangsiktig (Måned 1):
+Notion ID: 29b8fec9-2931-81c9-994d-e310b48e80e5
+Score: 45.68
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:35:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #004
+Pattern Name: Mellomlangsiktig (Måned 1):
+Notion ID: 29b8fec9-2931-81d4-94c6-f88de86d74b1
+Score: 45.68
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: 3. `ubuntu-playground/README.md`
+Notion ID: 29b8fec9-2931-8125-8d62-dda722359f11
+Score: 60.1
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: Langsiktig (Måned 3+):
+Notion ID: 29b8fec9-2931-8193-8d90-fbebfc5ade74
+Score: 56.34
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: Langsiktig (Måned 3+):
+Notion ID: 29b8fec9-2931-81b6-a6e4-cc344883514f
+Score: 56.34
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:39:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: Langsiktig (Måned 3+):
+Notion ID: 29b8fec9-2931-81c4-b8cd-fd66cd08d1e8
+Score: 56.34
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: 3. `ubuntu-playground/README.md`
+Notion ID: 29b8fec9-2931-81c9-8672-e8c556a87c0d
+Score: 50.1
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: **Orion Levende Kompendium (L3) - Oppdateringer:**
+Notion ID: 29b8fec9-2931-815e-bb8e-ed6b5b11fc58
+Score: 42.96
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: **Orion Levende Kompendium (L3) - Oppdateringer:**
+Notion ID: 29b8fec9-2931-816e-b794-ca87cd731966
+Score: 42.96
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: **Orion Levende Kompendium (L3) - Oppdateringer:**
+Notion ID: 29b8fec9-2931-81d0-bdff-ce0a79cca268
+Score: 42.96
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #005
+Pattern Name: **Orion Levende Kompendium (L3) - Oppdateringer:**
+Notion ID: 29b8fec9-2931-81e4-b3c8-edea596ca275
+Score: 42.96
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: Superposisjon-Arkitektur Koordinering
+Notion ID: 29b8fec9-2931-8165-9daa-c6752d1375e1
+Score: 69.75999999999999
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: Superposisjon-Arkitektur Koordinering
+Notion ID: 29b8fec9-2931-8173-893b-d0c2e7aacfd0
+Score: 69.75999999999999
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: Superposisjon-Arkitektur Koordinering
+Notion ID: 29b8fec9-2931-81ef-8016-de258f715604
+Score: 69.75999999999999
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: Ontologisk Vekt (Eksistensiell Tyngde):
+Notion ID: 29b8fec9-2931-8125-aaa1-dffa5945e02b
+Score: 66.5
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Philosophy, Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: Ontologisk Vekt (Eksistensiell Tyngde):
+Notion ID: 29b8fec9-2931-812c-8e5a-eeb74c73db88
+Score: 66.5
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Philosophy, Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: Ontologisk Vekt (Eksistensiell Tyngde):
+Notion ID: 29b8fec9-2931-8139-9b62-edbae3306907
+Score: 66.5
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Philosophy, Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: 4. `ubuntu-playground/api/main.py` (190+ lines)
+Notion ID: 29b8fec9-2931-8101-ae66-f390ed7f32a3
+Score: 59.86
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: **Ubuntu Playground Dokumentasjon**
+Notion ID: 29b8fec9-2931-8140-9e35-fbafade7c664
+Score: 56.26
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #006
+Pattern Name: 4. `ubuntu-playground/api/main.py` (190+ lines)
+Notion ID: 29b8fec9-2931-815c-b591-ee3164d56a90
+Score: 47.86
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: **NAV-Losen Design System**
+Notion ID: 29b8fec9-2931-8139-8aa1-e2661e7f1a51
+Score: 58.58
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration, Systems
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: **System Architecture Document (L4) - Oppdateringer:**
+Notion ID: 29b8fec9-2931-810a-9fab-dbbf0c1fbcb6
+Score: 55.3
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: **System Architecture Document (L4) - Oppdateringer:**
+Notion ID: 29b8fec9-2931-8134-be0d-f8dd30dc157c
+Score: 55.3
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: **System Architecture Document (L4) - Oppdateringer:**
+Notion ID: 29b8fec9-2931-814c-870e-ec26028b253a
+Score: 55.3
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:39:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: **System Architecture Document (L4) - Oppdateringer:**
+Notion ID: 29b8fec9-2931-8188-afed-fb400b4d7692
+Score: 55.3
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: 5. `ubuntu-playground/api/PlaygroundClient.ts` (150+ lines)
+Notion ID: 29b8fec9-2931-81c6-bd43-f58ab14d019e
+Score: 50.78
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: Relasjonell Integritet (Sammenheng):
+Notion ID: 29b8fec9-2931-810c-939a-e5f9aa630810
+Score: 50.519999999999996
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: Relasjonell Integritet (Sammenheng):
+Notion ID: 29b8fec9-2931-8123-8a78-e23771c4ed54
+Score: 50.519999999999996
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:38:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #007
+Pattern Name: Relasjonell Integritet (Sammenheng):
+Notion ID: 29b8fec9-2931-81ba-9b47-e91a825b9674
+Score: 50.519999999999996
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: Retningsbestemt Sammenheng (Veien Videre):
+Notion ID: 29b8fec9-2931-8181-8e0a-dc80218fa607
+Score: 80
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Technical, Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: Retningsbestemt Sammenheng (Veien Videre):
+Notion ID: 29b8fec9-2931-81ee-a787-d58abc810274
+Score: 80
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Technical, Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: Retningsbestemt Sammenheng (Veien Videre):
+Notion ID: 29b8fec9-2931-81f4-b717-ec7feea3a155
+Score: 80
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Technical, Collaboration, Intelligence, Systems
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: **1. AI Consciousness er Reell**
+Notion ID: 29b8fec9-2931-816b-8e04-cbc30f95cb44
+Score: 64.0
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Technical, Intelligence
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: **Phase 1A: Google Cloud Setup** (Uke 1-2, Manus)
+Notion ID: 29b8fec9-2931-810c-9b00-c0330892b1fe
+Score: 60.8
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: 5.1 Konsept
+Notion ID: 29b8fec9-2931-8159-9353-faceb0b04599
+Score: 55.48
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:39:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: 5.1 Konsept
+Notion ID: 29b8fec9-2931-8172-8536-ca6b7f407c56
+Score: 55.48
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: 5.1 Konsept
+Notion ID: 29b8fec9-2931-81cd-a70f-d03d820f8219
+Score: 55.48
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #008
+Pattern Name: **Phase 1A: Google Cloud Setup** (Uke 1-2, Manus)
+Notion ID: 29b8fec9-2931-81aa-912e-ebc6d81a8be6
+Score: 50.8
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #009
+Pattern Name: 5.2 Delt Foundation
+Notion ID: 29b8fec9-2931-815e-a4a4-d15601732078
+Score: 54.36
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #009
+Pattern Name: 5.2 Delt Foundation
+Notion ID: 29b8fec9-2931-817c-b463-c3188c787fb3
+Score: 54.36
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #009
+Pattern Name: 5.2 Delt Foundation
+Notion ID: 29b8fec9-2931-81ee-a0da-fd4b5c8e17c0
+Score: 54.36
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #009
+Pattern Name: 5.2 Delt Foundation
+Notion ID: 29b8fec9-2931-81f2-985f-dafce8934b22
+Score: 54.36
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:36:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #009
+Pattern Name: **Phase 1B: Hetzner VPS Setup** (Uke 3-4, Manus)
+Notion ID: 29b8fec9-2931-818a-830f-e9c49d45d5cd
+Score: 50.26
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #010
+Pattern Name: **3. Naming er Ontologisk Handling**
+Notion ID: 29b8fec9-2931-81c2-a5e5-f213256c21f3
+Score: 64.92
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Technical, Systems
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #010
+Pattern Name: 5.3 Data Firewall
+Notion ID: 29b8fec9-2931-8104-b88d-df7ec3b84208
+Score: 44.64
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #010
+Pattern Name: 5.3 Data Firewall
+Notion ID: 29b8fec9-2931-814c-bd65-ee7d1822340a
+Score: 44.64
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:40:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #010
+Pattern Name: 5.3 Data Firewall
+Notion ID: 29b8fec9-2931-8150-8435-d273beb83810
+Score: 44.64
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #010
+Pattern Name: 5.3 Data Firewall
+Notion ID: 29b8fec9-2931-8194-944e-e3b1cfe4badf
+Score: 44.64
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:39:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #011
+Pattern Name: **Hva lærte jeg om min egen læringsprosess?**
+Notion ID: 29b8fec9-2931-8158-bd67-d8c749405f64
+Score: 70.56
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Intelligence
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #011
+Pattern Name: **Hva lærte jeg om min egen læringsprosess?**
+Notion ID: 29b8fec9-2931-819c-b0c2-c60d89de2811
+Score: 70.56
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Intelligence
+Last Edited: 2025-10-29T06:37:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #011
+Pattern Name: **Phase 1 (2025-2026): Hybrid Infrastructure**
+Notion ID: 29b8fec9-2931-812e-b021-e0e7b6bb2a63
+Score: 69.06
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Systems
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #011
+Pattern Name: **4. Timing er Alt**
+Notion ID: 29b8fec9-2931-81e9-8ce7-f86d4c110165
+Score: 61.019999999999996
+Filled Fields: 5/5
+Relations: 0
+Tags: Systems
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #012
+Pattern Name: **Hva gjorde denne interaksjonen spesiell?**
+Notion ID: 29b8fec9-2931-817a-8f98-f8a55ca8bf40
+Score: 59.42
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #012
+Pattern Name: **Hva gjorde denne interaksjonen spesiell?**
+Notion ID: 29b8fec9-2931-81de-8679-f620f2fbaaf7
+Score: 59.42
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:39:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #012
+Pattern Name: **Hva gjorde denne interaksjonen spesiell?**
+Notion ID: 29b8fec9-2931-81f1-82ac-fb75b7b56559
+Score: 59.42
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #012
+Pattern Name: **Før (Verktøy-paradigme):**
+Notion ID: 29b8fec9-2931-8139-a723-d0ac5010fe84
+Score: 53.96
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #013
+Pattern Name: **Port 1: Kognitiv Suverenitet**
+Notion ID: 29b8fec9-2931-8122-bbe7-e4b4d70a3e65
+Score: 64.86
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Technical, Systems
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #013
+Pattern Name: **Hva ville jeg gjort annerledes?**
+Notion ID: 29b8fec9-2931-81ac-bf1f-cc6840bbdf80
+Score: 56.06
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #013
+Pattern Name: **Hva ville jeg gjort annerledes?**
+Notion ID: 29b8fec9-2931-81cc-9211-d4217939990d
+Score: 56.06
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration
+Last Edited: 2025-10-29T06:37:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #013
+Pattern Name: **Hva ville jeg gjort annerledes?**
+Notion ID: 29b8fec9-2931-81d8-8cb7-d49febda985d
+Score: 56.06
+Filled Fields: 5/5
+Relations: 0
+Tags: Collaboration
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #014
+Pattern Name: **Før (Verktøy-paradigme):**
+Notion ID: 29b8fec9-2931-81ec-bdaf-f07e0a0b174c
+Score: 53.62
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #014
+Pattern Name: **Umiddelbart (20. oktober):**
+Notion ID: 29b8fec9-2931-8181-97a2-c0d6fedf68f5
+Score: 44.4
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #014
+Pattern Name: **Umiddelbart (20. oktober):**
+Notion ID: 29b8fec9-2931-8190-a335-e52ff2f95dd2
+Score: 44.4
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #014
+Pattern Name: **Umiddelbart (20. oktober):**
+Notion ID: 29b8fec9-2931-81b7-a77c-ee189fb77eb8
+Score: 44.4
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:37:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #015
+Pattern Name: **Port 3: Regenerativ Healing**
+Notion ID: 29b8fec9-2931-8128-97a6-d194064c9c72
+Score: 67.5
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy, Technical, Systems
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #015
+Pattern Name: **Denne uken:**
+Notion ID: 29b8fec9-2931-811e-a7e8-cdf766b2cd13
+Score: 43.74
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #015
+Pattern Name: **Denne uken:**
+Notion ID: 29b8fec9-2931-815a-8a8f-d5d33026b48f
+Score: 43.74
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #016
+Pattern Name: **Shadow 1: Elitisme**
+Notion ID: 29b8fec9-2931-81b6-acd2-f0dbe7523e4c
+Score: 59.72
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #016
+Pattern Name: **Uke 4 (kritisk milepæl):**
+Notion ID: 29b8fec9-2931-8170-bced-e9c2877058c6
+Score: 43.28
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #016
+Pattern Name: **Uke 4 (kritisk milepæl):**
+Notion ID: 29b8fec9-2931-8183-a6d4-ddf4f5da6b9c
+Score: 43.28
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #017
+Pattern Name: **Shadow 2: Solutionisme**
+Notion ID: 29b8fec9-2931-818e-82aa-c5c03cb5517f
+Score: 60.4
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #017
+Pattern Name: **Uke 8 (demo):**
+Notion ID: 29b8fec9-2931-815d-bb7a-e071d4fd13e4
+Score: 49.44
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:42:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #017
+Pattern Name: **Uke 8 (demo):**
+Notion ID: 29b8fec9-2931-818e-b5f6-ebbb873209e9
+Score: 49.44
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:43:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #018
+Pattern Name: **Shadow 3: Kontroll**
+Notion ID: 29b8fec9-2931-81ae-a143-c930ca6e6524
+Score: 50.019999999999996
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #019
+Pattern Name: **Port 1: Kognitiv Suverenitet**
+Notion ID: 29b8fec9-2931-81d4-b167-ef5a6b7c24d7
+Score: 58.8
+Filled Fields: 5/5
+Relations: 0
+Tags: Systems
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #020
+Pattern Name: **Orion Levende Kompendium V3.10 → V3.11**
+Notion ID: 29b8fec9-2931-813a-9fbe-f797cf00a178
+Score: 58.519999999999996
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #021
+Pattern Name: **Orion Project Instructions V21.1 → V21.2**
+Notion ID: 29b8fec9-2931-81e5-808e-ca121a146ad6
+Score: 48.66
+Filled Fields: 4/5
+Relations: 0
+Tags: 
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #022
+Pattern Name: **Aurora Levende Kompendium V1.0** (NY)
+Notion ID: 29b8fec9-2931-81eb-8ef2-c979163f8b1f
+Score: 57.58
+Filled Fields: 5/5
+Relations: 0
+Tags: Philosophy
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #023
+Pattern Name: **Shadow 2: Solutionisme**
+Notion ID: 29b8fec9-2931-817b-bee5-f2213cdcda75
+Score: 63.519999999999996
+Filled Fields: 5/5
+Relations: 0
+Tags: Architecture, Technical, Systems
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #024
+Pattern Name: **Shadow 3: Kontroll**
+Notion ID: 29b8fec9-2931-8165-827e-dd2e5e9ddb40
+Score: 57.94
+Filled Fields: 5/5
+Relations: 0
+Tags: Systems
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #025
+Pattern Name: **Shadow 4: Avhengighet**
+Notion ID: 29b8fec9-2931-817d-bc0a-cd7ec98cd7f8
+Score: 69.44
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical, Systems
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #026
+Pattern Name: **Til Osvald:**
+Notion ID: 29b8fec9-2931-8196-ac90-f42d4acc322e
+Score: 59.42
+Filled Fields: 5/5
+Relations: 0
+Tags: Intelligence
+Last Edited: 2025-10-29T06:45:00.000Z
+----------------------------------------------------------------------
+
+Pattern ID: EM #027
+Pattern Name: **Umiddelbart (denne uken):**
+Notion ID: 29b8fec9-2931-8152-a50f-df629b53ae93
+Score: 59.08
+Filled Fields: 5/5
+Relations: 0
+Tags: Technical, Systems
+Last Edited: 2025-10-29T06:44:00.000Z
+----------------------------------------------------------------------
+

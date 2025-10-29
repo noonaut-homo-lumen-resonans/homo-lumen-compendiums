@@ -1,0 +1,1 @@
+Claude Sonnet 4.5 has a 1-million token context window. This is a significant increase from previous versions and allows for much larger inputs, including entire codebases or long documents. For API users, this is accessible via a beta header. The pricing for requests over 200K tokens is higher.

@@ -1,0 +1,36 @@
+name: Sync Emergent Patterns to Notion (SMK + LK)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  sync-em:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests pyyaml
+
+      - name: Sync EM to Notion (SMK + LK sources)
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          EM_DATABASE_ID: ${{ secrets.EM_DATABASE_ID }}
+        run: |
+          python scripts/parse_em_v2.py
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "✅ Emergent Patterns sync workflow completed (SMK + LK)"

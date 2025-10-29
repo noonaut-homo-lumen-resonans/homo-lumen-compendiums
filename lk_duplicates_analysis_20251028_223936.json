@@ -1,0 +1,352 @@
+{
+  "timestamp": "20251028_223936",
+  "total_entries": 37,
+  "unique_groups": 5,
+  "duplicate_groups": 2,
+  "duplicates": {
+    "**🌿 ORION \\- LEVENDE KOMPENDIUM V3.6.1**": [
+      {
+        "id": "2988fec9-2931-81e1-98b9-d14ca1d94bad",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-26T21:02:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81e4-ad14-c4082a935421",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-27T22:40:00.000Z",
+        "archived": false
+      }
+    ],
+    "**🌟 ORION \\- LEVENDE KOMPENDIUM V3.6**": [
+      {
+        "id": "2988fec9-2931-81f9-8820-ddbca3cd53f9",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-26T21:02:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-8112-8d99-e496075768fb",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-27T13:06:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-8148-9bf7-dc7d258c0f8f",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-27T10:12:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-814b-b91e-f32914a5f0f3",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-27T10:12:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-819c-b5b5-ff9e2ab4bf01",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-27T13:25:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81ad-aeb0-ffe95ad438d1",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-27T22:40:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81df-88c6-c014ca6edb7a",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-27T09:49:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81e6-bbc9-ce4d1fa82e9a",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-27T13:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8103-aa82-c288f870fc86",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T12:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8104-82b6-fa2ccc57ab96",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810a-951f-c27d9a0d9da5",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T21:12:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810b-9491-e936d5a0ca33",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T10:34:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-811a-834e-d4745df6819f",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-812c-9c2c-ff3f931e57bc",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8132-b7c6-d2827706235f",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T21:23:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-814e-ae4b-e6b3a6e3c3e7",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8159-a7a6-f48d5392489e",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-815a-a2f7-c9999b939a40",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-816a-bb60-ec75c6b4812d",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8185-8a98-ecfe06b7bd1b",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T14:21:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8187-abce-e16360559c6e",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T10:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8189-b625-e6ed7d777d93",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T11:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ab-851b-fd6d04d21786",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T11:48:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81b6-87ae-fc8d65a14d6f",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T19:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81bd-8eb5-ccea1b8922c7",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T11:57:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81c4-9efc-f036a77c08d8",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ca-9f39-f75aab51cc40",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T12:40:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81cf-b7f6-f493b471dc2f",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T11:23:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81d5-a29c-e75310c87be8",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T12:15:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81e0-bfbc-f371f6c8fdcb",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T11:34:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ec-b0cc-f668c48101eb",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T11:31:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81fb-b079-e51164774cf7",
+        "title": "",
+        "agent": "Orion",
+        "date": null,
+        "relations": 0,
+        "filled_fields": 4,
+        "last_edited": "2025-10-28T11:39:00.000Z",
+        "archived": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+version: '3.8'
+
+# ===========================
+# UBUNTU PLAYGROUND - HYBRID INFRASTRUCTURE
+# ===========================
+#
+# Architecture: Google Cloud (Critical Services) + Hetzner VPS (Agent Execution)
+#
+# Google Cloud Services (Managed):
+#   - Cloud SQL (PostgreSQL) - Database & audit trail
+#   - Memorystore (Redis) - Pub/sub messaging
+#   - Cloud Run (Gitea) - Git server
+#
+# Hetzner VPS Services (Self-hosted):
+#   - FastAPI Gateway - Agent API access
+#   - ChromaDB - Vector DB (Phase 2)
+#   - Jupyter Lab - Interactive analysis (Phase 4)
+#
+# Cost: ~396 NOK/month (Google ~300 NOK + Hetzner ~96 NOK)
+# Migration Plan: Phase 2 (2027+) migrate to Full Hetzner (~180 NOK/month)
+#
+# ===========================
+
+services:
+  # FastAPI Gateway - Connects to Google Cloud services via Tailscale VPN
+  fastapi:
+    build: ./api
+    container_name: fastapi-gateway
+    environment:
+      # Google Cloud SQL (PostgreSQL) - via Tailscale private IP
+      - DATABASE_URL=postgresql://agents:${POSTGRES_PASSWORD}@${GOOGLE_CLOUD_SQL_IP}:5432/homo_lumen
+
+      # Google Memorystore (Redis) - via Tailscale private IP
+      - REDIS_URL=redis://${GOOGLE_MEMORYSTORE_IP}:6379
+
+      # Google Cloud Run (Gitea) - via HTTPS
+      - GITEA_URL=${GOOGLE_GITEA_URL}
+
+      # API Configuration
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+
+      # Agent API Keys (loaded from .env)
+      - MANUS_API_KEY=${MANUS_API_KEY}
+      - CODE_API_KEY=${CODE_API_KEY}
+      - LIRA_API_KEY=${LIRA_API_KEY}
+      - ORION_API_KEY=${ORION_API_KEY}
+      - ABACUS_API_KEY=${ABACUS_API_KEY}
+      - NYRA_API_KEY=${NYRA_API_KEY}
+      - THALUS_API_KEY=${THALUS_API_KEY}
+      - AURORA_API_KEY=${AURORA_API_KEY}
+      - THALAMUS_API_KEY=${THALAMUS_API_KEY}
+      - SCRIBE_API_KEY=${SCRIBE_API_KEY}
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./workspace:/workspace
+      - ./api:/app
+    ports:
+      - "8000:8000"
+
+  # ChromaDB - Vector database for semantic search (Phase 2 - Optional)
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./data/chroma:/chroma/chroma
+    ports:
+      - "8001:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+    profiles:
+      - phase2  # Only start with: docker-compose --profile phase2 up
+
+  # Jupyter Lab - Interactive analysis environment (Phase 4 - Optional)
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: jupyter-lab
+    restart: always
+    networks:
+      - playground-network
+    volumes:
+      - ./workspace:/home/jovyan/workspace
+      - ./notebooks:/home/jovyan/notebooks
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
+    profiles:
+      - phase4  # Only start with: docker-compose --profile phase4 up
+
+networks:
+  playground-network:
+    driver: bridge
+
+volumes:
+  workspace:
+    driver: local

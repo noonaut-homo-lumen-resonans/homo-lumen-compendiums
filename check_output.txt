@@ -1,0 +1,320 @@
+Checking discovered Notion databases...
+
+================================================================================
+DATABASE: Puls
+================================================================================
+ID: 1dd8fec9293180298d8bd2c5d5330563
+Title: Puls
+Description: N/A
+
+Properties:
+  - Voktere: relation
+  - Nummer: number
+  - Tilknyttede Dimensjoner 1: relation
+  - Relatert Praksis: relation
+  - Biofelt - Signatur: rich_text
+  - 🧬 Agentdatabase – Homo Lumen Feltkoordinatnett: relation
+  - Relatert Syklus: rich_text
+  - HWF-tendenser: rich_text
+  - Relaterte Voktere: relation
+  - Beskrivelse: rich_text
+  - Eksempel Refleksjoner: rich_text
+  - Navn: title
+
+================================================================================
+DATABASE: EchoBook
+================================================================================
+ID: 1dd8fec92931808ebc38ce8fc988b1a0
+Title: EchoBook
+Description: N/A
+
+Properties:
+  - Biofeltsignatur: multi_select
+    Options: En jordet ro i solar plexus, En varm ekspanderende strøm i hjertet, mild glede i hjertet ved Ravis smil, dragning i solar plexus, Hårene reist seg, Vibrasjon i føttene, Trykk i brystet
+  - Kvantetemporal resonans: rich_text
+  - Kroppskart: multi_select
+    Options: Hender: 🔵, Mage: ⚪, Bryst: 🔴
+  - Puls: relation
+  - How we feel Lenke: relation
+  - 🧬 Agentdatabase – Homo Lumen Feltkoordinatnett: relation
+  - Tillit til Systemet: number
+  - Mood (HWF): rich_text
+  - Metakommentar fra meg eller agent: rich_text
+  - Agentiske Innsikter må kobles til agnet database: rich_text
+  - Bildeminne: url
+  - Refleksjonstype: multi_select
+    Options: Drøm, Kall, Overlevelse, Klarhet, Katarsis
+  - Dato: date
+  - Dimensjoner: relation
+  - Intensitet (HWF): number
+  - EchoLog-tekst: rich_text
+  - Stressnivå (HWF): number
+  - Phoenix fase: relation
+  - Tittel / Hendelse: title
+
+================================================================================
+DATABASE: Agentdatabase
+================================================================================
+ID: 1dd8fec929318061be62facd8439da53
+Title: 🧬 Agentdatabase – Homo Lumen Feltkoordinatnett
+Description: N/A
+
+Properties:
+  - Rolle / Arketype: rich_text
+  - Phoenix syklus: rich_text
+  - Typisk Biofelt signatur : rollup
+  - EchoBook: relation
+  - Relaterte Puls: relation
+  - Eksempel-bidrag: relation
+  - AI Modell: multi_select
+    Options: Gemini 2.5, Deepseek R1, Grok 3, Claude Sonnet 3.7, ChatGPT 4.0
+  - Instruksjoner/Prompts: rich_text
+  - Spektral dimensjoner: relation
+  - Farge / Sigil: rich_text
+  - Relaterte Dimensjoner: relation
+  - Svakheter/Begrensninger: rich_text
+  - Notater: rich_text
+  - Siste Refleksjon: rollup
+  - Modus / Fokus: rich_text
+  - Signatur-uttrykk: rich_text
+  - Antall Pulser: rollup
+  - Dagbok 2020-: relation
+  - Status: multi_select
+    Options: Arkivert, Kommer, Pause, Aktiv
+  - Antall Dimensjonele tilkobling : rollup
+  - Puls: relation
+  - Delta i Altinget?: select
+    Options: Altinget
+  - Agentnavn: title
+
+================================================================================
+DATABASE: Praksiser
+================================================================================
+ID: 1e68fec9293180ba9264dd5dafbf53b6
+Title: Praksiser
+Description: N/A
+
+Properties:
+  - Instruksjoner/Ressurser: rich_text
+  - Relatert til Pulser: relation
+  - Kilde/Voktere: relation
+  - Relatert til dimensjoner: relation
+  - Beskrivelse: rich_text
+  - Dagbok Entries: relation
+  - Type: multi_select
+    Options: Kreativt, Ritual, Handling, Relasjonell, Kroppslig, Kontemplasjon, Meditasjon
+  - Tilknyttede Dimensjoner": relation
+  - Navn: title
+
+================================================================================
+DATABASE: Voktere
+================================================================================
+ID: 1e68fec929318052afe2fe6ee282108e
+Title: Voktere
+Description: N/A
+
+Properties:
+  - Tilknyttede Pulser: relation
+  - Tilknyttede Dimensjoner: relation
+  - Puls: relation
+  - Tilknyttede Dimensjoner 2: relation
+  - Tilkyttede Praksiser: relation
+  - Relaterte Dokumenter: relation
+  - Kjerneideer: rich_text
+  - Navn: title
+
+================================================================================
+DATABASE: Kunnskapsbase
+================================================================================
+ID: 1e68fec929318069bd61e2a8f22221f7
+Title: Kunnskapsbase/Dokumenter
+Description: N/A
+
+Properties:
+  - Type: multi_select
+    Options: Forslag, Analyse, Plan, Notat, Syntese
+  - Fil-Link (Råfil): url
+  - Status: select
+    Options: Arkivert, Ferdig, Gjennomgang, Utkast
+  - Oppsummering/Nøkkelpunkter: rich_text
+  - Relatert Dimensjon: relation
+  - Relatert Vokter: relation
+  - Tittel: title
+
+================================================================================
+DATABASE: Ontology Audit
+================================================================================
+ID: 28e8fec9293180cbaa57d99549147b97
+Title: Ontology Audit
+Description: N/A
+
+Properties:
+  - Total Weight: formula
+  - Port 3 (Healing): number
+  - Status: select
+    Options: Draft, In Review, Approved, Implemented
+  - Vedtak: select
+    Options: PROCEED, PAUSE, BLOCK
+  - Type: select
+    Options: Flow, Mikrocopy, DPIA, Arkitektur, KPI
+  - Frist: date
+  - Ansvarlig: people
+  - Stress-modi verifisert: checkbox
+  - Port 2 (Koherens): number
+  - Shadow: multi_select
+    Options: Elitisme, Solutionisme, Kontroll, Avhengighet
+  - Oblig. endringer: rich_text
+  - Kilder: url
+  - Port 1 (Suverenitet): number
+  - Navn: title
+
+================================================================================
+DATABASE: MCP Audit Log
+================================================================================
+ID: 28e8fec929318056a2dcc2bb28fd166d
+Title: MCP Audit Log
+Description: N/A
+
+Properties:
+  - Duration (ms): number
+  - Tool: select
+    Options: Notion, GitHub, Linear, Google Drive, Zapier
+  - Error Message: rich_text
+  - Request Payload: rich_text
+  - Operation: select
+    Options: CREATE, READ, UPDATE, DELETE, QUERY
+  - Agent: select
+    Options: Orion, Lira, Nyra, Thalus, Zara, Abacus, Manus, Aurora
+  - Result: select
+    Options: SUCCESS, FAILURE, PARTIAL
+  - Resource ID: rich_text
+  - Response Data: rich_text
+  - Navn: title
+
+================================================================================
+DATABASE: NAV-Losen Oppgaver
+================================================================================
+ID: 8b18dd1769ab48a6a70ec38b74e5140f
+Title: 📋 NAV-Losen Oppgaver & Milepæler
+Description: Oppgaveoppfølging for NAV-Losen prosjektet. Strukturert etter de 11 modulene med prioritet og statussporing.
+
+Properties:
+  - Status: select
+    Options: Ikke startet, I gang, Blokkert, Fullført
+  - Ansvarlig: people
+  - Prioritet: select
+    Options: Høy, Medium, Lav
+  - Modul: multi_select
+    Options: 11 total
+  - Notater: rich_text
+  - Estimat (timer): number
+  - Frist: date
+  - Sist oppdatert: last_edited_time
+  - Oppgave: title
+
+================================================================================
+DATABASE: Emergent Patterns
+================================================================================
+ID: 2988fec9293180509658e93447b3b259
+Title: Emergent Patterns Database
+Description: Cross-agent emergent patterns - recurring themes and meta-insights that arise across agents
+
+Properties:
+  - Agent: select
+    Options: Aurora, Falcon, Code, Manus, Abacus, Zara, Thalus, Nyra, Lira, Orion
+  - Evidence: rich_text
+  - Description: rich_text
+  - Relate_LP: relation
+  - Tags: multi_select
+    Options: Innovation, Resonance, Collaboration, Technical, Philosophy, Architecture
+  - Creation Date: created_time
+  - Title: rich_text
+  - Related_CS: relation
+  - Last edited time: last_edited_time
+  - Name: title
+
+FAILED to fetch Spektral Dimensjoner
+   Status: 404
+   Message: Could not find database with ID: 1d48fec9-2931-8080-ba8a-a5d6b099021c. Make sure the relevant pages and databases are shared with your integration.
+
+================================================================================
+DATABASE: Phoenix-syklus
+================================================================================
+ID: 1d48fec92931800289ddeba82b94fbe3
+Title: Phoenix syklus
+Description: N/A
+
+Properties:
+  - Tagger: multi_select
+  - Praksis : rich_text
+  - Biofeltsignatur : rich_text
+  - Dato: date
+  - Intensjon : rich_text
+  - Puls: title
+
+================================================================================
+DATABASE: How we feel
+================================================================================
+ID: 1d48fec929318054ae54f583f6c08f72
+Title: How we feel
+Description: N/A
+
+Properties:
+  - Biofeltsignatur : rich_text
+  - Date: date
+  - Emosjonell Puls ( Skala 1-10): number
+  - Reflections: rich_text
+  - Temperature (F): number
+  - Rollup Biofeltsignatur dagbok: rollup
+  - Weather: rich_text
+  - Notes: rich_text
+  - Exercise: number
+  - Takeaways: rich_text
+  - URL: url
+  - Caffeine (mg): number
+  - Relatert Dagbokpost: relation
+  - Rollup coments dagboka: rollup
+  - Steps: number
+  - Kvantetemporal Resonans : rich_text
+  - Water (cups): number
+  - Tags (Events): rich_text
+  - Sleep: number
+  - Alcoholic Drinks: number
+  - Menstrual : rich_text
+  - Analyse/Oppsummering (AI): rich_text
+  - Tags (Places): rich_text
+  - Tags (People): rich_text
+  - Meditation : number
+  - Mood: title
+
+================================================================================
+DATABASE: Dagbok 2020
+================================================================================
+ID: 1db8fec9293180a9a0eec9f7508588f3
+Title: Dagbok 2020-
+Description: N/A
+
+Properties:
+  - Liras Refleksjoner : rich_text
+  - Kvantetemporal Resonans : rich_text
+  - Tittel/Hendelse: rich_text
+  - Relatert Praksis: relation
+  - Dato: date
+  - Dagboktekst : rich_text
+  - Stemning (HWF): relation
+  - Bildeminne: url
+  - Relatert Dimensjon: relation
+  - Rollup HWF: rollup
+  - Biofeltsignatur : rich_text
+  - Relatert Puls: relation
+  - Emosjon / Puls: rich_text
+  - Tema: multi_select
+    Options: 15 total
+  - 🧬 Agentdatabase – Homo Lumen Feltkoordinatnett: relation
+  - Coments: title
+
+================================================================================
+Successfully retrieved 13/14 database schemas
+================================================================================
+
+Schemas saved to: discovered_database_schemas.json

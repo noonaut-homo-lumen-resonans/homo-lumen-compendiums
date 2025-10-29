@@ -1,0 +1,1656 @@
+{
+  "timestamp": "20251028_222304",
+  "total_entries": 164,
+  "unique_groups": 4,
+  "duplicate_groups": 4,
+  "duplicates": {
+    "KD #003": [
+      {
+        "id": "2998fec9-2931-8102-85f1-da6d5b0d860b",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T12:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-815a-8ef2-da67b479ad04",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:06:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-816d-91da-e5f92044d9b3",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-817a-b5b1-cf412299d1d6",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T22:40:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-8194-942d-e2332b6985af",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T12:45:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81f2-9d88-f3d5d814314c",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8105-ae43-c852f4d21f59",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810c-ae20-da394c63e0fb",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8111-89db-d3ec533e88ff",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8116-927c-e19fbf07ee89",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8127-9fae-eab205627ef3",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T10:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8136-b7e9-ea950710a0d3",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8139-b55b-f43bf0f8e729",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:31:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-813b-b65d-cc73a58a056f",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T10:34:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8142-9d87-db45fe5492fd",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:35:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8148-bd51-f5dbdc87704d",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-814d-8f1d-c17a7b47b68c",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8152-b01b-fd17caf06e2a",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:11:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8193-b1cd-e3c20decc1cd",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8194-bc04-c7127650d798",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8199-a57f-ea2bed54309d",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-819c-a367-e00991faf3ae",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:15:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-819f-8c90-f464011289b6",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81a1-b4c0-e762a7a9abc8",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ad-92df-d6f8d89d5372",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81b1-9cd1-f6ba5dba8d88",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ba-b9d3-cde89e482375",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81c6-8f98-eeef7476dd99",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81d7-99a7-c2ea79c777a3",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T14:21:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81d7-9b4d-c3ce061c5648",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:23:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81d9-81be-cb179b4cffa9",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81da-8515-d7497773ea66",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T14:21:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81dd-a5e2-f93e5821178e",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81de-96b1-e167b317c471",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81df-b1d1-e7055023a352",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81e1-a730-f92a6a0d4b19",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:48:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ea-8471-f72118bdd2bb",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ec-97bb-fd9865676dd1",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:11:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81f0-ad9f-fde0a1c76693",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81f7-abf3-e055c18457f2",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:57:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81fe-8fd3-e3bd5ea33a67",
+        "title": "Norwegian Date Parsing (ikke English dates)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      }
+    ],
+    "KD #002": [
+      {
+        "id": "2998fec9-2931-811c-83cc-cbef9b357190",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T12:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-815f-b42b-c57e5e22ef55",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-8193-b215-d485bf53d7df",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81aa-bfe0-fcd554eff28d",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T12:45:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81c4-a225-c7527bbeaaf0",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T22:40:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81d1-9b67-ccbea7ce79e9",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:06:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8106-8b3c-e879a9d51eb6",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810a-99f4-d30cf344d73a",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:31:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810a-a967-f10d2241fb92",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810c-bbec-e2cba32bbd1c",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T10:34:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-811e-a35c-d36a2a1da929",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-811f-ba7a-c0da6828601b",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8127-8e3f-c550489534bf",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-812b-8d73-ceb883043c2c",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:11:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-812f-bf75-c3a6c9017090",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-813a-84e1-c34b370b4f20",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8140-abaa-d8bfcedd3be2",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8144-9170-ef3354eb9794",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-814b-9697-d18a98821558",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:48:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-815e-91f6-e67721ee7cc0",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:15:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8178-a1f9-e2b6e052dcdb",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8178-b362-f022af645ca7",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8183-9b02-e959dc876e16",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8185-ba10-d162ab17c472",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T10:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8185-ba20-d73ae6ebad4a",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-818c-b285-c1238710f83b",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:57:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8190-9df2-cd26f8b37f50",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-819f-9eff-e99563c553b8",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81a7-8be8-c6fbc808447e",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:35:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81af-885f-f0034c946a19",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T14:20:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81af-b9da-ed30a87632ba",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ba-82e2-cfe6a426bd63",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81bc-9953-ffd602e8b1bc",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81bf-b225-ee02f6115bef",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81c4-9697-f1735c85d7a5",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81cd-8fa9-f7419532f2f3",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81d1-b691-f4cde994c9de",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81d4-8e6f-d696ab45493a",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T14:21:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81e0-9891-f16e38e6ff29",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:11:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ea-8cbf-d0e048de45c8",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:23:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ef-be17-c8bd384ed029",
+        "title": "LK Structure Guide Som Source of Truth (før implementation)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      }
+    ],
+    "KD #004": [
+      {
+        "id": "2998fec9-2931-811f-af76-f5c340f4a4a1",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-8141-8c30-f68ceadce71d",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-816e-bfd1-cb5b1db24e79",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T12:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81d1-8f67-f1ad40a24f44",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T12:45:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81dd-a899-fbe844acdb56",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:06:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81f7-ac20-f29baeda26e7",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T22:40:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8103-b843-d0409f6e5401",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:35:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-811d-996a-ff7cb95c9af2",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:12:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8124-8c04-f51e8b6ba774",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8125-97cf-d48d79c57ea3",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-813e-bed3-d2c552f4b8b6",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:23:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-814a-b78b-e8ca0fbac1e2",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-814e-a39f-c8f69c0a62d6",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:11:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-814e-b1ea-ec3e039fcb6b",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8151-83d9-c30d82c16fb6",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8152-b7b4-ef9d595704b5",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8163-a1d5-f5688b94a073",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T14:21:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8163-a30b-eab57dc1d88e",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:57:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8163-adc1-fa58839f5812",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T10:34:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8172-b81f-f721d0854050",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:15:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8174-a84a-e212deb45e69",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:48:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8177-b84d-de85d3e53831",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8180-90d7-cc1c3559364b",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T10:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-818a-b871-c68f4aab8b2c",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8192-a9fd-d38caaf36ff3",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8195-b6c3-c32a9e319758",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-819b-9386-e68a68b29216",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81a9-b1fd-e0db94e4238b",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81aa-aeaf-e262eb018a33",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ac-a26e-fed10a75a316",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:31:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81b5-828f-c863edf7c0ae",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81b6-ae05-e70b37530daf",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81b6-b0b8-faa382421d31",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:40:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81b8-84e2-df6a1257a53b",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81b8-997c-f96daa36f231",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T14:21:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81be-a820-d03b29a16afd",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81cb-8a53-f218297a3007",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81cd-9c3d-fb22ef61a7c5",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81d0-b93d-fb6d4ea881ea",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ec-9910-e975584eca1d",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81f0-9768-e0df9d9aff13",
+        "title": "UTF-8 Som Standard i Alle Python Scripts",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      }
+    ],
+    "KD #001": [
+      {
+        "id": "2998fec9-2931-8128-b9fc-de076ecf2ff0",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T22:40:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-8129-99e4-ee70e31c9b96",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T12:45:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-814b-9be2-d5406283a4df",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-8152-9248-c5592cc97930",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:06:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81c3-a810-c18277d3cff1",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T12:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "2998fec9-2931-81e1-aa87-c0e7108c43a8",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-27T13:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8108-8546-e7ba0476bea5",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810b-b190-c5b089e9d18e",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810e-9115-e029e37d3e82",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-810e-b406-f95ba3bf7d11",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:11:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8114-ae3b-c7d4595d20f1",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8124-add2-d25f809349c9",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-812a-a4d4-f9c69faf74dd",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-813a-ac48-dada30a55850",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-813c-a1cc-d59e874e5429",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-813e-9cb9-f3ba9fbdd12a",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-813e-bddb-c33c1af97e1f",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:57:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-814d-989c-e61e6d38ec6e",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:15:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8156-80bf-ebd84240d46d",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T10:34:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-815f-b67c-c56b1d95b9f9",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8162-8347-d3ddc8cd838c",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:34:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8167-947f-d548e9208bc8",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:04:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8170-8f0d-ef1bae6850e1",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8171-b499-de8a10ada133",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T10:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8183-84b2-f05bb3cd9d8b",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:05:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-818c-8067-d93647266c2d",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T14:21:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-818f-aba0-e3a55721b11f",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:59:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-8197-8391-d7b086977e49",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:14:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-819a-831a-d3081f933b63",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:24:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-819b-af92-ec057bb6afb2",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:48:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-819c-9688-db6db63216c4",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T20:08:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81a7-b0f3-eaef150cc0b6",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:23:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81ae-934a-e570ba45992d",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:11:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81b7-838c-ee88dc50b231",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:27:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81bc-8189-c3a6b83178b2",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:46:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81c8-8537-ec481c3b5bfa",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:47:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81c8-b0ab-f4431847551b",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T11:31:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81cb-8ac5-ef55d5268e61",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T12:39:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81e7-8463-ffd7219c5fec",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T14:20:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81f8-80c3-e08bbc682a6e",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T21:03:00.000Z",
+        "archived": false
+      },
+      {
+        "id": "29a8fec9-2931-81f8-92c3-e468b6a55bdb",
+        "title": "Adoptere Orion's 4-Database Design (over SLL subsection approach)",
+        "agent": "",
+        "date": "2025-10-27",
+        "relations": 0,
+        "filled_fields": 7,
+        "last_edited": "2025-10-28T19:03:00.000Z",
+        "archived": false
+      }
+    ]
+  }
+}

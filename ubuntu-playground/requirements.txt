@@ -1,0 +1,30 @@
+# Core FastAPI and server dependencies
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.9
+pydantic==2.9.0
+python-dotenv==1.0.1
+
+# Database
+psycopg2-binary==2.9.9
+
+# Redis
+redis==5.0.8
+
+# Git
+GitPython==3.1.43
+
+# Google Workspace Integration (NEW)
+google-auth==2.23.4
+google-auth-oauthlib==1.1.0
+google-auth-httplib2==0.1.1
+google-api-python-client==2.108.0
+gspread==5.12.0
+oauth2client==4.1.3
+
+# Task Scheduling (NEW)
+apscheduler==3.10.4
+
+# Pattern Recognition & NLP (NEW)
+scikit-learn==1.3.2
+numpy==1.26.2
