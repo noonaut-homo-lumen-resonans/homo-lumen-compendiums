@@ -174,7 +174,7 @@ def create_or_update_notion_page(lp_data):
             'rich_text': [{'text': {'content': lp_data['content'][:2000]}}]
         },
         'Category': {
-            'select': {'name': lp_data['category']}
+            'multi_select': [{'name': lp_data['category']}]
         },
         'Source': {
             'url': lp_data.get('source', '')

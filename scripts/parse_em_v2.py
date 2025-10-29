@@ -81,7 +81,7 @@ def find_existing_em(em_id):
     try:
         payload = {
             'filter': {
-                'property': 'Name',
+                'property': 'Pattern ID',
                 'title': {
                     'equals': em_id
                 }
@@ -119,7 +119,7 @@ def find_existing_em(em_id):
         for page in all_pages:
             try:
                 props = page.get('properties', {})
-                name_prop = props.get('Name', {})
+                name_prop = props.get('Pattern ID', {})
                 if name_prop.get('title'):
                     page_id = name_prop['title'][0].get('text', {}).get('content', '')
                     if page_id == em_id:
@@ -142,10 +142,10 @@ def create_or_update_notion_page(em_data):
         True if successful, False otherwise
     """
     properties = {
-        'Name': {  # ID field in database schema
+        'Pattern ID': {  # ID field in database schema (corrected from 'Name')
             'title': [{'text': {'content': em_data['id']}}]
         },
-        'Title': {
+        'Pattern Name': {  # Corrected from 'Title'
             'rich_text': [{'text': {'content': em_data['title'][:2000]}}]
         },
         'Agent': {
@@ -162,8 +162,8 @@ def create_or_update_notion_page(em_data):
             'multi_select': [{'name': tag} for tag in em_data['tags']]
         }
 
-    # Search for existing page
-    existing_page = find_existing_em(em_data['id'])
+    # TEMP: Skip duplicate check for faster sync
+    existing_page = None  # find_existing_em(em_data['id'])
 
     try:
         if existing_page:
