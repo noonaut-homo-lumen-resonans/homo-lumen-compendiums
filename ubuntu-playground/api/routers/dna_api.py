@@ -10,7 +10,7 @@ Philosophy: "The genome is the collective memory - queryable, verifiable, immuta
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any, Generic, TypeVar
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 
 from blockchain.agent_dna_chain import AgentDNAChain
@@ -19,11 +19,17 @@ from models.knowledge_graph import (
     KnowledgeGraph, GraphNode, GraphEdge, ConsultationSimilarity,
     BlockchainAnalytics, TimelineDataPoint, TimelineAnalytics
 )
+from models.visualization import (
+    TimelineVisualization, TimelineBlock, BlockExplorerPage, BlockExplorerBlock,
+    AgentActivityDashboard, AgentActivity, DNAHelixVisualization, DNAHelixNode,
+    RealTimeMetrics, GeneTypeDistribution, get_gene_type_color
+)
 from blockchain.consultation_recommender import find_related_consultations
 from blockchain.backup_manager import BackupManager
 from blockchain.cache_manager import get_cache_manager, invalidate_lru_caches
 from blockchain.advanced_query import AdvancedQueryBuilder
 from fastapi.responses import Response
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -1827,3 +1833,374 @@ async def get_block_range(
     except Exception as e:
         logger.error(f"Block range query failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Range query failed: {str(e)}")
+
+
+# ============================================================================
+# PHASE 12: Visualization & Monitoring
+# ============================================================================
+
+@router.get("/visualize/timeline", response_model=TimelineVisualization)
+async def get_timeline_visualization():
+    """
+    Get timeline visualization data for all blocks.
+
+    GENOMOS Phase 12: Visualization & Monitoring
+
+    Returns:
+    - All blocks with timestamps, colors, and visual properties
+    - Gene type color scheme
+    - Time span metadata
+
+    Perfect for D3.js timeline visualizations.
+    """
+    try:
+        blockchain = get_blockchain()
+
+        timeline_blocks = []
+        for block in blockchain.chain:
+            # Create short title based on gene type
+            title = None
+            if block.gene_type == "smk":
+                smk_num = block.data.get("smk_number", "???")
+                title = f"SMK #{smk_num}"
+            elif block.gene_type == "mutation":
+                mut_id = block.data.get("mutation_id", "???")
+                title = f"Mutation: {mut_id}"
+            elif block.gene_type == "consultation":
+                cons_id = block.data.get("consultation_id", "???")
+                title = f"Consultation: {cons_id}"
+            elif block.gene_type == "genesis":
+                title = "Genesis Block"
+
+            timeline_blocks.append(TimelineBlock(
+                index=block.index,
+                timestamp=block.timestamp,
+                gene_type=block.gene_type,
+                agent=block.agent,
+                hash=block.hash,
+                title=title,
+                color=get_gene_type_color(block.gene_type),
+                size=1.0  # Could be based on data size
+            ))
+
+        # Calculate time span
+        if len(blockchain.chain) > 0:
+            start_date = blockchain.chain[0].timestamp
+            end_date = blockchain.chain[-1].timestamp
+            start_dt = datetime.fromisoformat(start_date.replace('Z', '+00:00'))
+            end_dt = datetime.fromisoformat(end_date.replace('Z', '+00:00'))
+            time_span_days = (end_dt - start_dt).total_seconds() / 86400
+        else:
+            start_date = datetime.now().isoformat()
+            end_date = datetime.now().isoformat()
+            time_span_days = 0.0
+
+        # Get gene type colors
+        from models.visualization import GENE_TYPE_COLORS
+
+        return TimelineVisualization(
+            blocks=timeline_blocks,
+            total_blocks=len(timeline_blocks),
+            start_date=start_date,
+            end_date=end_date,
+            time_span_days=time_span_days,
+            gene_type_colors=GENE_TYPE_COLORS
+        )
+
+    except Exception as e:
+        logger.error(f"Timeline visualization failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Visualization failed: {str(e)}")
+
+
+@router.get("/visualize/explorer", response_model=BlockExplorerPage)
+async def get_block_explorer(
+    page: int = Query(1, ge=1, description="Page number (1-indexed)"),
+    page_size: int = Query(10, ge=1, le=100, description="Blocks per page")
+):
+    """
+    Get paginated block explorer data.
+
+    GENOMOS Phase 12: Visualization & Monitoring
+
+    Query Parameters:
+    - page: Page number (1-indexed)
+    - page_size: Blocks per page (1-100)
+
+    Returns:
+    - Detailed block information with data previews
+    - Pagination metadata
+    - Related blocks (based on references)
+
+    Perfect for block explorer UI.
+    """
+    try:
+        blockchain = get_blockchain()
+        total_blocks = len(blockchain.chain)
+        total_pages = (total_blocks + page_size - 1) // page_size
+
+        # Calculate offset
+        offset = (page - 1) * page_size
+        end = min(offset + page_size, total_blocks)
+
+        # Get blocks for page (reverse order - newest first)
+        blocks_slice = list(reversed(blockchain.chain[offset:end]))
+
+        explorer_blocks = []
+        for block in blocks_slice:
+            # Create data preview
+            data_str = str(block.data)
+            data_preview = data_str[:200] + "..." if len(data_str) > 200 else data_str
+
+            explorer_blocks.append(BlockExplorerBlock(
+                index=block.index,
+                timestamp=block.timestamp,
+                gene_type=block.gene_type,
+                agent=block.agent,
+                tags=block.tags,
+                hash=block.hash,
+                previous_hash=block.previous_hash,
+                data_preview=data_preview,
+                data_size_bytes=len(data_str.encode('utf-8')),
+                has_full_data=True,
+                related_blocks=[]  # Could be populated based on references
+            ))
+
+        return BlockExplorerPage(
+            blocks=explorer_blocks,
+            page=page,
+            page_size=page_size,
+            total_blocks=total_blocks,
+            total_pages=total_pages,
+            has_next=page < total_pages,
+            has_previous=page > 1
+        )
+
+    except Exception as e:
+        logger.error(f"Block explorer failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Explorer failed: {str(e)}")
+
+
+@router.get("/visualize/agents", response_model=AgentActivityDashboard)
+async def get_agent_activity_dashboard():
+    """
+    Get agent activity dashboard data.
+
+    GENOMOS Phase 12: Visualization & Monitoring
+
+    Returns:
+    - Activity metrics for each agent
+    - Gene type distribution per agent
+    - Timeline of first/last activity
+    - Most active agent statistics
+
+    Perfect for agent monitoring dashboards.
+    """
+    try:
+        blockchain = get_blockchain()
+
+        # Collect agent activity
+        agent_data = {}
+        for block in blockchain.chain:
+            agent = block.agent or "unknown"
+
+            if agent not in agent_data:
+                agent_data[agent] = {
+                    "blocks": [],
+                    "gene_types": {},
+                    "timestamps": []
+                }
+
+            agent_data[agent]["blocks"].append(block.index)
+            agent_data[agent]["timestamps"].append(block.timestamp)
+
+            # Count gene types
+            if block.gene_type not in agent_data[agent]["gene_types"]:
+                agent_data[agent]["gene_types"][block.gene_type] = 0
+            agent_data[agent]["gene_types"][block.gene_type] += 1
+
+        # Build agent activities
+        activities = []
+        most_active_agent = None
+        most_active_count = 0
+
+        for agent_name, data in agent_data.items():
+            first_ts = min(data["timestamps"])
+            last_ts = max(data["timestamps"])
+
+            first_dt = datetime.fromisoformat(first_ts.replace('Z', '+00:00'))
+            last_dt = datetime.fromisoformat(last_ts.replace('Z', '+00:00'))
+            span_days = (last_dt - first_dt).total_seconds() / 86400
+
+            total_blocks = len(data["blocks"])
+            avg_per_day = total_blocks / span_days if span_days > 0 else total_blocks
+
+            activities.append(AgentActivity(
+                agent_name=agent_name,
+                total_blocks=total_blocks,
+                gene_types=data["gene_types"],
+                first_activity=first_ts,
+                last_activity=last_ts,
+                activity_span_days=span_days,
+                avg_blocks_per_day=avg_per_day,
+                recent_blocks=data["blocks"][-10:]  # Last 10
+            ))
+
+            # Track most active
+            if total_blocks > most_active_count:
+                most_active_count = total_blocks
+                most_active_agent = agent_name
+
+        return AgentActivityDashboard(
+            agents=activities,
+            total_agents=len(activities),
+            most_active_agent=most_active_agent or "none",
+            most_active_count=most_active_count,
+            generated_at=datetime.now().isoformat()
+        )
+
+    except Exception as e:
+        logger.error(f"Agent dashboard failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Dashboard failed: {str(e)}")
+
+
+@router.get("/visualize/helix", response_model=DNAHelixVisualization)
+async def get_dna_helix_visualization(
+    radius: float = Query(5.0, ge=1.0, le=20.0, description="Helix radius"),
+    pitch: float = Query(2.0, ge=0.5, le=10.0, description="Helix pitch (distance between turns)")
+):
+    """
+    Get 3D DNA helix visualization data.
+
+    GENOMOS Phase 12: Visualization & Monitoring
+
+    Query Parameters:
+    - radius: Helix radius (1.0-20.0)
+    - pitch: Distance between turns (0.5-10.0)
+
+    Returns:
+    - 3D node positions for each block
+    - Helix structure parameters
+    - Color-coded by gene type
+    - Camera positioning
+
+    Perfect for Three.js 3D visualization.
+    """
+    try:
+        blockchain = get_blockchain()
+
+        nodes = []
+        connections = []
+
+        total_blocks = len(blockchain.chain)
+        total_height = total_blocks * (pitch / 10)  # Adjust spacing
+
+        for i, block in enumerate(blockchain.chain):
+            # Calculate helix position
+            angle = (i / total_blocks) * math.pi * 10  # 5 full turns
+            x = radius * math.cos(angle)
+            z = radius * math.sin(angle)
+            y = i * (pitch / 10)  # Vertical spacing
+
+            # Rotation based on position
+            rotation = {
+                "x": 0.0,
+                "y": angle,
+                "z": 0.0
+            }
+
+            nodes.append(DNAHelixNode(
+                index=block.index,
+                gene_type=block.gene_type,
+                position={"x": x, "y": y, "z": z},
+                rotation=rotation,
+                color=get_gene_type_color(block.gene_type),
+                scale=1.0,
+                metadata={
+                    "hash": block.hash[:16],
+                    "agent": block.agent,
+                    "timestamp": block.timestamp
+                }
+            ))
+
+            # Connect to previous block
+            if i > 0:
+                connections.append([i - 1, i])
+
+        # Camera position (looking at center of helix)
+        camera_y = total_height / 2
+        camera_distance = radius * 3
+
+        return DNAHelixVisualization(
+            nodes=nodes,
+            connections=connections,
+            helix_radius=radius,
+            helix_pitch=pitch,
+            total_height=total_height,
+            camera_position={
+                "x": camera_distance,
+                "y": camera_y,
+                "z": camera_distance
+            }
+        )
+
+    except Exception as e:
+        logger.error(f"DNA helix visualization failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Helix visualization failed: {str(e)}")
+
+
+@router.get("/visualize/metrics", response_model=RealTimeMetrics)
+async def get_real_time_metrics():
+    """
+    Get real-time blockchain metrics.
+
+    GENOMOS Phase 12: Visualization & Monitoring
+
+    Returns:
+    - Current block count and index
+    - Recent activity (last hour, last day)
+    - Chain validation status
+    - Active agents list
+    - Latest hash and merkle root
+
+    Perfect for real-time monitoring dashboards.
+    """
+    try:
+        blockchain = get_blockchain()
+
+        # Count recent blocks
+        now = datetime.now()
+        one_hour_ago = now - timedelta(hours=1)
+        one_day_ago = now - timedelta(days=1)
+
+        blocks_last_hour = 0
+        blocks_last_day = 0
+        active_agents = set()
+
+        for block in blockchain.chain:
+            block_time = datetime.fromisoformat(block.timestamp.replace('Z', '+00:00').replace('+00:00', ''))
+
+            if block_time > one_hour_ago:
+                blocks_last_hour += 1
+            if block_time > one_day_ago:
+                blocks_last_day += 1
+                if block.agent:
+                    active_agents.add(block.agent)
+
+        # Validate chain
+        chain_valid = blockchain.validate_chain()
+
+        return RealTimeMetrics(
+            current_block_index=len(blockchain.chain) - 1,
+            total_blocks=len(blockchain.chain),
+            blocks_added_last_hour=blocks_last_hour,
+            blocks_added_last_day=blocks_last_day,
+            chain_valid=chain_valid,
+            latest_hash=blockchain.chain[-1].hash if blockchain.chain else "",
+            merkle_root=blockchain.get_merkle_root(),
+            active_agents=list(active_agents),
+            timestamp=datetime.now().isoformat()
+        )
+
+    except Exception as e:
+        logger.error(f"Real-time metrics failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Metrics failed: {str(e)}")
