@@ -15,6 +15,8 @@ import logging
 
 from blockchain.agent_dna_chain import AgentDNAChain
 from blockchain.dna_block import GeneType, DNABlock
+from models.knowledge_graph import KnowledgeGraph, GraphNode, GraphEdge, ConsultationSimilarity
+from blockchain.consultation_recommender import find_related_consultations
 
 logger = logging.getLogger(__name__)
 
@@ -806,3 +808,236 @@ async def get_agent_evolution(
         "event_type_distribution": event_types,
         "evolution_summary": f"{agent_name} has {len(agent_learning)} recorded learning events"
     }
+
+
+# ============================================================================
+# KNOWLEDGE GRAPH ENDPOINTS (GENOMOS Phase 6)
+# ============================================================================
+
+@router.get("/graph/smk-network", response_model=KnowledgeGraph)
+async def get_smk_network():
+    """
+    Get the complete SMK reference network as a graph.
+
+    Returns nodes (SMKs) and edges (references between SMKs)
+    in a format suitable for D3.js, Cytoscape.js visualization.
+
+    **GENOMOS Phase 6: Cross-References & Lineage Tracking**
+    """
+    chain = get_blockchain()
+
+    nodes = []
+    edges = []
+    node_types = {}
+    edge_types = {}
+
+    # Create nodes for all SMKs
+    smk_blocks = {}
+    for block in chain.chain:
+        if block.gene_type == GeneType.SMK:
+            smk_num = block.data.get("smk_number", "unknown")
+            title = block.data.get("title", f"SMK {smk_num}")
+
+            # Calculate node size based on how many times it's referenced
+            # (we'll update this in the edges loop)
+            node_id = f"smk-{smk_num}"
+            smk_blocks[smk_num] = block
+
+            nodes.append(GraphNode(
+                id=node_id,
+                type="smk",
+                label=f"SMK#{smk_num}",
+                title=title,
+                size=10.0,  # Base size, will be updated
+                color="#4CAF50",  # Green for SMK
+                created_at=block.timestamp,
+                metadata={
+                    "block_index": block.index,
+                    "hash": block.hash[:16] + "..."
+                }
+            ))
+
+            node_types["smk"] = node_types.get("smk", 0) + 1
+
+    # Create edges for SMK references
+    reference_counts = {}  # Track incoming references for sizing
+    edge_id = 0
+
+    for smk_num, block in smk_blocks.items():
+        references = block.data.get("references", [])
+        source_id = f"smk-{smk_num}"
+
+        for ref_num in references:
+            target_id = f"smk-{ref_num}"
+
+            # Only create edge if target exists
+            if ref_num in smk_blocks:
+                edge_id += 1
+                edges.append(GraphEdge(
+                    id=f"edge-{edge_id}",
+                    source=source_id,
+                    target=target_id,
+                    type="references",
+                    weight=1.0,
+                    label="references"
+                ))
+
+                edge_types["references"] = edge_types.get("references", 0) + 1
+
+                # Track incoming references for node sizing
+                reference_counts[ref_num] = reference_counts.get(ref_num, 0) + 1
+
+    # Update node sizes based on reference counts (centrality)
+    for node in nodes:
+        if node.type == "smk":
+            smk_num = node.id.replace("smk-", "")
+            ref_count = reference_counts.get(smk_num, 0)
+            # Size scales with references: 10 + (references * 3)
+            node.size = 10.0 + (ref_count * 3.0)
+
+    return KnowledgeGraph(
+        nodes=nodes,
+        edges=edges,
+        total_nodes=len(nodes),
+        total_edges=len(edges),
+        node_types=node_types,
+        edge_types=edge_types,
+        generated_at=datetime.now().isoformat(),
+        metadata={
+            "description": "SMK reference network showing knowledge dependencies",
+            "most_referenced": sorted(reference_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+        }
+    )
+
+
+@router.get("/graph/consultation-knowledge-flow", response_model=KnowledgeGraph)
+async def get_consultation_knowledge_flow():
+    """
+    Get the knowledge flow graph showing how consultations connect to SMKs.
+
+    Returns:
+    - SMK nodes
+    - Consultation nodes
+    - Edges showing which consultations reference which SMKs
+
+    **GENOMOS Phase 6: Cross-References & Lineage Tracking**
+    """
+    chain = get_blockchain()
+
+    nodes = []
+    edges = []
+    node_types = {}
+    edge_types = {}
+    edge_id = 0
+
+    # Add SMK nodes
+    smk_nodes = {}
+    for block in chain.chain:
+        if block.gene_type == GeneType.SMK:
+            smk_num = block.data.get("smk_number", "unknown")
+            node_id = f"smk-{smk_num}"
+            smk_nodes[smk_num] = node_id
+
+            nodes.append(GraphNode(
+                id=node_id,
+                type="smk",
+                label=f"SMK#{smk_num}",
+                title=block.data.get("title", ""),
+                size=15.0,
+                color="#4CAF50",
+                created_at=block.timestamp
+            ))
+
+            node_types["smk"] = node_types.get("smk", 0) + 1
+
+    # Add consultation nodes and edges
+    for block in chain.chain:
+        if block.gene_type == GeneType.CONSULTATION:
+            consultation_id = block.data.get("consultation_id", "unknown")
+            node_id = f"consultation-{consultation_id}"
+
+            # Truncate query for label
+            query = block.data.get("human_query", "")
+            label = query[:40] + "..." if len(query) > 40 else query
+
+            nodes.append(GraphNode(
+                id=node_id,
+                type="consultation",
+                label=label,
+                title=query,
+                size=12.0,
+                color="#2196F3",  # Blue for consultations
+                created_at=block.timestamp,
+                metadata={
+                    "block_index": block.index,
+                    "agent_count": len(block.data.get("agent_responses", {}))
+                }
+            ))
+
+            node_types["consultation"] = node_types.get("consultation", 0) + 1
+
+            # Create edges to referenced SMKs
+            synthesis = block.data.get("synthesis", {})
+            related_smk = synthesis.get("related_smk", [])
+
+            for smk_ref in related_smk:
+                # Extract SMK number from "SMK#043" format
+                import re
+                match = re.search(r'(\d+)', smk_ref)
+                if match:
+                    smk_num = match.group(1).zfill(3)
+                    if smk_num in smk_nodes:
+                        edge_id += 1
+                        edges.append(GraphEdge(
+                            id=f"edge-{edge_id}",
+                            source=node_id,
+                            target=smk_nodes[smk_num],
+                            type="cites",
+                            weight=1.0,
+                            label="cites"
+                        ))
+
+                        edge_types["cites"] = edge_types.get("cites", 0) + 1
+
+    return KnowledgeGraph(
+        nodes=nodes,
+        edges=edges,
+        total_nodes=len(nodes),
+        total_edges=len(edges),
+        node_types=node_types,
+        edge_types=edge_types,
+        generated_at=datetime.now().isoformat(),
+        metadata={
+            "description": "Consultation-to-SMK knowledge flow showing how documents are used in conversations"
+        }
+    )
+
+
+@router.get("/consultations/{consultation_id}/related", response_model=List[ConsultationSimilarity])
+async def get_related_consultations(
+    consultation_id: str,
+    limit: int = Query(10, description="Maximum number of similar consultations to return"),
+    min_score: float = Query(0.1, ge=0.0, le=1.0, description="Minimum similarity score threshold")
+):
+    """
+    Find consultations similar to the specified one.
+
+    Uses multiple similarity metrics:
+    - Shared SMK references (60% weight)
+    - Shared agents (20% weight)
+    - Query text similarity (20% weight)
+
+    **GENOMOS Phase 6: Cross-References & Lineage Tracking**
+    """
+    try:
+        chain = get_blockchain()
+        related = find_related_consultations(
+            consultation_id=consultation_id,
+            blockchain=chain,
+            limit=limit,
+            min_score=min_score
+        )
+        return related
+    except Exception as e:
+        logger.error(f"Error finding related consultations: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to find related consultations: {str(e)}")

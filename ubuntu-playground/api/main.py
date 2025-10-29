@@ -23,6 +23,7 @@ from gates import MutationLog, MutationLevel, ValidationOutcome
 from routers import dna_router, initialize_dna_blockchain
 from blockchain.agent_dna_chain import AgentDNAChain
 from blockchain.dna_block import GeneType
+from blockchain.reference_extractor import extract_smk_references_from_consultation, merge_smk_references
 
 # Redis Event Subscriber
 from redis_subscriber import ubuntu_subscriber
@@ -748,6 +749,29 @@ def store_consultation(request: ConsultationRequest):
     try:
         consultation_timestamp = request.timestamp or datetime.now().isoformat()
 
+        # PHASE 6: Auto-detect SMK references from consultation text
+        auto_detected_smk = extract_smk_references_from_consultation({
+            "human_query": request.human_query,
+            "agent_responses": request.agent_responses,
+            "synthesis": request.synthesis
+        })
+
+        # Merge auto-detected with manually specified SMK refs
+        manual_smk = request.synthesis.get("related_smk", [])
+        if manual_smk:
+            # Extract numbers from manual refs like "SMK#043" -> "043"
+            from blockchain.reference_extractor import extract_smk_references
+            manual_smk_nums = extract_smk_references(" ".join(manual_smk))
+            all_smk = merge_smk_references(auto_detected_smk, manual_smk_nums)
+        else:
+            all_smk = auto_detected_smk
+
+        # Update synthesis with complete SMK references
+        updated_synthesis = request.synthesis.copy() if isinstance(request.synthesis, dict) else {}
+        updated_synthesis["related_smk"] = [f"SMK#{num}" for num in all_smk]
+
+        logger.info(f"🔍 Auto-detected {len(auto_detected_smk)} SMK refs, total: {len(all_smk)}")
+
         # Prepare consultation gene data
         consultation_gene = {
             "type": "consultation",
@@ -755,7 +779,7 @@ def store_consultation(request: ConsultationRequest):
             "timestamp": consultation_timestamp,
             "human_query": request.human_query,
             "agent_responses": request.agent_responses,
-            "synthesis": request.synthesis,
+            "synthesis": updated_synthesis,
         }
 
         # Add biofelt context if available
@@ -777,11 +801,11 @@ def store_consultation(request: ConsultationRequest):
         # Store in GENOMOS blockchain
         blockchain = AgentDNAChain(db_path="./data/genomos.db")
 
-        # Extract tags from synthesis and query
+        # Extract tags from synthesis and query (using auto-detected SMKs)
         tags = ["consultation", "pentagonal"]
-        if "related_smk" in request.synthesis:
-            for smk in request.synthesis["related_smk"]:
-                tags.append(f"ref-{smk.lower().replace('#', '')}")
+        if all_smk:
+            for smk_num in all_smk:
+                tags.append(f"ref-smk{smk_num}")
 
         block = blockchain.add_gene(
             gene_type=GeneType.CONSULTATION,
