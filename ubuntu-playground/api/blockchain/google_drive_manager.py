@@ -25,8 +25,10 @@ import io
 logger = logging.getLogger(__name__)
 
 # Google Drive API scopes (includes Sheets for GENOMOS integration)
+# NOTE: 'drive' (not 'drive.file') is required to access existing shared folders
+# 'drive.file' only grants access to files/folders created by the app
 SCOPES = [
-    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/spreadsheets'
 ]
 
