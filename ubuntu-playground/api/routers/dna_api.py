@@ -9,7 +9,7 @@ Philosophy: "The genome is the collective memory - queryable, verifiable, immuta
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Generic, TypeVar
 from datetime import datetime
 import logging
 
@@ -21,6 +21,7 @@ from models.knowledge_graph import (
 )
 from blockchain.consultation_recommender import find_related_consultations
 from blockchain.backup_manager import BackupManager
+from blockchain.cache_manager import get_cache_manager, invalidate_lru_caches
 from fastapi.responses import Response
 
 logger = logging.getLogger(__name__)
@@ -30,6 +31,9 @@ router = APIRouter(prefix="/api/dna", tags=["GENOMOS DNA Blockchain"])
 
 # Global blockchain instance (initialized on startup)
 _blockchain: Optional[AgentDNAChain] = None
+
+# Global cache manager instance (Phase 10: Performance Optimization)
+_cache_manager = get_cache_manager(ttl_seconds=300)  # 5 minute default TTL
 
 
 def initialize_dna_blockchain(db_path: str = "./data/genomos.db"):
@@ -149,6 +153,20 @@ class BlockchainInfoResponse(BaseModel):
     gene_counts: Dict[str, int]
     agents: List[str]
     database_path: str
+
+
+# PHASE 10: Performance Optimization - Pagination Support
+T = TypeVar('T')
+
+class PaginatedResponse(BaseModel, Generic[T]):
+    """Generic paginated response model (Phase 10: Performance Optimization)"""
+    items: List[T]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+    has_next: bool
+    has_previous: bool
 
 
 # ============================================================================
@@ -1407,3 +1425,125 @@ async def get_backup_statistics():
     except Exception as e:
         logger.error(f"Error getting backup statistics: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to get statistics: {str(e)}")
+
+
+# ============================================================================
+# PHASE 10: Performance Optimization - Cache Management
+# ============================================================================
+
+@router.get("/cache/stats")
+async def get_cache_statistics():
+    """
+    Get cache performance statistics.
+
+    GENOMOS Phase 10: Performance Optimization
+
+    Returns:
+    - Total entries, hits, misses, hit rate
+    - Cache invalidations and evictions
+    - Overall cache performance metrics
+    """
+    try:
+        stats = _cache_manager.get_stats()
+        return stats
+    except Exception as e:
+        logger.error(f"Error getting cache stats: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get cache stats: {str(e)}")
+
+
+@router.get("/cache/info")
+async def get_cache_info():
+    """
+    Get detailed information about cached entries.
+
+    GENOMOS Phase 10: Performance Optimization
+
+    Returns:
+    - List of all cached entries
+    - TTL remaining for each entry
+    - Creation and expiry timestamps
+    """
+    try:
+        info = _cache_manager.get_cache_info()
+        return {
+            "total_entries": len(info),
+            "entries": info
+        }
+    except Exception as e:
+        logger.error(f"Error getting cache info: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get cache info: {str(e)}")
+
+
+@router.post("/cache/clear")
+async def clear_cache():
+    """
+    Clear all cache entries.
+
+    GENOMOS Phase 10: Performance Optimization
+
+    Use this endpoint to manually clear the cache when needed.
+    Cache entries will be rebuilt on next access.
+    """
+    try:
+        _cache_manager.clear()
+        invalidate_lru_caches()
+        return {
+            "success": True,
+            "message": "Cache cleared successfully",
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error clearing cache: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to clear cache: {str(e)}")
+
+
+@router.delete("/cache/{key}")
+async def invalidate_cache_key(key: str):
+    """
+    Invalidate a specific cache entry by key.
+
+    GENOMOS Phase 10: Performance Optimization
+
+    Args:
+        key: Cache key to invalidate
+
+    Returns:
+        Success status and whether key was found
+    """
+    try:
+        was_found = _cache_manager.invalidate(key)
+        return {
+            "success": True,
+            "key": key,
+            "was_found": was_found,
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error invalidating cache key: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to invalidate cache: {str(e)}")
+
+
+@router.delete("/cache/pattern/{pattern}")
+async def invalidate_cache_pattern(pattern: str):
+    """
+    Invalidate all cache entries matching a pattern.
+
+    GENOMOS Phase 10: Performance Optimization
+
+    Args:
+        pattern: Pattern to match (e.g., "smk_*", "consultation_*")
+
+    Returns:
+        Number of entries invalidated
+    """
+    try:
+        count = _cache_manager.invalidate_pattern(pattern)
+        return {
+            "success": True,
+            "pattern": pattern,
+            "entries_invalidated": count,
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error invalidating cache pattern: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to invalidate pattern: {str(e)}")
