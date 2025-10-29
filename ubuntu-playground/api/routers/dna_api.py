@@ -29,6 +29,10 @@ from blockchain.backup_manager import BackupManager
 from blockchain.cache_manager import get_cache_manager, invalidate_lru_caches
 from blockchain.advanced_query import AdvancedQueryBuilder
 from blockchain.smart_contracts import ContractEngine
+from blockchain.google_drive_manager import get_drive_manager
+from blockchain.google_sheets_manager import get_sheets_manager
+from blockchain.pattern_analyzer import PatternAnalyzer
+from scripts.scheduled_jobs import get_scheduler
 from fastapi.responses import Response
 import math
 
@@ -2280,3 +2284,600 @@ async def get_contracts_info():
     except Exception as e:
         logger.error(f"Failed to get contracts info: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to get info: {str(e)}")
+
+
+# ============================================================================
+# GOOGLE WORKSPACE INTEGRATION - Drive & Sheets
+# ============================================================================
+
+@router.get("/drive/status")
+async def get_drive_status():
+    """
+    Verify Google Drive connection status.
+
+    Returns:
+    - Connection status
+    - Drive folder name and ID
+    - Available backups count
+    """
+    try:
+        drive_manager = get_drive_manager()
+        if drive_manager is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Google Drive not configured. Check environment variables."
+            )
+
+        status = drive_manager.verify_connection()
+
+        # Get backup count
+        backups_result = drive_manager.list_backups(limit=1000)
+        backup_count = backups_result.get("count", 0) if backups_result.get("success") else 0
+
+        return {
+            "success": True,
+            "connected": status.get("connected", False),
+            "folder_name": status.get("folder_name", "Unknown"),
+            "folder_id": status.get("folder_id", ""),
+            "total_backups": backup_count,
+            "message": status.get("message", "")
+        }
+
+    except Exception as e:
+        logger.error(f"Drive status check failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Drive status failed: {str(e)}")
+
+
+@router.post("/drive/backup")
+async def create_drive_backup(
+    backup_dir: str = Query("./backups", description="Local directory for backup before upload")
+):
+    """
+    Create blockchain backup and upload to Google Drive.
+
+    Creates local backup first, then uploads to Google Drive.
+    Stores Drive file ID in blockchain as IPFS_BACKUP gene.
+
+    Returns:
+    - Backup file information
+    - Drive upload details (file ID, web view link)
+    - Blockchain gene index
+    """
+    try:
+        blockchain = get_blockchain()
+        drive_manager = get_drive_manager()
+
+        if drive_manager is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Google Drive not configured"
+            )
+
+        # Create backup with Drive upload
+        backup_mgr = BackupManager(blockchain=blockchain)
+        result = backup_mgr.create_backup_with_drive(
+            drive_manager=drive_manager,
+            backup_dir=backup_dir
+        )
+
+        logger.info(f"✅ Backup created and uploaded to Drive: {result.get('backup_file')}")
+
+        return result
+
+    except Exception as e:
+        logger.error(f"Drive backup failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Backup failed: {str(e)}")
+
+
+@router.get("/drive/backups")
+async def list_drive_backups(
+    limit: int = Query(50, ge=1, le=500, description="Maximum backups to return")
+):
+    """
+    List all backups in Google Drive.
+
+    Returns:
+    - List of backup files with metadata
+    - File IDs, sizes, creation times
+    - Web view links for browser access
+    """
+    try:
+        drive_manager = get_drive_manager()
+
+        if drive_manager is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Google Drive not configured"
+            )
+
+        result = drive_manager.list_backups(limit=limit)
+
+        if not result.get("success"):
+            raise HTTPException(
+                status_code=500,
+                detail=result.get("error", "Failed to list backups")
+            )
+
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"List backups failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to list backups: {str(e)}")
+
+
+@router.get("/drive/backups/{file_id}")
+async def download_drive_backup(
+    file_id: str,
+    output_path: str = Query("./backups/restored.json", description="Local path to save downloaded backup")
+):
+    """
+    Download backup from Google Drive.
+
+    Args:
+        file_id: Google Drive file ID
+        output_path: Local path to save file
+
+    Returns:
+    - Download status
+    - File metadata (name, size)
+    - Local file path
+    """
+    try:
+        drive_manager = get_drive_manager()
+
+        if drive_manager is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Google Drive not configured"
+            )
+
+        result = drive_manager.download_backup(
+            file_id=file_id,
+            output_path=output_path
+        )
+
+        if not result.get("success"):
+            raise HTTPException(
+                status_code=500,
+                detail=result.get("error", "Download failed")
+            )
+
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Download backup failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Download failed: {str(e)}")
+
+
+@router.delete("/drive/backups/{file_id}")
+async def delete_drive_backup(file_id: str):
+    """
+    Delete backup from Google Drive.
+
+    Args:
+        file_id: Google Drive file ID
+
+    Returns:
+    - Deletion status
+    - File name that was deleted
+    """
+    try:
+        drive_manager = get_drive_manager()
+
+        if drive_manager is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Google Drive not configured"
+            )
+
+        result = drive_manager.delete_backup(file_id=file_id)
+
+        if not result.get("success"):
+            raise HTTPException(
+                status_code=404,
+                detail=result.get("error", "File not found or deletion failed")
+            )
+
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Delete backup failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Deletion failed: {str(e)}")
+
+
+@router.get("/sheets/status")
+async def get_sheets_status():
+    """
+    Verify Google Sheets connection status.
+
+    Returns:
+    - Connection status
+    - Spreadsheet title and ID
+    - Sheets URL
+    """
+    try:
+        sheets_manager = get_sheets_manager()
+
+        if sheets_manager is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Google Sheets not configured"
+            )
+
+        status = sheets_manager.verify_connection()
+
+        return {
+            "success": True,
+            "connected": status.get("connected", False),
+            "spreadsheet_title": status.get("spreadsheet_title", "Unknown"),
+            "spreadsheet_id": status.get("spreadsheet_id", ""),
+            "url": status.get("url", ""),
+            "message": status.get("message", "")
+        }
+
+    except Exception as e:
+        logger.error(f"Sheets status check failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Sheets status failed: {str(e)}")
+
+
+# ============================================================================
+# PATTERN ANALYSIS ENDPOINTS
+# ============================================================================
+
+class PatternAnalysisRequest(BaseModel):
+    """Request model for pattern analysis"""
+    min_confidence: float = 0.5
+    lookback_days: int = 30
+
+
+@router.get("/patterns")
+async def get_all_patterns(
+    pattern_type: Optional[str] = Query(None, description="Filter by pattern type"),
+    min_confidence: float = Query(0.0, ge=0.0, le=1.0, description="Minimum confidence threshold"),
+    limit: int = Query(100, ge=1, le=500, description="Maximum patterns to return")
+):
+    """
+    Get all detected patterns from blockchain.
+
+    Pattern types:
+    - smk_combination: SMK co-occurrence patterns
+    - agent_collaboration: Agent collaboration patterns
+    - temporal_activity: Time-based activity patterns
+    - topic_cluster: Topic clustering patterns
+
+    Query Parameters:
+    - pattern_type: Filter by specific pattern type
+    - min_confidence: Minimum confidence score (0.0-1.0)
+    - limit: Maximum results
+
+    Returns:
+    - List of patterns with metadata
+    """
+    try:
+        blockchain = get_blockchain()
+
+        # Get all PATTERN genes from blockchain
+        pattern_blocks = blockchain.get_genes_by_type("pattern")
+
+        # Apply filters
+        patterns = []
+        for block in pattern_blocks:
+            pattern_data = block.data
+
+            # Type filter
+            if pattern_type and pattern_data.get("pattern_type") != pattern_type:
+                continue
+
+            # Confidence filter
+            if pattern_data.get("confidence", 0.0) < min_confidence:
+                continue
+
+            patterns.append({
+                "pattern_id": pattern_data.get("pattern_id"),
+                "pattern_type": pattern_data.get("pattern_type"),
+                "description": pattern_data.get("description"),
+                "confidence": pattern_data.get("confidence"),
+                "discovered_at": pattern_data.get("discovered_at"),
+                "data": pattern_data.get("data", {}),
+                "block_index": block.index,
+                "hash": block.hash[:16] + "..."
+            })
+
+        # Sort by confidence (highest first)
+        patterns.sort(key=lambda p: p.get("confidence", 0.0), reverse=True)
+
+        # Apply limit
+        patterns = patterns[:limit]
+
+        return {
+            "success": True,
+            "total_patterns": len(patterns),
+            "patterns": patterns
+        }
+
+    except Exception as e:
+        logger.error(f"Get patterns failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get patterns: {str(e)}")
+
+
+@router.get("/patterns/{pattern_id}")
+async def get_pattern_by_id(pattern_id: str):
+    """
+    Get specific pattern by ID.
+
+    Args:
+        pattern_id: Pattern identifier (e.g., SMK_PAIR_019_042)
+
+    Returns:
+    - Full pattern data
+    - Blockchain metadata
+    """
+    try:
+        blockchain = get_blockchain()
+
+        # Search for pattern
+        pattern_blocks = blockchain.get_genes_by_type("pattern")
+
+        for block in pattern_blocks:
+            if block.data.get("pattern_id") == pattern_id:
+                return {
+                    "success": True,
+                    "pattern": {
+                        "pattern_id": block.data.get("pattern_id"),
+                        "pattern_type": block.data.get("pattern_type"),
+                        "description": block.data.get("description"),
+                        "confidence": block.data.get("confidence"),
+                        "discovered_at": block.data.get("discovered_at"),
+                        "data": block.data.get("data", {}),
+                        "block_index": block.index,
+                        "timestamp": block.timestamp,
+                        "hash": block.hash
+                    }
+                }
+
+        raise HTTPException(
+            status_code=404,
+            detail=f"Pattern {pattern_id} not found"
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Get pattern failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get pattern: {str(e)}")
+
+
+@router.post("/patterns/analyze")
+async def analyze_patterns_now(request: PatternAnalysisRequest):
+    """
+    Manually trigger pattern analysis.
+
+    Runs all pattern detection algorithms:
+    1. SMK co-occurrence detection
+    2. Agent collaboration analysis
+    3. Temporal activity patterns
+    4. Topic clustering (if scikit-learn available)
+
+    Query Parameters:
+    - min_confidence: Minimum confidence threshold (default 0.5)
+    - lookback_days: Days of data to analyze (default 30)
+
+    Returns:
+    - Newly detected patterns
+    - Pattern counts by type
+    - Analysis statistics
+    """
+    try:
+        blockchain = get_blockchain()
+        sheets_manager = get_sheets_manager()
+
+        # Create analyzer
+        analyzer = PatternAnalyzer(blockchain=blockchain)
+
+        # Run analysis
+        logger.info(f"🔍 Running pattern analysis (min_confidence={request.min_confidence}, lookback={request.lookback_days} days)")
+        patterns = analyzer.analyze_all(
+            min_confidence=request.min_confidence,
+            lookback_days=request.lookback_days
+        )
+
+        # Store patterns in blockchain and Sheets
+        stored_patterns = []
+        for pattern in patterns:
+            try:
+                # Add to blockchain
+                from blockchain.dna_block import GeneType
+                pattern_gene = blockchain.add_gene(
+                    gene_type=GeneType.PATTERN,
+                    data=pattern,
+                    agent="pattern-analyzer",
+                    tags=["pattern", pattern["pattern_type"], "manual-analysis"]
+                )
+
+                # Log to Sheets if available
+                if sheets_manager:
+                    sheets_manager.log_pattern(pattern)
+
+                stored_patterns.append({
+                    "pattern_id": pattern["pattern_id"],
+                    "pattern_type": pattern["pattern_type"],
+                    "confidence": pattern["confidence"],
+                    "block_index": pattern_gene.index
+                })
+
+            except Exception as e:
+                logger.error(f"Failed to store pattern {pattern.get('pattern_id')}: {e}")
+
+        # Count by type
+        pattern_type_counts = {}
+        for p in patterns:
+            ptype = p.get("pattern_type", "unknown")
+            pattern_type_counts[ptype] = pattern_type_counts.get(ptype, 0) + 1
+
+        return {
+            "success": True,
+            "total_patterns_found": len(patterns),
+            "patterns_stored": len(stored_patterns),
+            "pattern_type_counts": pattern_type_counts,
+            "patterns": stored_patterns,
+            "analysis_params": {
+                "min_confidence": request.min_confidence,
+                "lookback_days": request.lookback_days
+            }
+        }
+
+    except Exception as e:
+        logger.error(f"Pattern analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+
+
+@router.get("/patterns/stats")
+async def get_pattern_statistics():
+    """
+    Get pattern analysis statistics.
+
+    Returns:
+    - Total patterns by type
+    - Confidence distribution
+    - Most common patterns
+    - Recent discoveries
+    """
+    try:
+        blockchain = get_blockchain()
+
+        pattern_blocks = blockchain.get_genes_by_type("pattern")
+
+        # Count by type
+        type_counts = {}
+        confidence_ranges = {
+            "0.0-0.3": 0,
+            "0.3-0.5": 0,
+            "0.5-0.7": 0,
+            "0.7-0.9": 0,
+            "0.9-1.0": 0
+        }
+
+        for block in pattern_blocks:
+            # Type counts
+            ptype = block.data.get("pattern_type", "unknown")
+            type_counts[ptype] = type_counts.get(ptype, 0) + 1
+
+            # Confidence distribution
+            conf = block.data.get("confidence", 0.0)
+            if conf < 0.3:
+                confidence_ranges["0.0-0.3"] += 1
+            elif conf < 0.5:
+                confidence_ranges["0.3-0.5"] += 1
+            elif conf < 0.7:
+                confidence_ranges["0.5-0.7"] += 1
+            elif conf < 0.9:
+                confidence_ranges["0.7-0.9"] += 1
+            else:
+                confidence_ranges["0.9-1.0"] += 1
+
+        # Get 5 most recent patterns
+        recent_patterns = []
+        for block in pattern_blocks[-5:]:
+            recent_patterns.append({
+                "pattern_id": block.data.get("pattern_id"),
+                "pattern_type": block.data.get("pattern_type"),
+                "confidence": block.data.get("confidence"),
+                "discovered_at": block.data.get("discovered_at")
+            })
+
+        return {
+            "success": True,
+            "total_patterns": len(pattern_blocks),
+            "patterns_by_type": type_counts,
+            "confidence_distribution": confidence_ranges,
+            "recent_patterns": recent_patterns
+        }
+
+    except Exception as e:
+        logger.error(f"Pattern stats failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Stats failed: {str(e)}")
+
+
+# ============================================================================
+# SCHEDULER ENDPOINTS
+# ============================================================================
+
+@router.get("/scheduler/status")
+async def get_scheduler_status():
+    """
+    Get scheduler status and job information.
+
+    Returns:
+    - Scheduler running status
+    - All scheduled jobs with next run times
+    - Job trigger details
+    """
+    try:
+        scheduler = get_scheduler()
+
+        if scheduler is None:
+            return {
+                "success": True,
+                "scheduler_running": False,
+                "message": "Scheduler not initialized"
+            }
+
+        status = scheduler.get_jobs_status()
+
+        return {
+            "success": True,
+            **status
+        }
+
+    except Exception as e:
+        logger.error(f"Scheduler status failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Status check failed: {str(e)}")
+
+
+@router.post("/scheduler/jobs/{job_id}/run")
+async def run_scheduled_job_now(job_id: str):
+    """
+    Manually trigger a scheduled job.
+
+    Available jobs:
+    - daily_backup: Create backup and upload to Drive
+    - pattern_analysis: Run pattern detection algorithms
+    - daily_metrics: Log daily metrics to Sheets
+
+    Args:
+        job_id: Job identifier
+
+    Returns:
+    - Execution status
+    - Job results
+    """
+    try:
+        scheduler = get_scheduler()
+
+        if scheduler is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Scheduler not initialized"
+            )
+
+        result = scheduler.run_job_now(job_id)
+
+        if not result.get("success"):
+            raise HTTPException(
+                status_code=404,
+                detail=result.get("error", "Job not found")
+            )
+
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Job execution failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Execution failed: {str(e)}")

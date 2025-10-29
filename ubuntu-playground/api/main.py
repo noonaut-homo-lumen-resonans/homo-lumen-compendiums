@@ -25,6 +25,11 @@ from blockchain.agent_dna_chain import AgentDNAChain
 from blockchain.dna_block import GeneType
 from blockchain.reference_extractor import extract_smk_references_from_consultation, merge_smk_references
 
+# Google Workspace Integration
+from blockchain.google_drive_manager import initialize_drive_manager
+from blockchain.google_sheets_manager import initialize_sheets_manager
+from scripts.scheduled_jobs import initialize_scheduler
+
 # Redis Event Subscriber
 from redis_subscriber import ubuntu_subscriber
 
@@ -844,13 +849,24 @@ def store_consultation(request: ConsultationRequest):
 
         logger.info(f"💾 Consultation also stored in SQLite (ID: {consultation_db_id})")
 
+        # Also log to Google Sheets if available
+        try:
+            from blockchain.google_sheets_manager import get_sheets_manager
+            sheets_manager = get_sheets_manager()
+            if sheets_manager:
+                sheets_result = sheets_manager.log_consultation(consultation_gene)
+                if sheets_result.get("success"):
+                    logger.info(f"📊 Consultation logged to Google Sheets")
+        except Exception as e:
+            logger.warning(f"⚠️  Failed to log consultation to Google Sheets: {e}")
+
         return {
             "success": True,
             "consultation_id": request.consultation_id,
             "blockchain_block_index": block.index,
             "blockchain_hash": block.hash,
             "database_id": consultation_db_id,
-            "message": "Consultation stored in GENOMOS blockchain and SQLite"
+            "message": "Consultation stored in GENOMOS blockchain, SQLite, and Google Sheets"
         }
 
     except Exception as e:
@@ -984,8 +1000,53 @@ async def startup_event():
     logger.info("📜 MutationLog initialized (Triadisk Portvokter #3)")
 
     # Initialize GENOMOS DNA Blockchain
-    initialize_dna_blockchain(db_path="./data/genomos.db")
+    blockchain = initialize_dna_blockchain(db_path="./data/genomos.db")
     logger.info("🧬 GENOMOS DNA Blockchain initialized for API queries")
+
+    # Initialize Google Workspace Integration (if configured)
+    try:
+        # Check if Google Workspace environment variables are set
+        client_secret_file = os.getenv("GOOGLE_CLIENT_SECRET_FILE")
+        token_file = os.getenv("GOOGLE_TOKEN_FILE", "./credentials/token.json")
+        drive_folder_id = os.getenv("GOOGLE_DRIVE_FOLDER_ID")
+        sheets_spreadsheet_id = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID")
+
+        if client_secret_file and drive_folder_id and sheets_spreadsheet_id:
+            # Initialize Google Drive Manager
+            logger.info("🔄 Initializing Google Drive Manager...")
+            drive_manager = initialize_drive_manager(
+                client_secret_file=client_secret_file,
+                token_file=token_file,
+                folder_id=drive_folder_id
+            )
+            logger.info("✅ Google Drive Manager initialized")
+
+            # Initialize Google Sheets Manager
+            logger.info("🔄 Initializing Google Sheets Manager...")
+            sheets_manager = initialize_sheets_manager(
+                credentials=drive_manager.credentials,
+                spreadsheet_id=sheets_spreadsheet_id
+            )
+            logger.info("✅ Google Sheets Manager initialized")
+
+            # Initialize Scheduler (automated backup, pattern analysis, metrics)
+            logger.info("🔄 Initializing Scheduler...")
+            backup_hour = int(os.getenv("BACKUP_SCHEDULE_HOUR", "2"))
+            pattern_interval = int(os.getenv("PATTERN_ANALYSIS_INTERVAL_HOURS", "6"))
+
+            scheduler = initialize_scheduler(
+                blockchain=blockchain,
+                drive_manager=drive_manager,
+                sheets_manager=sheets_manager,
+                backup_hour=backup_hour,
+                pattern_interval_hours=pattern_interval
+            )
+            logger.info(f"✅ Scheduler initialized (backup: {backup_hour}:00, pattern analysis: every {pattern_interval}h)")
+        else:
+            logger.info("ℹ️  Google Workspace not configured (missing environment variables)")
+    except Exception as e:
+        logger.warning(f"⚠️  Google Workspace initialization failed: {e}")
+        logger.info("   Continuing without Google Workspace integration")
 
     # Create agent-specific directories
     agent_dirs = ["manus", "code", "lira", "orion", "abacus", "nyra", "thalus", "aurora", "thalamus", "scribe", "zara", "shared", "experiments"]
@@ -1017,6 +1078,16 @@ async def startup_event():
 async def shutdown_event():
     """Cleanup on shutdown"""
     logger.info("🛑 Ubuntu Playground API shutting down...")
+
+    # Stop scheduler if running
+    try:
+        from scripts.scheduled_jobs import get_scheduler
+        scheduler = get_scheduler()
+        if scheduler:
+            scheduler.stop()
+            logger.info("✅ Scheduler stopped")
+    except Exception as e:
+        logger.warning(f"⚠️  Scheduler shutdown warning: {e}")
 
     # Stop Redis subscriber
     if subscriber_thread and subscriber_thread.is_alive():
