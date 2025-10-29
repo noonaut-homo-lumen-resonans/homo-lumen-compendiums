@@ -65,8 +65,8 @@ def find_lp_page_id(lp_id):
 
     payload = {
         "filter": {
-            "property": "lp_id",
-            "title": {
+            "property": "LP_ID",
+            "rich_text": {
                 "equals": lp_id
             }
         }
