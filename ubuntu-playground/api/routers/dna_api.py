@@ -28,6 +28,7 @@ from blockchain.consultation_recommender import find_related_consultations
 from blockchain.backup_manager import BackupManager
 from blockchain.cache_manager import get_cache_manager, invalidate_lru_caches
 from blockchain.advanced_query import AdvancedQueryBuilder
+from blockchain.smart_contracts import ContractEngine
 from fastapi.responses import Response
 import math
 
@@ -44,6 +45,9 @@ _cache_manager = get_cache_manager(ttl_seconds=300)  # 5 minute default TTL
 
 # Global query builder instance (Phase 11: Comprehensive Query API)
 _query_builder: Optional[AdvancedQueryBuilder] = None
+
+# Global contract engine instance (Phase 7: Smart Contract Portvokter)
+_contract_engine = ContractEngine()
 
 
 def initialize_dna_blockchain(db_path: str = "./data/genomos.db"):
@@ -2204,3 +2208,75 @@ async def get_real_time_metrics():
     except Exception as e:
         logger.error(f"Real-time metrics failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Metrics failed: {str(e)}")
+
+
+# ============================================================================
+# PHASE 7: Smart Contract Portvokter - Contract Validation
+# ============================================================================
+
+class ContractValidationRequest(BaseModel):
+    """Request model for contract validation"""
+    data: Dict[str, Any]
+    operation_type: Optional[str] = None
+
+
+@router.post("/contracts/validate")
+async def validate_with_contracts(request: ContractValidationRequest):
+    """
+    Validate data against all smart contracts (Triadisk Portvokter).
+
+    GENOMOS Phase 7: Smart Contract Portvokter
+
+    Runs all three portvokter contracts:
+    - BiofeltGate: Emotional/physiological validation
+    - ThalosFilter: Wisdom/context validation
+    - MutationLog: Operation validation
+
+    Returns:
+    - Overall validation result
+    - Violations from each contract
+    - Severity counts
+    """
+    try:
+        # Add operation_type to data if provided
+        validation_data = request.data.copy()
+        if request.operation_type:
+            validation_data["operation_type"] = request.operation_type
+
+        # Run all contracts
+        result = _contract_engine.validate_all(validation_data)
+
+        return {
+            "success": True,
+            "validation": result
+        }
+
+    except Exception as e:
+        logger.error(f"Contract validation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Validation failed: {str(e)}")
+
+
+@router.get("/contracts/info")
+async def get_contracts_info():
+    """
+    Get information about all loaded smart contracts.
+
+    GENOMOS Phase 7: Smart Contract Portvokter
+
+    Returns:
+    - List of all contracts
+    - Contract names, versions, types
+    """
+    try:
+        contracts_info = _contract_engine.get_contracts_info()
+
+        return {
+            "success": True,
+            "total_contracts": len(contracts_info),
+            "contracts": contracts_info,
+            "philosophy": "Triadisk Portvokter - Three gates of ethical validation"
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to get contracts info: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get info: {str(e)}")
