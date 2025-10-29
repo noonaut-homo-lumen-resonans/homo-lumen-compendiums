@@ -375,6 +375,264 @@ class GoogleDriveManager:
                 "message": "Failed to delete backup"
             }
 
+    # =========================================================================
+    # SYNC METHODS (for bidirectional Git ↔ Drive sync)
+    # =========================================================================
+
+    def list_files_recursive(
+        self,
+        folder_id: str,
+        mime_type: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        List all files in folder recursively (including subfolders).
+
+        Args:
+            folder_id: Google Drive folder ID
+            mime_type: Optional mime type filter (e.g., 'text/markdown')
+
+        Returns:
+            List of file dicts with id, name, path, modified_time, md5, size
+        """
+        all_files = []
+
+        def _list_folder(parent_id: str, parent_path: str = ""):
+            """Recursively list folder contents."""
+            try:
+                # Query for items in this folder
+                query = f"'{parent_id}' in parents and trashed=false"
+                if mime_type:
+                    query += f" and mimeType='{mime_type}'"
+
+                page_token = None
+                while True:
+                    results = self.service.files().list(
+                        q=query,
+                        pageSize=100,
+                        fields="nextPageToken, files(id, name, mimeType, modifiedTime, md5Checksum, size)",
+                        pageToken=page_token,
+                        supportsAllDrives=True,
+                        includeItemsFromAllDrives=True
+                    ).execute()
+
+                    items = results.get('files', [])
+
+                    for item in items:
+                        item_type = item.get('mimeType')
+                        item_name = item.get('name')
+                        item_path = f"{parent_path}/{item_name}" if parent_path else item_name
+
+                        if item_type == 'application/vnd.google-apps.folder':
+                            # Recursively list subfolder
+                            _list_folder(item.get('id'), item_path)
+                        else:
+                            # Add file to list
+                            all_files.append({
+                                "id": item.get('id'),
+                                "name": item_name,
+                                "path": item_path,
+                                "modified_time": item.get('modifiedTime'),
+                                "md5": item.get('md5Checksum'),
+                                "size": int(item.get('size', 0))
+                            })
+
+                    page_token = results.get('nextPageToken')
+                    if not page_token:
+                        break
+
+            except HttpError as e:
+                logger.error(f"❌ Failed to list folder {parent_id}: {e}")
+
+        _list_folder(folder_id)
+        return all_files
+
+    def upload_file(
+        self,
+        local_path: str,
+        drive_folder_id: str,
+        filename: Optional[str] = None,
+        mime_type: str = 'text/markdown'
+    ) -> Dict[str, Any]:
+        """
+        Upload file to specific Drive folder.
+
+        Args:
+            local_path: Local file path
+            drive_folder_id: Drive folder ID
+            filename: Optional custom filename
+            mime_type: File mime type (default: text/markdown)
+
+        Returns:
+            Dict with file_id, name, modified_time, md5
+        """
+        try:
+            if not os.path.exists(local_path):
+                raise FileNotFoundError(f"File not found: {local_path}")
+
+            if not filename:
+                filename = Path(local_path).name
+
+            # File metadata
+            file_metadata = {
+                'name': filename,
+                'parents': [drive_folder_id]
+            }
+
+            # Media upload
+            media = MediaFileUpload(
+                local_path,
+                mimetype=mime_type,
+                resumable=True
+            )
+
+            # Upload file
+            file = self.service.files().create(
+                body=file_metadata,
+                media_body=media,
+                fields='id, name, modifiedTime, md5Checksum, size',
+                supportsAllDrives=True
+            ).execute()
+
+            return {
+                "success": True,
+                "file_id": file.get('id'),
+                "name": file.get('name'),
+                "modified_time": file.get('modifiedTime'),
+                "md5": file.get('md5Checksum'),
+                "size": int(file.get('size', 0))
+            }
+
+        except Exception as e:
+            logger.error(f"❌ Upload failed for {local_path}: {e}")
+            return {
+                "success": False,
+                "error": str(e)
+            }
+
+    def update_file(
+        self,
+        file_id: str,
+        local_path: str,
+        mime_type: str = 'text/markdown'
+    ) -> Dict[str, Any]:
+        """
+        Update existing Drive file with new content.
+
+        Args:
+            file_id: Drive file ID to update
+            local_path: Local file path with new content
+            mime_type: File mime type
+
+        Returns:
+            Dict with file_id, name, modified_time, md5
+        """
+        try:
+            if not os.path.exists(local_path):
+                raise FileNotFoundError(f"File not found: {local_path}")
+
+            # Media upload
+            media = MediaFileUpload(
+                local_path,
+                mimetype=mime_type,
+                resumable=True
+            )
+
+            # Update file
+            file = self.service.files().update(
+                fileId=file_id,
+                media_body=media,
+                fields='id, name, modifiedTime, md5Checksum, size',
+                supportsAllDrives=True
+            ).execute()
+
+            return {
+                "success": True,
+                "file_id": file.get('id'),
+                "name": file.get('name'),
+                "modified_time": file.get('modifiedTime'),
+                "md5": file.get('md5Checksum'),
+                "size": int(file.get('size', 0))
+            }
+
+        except Exception as e:
+            logger.error(f"❌ Update failed for {file_id}: {e}")
+            return {
+                "success": False,
+                "error": str(e)
+            }
+
+    def get_file_metadata(self, file_id: str) -> Dict[str, Any]:
+        """
+        Get file metadata (timestamps, MD5, size).
+
+        Args:
+            file_id: Drive file ID
+
+        Returns:
+            Dict with id, name, modified_time, md5, size
+        """
+        try:
+            file = self.service.files().get(
+                fileId=file_id,
+                fields='id, name, modifiedTime, md5Checksum, size',
+                supportsAllDrives=True
+            ).execute()
+
+            return {
+                "success": True,
+                "id": file.get('id'),
+                "name": file.get('name'),
+                "modified_time": file.get('modifiedTime'),
+                "md5": file.get('md5Checksum'),
+                "size": int(file.get('size', 0))
+            }
+
+        except HttpError as e:
+            logger.error(f"❌ Failed to get metadata for {file_id}: {e}")
+            return {
+                "success": False,
+                "error": str(e)
+            }
+
+    def create_folder(
+        self,
+        folder_name: str,
+        parent_id: str,
+        description: str = ""
+    ) -> Optional[str]:
+        """
+        Create folder in Drive.
+
+        Args:
+            folder_name: Name of folder to create
+            parent_id: Parent folder ID
+            description: Optional folder description
+
+        Returns:
+            Folder ID if successful, None otherwise
+        """
+        try:
+            file_metadata = {
+                'name': folder_name,
+                'mimeType': 'application/vnd.google-apps.folder',
+                'parents': [parent_id]
+            }
+            if description:
+                file_metadata['description'] = description
+
+            folder = self.service.files().create(
+                body=file_metadata,
+                fields='id, name',
+                supportsAllDrives=True
+            ).execute()
+
+            logger.info(f"✅ Created folder: {folder_name} (ID: {folder.get('id')})")
+            return folder.get('id')
+
+        except HttpError as e:
+            logger.error(f"❌ Failed to create folder {folder_name}: {e}")
+            return None
+
 
 # Initialize global instance (will be initialized by main.py)
 _drive_manager: Optional[GoogleDriveManager] = None
