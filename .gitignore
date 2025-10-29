@@ -52,3 +52,4 @@ test-reports/
 # Environment files
 .env.local
 .env.*.local
+sanitize_keys.sh
