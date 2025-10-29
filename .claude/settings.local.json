@@ -12,7 +12,8 @@
       "Bash(git reset:*)",
       "Bash(export FILTER_BRANCH_SQUELCH_WARNING=1)",
       "Bash(git filter-branch --force --tree-filter \"find . -name ''*.py'' -type f -exec sed -i ''s/***REMOVED***/NOTION_API_KEY_FROM_ENV/g'' {} + 2>/dev/null || true\" --prune-empty --tag-name-filter cat -- --all)",
-      "Bash(java -version:*)"
+      "Bash(java -version:*)",
+      "Bash(git remote add:*)"
     ],
     "deny": [],
     "ask": []

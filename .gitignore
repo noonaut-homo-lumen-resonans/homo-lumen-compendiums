@@ -31,3 +31,24 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+nul
+
+# Test coverage
+.coverage
+test-reports/
+
+# Database files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Backup and analysis files
+*_backup_*.json
+*_analysis_*.json
+*_log_*.json
+*_duplicates_*.json
+
+# Environment files
+.env.local
+.env.*.local
