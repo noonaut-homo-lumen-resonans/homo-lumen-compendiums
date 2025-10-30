@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import '../../services/health_sync_service.dart';
 
 enum ConsciousnessLayer {
   reactive,    // HRV < 60
@@ -12,11 +13,16 @@ enum ConsciousnessLayer {
 class HRVMonitor extends ChangeNotifier {
   StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
   StreamSubscription<GyroscopeEvent>? _gyroscopeSubscription;
-  
+
   double _currentHRV = 75.0;
   ConsciousnessLayer _currentLayer = ConsciousnessLayer.strategic;
   bool _isMonitoring = false;
   List<double> _hrvHistory = [];
+
+  // Health Connect integration
+  HealthSyncService? healthSyncService;
+  DateTime? _lastSyncTime;
+  Timer? _syncThrottleTimer;
   
   // Getters
   double get currentHRV => _currentHRV;
@@ -90,16 +96,90 @@ class HRVMonitor extends ChangeNotifier {
   void _updateHRV(double hrv) {
     _currentHRV = hrv;
     _hrvHistory.add(hrv);
-    
+
     // Keep only last 100 measurements
     if (_hrvHistory.length > 100) {
       _hrvHistory.removeAt(0);
     }
-    
+
     // Update consciousness layer
     _updateConsciousnessLayer();
-    
+
+    // Sync to Health Connect API (throttled to every 10 seconds)
+    _syncHealthDataThrottled();
+
     notifyListeners();
+  }
+
+  /// Sync health data to backend (throttled)
+  void _syncHealthDataThrottled() {
+    // Only sync if Health Sync Service is configured
+    if (healthSyncService == null || !healthSyncService!.autoSyncEnabled) {
+      return;
+    }
+
+    // Throttle syncs to once every 10 seconds
+    final now = DateTime.now();
+    if (_lastSyncTime != null &&
+        now.difference(_lastSyncTime!).inSeconds < 10) {
+      return;
+    }
+
+    // Cancel existing throttle timer
+    _syncThrottleTimer?.cancel();
+
+    // Start new throttle timer (debounce rapid changes)
+    _syncThrottleTimer = Timer(const Duration(milliseconds: 500), () async {
+      final metrics = HealthMetrics(
+        hrvMs: _currentHRV,
+        heartRateBpm: 60 + (_currentHRV / 2), // Estimate from HRV
+        coherence: _calculateCoherence(),
+        stressLevel: _calculateStressLevel(),
+        energyLevel: _getEnergyLevel(),
+        pustRytme: '4-6-8',
+      );
+
+      final success = await healthSyncService!.syncHealthData(metrics);
+
+      if (success) {
+        _lastSyncTime = DateTime.now();
+        debugPrint('✅ Health data synced: HRV=${_currentHRV.toStringAsFixed(1)}ms');
+      }
+    });
+  }
+
+  /// Calculate coherence from HRV history variance
+  double _calculateCoherence() {
+    if (_hrvHistory.length < 10) return 0.5;
+
+    // Calculate variance of recent HRV measurements
+    final recent = _hrvHistory.skip(_hrvHistory.length - 10).toList();
+    final mean = recent.reduce((a, b) => a + b) / recent.length;
+    final variance = recent
+        .map((v) => (v - mean) * (v - mean))
+        .reduce((a, b) => a + b) / recent.length;
+
+    // Lower variance = higher coherence
+    final coherence = 1.0 / (1.0 + variance / 100);
+    return coherence.clamp(0.0, 1.0);
+  }
+
+  /// Calculate stress level from HRV
+  double _calculateStressLevel() {
+    if (_currentHRV > 80) return 1.0; // Very low stress
+    if (_currentHRV > 65) return 3.0; // Low stress
+    if (_currentHRV > 50) return 5.0; // Moderate stress
+    if (_currentHRV > 40) return 7.0; // High stress
+    return 9.0; // Very high stress
+  }
+
+  /// Get energy level string
+  String _getEnergyLevel() {
+    if (_currentHRV > 100) return 'transcendent';
+    if (_currentHRV > 80) return 'optimal';
+    if (_currentHRV > 65) return 'balanced';
+    if (_currentHRV > 40) return 'low';
+    return 'depleted';
   }
   
   void _updateConsciousnessLayer() {
