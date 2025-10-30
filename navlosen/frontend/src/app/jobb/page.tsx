@@ -107,13 +107,19 @@ const categories: JobCategory[] = ["Alle", "Helse", "Service", "Teknologi", "Hå
 
 export default function JobbPage() {
   const router = useRouter();
-  const { isAuthenticated, hasGmailAccess, requestGmailAccess } = useGoogleAuth();
+  const { isAuthenticated, hasGmailAccess, requestGmailAccess} = useGoogleAuth();
   const [selectedCategory, setSelectedCategory] = useState<JobCategory>("Alle");
   const [searchTerm, setSearchTerm] = useState("");
   const [jobListings, setJobListings] = useState<JobListing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [useMockData, setUseMockData] = useState(false);
+
+  // New filter states
+  const [jobType, setJobType] = useState<string>("Alle");
+  const [location, setLocation] = useState<string>("");
+  const [deadline, setDeadline] = useState<string>("");
+  const [sortBy, setSortBy] = useState<string>("relevant");
 
   // Gmail state
   const [showEmailModal, setShowEmailModal] = useState(false);
@@ -140,6 +146,22 @@ export default function JobbPage() {
 
         if (selectedCategory !== "Alle") {
           params.append("category", selectedCategory);
+        }
+
+        if (jobType && jobType !== "Alle") {
+          params.append("jobType", jobType);
+        }
+
+        if (location && location.trim()) {
+          params.append("location", location.trim());
+        }
+
+        if (deadline) {
+          params.append("deadline", deadline);
+        }
+
+        if (sortBy && sortBy !== "relevant") {
+          params.append("sortBy", sortBy);
         }
 
         const response = await fetch(`/api/jobs?${params.toString()}`);
@@ -182,7 +204,7 @@ export default function JobbPage() {
     };
 
     fetchJobs();
-  }, [selectedCategory, searchTerm]);
+  }, [selectedCategory, searchTerm, jobType, location, deadline, sortBy]);
 
   const filteredJobs = useMemo(() => {
     return jobListings;
@@ -341,6 +363,78 @@ export default function JobbPage() {
                   </button>
                 );
               })}
+            </div>
+
+            {/* Advanced Filters */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
+              {/* Job Type Filter */}
+              <div>
+                <label htmlFor="jobType" className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">
+                  Stillingsstørrelse
+                </label>
+                <select
+                  id="jobType"
+                  value={jobType}
+                  onChange={(e) => setJobType(e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm transition-colors focus:border-[var(--color-primary)] focus:outline-none"
+                >
+                  <option value="Alle">Alle</option>
+                  <option value="Heltid">Heltid</option>
+                  <option value="Deltid">Deltid</option>
+                  <option value="Midlertidig">Midlertidig</option>
+                </select>
+              </div>
+
+              {/* Location Filter */}
+              <div>
+                <label htmlFor="location" className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">
+                  Sted
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Oslo, Bergen..."
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm transition-colors focus:border-[var(--color-primary)] focus:outline-none"
+                />
+              </div>
+
+              {/* Deadline Filter */}
+              <div>
+                <label htmlFor="deadline" className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">
+                  Søknadsfrist
+                </label>
+                <select
+                  id="deadline"
+                  value={deadline}
+                  onChange={(e) => setDeadline(e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm transition-colors focus:border-[var(--color-primary)] focus:outline-none"
+                >
+                  <option value="">Alle</option>
+                  <option value="today">I dag</option>
+                  <option value="week">Innen 7 dager</option>
+                  <option value="month">Innen 30 dager</option>
+                  <option value="later">Mer enn 30 dager</option>
+                </select>
+              </div>
+
+              {/* Sort By Filter */}
+              <div>
+                <label htmlFor="sortBy" className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">
+                  Sorter etter
+                </label>
+                <select
+                  id="sortBy"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm transition-colors focus:border-[var(--color-primary)] focus:outline-none"
+                >
+                  <option value="relevant">Mest relevant</option>
+                  <option value="newest">Nyeste først</option>
+                  <option value="deadline">Frist nærmest</option>
+                </select>
+              </div>
             </div>
           </div>
         </section>

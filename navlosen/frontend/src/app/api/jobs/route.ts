@@ -185,13 +185,23 @@ const mockJobs: JobAd[] = [
   }
 ];
 
+interface FilterParams {
+  page?: number;
+  size?: number;
+  searchTerm?: string;
+  category?: string;
+  jobType?: string;
+  location?: string;
+  experienceLevel?: string;
+  deadline?: string;
+  sortBy?: string;
+}
+
 async function fetchFromArbeidsplassen(
-  page: number = 0,
-  size: number = 10,
-  searchTerm?: string,
-  category?: string
+  filters: FilterParams
 ): Promise<{ content: JobAd[]; totalElements: number; useMockData: boolean }> {
   const apiKey = process.env.ARBEIDSPLASSEN_API_KEY;
+  const { page = 0, size = 10, searchTerm, category, jobType, location, experienceLevel, deadline, sortBy } = filters;
 
   // If no API key, return mock data
   if (!apiKey || apiKey === "") {
@@ -215,6 +225,61 @@ async function fetchFromArbeidsplassen(
       );
     }
 
+    // Job type filter
+    if (jobType && jobType !== "Alle") {
+      filteredJobs = filteredJobs.filter((job) =>
+        job.properties.extent === jobType
+      );
+    }
+
+    // Location filter
+    if (location && location.trim() !== "") {
+      const locationLower = location.toLowerCase();
+      filteredJobs = filteredJobs.filter((job) =>
+        job.employer.location?.city?.toLowerCase().includes(locationLower) ||
+        job.employer.location?.municipal?.toLowerCase().includes(locationLower)
+      );
+    }
+
+    // Deadline filter
+    if (deadline) {
+      const now = new Date();
+      filteredJobs = filteredJobs.filter((job) => {
+        const expiresDate = new Date(job.expires);
+        const daysUntilExpiry = Math.ceil((expiresDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+        switch (deadline) {
+          case 'today':
+            return daysUntilExpiry === 0;
+          case 'week':
+            return daysUntilExpiry <= 7;
+          case 'month':
+            return daysUntilExpiry <= 30;
+          case 'later':
+            return daysUntilExpiry > 30;
+          default:
+            return true;
+        }
+      });
+    }
+
+    // Sorting
+    if (sortBy) {
+      const now = new Date();
+      filteredJobs.sort((a, b) => {
+        switch (sortBy) {
+          case 'newest':
+            return new Date(b.published).getTime() - new Date(a.published).getTime();
+          case 'deadline':
+            return new Date(a.expires).getTime() - new Date(b.expires).getTime();
+          case 'relevant':
+          default:
+            // Keep original order (most relevant based on search)
+            return 0;
+        }
+      });
+    }
+
     return {
       content: filteredJobs,
       totalElements: filteredJobs.length,
@@ -234,6 +299,14 @@ async function fetchFromArbeidsplassen(
       params.append("q", searchTerm);
     }
 
+    if (location) {
+      params.append("location", location);
+    }
+
+    if (jobType && jobType !== "Alle") {
+      params.append("extent", jobType);
+    }
+
     const response = await fetch(`${baseUrl}?${params.toString()}`, {
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -248,50 +321,82 @@ async function fetchFromArbeidsplassen(
     }
 
     const data = await response.json();
+
+    // Apply client-side filters not supported by API
+    let jobs = data.content || [];
+
+    if (category && category !== "Alle") {
+      jobs = jobs.filter((job: JobAd) =>
+        job.categoryList?.some((cat) => cat.name === category)
+      );
+    }
+
+    if (deadline) {
+      const now = new Date();
+      jobs = jobs.filter((job: JobAd) => {
+        const expiresDate = new Date(job.expires);
+        const daysUntilExpiry = Math.ceil((expiresDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+        switch (deadline) {
+          case 'today':
+            return daysUntilExpiry === 0;
+          case 'week':
+            return daysUntilExpiry <= 7;
+          case 'month':
+            return daysUntilExpiry <= 30;
+          case 'later':
+            return daysUntilExpiry > 30;
+          default:
+            return true;
+        }
+      });
+    }
+
+    // Sorting
+    if (sortBy) {
+      jobs.sort((a: JobAd, b: JobAd) => {
+        switch (sortBy) {
+          case 'newest':
+            return new Date(b.published).getTime() - new Date(a.published).getTime();
+          case 'deadline':
+            return new Date(a.expires).getTime() - new Date(b.expires).getTime();
+          case 'relevant':
+          default:
+            return 0;
+        }
+      });
+    }
+
     return {
-      content: data.content || [],
-      totalElements: data.totalElements || 0,
+      content: jobs,
+      totalElements: jobs.length,
       useMockData: false
     };
   } catch (error) {
     console.error("Failed to fetch from Arbeidsplassen API, falling back to mock data:", error);
 
-    // Fallback to mock data on error
-    let filteredJobs = [...mockJobs];
-
-    if (searchTerm && searchTerm.trim() !== "") {
-      const searchLower = searchTerm.toLowerCase();
-      filteredJobs = filteredJobs.filter(
-        (job) =>
-          job.title.toLowerCase().includes(searchLower) ||
-          job.employer.name.toLowerCase().includes(searchLower) ||
-          job.employer.location?.city?.toLowerCase().includes(searchLower)
-      );
-    }
-
-    if (category && category !== "Alle") {
-      filteredJobs = filteredJobs.filter((job) =>
-        job.categoryList?.some((cat) => cat.name === category)
-      );
-    }
-
-    return {
-      content: filteredJobs,
-      totalElements: filteredJobs.length,
-      useMockData: true
-    };
+    // Fallback to mock data on error - use same filtering logic as above
+    return fetchFromArbeidsplassen({ ...filters, page, size });
   }
 }
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const page = parseInt(searchParams.get("page") || "0");
-    const size = parseInt(searchParams.get("size") || "10");
-    const searchTerm = searchParams.get("q") || undefined;
-    const category = searchParams.get("category") || undefined;
 
-    const result = await fetchFromArbeidsplassen(page, size, searchTerm, category);
+    const filters: FilterParams = {
+      page: parseInt(searchParams.get("page") || "0"),
+      size: parseInt(searchParams.get("size") || "10"),
+      searchTerm: searchParams.get("q") || undefined,
+      category: searchParams.get("category") || undefined,
+      jobType: searchParams.get("jobType") || undefined,
+      location: searchParams.get("location") || undefined,
+      experienceLevel: searchParams.get("experienceLevel") || undefined,
+      deadline: searchParams.get("deadline") || undefined,
+      sortBy: searchParams.get("sortBy") || undefined,
+    };
+
+    const result = await fetchFromArbeidsplassen(filters);
 
     return NextResponse.json(result);
   } catch (error) {
