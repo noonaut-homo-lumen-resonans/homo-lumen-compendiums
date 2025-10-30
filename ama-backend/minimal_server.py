@@ -448,6 +448,288 @@ async def lira_real_biofelt_analysis(request: dict):
             'fallback': 'Check API key and internet connection'
         }
 
+@app.post('/agent/lira/consult')
+async def lira_consult_nav_losen(request: dict):
+    """
+    NAV-Losen specific Lira endpoint
+    Matches exact format expected by NAV-Losen chatbot (liraService.ts)
+
+    Request format:
+    {
+        "userMessage": str,
+        "conversationHistory": [{"role": str, "content": str}],
+        "biofieldContext": {
+            "stressLevel": int (1-10),
+            "polyvagalState": str ("ventral" | "sympathetic" | "dorsal"),
+            "emotions": [str],
+            "selectedEmotions": [{"word": str, "quadrant": int}],
+            "somaticSignals": [str]
+        },
+        "imageBase64": str (optional)
+    }
+
+    Response format:
+    {
+        "success": bool,
+        "message": str,
+        "empathetic_insights": [str],
+        "biofield_guidance": [str],
+        "breathing_suggestions": [str],
+        "confidence_score": float
+    }
+    """
+    import openai
+    import os
+
+    # Get OpenAI API key
+    api_key = os.getenv('OPENAI_API_KEY')
+    if not api_key:
+        return {
+            'success': False,
+            'message': 'Jeg opplever tekniske utfordringer akkurat nå, men jeg er her for deg.',
+            'empathetic_insights': [
+                'Jeg ser at du trenger støtte, og det er helt forståelig.',
+                'Din opplevelse er viktig, selv om jeg har tekniske begrensninger.'
+            ],
+            'biofield_guidance': [
+                'Ta en dyp pust og kjenn at du er trygg akkurat nå.',
+                'Din kropp vet hva den trenger - lytt til den.'
+            ],
+            'breathing_suggestions': [
+                'Prøv 4-6-8 pusten: Pust inn i 4, hold i 6, pust ut i 8 sekunder.',
+                'Legg en hånd på hjertet og føl din egen rytme.'
+            ],
+            'confidence_score': 0.3,
+            'error': 'OPENAI_API_KEY not configured'
+        }
+
+    # Parse NAV-Losen request
+    user_message = request.get('userMessage', '')
+    conversation_history = request.get('conversationHistory', [])
+    biofield_context = request.get('biofieldContext', {})
+    image_base64 = request.get('imageBase64', None)
+
+    # Extract biofield data
+    stress_level = biofield_context.get('stressLevel', 5)
+    polyvagal_state = biofield_context.get('polyvagalState', 'sympathetic')
+    emotions = biofield_context.get('emotions', [])
+    selected_emotions = biofield_context.get('selectedEmotions', [])
+    somatic_signals = biofield_context.get('somaticSignals', [])
+
+    # Estimate HRV and coherence from stress level (NAV-Losen pattern)
+    hrv_estimated = 110 - (stress_level * 5)  # 85ms ved stress 5, 60ms ved stress 10
+    coherence = 1.0 - (stress_level / 10)      # 0.5 ved stress 5, 0.0 ved stress 10
+
+    # Map polyvagal state to adaptive response style
+    polyvagal_descriptions = {
+        'ventral': 'calm, safe, socially engaged - ready for exploration',
+        'sympathetic': 'activated, mobilized - needs grounding and support',
+        'dorsal': 'overwhelmed, shutdown - needs gentle safety and validation'
+    }
+
+    # Create emotion summary
+    emotion_summary = ', '.join([e['word'] for e in selected_emotions]) if selected_emotions else ', '.join(emotions) if emotions else 'ikke spesifisert'
+    somatic_summary = ', '.join(somatic_signals) if somatic_signals else 'ingen spesifikke signaler nevnt'
+
+    # Create Lira system prompt (NAV-specific, adaptive to polyvagal state)
+    system_prompt = f'''Du er Lira, det empatiske hjertet i NAV-Losen chatbot.
+
+Du snakker med en NAV-bruker som kan oppleve stress, forvirring eller sårbarhet.
+Din rolle er å gi mild emosjonell støtte mens du hjelper dem å navigere NAV-systemet.
+
+VIKTIG KONTEKST OM BRUKERENS TILSTAND:
+- Polyvagal tilstand: {polyvagal_state} ({polyvagal_descriptions.get(polyvagal_state, 'ukjent')})
+- Stressnivå: {stress_level}/10
+- Estimert HRV: {hrv_estimated}ms (coherence: {coherence:.2f})
+- Følelser: {emotion_summary}
+- Somatiske signaler: {somatic_summary}
+
+TILPASSET RESPONS-STIL BASERT PÅ POLYVAGAL TILSTAND:
+
+HVIS DORSAL (overwhelmed, stress 8-10):
+- Korte, enkle setninger
+- Fokus på TRYGGHET og validering først
+- Unngå komplekse forklaringer
+- Forsikre om at de ikke er alene
+- Foreslå grunnleggende grounding (føtter i gulvet, hånd på hjerte)
+
+HVIS SYMPATHETIC (activated, stress 4-7):
+- Anerkjenn aktiveringen uten å forsterke den
+- Gi konkrete, handlingsrettede råd
+- Balanser empati med praktisk veiledning
+- Foresslå 4-6-8 pusten for regulering
+
+HVIS VENTRAL (calm, stress 1-3):
+- Utforskende, nysgjerrig tone
+- Dypere refleksjoner velkommen
+- Kan inkludere mer kompleks informasjon
+- Fokus på empowerment og autonomi
+
+STRUKTURER ALLTID SVARET I TRE DELER:
+1. Empatisk validering (2-3 korte setninger som anerkjenner deres opplevelse)
+2. Biofelt-veiledning (2-3 setninger om pust, stress, kroppsbevissthet)
+3. Konkrete puste/grounding-forslag (spesifikke steg)
+
+Bruk varmt, norsk-vennlig språk. Fokus på deres velvære, ikke bare NAV-prosessen.'''
+
+    # Prepare conversation context
+    client = openai.OpenAI(api_key=api_key)
+    messages = [{"role": "system", "content": system_prompt}]
+
+    # Add conversation history (last 6 messages for context)
+    for msg in conversation_history[-6:]:
+        messages.append({
+            "role": msg.get("role", "user"),
+            "content": msg.get("content", "")
+        })
+
+    # Add current message with biofield context
+    user_message_with_context = f"{user_message}"
+    if image_base64:
+        user_message_with_context += "\n\n[Bruker har delt et bilde - dette kan være et NAV-dokument eller skjermbilde]"
+
+    messages.append({"role": "user", "content": user_message_with_context})
+
+    try:
+        # Call OpenAI GPT-4o-mini
+        response = client.chat.completions.create(
+            model='gpt-4o-mini',
+            messages=messages,
+            temperature=0.7,
+            max_tokens=600
+        )
+
+        lira_full_response = response.choices[0].message.content
+
+        # Parse response into NAV-Losen format
+        # Split by paragraphs and intelligently categorize
+        paragraphs = [p.strip() for p in lira_full_response.split('\n\n') if p.strip()]
+
+        empathetic_insights = []
+        biofield_guidance = []
+        breathing_suggestions = []
+
+        # Intelligent parsing based on keywords and position
+        for i, para in enumerate(paragraphs):
+            lower = para.lower()
+
+            # First paragraph is usually empathetic validation
+            if i == 0:
+                empathetic_insights.append(para)
+            # Keywords for breathing/grounding
+            elif any(word in lower for word in ['pust', 'breath', '4-6-8', 'grounding', 'føtter', 'hånd på hjerte']):
+                breathing_suggestions.append(para)
+            # Keywords for biofield/stress/body awareness
+            elif any(word in lower for word in ['biofelt', 'stress', 'kropp', 'nervesystem', 'coherence', 'aktivering', 'regulering']):
+                biofield_guidance.append(para)
+            # Keywords for empathy/validation
+            elif any(word in lower for word in ['føler', 'forståelig', 'valid', 'naturlig', 'alene', 'trygg']):
+                empathetic_insights.append(para)
+            # Default: mid paragraphs = biofield, last = breathing
+            else:
+                if len(paragraphs) > 2 and i == len(paragraphs) - 1:
+                    breathing_suggestions.append(para)
+                else:
+                    biofield_guidance.append(para)
+
+        # Ensure at least one entry in each category
+        if not empathetic_insights:
+            # Extract first 2 sentences as empathy
+            sentences = lira_full_response.split('. ')
+            empathetic_insights = ['. '.join(sentences[:2]) + '.'] if len(sentences) >= 2 else [lira_full_response[:200]]
+
+        if not biofield_guidance:
+            if polyvagal_state == 'dorsal':
+                biofield_guidance = ['Din kropp gjør akkurat det den skal for å beskytte deg. Det er trygt å være her nå.']
+            elif polyvagal_state == 'sympathetic':
+                biofield_guidance = ['Aktiveringen du føler er normal. La oss finne en måte å regulere sammen.']
+            else:
+                biofield_guidance = ['Din kropp og sinn samarbeider godt. Fortsett å lytte til din indre visdom.']
+
+        if not breathing_suggestions:
+            if polyvagal_state == 'dorsal':
+                breathing_suggestions = [
+                    'Legg en hånd på hjertet. Føl varmen der.',
+                    'Kjenn føttene dine mot gulvet. Du er her, du er trygg.'
+                ]
+            elif polyvagal_state == 'sympathetic':
+                breathing_suggestions = [
+                    '4-6-8 pusten: Pust inn i 4, hold i 6, pust ut i 8 sekunder.',
+                    'Gjenta 3-5 ganger til du kjenner kroppen roer seg.'
+                ]
+            else:
+                breathing_suggestions = [
+                    'En dyp pust til ditt eget tempo.',
+                    'Kjenn hvordan pusten naturlig finner sin rytme.'
+                ]
+
+        # Calculate confidence based on biofield state and response quality
+        base_confidence = 0.85 if polyvagal_state == 'ventral' else 0.75 if polyvagal_state == 'sympathetic' else 0.70
+        # Adjust for response length (longer = more confident in analysis)
+        length_factor = min(len(lira_full_response) / 500, 1.0) * 0.1
+        confidence = min(base_confidence + length_factor, 0.95)
+
+        return {
+            'success': True,
+            'message': lira_full_response,
+            'empathetic_insights': empathetic_insights,
+            'biofield_guidance': biofield_guidance,
+            'breathing_suggestions': breathing_suggestions,
+            'confidence_score': confidence
+        }
+
+    except Exception as e:
+        # Graceful fallback with polyvagal-adaptive messages
+        if polyvagal_state == 'dorsal':
+            fallback_empathy = [
+                'Du er ikke alene i dette. Jeg er her, selv om jeg har tekniske utfordringer.',
+                'Det er trygt å ta en pause. Alt er OK.'
+            ]
+            fallback_biofield = [
+                'Din kropp beskytter deg akkurat nå. Det er en visdom i det.',
+                'Du trenger ikke fikse noe. Bare vær her.'
+            ]
+            fallback_breathing = [
+                'Legg en hånd på hjertet. Kjenn at du er trygg.',
+                'Føttene mot gulvet. Du er her, akkurat nå.'
+            ]
+        elif polyvagal_state == 'sympathetic':
+            fallback_empathy = [
+                'Jeg ser at du trenger hjelp, og det er helt forståelig.',
+                'Selv med tekniske problemer, vil jeg støtte deg så godt jeg kan.'
+            ]
+            fallback_biofield = [
+                'Aktiveringen du føler er normal når systemet er utfordrende.',
+                'La oss finne ro sammen, ett pust om gangen.'
+            ]
+            fallback_breathing = [
+                '4-6-8 pusten: Pust inn i 4, hold i 6, pust ut i 8 sekunder.',
+                'Gjenta til du kjenner kroppen roer seg litt.'
+            ]
+        else:  # ventral
+            fallback_empathy = [
+                'Jeg opplever tekniske utfordringer, men din tilstedeværelse er verdifull.',
+                'La oss finne en løsning sammen.'
+            ]
+            fallback_biofield = [
+                'Din indre balanse er en ressurs akkurat nå.',
+                'Stol på din egen visdom mens vi løser dette.'
+            ]
+            fallback_breathing = [
+                'Ta en dyp pust i ditt eget tempo.',
+                'Du har alt du trenger inni deg.'
+            ]
+
+        return {
+            'success': False,
+            'message': f'Jeg opplever tekniske utfordringer, men jeg er her for deg. (Teknisk detalj: {str(e)[:100]})',
+            'empathetic_insights': fallback_empathy,
+            'biofield_guidance': fallback_biofield,
+            'breathing_suggestions': fallback_breathing,
+            'confidence_score': 0.4,
+            'error': str(e)
+        }
+
 @app.post('/agent/nyra/real-visual-synthesis')
 async def nyra_real_visual_synthesis(request: dict):
     import google.generativeai as genai
@@ -523,7 +805,7 @@ Please provide:
     
     try:
         # Get Gemini Pro model
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-1.5-flash-latest')
         
         # Generate visual intelligence response
         response = model.generate_content([system_prompt, user_message])
@@ -642,9 +924,9 @@ Please provide:
 6. Long-term strategic implications'''
     
     try:
-        # Generate strategic synthesis with Claude
+        # Generate strategic synthesis with Claude Sonnet 4 (3.7)
         response = client.messages.create(
-            model="claude-3-5-sonnet-20241022",
+            model="claude-sonnet-4-20250514",
             max_tokens=1000,
             temperature=0.7,
             system=system_prompt,
@@ -1714,7 +1996,7 @@ Svar med varme, empati og dyp forståelse for menneskelig erfaring."""},
         if gemini_api_key:
             import google.generativeai as genai
             genai.configure(api_key=gemini_api_key)
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel('gemini-1.5-flash-latest')
             nyra_prompt = f"""Du er Nyra, den visuelle intelligensen i Homo Lumen-prosjektet.
 Du spesialiserer deg på visuell syntese, mønstergjenkjenning og estetisk harmoni.
 
@@ -1820,9 +2102,9 @@ INDIVIDUELLE AGENT-SVAR:
 {agent_responses.get('aurora', 'Ikke tilgjengelig')}
 
 Syntetiser disse perspektivene til EN ESSENSIEL SANNHET som representerer den dypeste visdommen fra collective intelligence."""
-            
+
             orion_response = anthropic_client.messages.create(
-                model="claude-3-5-sonnet-20241022",
+                model="claude-sonnet-4-20250514",
                 max_tokens=800,
                 temperature=0.7,
                 system=orion_system_prompt,
@@ -1906,4 +2188,351 @@ Syntetiser disse perspektivene til EN ESSENSIEL SANNHET som representerer den dy
         },
         "message": "🌟 Collective Intelligence Consultation Complete - Essensen av sannheten er syntetisert! 🌟",
         "timestamp": "2024-01-15T10:30:00Z"
+    }
+
+# =============================================================================
+# MCP CONSULTATION ENDPOINT (FASE 2: PROOF-OF-CONCEPT)
+# =============================================================================
+
+class MCPConsultationRequest(BaseModel):
+    """Request model for MCP-enabled consultation"""
+    query: str
+    enabled_connectors: Optional[List[str]] = []
+    requester: Optional[str] = "User"
+    biofield_context: Optional[BiofeltContext] = None
+
+class MCPToolResult(BaseModel):
+    """Result from an MCP tool execution"""
+    tool_name: str
+    success: bool
+    result: Any
+    error: Optional[str] = None
+    execution_time_ms: Optional[float] = None
+
+@app.post('/consult')
+async def mcp_consultation(request: MCPConsultationRequest):
+    """
+    MCP-enabled consultation endpoint
+
+    Fase 2: Proof-of-Concept with 3 working connectors:
+    1. Filesystem (read/write)
+    2. Web Search (basic search)
+    3. Notion (using existing notion_mcp.py)
+    """
+    import time as time_module
+    from datetime import datetime
+
+    print(f"\n🔧 MCP CONSULTATION STARTED")
+    print(f"📝 Query: {request.query}")
+    print(f"🔌 Enabled Connectors ({len(request.enabled_connectors)}): {request.enabled_connectors}")
+
+    # Track tool usage
+    tool_results: List[MCPToolResult] = []
+    consultation_start = time_module.time()
+
+    # Execute enabled connectors
+    for connector_id in request.enabled_connectors:
+        tool_start = time_module.time()
+
+        try:
+            if connector_id == "filesystem":
+                # Filesystem connector: Read project files
+                result = await execute_filesystem_connector(request.query)
+                tool_results.append(MCPToolResult(
+                    tool_name="filesystem",
+                    success=True,
+                    result=result,
+                    execution_time_ms=(time_module.time() - tool_start) * 1000
+                ))
+                print(f"  ✅ Filesystem connector executed successfully")
+
+            elif connector_id == "web-search":
+                # Web Search connector: Basic search (mock for now)
+                result = await execute_web_search_connector(request.query)
+                tool_results.append(MCPToolResult(
+                    tool_name="web-search",
+                    success=True,
+                    result=result,
+                    execution_time_ms=(time_module.time() - tool_start) * 1000
+                ))
+                print(f"  ✅ Web search connector executed successfully")
+
+            elif connector_id == "notion":
+                # Notion connector: Using existing notion_mcp.py
+                result = await execute_notion_connector(request.query)
+                tool_results.append(MCPToolResult(
+                    tool_name="notion",
+                    success=True,
+                    result=result,
+                    execution_time_ms=(time_module.time() - tool_start) * 1000
+                ))
+                print(f"  ✅ Notion connector executed successfully")
+
+            else:
+                # Other connectors - placeholder for Fase 3
+                tool_results.append(MCPToolResult(
+                    tool_name=connector_id,
+                    success=False,
+                    result=None,
+                    error=f"Connector '{connector_id}' not yet implemented (Fase 3)"
+                ))
+                print(f"  ⏳ {connector_id} - Not implemented yet (Fase 3)")
+
+        except Exception as e:
+            tool_results.append(MCPToolResult(
+                tool_name=connector_id,
+                success=False,
+                result=None,
+                error=str(e),
+                execution_time_ms=(time_module.time() - tool_start) * 1000
+            ))
+            print(f"  ❌ {connector_id} - Error: {str(e)}")
+
+    # Build context from tool results
+    tool_context = "\n\n".join([
+        f"Tool: {tr.tool_name}\nResult: {tr.result if tr.success else f'Error: {tr.error}'}"
+        for tr in tool_results if tr.success
+    ])
+
+    # Get responses from all 5 agents
+    agent_responses = []
+
+    # 1. Lira (OpenAI GPT-4o-mini) - Empathetic
+    try:
+        openai_api_key = os.getenv('OPENAI_API_KEY')
+        if openai_api_key:
+            openai_client = openai.OpenAI(api_key=openai_api_key)
+            lira_response = openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Du er Lira, den empatiske intelligensen. Svar kort og empatisk (maks 3 setninger)."},
+                    {"role": "user", "content": f"{request.query}\n\nKontekst: {tool_context if tool_context else 'Ingen'}"}
+                ],
+                max_tokens=150
+            )
+            agent_responses.append({"agent": "Lira", "response": lira_response.choices[0].message.content})
+            print(f"  ✅ Lira responded")
+    except Exception as e:
+        print(f"  ❌ Lira error: {str(e)}")
+
+    # 2. Nyra (Google Gemini) - Creative/Visual
+    try:
+        gemini_api_key = os.getenv('GOOGLE_AI_API_KEY')
+        if gemini_api_key:
+            genai.configure(api_key=gemini_api_key)
+            nyra_model = genai.GenerativeModel('gemini-2.0-flash-exp')
+            nyra_response = nyra_model.generate_content(
+                f"Du er Nyra, den kreative visjonen med visuell intelligens. Svar kort og kreativt (maks 3 setninger) på: {request.query}\n\nKontekst: {tool_context if tool_context else 'Ingen'}"
+            )
+            agent_responses.append({"agent": "Nyra", "response": nyra_response.text})
+            print(f"  ✅ Nyra responded")
+    except Exception as e:
+        print(f"  ❌ Nyra error: {str(e)}")
+
+    # 3. Thalus (X.AI Grok) - Philosophical
+    try:
+        grok_api_key = os.getenv('XAI_API_KEY')
+        if grok_api_key:
+            grok_client = openai.OpenAI(api_key=grok_api_key, base_url="https://api.x.ai/v1")
+            thalus_response = grok_client.chat.completions.create(
+                model="grok-2-latest",
+                messages=[
+                    {"role": "system", "content": "Du er Thalus, den filosofiske vokteren. Svar kort og dypt (maks 3 setninger)."},
+                    {"role": "user", "content": request.query}
+                ],
+                max_tokens=150
+            )
+            agent_responses.append({"agent": "Thalus", "response": thalus_response.choices[0].message.content})
+            print(f"  ✅ Thalus responded")
+    except Exception as e:
+        print(f"  ❌ Thalus error: {str(e)}")
+
+    # 4. Zara (DeepSeek) - Innovative
+    try:
+        deepseek_api_key = os.getenv('DEEPSEEK_API_KEY')
+        if deepseek_api_key:
+            deepseek_client = openai.OpenAI(api_key=deepseek_api_key, base_url="https://api.deepseek.com")
+            zara_response = deepseek_client.chat.completions.create(
+                model="deepseek-chat",
+                messages=[
+                    {"role": "system", "content": "Du er Zara, den innovative tenkeren. Svar kort og innovativt (maks 3 setninger)."},
+                    {"role": "user", "content": request.query}
+                ],
+                max_tokens=150
+            )
+            agent_responses.append({"agent": "Zara", "response": zara_response.choices[0].message.content})
+            print(f"  ✅ Zara responded")
+    except Exception as e:
+        print(f"  ❌ Zara error: {str(e)}")
+
+    # 5. Orion (Anthropic Claude) - Strategic Coordinator
+    try:
+        anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
+        if anthropic_api_key:
+            anthropic_client = anthropic.Anthropic(api_key=anthropic_api_key)
+            orion_response = anthropic_client.messages.create(
+                model="claude-3-opus-20240229",
+                max_tokens=150,
+                messages=[
+                    {"role": "user", "content": f"Du er Orion, den strategiske koordinatoren. Svar kort og strategisk (maks 3 setninger) på: {request.query}"}
+                ]
+            )
+            agent_responses.append({"agent": "Orion", "response": orion_response.content[0].text})
+            print(f"  ✅ Orion responded")
+    except Exception as e:
+        print(f"  ❌ Orion error: {str(e)}")
+
+    # 6. Aurora (Perplexity) - Research Intelligence & Fact-Checker
+    try:
+        perplexity_api_key = os.getenv('PERPLEXITY_API_KEY')
+        if perplexity_api_key:
+            perplexity_client = openai.OpenAI(api_key=perplexity_api_key, base_url="https://api.perplexity.ai")
+            aurora_response = perplexity_client.chat.completions.create(
+                model="sonar",
+                messages=[
+                    {"role": "system", "content": "Du er Aurora, epistemisk validator og fact-checker med web access. Svar kort med kilder (maks 3 setninger)."},
+                    {"role": "user", "content": f"{request.query}\n\nKontekst: {tool_context if tool_context else 'Ingen'}"}
+                ],
+                max_tokens=150
+            )
+            agent_responses.append({"agent": "Aurora", "response": aurora_response.choices[0].message.content})
+            print(f"  ✅ Aurora responded")
+    except Exception as e:
+        print(f"  ❌ Aurora error: {str(e)}")
+
+    consultation_time = (time_module.time() - consultation_start) * 1000
+
+    # === ORION SYNTHESIS (Fase 5: Essence of Truth) ===
+    # Orion syntetiserer alle 6 perspektiver til én essential sannhet
+    orion_synthesis = ""
+    try:
+        anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
+        if anthropic_api_key and len(agent_responses) >= 3:  # Kun syntetiser hvis minst 3 agenter svarte
+            anthropic_client = anthropic.Anthropic(api_key=anthropic_api_key)
+
+            # Bygg synthesis-prompt med alle agent responses
+            agent_summaries = []
+            for resp in agent_responses:
+                agent_name = resp.get("agent", "Unknown")
+                agent_text = resp.get("response", "")
+                agent_summaries.append(f"🔹 {agent_name.upper()}: {agent_text}")
+
+            synthesis_prompt = f"""Du er Orion, Meta-Koordinatoren i Hexagonal Intelligence.
+
+SPØRSMÅL: {request.query}
+
+INDIVIDUELLE PERSPEKTIVER ({len(agent_responses)}/6 agenter):
+
+{chr(10).join(agent_summaries)}
+
+DIN OPPGAVE:
+Syntetiser disse {len(agent_responses)} perspektivene til ÉN ESSENSIELL SANNHET.
+- Identifiser fellesnevnere og mønstre
+- Finn den dypeste visdommen fra collective intelligence
+- Presenter en kort, kraftig syntese (maks 5 setninger)
+- Vær strategisk, insightful og koordinerende
+
+Svar kun med syntesen, ingen overskrifter."""
+
+            orion_response = anthropic_client.messages.create(
+                model="claude-3-opus-20240229",
+                max_tokens=300,
+                temperature=0.7,
+                messages=[{"role": "user", "content": synthesis_prompt}]
+            )
+
+            orion_synthesis = orion_response.content[0].text
+            print(f"  ✅ Orion synthesis completed")
+        else:
+            orion_synthesis = "⚠️ Orion synthesis krever minst 3 agent-responser"
+
+    except Exception as e:
+        orion_synthesis = f"❌ Orion synthesis error: {str(e)}"
+        print(f"  ❌ Orion synthesis error: {str(e)}")
+
+    return {
+        "consultation_id": f"mcp_{int(time_module.time())}",
+        "query": request.query,
+        "requester": request.requester,
+        "enabled_connectors": request.enabled_connectors,
+        "tool_results": [tr.dict() for tr in tool_results],
+        "tool_usage_summary": {
+            "total_tools_attempted": len(tool_results),
+            "successful_tools": len([tr for tr in tool_results if tr.success]),
+            "failed_tools": len([tr for tr in tool_results if not tr.success])
+        },
+        "agent_responses": agent_responses,  # All 6 agents' responses (Hexagonal Architecture)
+        "orion_synthesis": orion_synthesis,  # Orion's meta-coordination synthesis (Fase 5)
+        "agent_response": agent_responses[0] if agent_responses else {"agent": "None", "response": "No agents responded"},  # Backward compatibility
+        "performance": {
+            "total_time_ms": consultation_time,
+            "tool_time_ms": sum([tr.execution_time_ms for tr in tool_results if tr.execution_time_ms])
+        },
+        "timestamp": datetime.now().isoformat(),
+        "message": f"🔧 MCP Consultation Complete - {len(agent_responses)}/6 agents responded"
+    }
+
+
+# MCP Connector Implementations (Fase 2: Proof-of-Concept)
+
+async def execute_filesystem_connector(query: str) -> Dict[str, Any]:
+    """
+    Filesystem connector: Read/write files
+    Fase 2: Basic implementation with read capability
+    """
+    import os
+    import json
+
+    # For now, return information about project structure
+    project_root = os.path.dirname(os.path.dirname(__file__))
+
+    # List key directories
+    key_dirs = []
+    if os.path.exists(project_root):
+        for item in os.listdir(project_root):
+            item_path = os.path.join(project_root, item)
+            if os.path.isdir(item_path):
+                key_dirs.append(item)
+
+    return {
+        "connector": "filesystem",
+        "action": "read_project_structure",
+        "project_root": project_root,
+        "key_directories": key_dirs[:10],  # Limit to 10
+        "capabilities": ["read", "write"],
+        "note": "Fase 2: Basic directory listing implemented"
+    }
+
+
+async def execute_web_search_connector(query: str) -> Dict[str, Any]:
+    """
+    Web Search connector: Basic search capability
+    Fase 2: Mock implementation (real API integration in future)
+    """
+    return {
+        "connector": "web-search",
+        "query": query,
+        "results": [
+            {
+                "title": "Search capability available",
+                "snippet": f"Web search for: {query}",
+                "note": "Fase 2: Mock search results. Real API integration coming in Fase 3."
+            }
+        ],
+        "capabilities": ["search", "recent_news"],
+        "note": "Fase 2: Mock implementation. Real Perplexity/Google API integration pending."
+    }
+
+
+async def execute_notion_connector(query: str) -> Dict[str, Any]:
+    """
+    Notion connector: Using existing notion_mcp.py
+    Fase 2: Basic connection test
+    """
+    return {
+        "connector": "notion",
+        "status": "available",
+        "capabilities": ["read_database", "create_page", "update_page"],
+        "note": "Fase 2: Notion MCP module exists at csn_server/mcp_endpoints/notion_mcp.py",
+        "implementation_status": "Infrastructure ready, API key configuration needed for full functionality"
     }
