@@ -23,6 +23,8 @@ from gates import MutationLog, MutationLevel, ValidationOutcome
 from routers import dna_router, initialize_dna_blockchain
 # Orchestration API Router (Multi-Agent Live Streaming)
 from routers.orchestration_api import router as orchestration_router
+# YouTube Saga Workflow Router (Automated Video Production)
+from routers.saga_workflow import router as saga_router
 from blockchain.agent_dna_chain import AgentDNAChain
 from blockchain.dna_block import GeneType
 from blockchain.reference_extractor import extract_smk_references_from_consultation, merge_smk_references
@@ -80,6 +82,10 @@ logger.info("SUCCESS: GENOMOS DNA API router included")
 # Include Orchestration API (Multi-Agent Live Streaming)
 app.include_router(orchestration_router)
 logger.info("SUCCESS: Orchestration API router included (SSE live streaming)")
+
+# Include YouTube Saga Workflow API (Automated Video Production)
+app.include_router(saga_router)
+logger.info("SUCCESS: YouTube Saga Workflow API router included")
 
 # Redis connection (optional - only for binary protocol if needed)
 # Note: Upstash uses REST API via redis_subscriber.py, not binary protocol
