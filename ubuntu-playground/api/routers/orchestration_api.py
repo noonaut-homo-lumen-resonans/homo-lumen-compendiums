@@ -15,6 +15,7 @@ from datetime import datetime
 import asyncio
 import json
 import logging
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +76,12 @@ class OrchestrationQuery(BaseModel):
     agents: List[str]  # Which agents to include
     depth: str = "comprehensive"  # comprehensive, quick, deep
     biofield_context: Optional[Dict[str, Any]] = None
+
+
+class ConsultationRequest(BaseModel):
+    """Consultation request from frontend"""
+    query: str
+    enabled_connectors: Optional[List[str]] = []
 
 
 # ============================================================================
@@ -308,6 +315,141 @@ async def submit_orchestrated_query(query: OrchestrationQuery):
         "agents": query.agents,
         "stream_url": "/api/orchestrate/events"
     }
+
+
+@router.post("/consult")
+async def submit_consultation(request: ConsultationRequest):
+    """
+    Submit a consultation query with enabled MCP connectors.
+
+    This endpoint:
+    1. Receives query + enabled_connectors from frontend
+    2. Logs connector state (Fase 1: Foundation)
+    3. Forwards to CSN Server for multi-agent consultation
+    4. Returns consultation result
+
+    Future: Will use enabled_connectors to filter agent tools (Fase 2+)
+    """
+    logger.info(f"📥 Consultation Request:")
+    logger.info(f"  Query: {request.query[:100]}...")
+    logger.info(f"  Enabled Connectors ({len(request.enabled_connectors)}): {request.enabled_connectors}")
+
+    # Emit connector_selection event for tracking
+    for connector_id in request.enabled_connectors:
+        emit_agent_event(
+            agent_id="system",
+            event_type="connector_enabled",
+            message=f"Connector enabled: {connector_id}",
+            metadata={"connector_id": connector_id}
+        )
+
+    # Emit query_received for all 6 agents (Hexagonal Architecture)
+    agents = ["orion", "lira", "nyra", "thalus", "zara", "aurora"]
+    for agent_id in agents:
+        emit_agent_event(
+            agent_id=agent_id,
+            event_type="query_received",
+            message=f"{agent_id.capitalize()} received query",
+            metadata={"query": request.query[:100]}
+        )
+
+    # Emit phase_start for agent processing
+    for agent_id in agents:
+        emit_agent_event(
+            agent_id=agent_id,
+            event_type="phase_start",
+            message=f"{agent_id.capitalize()} started processing",
+            metadata={"phase": "agent_processing"}
+        )
+
+    # Forward to CSN Server on port 8001
+    try:
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            response = await client.post(
+                "http://localhost:8001/consult",
+                json={
+                    "query": request.query,
+                    "enabled_connectors": request.enabled_connectors
+                }
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                logger.info(f"✅ Consultation successful: {result.get('consultation_id', 'N/A')}")
+
+                # Add connector info to result
+                result["enabled_connectors"] = request.enabled_connectors
+                result["connector_count"] = len(request.enabled_connectors)
+
+                # Emit agent_response events for ALL 6 agents (Hexagonal Architecture)
+                agent_responses = result.get("agent_responses", [])
+                for agent_resp in agent_responses:
+                    agent_name = agent_resp.get("agent", "").lower()
+                    response_text = agent_resp.get("response", "")
+
+                    if response_text and agent_name:
+                        emit_agent_event(
+                            agent_id=agent_name,
+                            event_type="agent_response",
+                            message=response_text,
+                            metadata={
+                                "consultation_id": result.get("consultation_id"),
+                                "tool_results": result.get("tool_results", []),
+                                "tool_usage": result.get("tool_usage_summary"),
+                                "query": request.query
+                            }
+                        )
+
+                # Emit synthesis_complete for all 6 agents (Hexagonal Architecture - PhaseTracker phase 5)
+                agents = ["orion", "lira", "nyra", "thalus", "zara", "aurora"]
+                for agent_id in agents:
+                    emit_agent_event(
+                        agent_id=agent_id,
+                        event_type="synthesis_complete",
+                        message=f"{agent_id.capitalize()} synthesis complete",
+                        metadata={
+                            "consultation_id": result.get("consultation_id"),
+                            "tool_usage": result.get("tool_usage_summary")
+                        }
+                    )
+
+                # Emit Orion's meta-synthesis (Essence of Truth)
+                orion_synthesis = result.get("orion_synthesis", "")
+                logger.info(f"🌟 Orion synthesis available: {bool(orion_synthesis)} (length: {len(orion_synthesis) if orion_synthesis else 0})")
+                if orion_synthesis:
+                    logger.info(f"✨ Emitting orion_synthesis event for consultation {result.get('consultation_id')}")
+                    emit_agent_event(
+                        agent_id="orion",
+                        event_type="orion_synthesis",
+                        message=orion_synthesis,
+                        metadata={
+                            "consultation_id": result.get("consultation_id"),
+                            "synthesis_type": "essence_of_truth",
+                            "agent_count": len(result.get("agent_responses", []))
+                        }
+                    )
+                    logger.info(f"✅ Orion synthesis event emitted successfully")
+
+                return result
+            else:
+                logger.error(f"❌ CSN Server error: {response.status_code}")
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=f"CSN Server returned error: {response.text}"
+                )
+
+    except httpx.ConnectError:
+        logger.error("❌ Cannot connect to CSN Server (port 8001)")
+        raise HTTPException(
+            status_code=503,
+            detail="CSN Server not available. Please ensure it's running on port 8001."
+        )
+    except Exception as e:
+        logger.error(f"❌ Consultation error: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Consultation failed: {str(e)}"
+        )
 
 
 # ============================================================================

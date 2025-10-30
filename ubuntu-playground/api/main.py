@@ -23,8 +23,13 @@ from gates import MutationLog, MutationLevel, ValidationOutcome
 from routers import dna_router, initialize_dna_blockchain
 # Orchestration API Router (Multi-Agent Live Streaming)
 from routers.orchestration_api import router as orchestration_router
+# Health Connect API Router (Real-Time Biofelt Synchronization)
+from routers.health_connect_api import router as health_router
+# Connector Status Router (Google AI, ElevenLabs, Vercel)
+from routers.connector_status import router as connector_router
 # YouTube Saga Workflow Router (Automated Video Production)
-from routers.saga_workflow import router as saga_router
+# TEMP DISABLED: Missing asyncpg dependency
+# from routers.saga_workflow import router as saga_router
 from blockchain.agent_dna_chain import AgentDNAChain
 from blockchain.dna_block import GeneType
 from blockchain.reference_extractor import extract_smk_references_from_consultation, merge_smk_references
@@ -83,9 +88,18 @@ logger.info("SUCCESS: GENOMOS DNA API router included")
 app.include_router(orchestration_router)
 logger.info("SUCCESS: Orchestration API router included (SSE live streaming)")
 
+# Include Health Connect API (Real-Time Biofelt Synchronization)
+app.include_router(health_router)
+logger.info("SUCCESS: Health Connect API router included (real-time biofelt data)")
+
+# Include Connector Status API (Google AI, ElevenLabs, Vercel)
+app.include_router(connector_router)
+logger.info("SUCCESS: Connector Status API router included (Google AI + ElevenLabs + Vercel)")
+
 # Include YouTube Saga Workflow API (Automated Video Production)
-app.include_router(saga_router)
-logger.info("SUCCESS: YouTube Saga Workflow API router included")
+# TEMP DISABLED: Missing asyncpg dependency
+# app.include_router(saga_router)
+# logger.info("SUCCESS: YouTube Saga Workflow API router included")
 
 # Redis connection (optional - only for binary protocol if needed)
 # Note: Upstash uses REST API via redis_subscriber.py, not binary protocol
