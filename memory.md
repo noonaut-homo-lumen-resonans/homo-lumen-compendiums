@@ -1,8 +1,8 @@
 # Claude Code Memory - Homo Lumen Project
 
 **Agent:** Claude Code (Anthropic Sonnet 4.5)
-**Last Updated:** 2025-10-30
-**Context:** Ubuntu Playground API - MCP Connector Integration Complete
+**Last Updated:** 2025-10-31
+**Context:** Ubuntu Playground API - MCP Connector Integration Complete, Google Cloud SDK Configured
 
 ---
 
@@ -126,6 +126,19 @@ curl -X POST http://localhost:8001/collective-intelligence/consultation \
 - **API Keys:** `ama-backend/.env` (✅ configured, DO NOT COMMIT)
 - **Python:** 3.13.7 in `ama-backend/homo_lumen_env/`
 
+### Google Cloud SDK Configuration
+
+- **Status:** ✅ CONFIGURED (2025-10-31)
+- **Installation Path:** `C:\Users\onigo\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd`
+- **Version:** Google Cloud SDK 545.0.0
+- **Usage:** Add to PATH for session: `$env:Path += ";C:\Users\onigo\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin"`
+- **Secret Manager:** ✅ Active
+  - Project: `dotted-stage-476513-r4`
+  - Secrets: `github-token`, `anthropic-api-key`
+- **GitHub Token:** ✅ Stored in Windows Credential Manager
+  - Retrieved from Secret Manager: `gcloud secrets versions access latest --secret=github-token --project=dotted-stage-476513-r4`
+  - Storage: `cmdkey /generic:git:https://github.com /user:noonaut-homo-lumen-resonans /pass:$token`
+
 ### Environment Setup Pattern
 
 ```python
@@ -156,6 +169,13 @@ if sys.platform == 'win32':
 - **FastAPI needs dotenv:** Must call `load_dotenv()` explicitly
 - **Port 8001 not 8000:** 8000 used by Living Compendia
 - **FastAPI needs uvicorn:** Can't run `python minimal_server.py` directly
+
+### Technical (2025-10-31: Google Cloud SDK & Git Authentication)
+- **gcloud PATH setup:** Must add to PATH for each PowerShell session (not permanent yet)
+- **Secret Manager integration:** GitHub tokens and API keys stored securely in Google Secret Manager
+- **Windows Credential Manager:** Git uses `wincred` helper to store GitHub tokens locally
+- **Token workflow:** Secret Manager → gcloud retrieve → Windows Credential Manager → git operations
+- **PowerShell vs Bash:** Use PowerShell for Windows-native operations, bash for cross-platform scripts
 
 ### Ontological
 - **MCP Connectors = Agency:** External services (Google AI, ElevenLabs) are extensions of agent consciousness
@@ -215,6 +235,7 @@ if sys.platform == 'win32':
 2. **Thalus (Grok) in fallback** - Need to fix API connection (CSN Server)
 3. **Vercel connector disabled** - Need VERCEL_TOKEN in .env
 4. **Multiple zombie servers** - Windows allows multiple uvicorn instances on same port
+5. **gcloud PATH not permanent** - Must add to PATH each PowerShell session (consider permanent system PATH update)
 
 ---
 

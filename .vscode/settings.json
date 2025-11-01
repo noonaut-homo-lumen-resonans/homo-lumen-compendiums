@@ -47,6 +47,7 @@
   "files.autoSave": "afterDelay",
   "cursor.agent_layout_browser_beta_setting": true,
   "chatgpt.openOnStartup": true,
+  "vercelVSCode.accessToken": "RUODLUzLLs9XclzrQOb3joAA"
 
   // Vercel Extension (sett token via environment variable eller User Settings)
   // "vercelVSCode.accessToken": "set_via_env_var_or_user_settings"

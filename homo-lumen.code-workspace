@@ -94,7 +94,12 @@
       "titleBar.activeBackground": "#1a3a2e",
       "titleBar.activeForeground": "#a8dadc"
     },
-    "window.title": "🌿 Homo Lumen - ${activeEditorShort}${separator}${rootName}"
+    "window.title": "🌿 Homo Lumen - ${activeEditorShort}${separator}${rootName}",
+    "terminal.integrated.env.windows": {
+      "ANTHROPIC_API_KEY": "${env:ANTHROPIC_API_KEY}",
+      "GITHUB_TOKEN": "${env:GITHUB_TOKEN}",
+      "VERCEL_TOKEN": "${env:VERCEL_TOKEN}"
+    }
   },
   "extensions": {
     "recommendations": [

@@ -5,46 +5,81 @@
 
 ---
 
-## 🔴 Feil 1: Claude Code MCP Provider
+## 🔴 Feil 1: Claude Code MCP Provider (Corridor Extension)
 
 **Melding:** "Failed to register Claude Code MCP provider. Make sure Claude CLI is installed."
+**Source:** Corridor
+
+### Diagnostikk
+
+**Sjekk om Claude CLI er installert:**
+```powershell
+# Sjekk om Claude CLI finnes
+claude --version
+
+# Sjekk om API key er satt i CLI config
+claude config get api-key
+```
+
+**Sjekk environment variables:**
+```powershell
+# PowerShell
+[System.Environment]::GetEnvironmentVariable("ANTHROPIC_API_KEY", "User")
+```
 
 ### Løsning
 
-**Steg 1: Installer Claude CLI**
+**Hvis Claude CLI mangler:**
 
-**Windows (PowerShell):**
+**Metode 1: Via npm (Anbefalt)**
 ```powershell
-# Last ned og installer Claude CLI
-winget install Anthropic.Claude
-
-# Eller via npm (hvis du har Node.js)
 npm install -g @anthropic-ai/cli
 ```
 
-**Verifiser installasjon:**
+**Metode 2: Via winget**
 ```powershell
-claude --version
+winget install Anthropic.Claude
 ```
 
-**Steg 2: Autentiser Claude CLI**
+**Hvis Claude CLI er installert, men ikke konfigurert:**
 
+1. **Sett API key i Claude CLI:**
 ```powershell
-# Sett API-nøkkel
-claude config set api-key YOUR_ANTHROPIC_API_KEY
+# Hent API key fra User environment variable
+$apiKey = [System.Environment]::GetEnvironmentVariable("ANTHROPIC_API_KEY", "User")
 
-# Eller via environment variable
-$env:ANTHROPIC_API_KEY = "your-api-key-here"
+# Sett i Claude CLI config
+claude config set api-key $apiKey
 ```
 
-**Hvor få Anthropic API Key:**
-1. Gå til: https://console.anthropic.com/settings/keys
-2. Klikk "Create Key"
-3. Kopier key (den vises kun én gang!)
+2. **Verifiser config:**
+```powershell
+claude config get api-key
+# Skal vise din API key (eller masked version)
+```
 
-**Steg 3: Restart VS Code**
+3. **Restart Cursor**
+   - Lukk Cursor helt
+   - Start på nytt
+   - Notifikasjonen skal være borte
 
-Etter installasjon, restart VS Code for at MCP provider skal registreres.
+**Hvis notifikasjonen fortsatt vises:**
+
+Corridor extension kan ha spesielle krav. Sjekk:
+1. **Extension Settings:**
+   - Trykk `Ctrl + ,` (Settings)
+   - Søk etter "corridor"
+   - Se om det er spesifikke settings for API key
+
+2. **Extension Status:**
+   - Trykk `Ctrl + Shift + X` (Extensions)
+   - Søk etter "Corridor"
+   - Sjekk om extension er aktivert og oppdatert
+
+3. **Alternativ: Installer via winget hvis npm-versjonen ikke fungerer:**
+```powershell
+winget install Anthropic.Claude
+```
 
 ---
 
@@ -129,6 +164,38 @@ Restart VS Code for at endringen skal tre i kraft.
 
 ---
 
+## 🔵 Feil 3: GitHub Actions Sign-In
+
+**Melding:** "Sign in to GitHub to access your repositories and GitHub Actions workflows."
+**Source:** GitHub Actions
+
+### Løsning
+
+**GitHub Actions extension bruker OAuth-flow, ikke bare token.**
+
+**Steg 1: Klikk "Sign in to GitHub" i notifikasjonen**
+
+Dette vil:
+- Åpne browser
+- Vise GitHub OAuth-authorization page
+- Be om tillatelse for GitHub Actions extension
+
+**Steg 2: Godkjenn i browser**
+
+1. Klikk "Authorize" på GitHub-siden
+2. Cursor vil automatisk motta tokenet
+3. Notifikasjonen skal forsvinne
+
+**Alternativ: Hvis browser ikke åpnes automatisk:**
+
+1. Åpne Command Palette: `Ctrl + Shift + P`
+2. Type: `GitHub: Sign in`
+3. Følg instruksjonene
+
+**Merk:** Selv om du har `GITHUB_TOKEN` satt i environment variables, trenger GitHub Actions extension egen OAuth-token for sikkerhet. Dette er anbefalt av GitHub.
+
+---
+
 ## ℹ️ Info: Multiple Workspace Files
 
 **Melding:** "This folder contains multiple workspace files. Do you want to open one?"
@@ -148,9 +215,18 @@ Dette er **ikke en feil**, men en informasjon. Hvis du vil åpne et spesifikt wo
 # Sjekk at Claude CLI fungerer
 claude --version
 
-# Test MCP connection
+# Sjekk API key i config
+claude config get api-key
+
+# Test MCP connection (hvis tilgjengelig)
 claude mcp list
 ```
+
+**Test GitHub Actions:**
+1. Åpne Command Palette: `Ctrl + Shift + P`
+2. Type: `GitHub:`
+3. Du skal se GitHub-kommandoer i listen
+4. Prøv: `GitHub: View Workflow Runs`
 
 **Test Vercel Extension:**
 1. Åpne Command Palette: `Ctrl + Shift + P`

@@ -35,9 +35,38 @@ Dette Google Cloud-prosjektet er den **primære sikkerhets- og infrastrukturplat
   - Replikasjon: Automatic
   - Bruk: Git-operasjoner og GitHub API-tilgang
   - Status: ✅ Aktivt og testet
+- `notion-api-key` - Notion API-nøkkel
+  - Versjon: Latest (1)
+  - Sist oppdatert: 31. oktober 2025
+  - Replikasjon: Automatic
+  - Bruk: Notion MCP integration i Cursor IDE
+  - Status: ✅ Aktivt og testet
+  - Lagret også i: Windows Credential Manager (`NotionAPI:notion.so`)
+- `vercel-access-token` - Vercel Access Token
+  - Versjon: Latest (1)
+  - Sist oppdatert: 31. oktober 2025
+  - Replikasjon: Automatic
+  - Bruk: Vercel VS Code extension, deployment management
+  - Status: ✅ Aktivt og testet
+  - Lagret også i: Windows Credential Manager (`VercelAPI:vercel.com`)
+- `supabase-anon-key` - Supabase Anon Key (Public)
+  - Versjon: Latest
+  - Sist oppdatert: 31. oktober 2025
+  - Replikasjon: Automatic
+  - Bruk: Frontend/client-side Supabase operasjoner
+  - Status: ✅ Aktivt og testet
+  - Project: `guhtqmoxurfroailltsc`
+  - ⚠️ Kan brukes i frontend (public key)
+- `supabase-service-role-key` - Supabase Service Role Key (Secret)
+  - Versjon: Latest
+  - Sist oppdatert: (Ikke lagret ennå)
+  - Replikasjon: Automatic
+  - Bruk: Server-side Supabase operasjoner, bypasses RLS
+  - Status: ⏳ Må lagres
+  - Project: `guhtqmoxurfroailltsc`
+  - ⚠️ **KRITISK:** KUN server-side! Aldri eksponer i frontend!
 
 **Secrets som kan legges til:**
-- `notion-api-key` - Notion API-nøkkel
 - `openai-api-key` - OpenAI API-nøkkel
 - `upstash-redis-token` - Upstash Redis-token
 - `clickup-api-key` - ClickUp API-nøkkel
