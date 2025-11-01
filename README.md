@@ -1,8 +1,11 @@
 # Homo Lumen Compendiums Repository
 
-**Status:** 🟢 Active  
-**Last Updated:** 14. oktober 2025  
+**Status:** 🟢 Active
+**Last Updated:** 31. oktober 2025
 **Maintained by:** Homo Lumen Coalition
+
+**Google Cloud Project:** `dotted-stage-476513-r4`
+**Console:** [Google Cloud Console](https://console.cloud.google.com/?project=dotted-stage-476513-r4)
 
 ---
 
@@ -162,6 +165,28 @@ See [diagrams/README.md](diagrams/README.md) for detailed documentation.
 
 ---
 
+## ☁️ Infrastructure & Security
+
+### Google Cloud Platform
+
+**Prosjekt-ID:** `dotted-stage-476513-r4`
+**Console URL:** https://console.cloud.google.com/?project=dotted-stage-476513-r4
+
+**Aktive Tjenester:**
+- ✅ **Secret Manager** - Sikker lagring av API-nøkler og credentials
+- 🔐 **GitHub Token** - Lagret sikkert i Secret Manager
+
+**Dokumentasjon:**
+- 📖 [Google Cloud Project Setup](docs/GOOGLE_CLOUD_PROJECT_SETUP.md) - Komplett oversikt
+- 📖 [Secret Manager Quick Start](docs/GOOGLE_SECRET_MANAGER_QUICK_START.md) - Setup guide
+- 📖 [GitHub Token Secure Usage](docs/GITHUB_TOKEN_SECURE_USAGE.md) - Token-bruksguide
+
+**Scripts:**
+- `scripts/store_github_token_secret.py` - Lagre/oppdatere secrets
+- `scripts/get_github_token_from_secret.py` - Hente secrets
+
+---
+
 ## 🔗 Related Resources
 
 ### Notion
@@ -172,6 +197,10 @@ See [diagrams/README.md](diagrams/README.md) for detailed documentation.
 ### Linear
 - **Project:** NAV-Losen Innovation Norge Søknad
 - **Issue HOM-13:** Dimensjoner dokumentasjon fullført
+
+### GitHub
+- **Repository:** https://github.com/noonaut-homo-lumen-resonans/homo-lumen-compendiums
+- **Authentication:** Token lagret i Google Secret Manager
 
 ---
 

@@ -45,5 +45,12 @@
     "**/dist": true
   },
   "files.autoSave": "afterDelay",
-  "cursor.agent_layout_browser_beta_setting": true
+  "cursor.agent_layout_browser_beta_setting": true,
+  "chatgpt.openOnStartup": true,
+
+  // Vercel Extension (sett token via environment variable eller User Settings)
+  // "vercelVSCode.accessToken": "set_via_env_var_or_user_settings"
+
+  // Claude MCP Configuration
+  // Sett ANTHROPIC_API_KEY environment variable for Claude CLI
 }

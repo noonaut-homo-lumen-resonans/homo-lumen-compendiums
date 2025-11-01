@@ -42,8 +42,9 @@ from scripts.scheduled_jobs import initialize_scheduler
 # Redis Event Subscriber
 from redis_subscriber import ubuntu_subscriber
 
-# Load .env.local FIRST
-load_dotenv(dotenv_path="../.env.local")
+# Load .env files (try both locations)
+load_dotenv(dotenv_path="../.env.local")  # Legacy location
+load_dotenv(dotenv_path=".env")  # New location (api/.env)
 
 # Fix Windows console encoding for emoji
 if sys.platform == 'win32':

@@ -1,9 +1,13 @@
 """Connector Status Router"""
 from fastapi import APIRouter
+from pydantic import BaseModel
 import logging
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+
+class SpeakRequest(BaseModel):
+    text: str
 
 try:
     from connectors.google_ai_connector import GoogleAIConnector
@@ -36,7 +40,7 @@ async def get_connectors_status():
         return {"available": False, "error": str(e)}
 
 @router.post("/api/lira/speak")
-async def lira_speak(text: str):
+async def lira_speak(request: SpeakRequest):
     if not CONNECTORS_AVAILABLE:
         return {"error": "ElevenLabs not available"}
 
@@ -45,7 +49,7 @@ async def lira_speak(text: str):
         if not elevenlabs.enabled:
             return {"error": "ElevenLabs not enabled"}
 
-        audio_bytes = await elevenlabs.text_to_speech(text)
+        audio_bytes = await elevenlabs.text_to_speech(request.text)
         if audio_bytes:
             return {
                 "success": True,
